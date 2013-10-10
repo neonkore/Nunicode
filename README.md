@@ -48,7 +48,7 @@ So i decided to roll out my own implementation. See also "WHY ITS GOOD".
 
 ## EXAMPLES
 
-UTF-8 decoding:
+### decoding UTF-8 (stream-like)
 
     :::c
     const char input[] = "привет мир!";
@@ -61,13 +61,13 @@ UTF-8 decoding:
         cp = nu_utf8_read(cp, u + i);
     }
 
-UTF-8 decoding with iterator:
+### decoding UTF-8 to memory buffer
 
     :::c
     const char input[] = "привет ромашки";
     uint32_t u[sizeof(test)] = { 0 }; /* should be enough */
 
-    nu_utf8_read(input, u, nu_utf8_read);
+    nu_read_str(input, u, nu_utf8_read);
 
 ## DOCUMENTATION
 
