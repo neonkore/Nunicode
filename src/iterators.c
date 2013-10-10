@@ -4,7 +4,7 @@
 
 #ifdef NU_WITH_ITERATORS
 
-int nu_read_str(const char *encoded, uint32_t *unicode, nu_read_iterator it) {
+int nu_read_str(const char *encoded, uint32_t *unicode, nu_read_iterator_t it) {
 	const char *p = encoded;
 	size_t i = 0;
 
@@ -21,7 +21,7 @@ int nu_read_str(const char *encoded, uint32_t *unicode, nu_read_iterator it) {
 	return 0;
 }
 
-int nu_write_str(const uint32_t *unicode, char *encoded, nu_write_iterator it) {
+int nu_write_str(const uint32_t *unicode, char *encoded, nu_write_iterator_t it) {
 	char *p = encoded;
 	const uint32_t *u = unicode;
 
