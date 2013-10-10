@@ -1,0 +1,14 @@
+#ifndef NU_BUILD_CONFIG_H
+#define NU_BUILD_CONFIG_H
+
+#ifdef NU_WITH_EVERYTHING
+#	define NU_WITH_UTF8
+#	define NU_WITH_ITERATORS
+#endif /* NU_WITH_EVERYTHING */
+
+#ifdef NU_WITH_UTF8
+#	define NU_WITH_UTF8_READER
+#	define NU_WITH_UTF8_WRITER
+#endif /* NU_WITH_UTF8 */
+
+#endif /* NU_BUILD_CONFIG_H */
