@@ -46,6 +46,29 @@ So i decided to roll out my own implementation. See also "WHY ITS GOOD".
 * C99 compliant, -pedantic -Wall -Werror
 * MIT license
 
+## EXAMPLES
+
+UTF-8 decoding:
+
+    :::c
+    const char input[] = "привет мир!";
+    uint32_t u[sizeof(test)] = { 0 }; /* should be enough */
+
+    const char *cp = test;
+    ssize_t input_len = nu_utf8_strlen(test, strlen(test)); /* character length */
+
+    for (int i = 0; i < input_len; ++i) {
+        cp = nu_utf8_read(cp, u + i);
+    }
+
+UTF-8 decoding with iterator:
+
+    :::c
+    const char input[] = "привет ромашки";
+    uint32_t u[sizeof(test)] = { 0 }; /* should be enough */
+
+    nu_utf8_read(input, u, nu_utf8_read);
+
 ## DOCUMENTATION
 
 ``doxygen``

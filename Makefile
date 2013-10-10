@@ -2,6 +2,7 @@ STATIC_TARGET = libnu.a
 SHARED_TARGET = libnu.so
 TESTS_TARGET  = test
 UTF8_SAMPLE   = utf8
+DOCDIR        = doc
 
 OBJS = src/utf8.o \
        src/iterators.o \
@@ -41,3 +42,4 @@ samples: $(UTF8_SAMPLE)
 clean:
 	rm -f "$(STATIC_TARGET)" "$(SHARED_TARGET)" "$(TESTS_TARGET)" "$(UTF8_SAMPLE)"
 	rm -f *.o src/*.o tests/*.o samples/*.o
+	rm -fr "$(DOCDIR)"
