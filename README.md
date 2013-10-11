@@ -124,6 +124,7 @@ You probably don't need those:
 * ``-DNU_WITH_CESU8_WRITER`` - enable CESU-8 encoding
 * ``-DNU_WITH_CESU8`` - implies ``-DNU_WITH_CESU8_READER`` and ``-DNU_WITH_CESU8_WRITER``
 * ``-DNU_WITH_ITERATORS`` - enable utility functions (for 0-terminated strings)
+* ``-DNU_WITH_STRINGS`` - enable supported string functions (for 0-terminated strings)
 * ``-DNU_WITH_EVERYTHING`` - implies everything above
 
 ## QUESTIONS?

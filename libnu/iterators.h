@@ -8,8 +8,6 @@
 /** @defgroup iterators Iterators
  */
 
-#ifdef NU_WITH_ITERATORS
-
 /**Read (decoding) iterator
  *
  * @ingroup iterators
@@ -23,6 +21,8 @@ typedef const char* (*nu_read_iterator_t)(const char *encoded, uint32_t *unicode
  * @see nu_utf8_write
  */
 typedef char* (*nu_write_iterator_t)(uint32_t unicode, char *encoded);
+
+#ifdef NU_WITH_ITERATORS
 
 /** Read 0-terminated string
  *

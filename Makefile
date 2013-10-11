@@ -5,12 +5,14 @@ UTF8_SAMPLE   = utf8
 DOCDIR        = doc
 
 OBJS = libnu/cesu8.o \
+       libnu/strings.o \
        libnu/utf8.o \
        libnu/iterators.o \
 
 TESTS_OBJS = tests/cesu8_test.o \
-             tests/utf8_test.o \
              tests/iterators_test.o \
+             tests/strings.o \
+             tests/utf8_test.o \
              tests/main.o
 
 BUILD_OPTIONS = -DNU_WITH_EVERYTHING

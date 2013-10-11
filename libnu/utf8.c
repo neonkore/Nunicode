@@ -50,12 +50,14 @@ ssize_t nu_utf8_bytelen(const uint32_t *unicode, size_t unicode_size) {
 char* nu_utf8_write(uint32_t unicode, char *utf8) {
 	unsigned codepoint_len = utf8_codepoint_length(unicode);
 
-	switch (codepoint_len) {
-		case 1: *utf8 = (char)(unicode); break;
-		case 2: b2_utf8(unicode, utf8); break;
-		case 3: b3_utf8(unicode, utf8); break;
-		case 4: b4_utf8(unicode, utf8); break;
-		default: return 0; /* abort */
+	if (utf8 != 0) {
+		switch (codepoint_len) {
+			case 1: *utf8 = (char)(unicode); break;
+			case 2: b2_utf8(unicode, utf8); break;
+			case 3: b3_utf8(unicode, utf8); break;
+			case 4: b4_utf8(unicode, utf8); break;
+			default: return 0; /* abort */
+		}
 	}
 
 	return utf8 + codepoint_len;

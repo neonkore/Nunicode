@@ -53,12 +53,14 @@ ssize_t nu_cesu8_bytelen(const uint32_t *unicode, size_t unicode_size) {
 char* nu_cesu8_write(uint32_t unicode, char *cesu8) {
 	unsigned codepoint_len = cesu8_codepoint_length(unicode);
 
-	switch (codepoint_len) {
-	case 1: *cesu8 = (char)(unicode); break;
-	case 2: b2_utf8(unicode, cesu8); break;
-	case 3: b3_utf8(unicode, cesu8); break;
-	case 6: b6_cesu8(unicode, cesu8); break;
-	default: return 0; /* abort */
+	if (cesu8 != 0) {
+		switch (codepoint_len) {
+		case 1: *cesu8 = (char)(unicode); break;
+		case 2: b2_utf8(unicode, cesu8); break;
+		case 3: b3_utf8(unicode, cesu8); break;
+		case 6: b6_cesu8(unicode, cesu8); break;
+		default: return 0; /* abort */
+		}
 	}
 
 	return cesu8 + codepoint_len;

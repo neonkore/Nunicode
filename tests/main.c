@@ -14,6 +14,8 @@ void test_cesu8_bytelen();
 void test_cesu8_encoding();
 void test_iterators_read();
 void test_iterators_write();
+void test_strings_strlen();
+void test_strings_bytelen();
 
 testcase cases[] = {
 
@@ -40,6 +42,11 @@ testcase cases[] = {
 #ifdef NU_WITH_ITERATORS
 	test_iterators_read,
 	test_iterators_write,
+#endif
+
+#ifdef NU_WITH_STRINGS
+	test_strings_strlen,
+	test_strings_bytelen,
 #endif
 };
 

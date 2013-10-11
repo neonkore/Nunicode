@@ -5,6 +5,7 @@
 #	define NU_WITH_UTF8
 #	define NU_WITH_CESU8
 #	define NU_WITH_ITERATORS
+#	define NU_WITH_STRINGS
 #endif /* NU_WITH_EVERYTHING */
 
 #ifdef NU_WITH_UTF8
