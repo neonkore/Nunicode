@@ -60,10 +60,9 @@ See also "WHY ITS GOOD".
 
     :::c
     const char input[] = "привет мир!";
-    ssize_t input_len = nu_strlen(input, nu_utf8_read);
 
     const char *p = input;
-    for (int i = 0; i < input_len; ++i) {
+    while (*p != 0) {
         uint32_t u = 0;
         p = nu_utf8_read(p, &u);
         printf("0x%04X\n", u);
