@@ -4,10 +4,12 @@ TESTS_TARGET  = test
 UTF8_SAMPLE   = utf8
 DOCDIR        = doc
 
-OBJS = src/utf8.o \
+OBJS = src/cesu8.o \
+       src/utf8.o \
        src/iterators.o \
 
-TESTS_OBJS = tests/utf8_test.o \
+TESTS_OBJS = tests/cesu8_test.o \
+             tests/utf8_test.o \
              tests/iterators_test.o \
              tests/main.o
 

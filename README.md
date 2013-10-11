@@ -9,13 +9,13 @@ What it can do:
 * Decode UTF-8 strings into Unicode characters
 * Encode Unicode characters into UTF-8 string
 
-What it CAN'T do:
+What it *CAN'T* do:
 
 * Unicode normal forms
 * Strings collation
 * Encoding verification (maybe later)
 
-It's just coding library.
+At the moment this is just coding library.
 
 ## WHY YOU DO ANOTHER UNICODE LIBRARY
 
@@ -26,8 +26,11 @@ I needed one for [Community Compass][].
 * I don't like [micro-utf8][] (design)
 * I don't like [iconv][] (license)
 * I don't like [apr-iconv][] (dependencies, etc)
+* I don't like [ICU][] (obvious reasons)
 
 (I'm sorry)
+
+See also "WHY ITS GOOD".
 
 [Community Compass]: https://bitbucket.org/alekseyt/compass
 [utf8proc]: http://www.public-software-group.org/utf8proc
@@ -35,14 +38,14 @@ I needed one for [Community Compass][].
 [micro-utf8]: http://puszcza.gnu.org.ua/software/microutf8/
 [iconv]: http://www.gnu.org/software/libiconv/
 [apr-iconv]: http://apr.apache.org/
-
-So i decided to roll out my own implementation. See also "WHY ITS GOOD".
+[ICU]: http://site.icu-project.org/
 
 ## WHY ITS GOOD
 
-* Small size: 1.5Kb UTF-8 decoding, 2Kb UTF-8 decoding/encoding, 3Kb UTF-8 encoding/decoding + utility funcitons
+* Small size: UTF-8 decoding - 1.5Kb, UTF-8 decoding/encoding - 2Kb, UTF-8 encoding/decoding + utility funcitons - 3Kb
 * Zero memory footprint
 * Small CPU footprint
+* Rich build options: you can strip every part you don't need
 * C99 compliant, -pedantic -Wall -Werror
 * MIT license
 
@@ -52,19 +55,18 @@ So i decided to roll out my own implementation. See also "WHY ITS GOOD".
 
     :::c
     const char input[] = "привет мир!";
-    uint32_t u[sizeof(test)] = { 0 }; /* should be enough */
+    uint32_t u = 0;
 
-    const char *cp = test;
-    ssize_t input_len = nu_utf8_strlen(test, strlen(test)); /* character length */
-
+    const char *p = input;
     for (int i = 0; i < input_len; ++i) {
-        cp = nu_utf8_read(cp, u + i);
+        p = nu_utf8_read(p, &u);
+	printf("0x%04X\n", u);
     }
 
 ### decoding UTF-8 to memory buffer
 
     :::c
-    const char input[] = "привет ромашки";
+    const char input[] = "привет мир!";
     uint32_t u[sizeof(test)] = { 0 }; /* should be enough */
 
     nu_read_str(input, u, nu_utf8_read);
@@ -94,7 +96,7 @@ It will build static and shared libraries.
 * ``make libnu.a`` - static library
 * ``make libnu.so`` - shared library
 
-You probably don't need this:
+You probably don't need those:
 
 * ``make test`` - units
 * ``make samples`` - examples

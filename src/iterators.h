@@ -36,7 +36,7 @@ typedef char* (*nu_write_iterator_t)(uint32_t unicode, char *encoded);
  * @see nu_utf8_read
  * @see nu_utf8_strlen
  */
-int nu_read_str(const char *encoded, uint32_t *unicode, nu_read_iterator_t it);
+int nu_read_str(const char *encoded, uint32_t *unicode, nu_read_iterator_t it); /* XXX: it's probaby better to have size_t size on buffers */
 
 /** Write 0-terminated string
  *

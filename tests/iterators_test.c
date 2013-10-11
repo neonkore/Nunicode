@@ -2,6 +2,9 @@
 #include <string.h>
 
 #include <libnu.h>
+#include <build_config.h>
+
+#ifdef NU_WITH_ITERATORS
 
 void test_iterators_read() {
 	const char input[] = "привет";
@@ -20,3 +23,5 @@ void test_iterators_write() {
 	assert(u[5 * 2] != 0);
 	assert(u[6 * 2] == 0);
 }
+
+#endif

@@ -3,6 +3,7 @@
 
 #ifdef NU_WITH_EVERYTHING
 #	define NU_WITH_UTF8
+#	define NU_WITH_CESU8
 #	define NU_WITH_ITERATORS
 #endif /* NU_WITH_EVERYTHING */
 
@@ -10,5 +11,10 @@
 #	define NU_WITH_UTF8_READER
 #	define NU_WITH_UTF8_WRITER
 #endif /* NU_WITH_UTF8 */
+
+#ifdef NU_WITH_CESU8
+#	define NU_WITH_CESU8_READER
+#	define NU_WITH_CESU8_WRITER
+#endif /* NU_WITH_CESU8 */
 
 #endif /* NU_BUILD_CONFIG_H */

@@ -54,8 +54,8 @@ ssize_t nu_utf8_bytelen(const uint32_t *unicode, size_t unicode_size);
  *
  * @ingroup utf8
  * @param unicode unicode codepoint
- * @param utf8 pointer to buffer to write UTF-8 encoded text to.
- * Shoud be large enough to 
+ * @param utf8 pointer to buffer to write UTF-8 encoded text to,
+ * shoud be large enough to hold encoded value
  * @return number of bytes written
  *
  * @see nu_utf8_bytelen

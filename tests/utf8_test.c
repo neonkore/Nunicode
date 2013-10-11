@@ -2,6 +2,9 @@
 #include <string.h>
 
 #include <libnu.h>
+#include <build_config.h>
+
+#ifdef NU_WITH_UTF8_READER
 
 void test_utf8_strlen() {
 	assert(nu_utf8_strlen("g", 1) == 1);
@@ -22,6 +25,19 @@ void test_utf8_decoding() {
 	assert(nu_utf8_read("𠜱", &u) && u == 0x020731);
 }
 
+#endif
+
+#ifdef NU_WITH_UTF8_WRITER
+
+void test_utf8_bytelen() {
+	uint32_t u = 0;
+
+	u = 0x0067; assert(nu_utf8_bytelen(&u, 1) == 1);
+	u = 0x043F; assert(nu_utf8_bytelen(&u, 1) == 2);
+	u = 0x20AC; assert(nu_utf8_bytelen(&u, 1) == 3);
+	u = 0x020731; assert(nu_utf8_bytelen(&u, 1) == 4);
+}
+
 void test_utf8_encoding() {
 	char p[32] = { 0 };
 	
@@ -32,33 +48,4 @@ void test_utf8_encoding() {
 	assert(nu_utf8_write(0x020731, p) && strcmp(p, "𠜱") == 0);
 }
 
-void test_utf8_read_write() {
-	const char test[] = "привет ромашки";
-
-	uint32_t u[sizeof(test)] = { 0 }; /* should be enough for test */
-
-	const char *cp = test;
-	ssize_t test_len = nu_utf8_strlen(test, strlen(test));
-
-	for (int i = 0; i < test_len; ++i) {
-		cp = nu_utf8_read(cp, u + i);
-	}
-
-	assert(cp == test + strlen(test)); /* whole string consumed */
-	assert(u[test_len - 1] != 0); /* last character */
-	assert(u[test_len] == 0); /* after last character */
-
-	char output[sizeof(test)] = { 0 };
-	char *p = output;
-
-	ssize_t i = 0; for (; i < test_len; ++i) {
-		p = nu_utf8_write(u[i], p);
-	}
-
-	assert(i == test_len); /* whole string consumed */
-	assert(output[sizeof(test) - 2] != 0); /* last character */
-	assert(output[sizeof(test) - 1] == 0); /* after last character */
-
-	assert(strlen(output) == strlen(test));
-	assert(strcmp(output, test) == 0);
-}
+#endif
