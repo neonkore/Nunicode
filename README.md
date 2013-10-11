@@ -6,8 +6,13 @@ This is Unicode encoding/decoding library.
 
 What it can do:
 
-* Decode UTF-8 strings into Unicode characters
-* Encode Unicode characters into UTF-8 string
+* Decode UTF strings into Unicode characters
+* Encode Unicode characters into UTF string
+
+Encodings supported ATM:
+
+* UTF-8
+* CESU-8 (Modified UTF-8)
 
 What it *CAN'T* do:
 
@@ -60,7 +65,7 @@ See also "WHY ITS GOOD".
     const char *p = input;
     for (int i = 0; i < input_len; ++i) {
         p = nu_utf8_read(p, &u);
-	printf("0x%04X\n", u);
+        printf("0x%04X\n", u);
     }
 
 ### decoding UTF-8 to memory buffer
@@ -106,6 +111,9 @@ You probably don't need those:
 * ``-DNU_WITH_UTF8_READER`` - enable UTF-8 decoding
 * ``-DNU_WITH_UTF8_WRITER`` - enable UTF-8 encoding
 * ``-DNU_WITH_UTF8`` - implies ``-DNU_WITH_UTF8_READER`` and ``-DNU_WITH_UTF8_WRITER``
+* ``-DNU_WITH_CESU8_READER`` - enable CESU-8 decoding
+* ``-DNU_WITH_CESU8_WRITER`` - enable CESU-8 encoding
+* ``-DNU_WITH_CESU8`` - implies ``-DNU_WITH_CESU8_READER`` and ``-DNU_WITH_CESU8_WRITER``
 * ``-DNU_WITH_ITERATORS`` - enable utility functions (for 0-terminated strings)
 * ``-DNU_WITH_EVERYTHING`` - implies everything above
 
