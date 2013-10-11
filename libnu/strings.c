@@ -1,10 +1,12 @@
 #include "strings.h"
 
-ssize_t nu_strlen(const char *encoded, nu_read_iterator_t it) {
+#if defined (NU_WITH_ZERO_STRINGS) || defined(NU_WITH_N_STRINGS)
+
+static ssize_t _nu_strlen(const char *encoded, const char *limit, nu_read_iterator_t it) {
 	ssize_t len = 0;
 
 	const char *p = encoded;
-	while (1) {
+	while (p < limit) {
 		if (*p == 0) {
 			break;
 		}
@@ -16,11 +18,11 @@ ssize_t nu_strlen(const char *encoded, nu_read_iterator_t it) {
 	return len;
 }
 
-ssize_t nu_bytelen(const uint32_t *unicode, nu_write_iterator_t it) {
+static ssize_t _nu_bytelen(const uint32_t *unicode, const uint32_t *limit, nu_write_iterator_t it) {
 	ssize_t len = 0;
 
 	const uint32_t *p = unicode;
-	while (1) {
+	while (p < limit) {
 		if (*p == 0) {
 			break;
 		}
@@ -34,11 +36,11 @@ ssize_t nu_bytelen(const uint32_t *unicode, nu_write_iterator_t it) {
 	return len;
 }
 
-int nu_readstr(const char *encoded, uint32_t *unicode, nu_read_iterator_t it) {
+static int _nu_readstr(const char *encoded, const char *limit, uint32_t *unicode, nu_read_iterator_t it) {
 	const char *p = encoded;
 	size_t i = 0;
 
-	while (1) {
+	while (p < limit) {
 		if (p == 0) {
 			return -1;
 		}
@@ -55,11 +57,11 @@ int nu_readstr(const char *encoded, uint32_t *unicode, nu_read_iterator_t it) {
 	return 0;
 }
 
-int nu_writestr(const uint32_t *unicode, char *encoded, nu_write_iterator_t it) {
+static int _nu_writestr(const uint32_t *unicode, const uint32_t *limit, char *encoded, nu_write_iterator_t it) {
 	char *p = encoded;
 	const uint32_t *u = unicode;
 
-	while (1) {
+	while (u < limit) {
 		if (p == 0) {
 			return -1;
 		}
@@ -76,11 +78,11 @@ int nu_writestr(const uint32_t *unicode, char *encoded, nu_write_iterator_t it) 
 	return 0;
 }
 
-int nu_transformstr(const char *source, char *dest, nu_read_iterator_t read_it, nu_write_iterator_t write_it) {
+static int _nu_transformstr(const char *source, const char *limit, char *dest, nu_read_iterator_t read_it, nu_write_iterator_t write_it) {
 	const char *p = source;
 	char *d = dest;
 
-	while (1) {
+	while (p < limit) {
 		if (p == 0 || d == 0) {
 			return -1;
 		}
@@ -96,3 +98,53 @@ int nu_transformstr(const char *source, char *dest, nu_read_iterator_t read_it, 
 
 	return 0;
 }
+
+#endif /* NU_WITH_N_STRINGS || NU_WITH_ZERO_STRINGS */
+
+#ifdef NU_WITH_ZERO_STRINGS
+
+ssize_t nu_strlen(const char *encoded, nu_read_iterator_t it) {
+	return _nu_strlen(encoded, (const char *)(-1), it);
+}
+
+ssize_t nu_bytelen(const uint32_t *unicode, nu_write_iterator_t it) {
+	return _nu_bytelen(unicode, (const uint32_t *)(-1), it);
+}
+
+int nu_readstr(const char *encoded, uint32_t *unicode, nu_read_iterator_t it) {
+	return _nu_readstr(encoded, (const char *)(-1), unicode, it);
+}
+
+int nu_writestr(const uint32_t *unicode, char *encoded, nu_write_iterator_t it) {
+	return _nu_writestr(unicode, (const uint32_t *)(-1), encoded, it);
+}
+
+int nu_transformstr(const char *source, char *dest, nu_read_iterator_t read_it, nu_write_iterator_t write_it) {
+	return _nu_transformstr(source, (const char *)(-1), dest, read_it, write_it);
+}
+
+#endif /* NU_WITH_ZERO_STRINGS */
+
+#ifdef NU_WITH_N_STRINGS
+
+ssize_t nu_strnlen(const char *encoded, size_t max_len, nu_read_iterator_t it) {
+	return _nu_strlen(encoded, encoded + max_len, it);
+}
+
+ssize_t nu_bytenlen(const uint32_t *unicode, size_t max_len, nu_write_iterator_t it) {
+	return _nu_bytelen(unicode, unicode + max_len, it);
+}
+
+int nu_readnstr(const char *encoded, size_t max_len, uint32_t *unicode, nu_read_iterator_t it) {
+	return _nu_readstr(encoded, encoded + max_len, unicode, it);
+}
+
+int nu_writenstr(const uint32_t *unicode, size_t max_len, char *encoded, nu_write_iterator_t it) {
+	return _nu_writestr(unicode, unicode + max_len, encoded, it);
+}
+
+int nu_transformnstr(const char *source, size_t max_len, char *dest, nu_read_iterator_t read_it, nu_write_iterator_t write_it) {
+	return _nu_transformstr(source, source + max_len, dest, read_it, write_it);
+}
+
+#endif /* NU_WITH_N_STRINGS */

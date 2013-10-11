@@ -8,11 +8,16 @@ void test_utf8_decoding();
 void test_utf8_encoding();
 void test_cesu8_decoding();
 void test_cesu8_encoding();
-void test_strings_readstr();
-void test_strings_writestr();
-void test_strings_transformstr();
 void test_strings_strlen();
+void test_strings_strnlen();
 void test_strings_bytelen();
+void test_strings_bytenlen();
+void test_strings_readstr();
+void test_strings_readnstr();
+void test_strings_writestr();
+void test_strings_writenstr();
+void test_strings_transformstr();
+void test_strings_transformnstr();
 
 testcase cases[] = {
 
@@ -32,21 +37,29 @@ testcase cases[] = {
 	test_cesu8_encoding,
 #endif
 
-#ifdef NU_WITH_STRINGS
+#ifdef NU_WITH_ZERO_STRINGS
 	test_strings_strlen,
 	test_strings_bytelen,
 	test_strings_readstr,
 	test_strings_writestr,
 	test_strings_transformstr,
 #endif
+
+#ifdef NU_WITH_N_STRINGS
+	test_strings_strnlen,
+	test_strings_bytenlen,
+	test_strings_readnstr,
+	test_strings_writenstr,
+	test_strings_transformnstr,
+#endif
 };
 
 int main() {
-	for (int i = 0; i < sizeof(cases) / sizeof(*cases); ++i) {
+	int i = 0; for (; i < sizeof(cases) / sizeof(*cases); ++i) {
 		cases[i]();
 		printf(".");
 	}
 
-	printf("\n");
+	printf(" OK - %d tests\n", i);
 	return 0;
 }

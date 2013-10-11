@@ -17,4 +17,9 @@
 #	define NU_WITH_CESU8_WRITER
 #endif /* NU_WITH_CESU8 */
 
+#ifdef NU_WITH_STRINGS
+#	define NU_WITH_ZERO_STRINGS
+#	define NU_WITH_N_STRINGS
+#endif /* NU_WITH_STRINGS */
+
 #endif /* NU_BUILD_CONFIG_H */

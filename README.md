@@ -74,16 +74,16 @@ See also "WHY ITS GOOD".
     const char input[] = "привет мир!";
     uint32_t u[sizeof(test)] = { 0 }; /* should be enough */
 
-    nu_read_str(input, u, nu_utf8_read);
+    nu_readnstr(input, sizeof(input), u, nu_utf8_read);
 
 ### recoding string from CESU-8 into UTF-8 with memory buffers
 
     :::c
-    /* 𐐀 + \0 in CESU-8 */
-    const unsigned char input[] = { 0xED, 0xA0, 0x81, 0xED, 0xB0, 0x80, 0 };
+    /* 𐐀 in CESU-8 */
+    const unsigned char input[] = { 0xED, 0xA0, 0x81, 0xED, 0xB0, 0x80 };
     char output[sizeof(input)] = { 0 };
     
-    nu_transform_str((const char *)input, output, nu_cesu8_read, nu_utf8_write);
+    nu_transformnstr((const char *)input, sizeof(input), output, nu_cesu8_read, nu_utf8_write);
 
 ## DOCUMENTATION
 
@@ -123,7 +123,9 @@ You probably don't need those:
 * ``-DNU_WITH_CESU8_READER`` - enable CESU-8 decoding
 * ``-DNU_WITH_CESU8_WRITER`` - enable CESU-8 encoding
 * ``-DNU_WITH_CESU8`` - implies ``-DNU_WITH_CESU8_READER`` and ``-DNU_WITH_CESU8_WRITER``
-* ``-DNU_WITH_STRINGS`` - enable supported string functions (for 0-terminated strings)
+* ``-DNU_WITH_ZERO_STRINGS`` - enable supported functions for 0-terminated strings
+* ``-DNU_WITH_N_STRINGS`` - enable supported functions fo unterminated strings
+* ``-DNU_WITH_STRINGS`` - implies ``-DNU_WITH_ZERO_STRINGS`` and ``-DNU_WITH_N_STRINGS``
 * ``-DNU_WITH_EVERYTHING`` - implies everything above
 
 ## QUESTIONS?
