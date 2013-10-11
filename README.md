@@ -74,7 +74,7 @@ See also "WHY ITS GOOD".
     const char input[] = "привет мир!";
     uint32_t u[sizeof(test)] = { 0 }; /* should be enough */
 
-    nu_readnstr(input, sizeof(input), u, nu_utf8_read);
+    nu_readstr(input, u, nu_utf8_read);
 
 ### recoding string from CESU-8 into UTF-8 with memory buffers
 
