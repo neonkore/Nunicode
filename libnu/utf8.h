@@ -18,16 +18,6 @@ extern "C" {
 
 #ifdef NU_WITH_UTF8_READER
 
-/** Get character length of UTF-8 string
- *
- * @ingroup utf8
- * @param utf8 UTF-8 encoded string
- * @param utf8_size length of string
- * (you can pass strlen(utf8), trailing 0 won't be included though)
- * @return character length of UTF-8 string
- */
-ssize_t nu_utf8_strlen(const char *utf8, size_t utf8_size);
-
 /** Read character from UTF-8 string
  *
  * @ingroup utf8
@@ -40,15 +30,6 @@ const char* nu_utf8_read(const char *utf8, uint32_t *unicode);
 #endif /* NU_WITH_UTF8_READER */
 
 #ifdef NU_WITH_UTF8_WRITER
-
-/**
- *
- * @ingroup utf8
- * @param unicode unicode to encode
- * @param unicode_size number of codepoints in array
- * @return byte length of UTF-8 encoded string
- */
-ssize_t nu_utf8_bytelen(const uint32_t *unicode, size_t unicode_size);
 
 /** Write unicode codepoints into UTF-8 encoded string
  *

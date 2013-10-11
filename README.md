@@ -63,7 +63,7 @@ See also "WHY ITS GOOD".
     uint32_t u = 0;
 
     const char *p = input;
-    for (int i = 0; i < input_len; ++i) {
+    for (int i = 0; i < sizeof(input) / sizeof(*input); ++i) {
         p = nu_utf8_read(p, &u);
         printf("0x%04X\n", u);
     }

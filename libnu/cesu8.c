@@ -4,20 +4,6 @@
 
 #ifdef NU_WITH_CESU8_READER
 
-ssize_t nu_cesu8_strlen(const char *cesu8, size_t cesu8_size) {
-	unsigned len = 0;
-
-	const char *p = cesu8;
-	while (p < cesu8 + cesu8_size) {
-		++len;
-		unsigned char_len = cesu8_char_length(*p);
-		if (char_len < 1) return -len; /* abort */
-		p += char_len;
-	}
-
-	return len;
-}
-
 const char* nu_cesu8_read(const char *cesu8, uint32_t *unicode) {
 	unsigned len = cesu8_char_length(*cesu8);
 
@@ -37,18 +23,6 @@ const char* nu_cesu8_read(const char *cesu8, uint32_t *unicode) {
 #endif /* NU_WITH_CESU8_READER */
 
 #ifdef NU_WITH_CESU8_WRITER
-
-ssize_t nu_cesu8_bytelen(const uint32_t *unicode, size_t unicode_size) {
-	ssize_t len = 0;
-
-	for (size_t i = 0; i < unicode_size; ++i) {
-		unsigned byte_len = cesu8_codepoint_length(unicode[i]);
-		if (byte_len < 1) return -i;
-		len += byte_len;
-	}
-
-	return len;
-}
 
 char* nu_cesu8_write(uint32_t unicode, char *cesu8) {
 	unsigned codepoint_len = cesu8_codepoint_length(unicode);

@@ -9,6 +9,8 @@ void test_strings_strlen() {
 
 void test_strings_bytelen() {
 	const uint32_t input[] = { 0x043f, 0x0440, 0x0438, 0x0432, 0x0435, 0x0442, 0 }; /* "привет" */
+	const uint32_t zero[] = { 0 };
 
 	assert(nu_bytelen(input, nu_utf8_write) == 12);
+	assert(nu_bytelen(zero, nu_utf8_write) == 0);
 }
