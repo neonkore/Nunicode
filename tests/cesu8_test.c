@@ -1,8 +1,7 @@
 #include <assert.h>
 #include <string.h>
 
-#include <libnu.h>
-#include <build_config.h>
+#include <libnu/libnu.h>
 
 static const unsigned char CESU8[] = { 0xED, 0xA0, 0x81, 0xED, 0xB0, 0x80 };
 static const unsigned char CESU9[] = { 0xED, 0xAE, 0x80, 0xED, 0xB0, 0x80 };

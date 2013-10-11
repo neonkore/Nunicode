@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#include <build_config.h>
+#include <libnu/libnu.h>
 
 typedef void (*testcase)(void);
 

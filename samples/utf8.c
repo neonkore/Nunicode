@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <libnu.h>
+#include <libnu/libnu.h>
 
 int main() {
 	const char *input = "𠜱";

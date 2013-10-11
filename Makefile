@@ -4,9 +4,9 @@ TESTS_TARGET  = test
 UTF8_SAMPLE   = utf8
 DOCDIR        = doc
 
-OBJS = src/cesu8.o \
-       src/utf8.o \
-       src/iterators.o \
+OBJS = libnu/cesu8.o \
+       libnu/utf8.o \
+       libnu/iterators.o \
 
 TESTS_OBJS = tests/cesu8_test.o \
              tests/utf8_test.o \
@@ -25,7 +25,7 @@ default: clean $(STATIC_TARGET) $(SHARED_TARGET)
 all: $(TESTS_TARGET) samples
 
 %.o:%.c
-	$(CC) -I src $(CFLAGS) -c "$<" -o "$@"
+	$(CC) -I . $(CFLAGS) -c "$<" -o "$@"
 
 $(STATIC_TARGET): $(OBJS)
 	$(AR) crs "$(STATIC_TARGET)" $(OBJS)
@@ -43,5 +43,5 @@ samples: $(UTF8_SAMPLE)
 
 clean:
 	rm -f "$(STATIC_TARGET)" "$(SHARED_TARGET)" "$(TESTS_TARGET)" "$(UTF8_SAMPLE)"
-	rm -f *.o src/*.o tests/*.o samples/*.o
+	rm -f *.o libnu/*.o tests/*.o samples/*.o
 	rm -fr "$(DOCDIR)"

@@ -1,8 +1,7 @@
 #include <assert.h>
 #include <string.h>
 
-#include <libnu.h>
-#include <build_config.h>
+#include <libnu/libnu.h>
 
 #ifdef NU_WITH_UTF8_READER
 
