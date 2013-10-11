@@ -2,7 +2,6 @@
 #define NU_LIBNUNICODE_H
 
 #include "cesu8.h"
-#include "iterators.h"
 #include "strings.h"
 #include "utf8.h"
 

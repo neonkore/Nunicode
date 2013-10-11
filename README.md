@@ -60,10 +60,11 @@ See also "WHY ITS GOOD".
 
     :::c
     const char input[] = "привет мир!";
-    uint32_t u = 0;
+    ssize_t input_len = nu_strlen(input, nu_utf8_read);
 
     const char *p = input;
-    for (int i = 0; i < sizeof(input) / sizeof(*input); ++i) {
+    for (int i = 0; i < input_len; ++i) {
+        uint32_t u = 0;
         p = nu_utf8_read(p, &u);
         printf("0x%04X\n", u);
     }
@@ -115,7 +116,7 @@ You probably don't need those:
 * ``make test`` - units
 * ``make samples`` - examples
 
-### libraries build options
+### library build options
 
 * ``-DNU_WITH_UTF8_READER`` - enable UTF-8 decoding
 * ``-DNU_WITH_UTF8_WRITER`` - enable UTF-8 encoding
@@ -123,7 +124,6 @@ You probably don't need those:
 * ``-DNU_WITH_CESU8_READER`` - enable CESU-8 decoding
 * ``-DNU_WITH_CESU8_WRITER`` - enable CESU-8 encoding
 * ``-DNU_WITH_CESU8`` - implies ``-DNU_WITH_CESU8_READER`` and ``-DNU_WITH_CESU8_WRITER``
-* ``-DNU_WITH_ITERATORS`` - enable utility functions (for 0-terminated strings)
 * ``-DNU_WITH_STRINGS`` - enable supported string functions (for 0-terminated strings)
 * ``-DNU_WITH_EVERYTHING`` - implies everything above
 

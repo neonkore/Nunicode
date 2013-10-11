@@ -7,11 +7,9 @@ DOCDIR        = doc
 OBJS = libnu/cesu8.o \
        libnu/strings.o \
        libnu/utf8.o \
-       libnu/iterators.o \
 
 TESTS_OBJS = tests/cesu8_test.o \
-             tests/iterators_test.o \
-             tests/strings.o \
+             tests/strings_test.o \
              tests/utf8_test.o \
              tests/main.o
 
@@ -24,7 +22,7 @@ TESTS_LDFLAGS = -g
 DOCDIR = "doc"
 
 default: clean $(STATIC_TARGET) $(SHARED_TARGET)
-all: $(TESTS_TARGET) samples
+all: default $(TESTS_TARGET) samples
 
 %.o:%.c
 	$(CC) -I . $(CFLAGS) -c "$<" -o "$@"

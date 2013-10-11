@@ -14,7 +14,7 @@ int main() {
 	printf("--- allocating %d unicode codepoints\n", u_len);
 	uint32_t *decoded = malloc(sizeof(*decoded) * u_len);
 
-	nu_read_str(input, decoded, nu_utf8_read);
+	nu_readstr(input, decoded, nu_utf8_read);
 
 	ssize_t u8_len = nu_bytelen(decoded, nu_utf8_write);
 	printf("--- encoded utf8 length: %d\n", u8_len);
@@ -23,7 +23,7 @@ int main() {
 	char *encoded = malloc(sizeof(*encoded) * u8_len + 1);
 	encoded[u8_len] = 0;
 
-	nu_write_str(decoded, encoded, nu_utf8_write);
+	nu_writestr(decoded, encoded, nu_utf8_write);
 
 	printf("<<< output: %s\n", encoded);
 

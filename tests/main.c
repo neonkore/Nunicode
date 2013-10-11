@@ -8,8 +8,9 @@ void test_utf8_decoding();
 void test_utf8_encoding();
 void test_cesu8_decoding();
 void test_cesu8_encoding();
-void test_iterators_read();
-void test_iterators_write();
+void test_strings_readstr();
+void test_strings_writestr();
+void test_strings_transformstr();
 void test_strings_strlen();
 void test_strings_bytelen();
 
@@ -31,14 +32,12 @@ testcase cases[] = {
 	test_cesu8_encoding,
 #endif
 
-#ifdef NU_WITH_ITERATORS
-	test_iterators_read,
-	test_iterators_write,
-#endif
-
 #ifdef NU_WITH_STRINGS
 	test_strings_strlen,
 	test_strings_bytelen,
+	test_strings_readstr,
+	test_strings_writestr,
+	test_strings_transformstr,
 #endif
 };
 
