@@ -79,7 +79,8 @@ See also "WHY ITS GOOD".
 ### recoding string from CESU-8 into UTF-8 with memory buffers
 
     :::c
-    const unsigned char input[] = { 0xED, 0xA0, 0x81, 0xED, 0xB0, 0x80, 0 }; /* 𐐀 + \0 in CESU-8 */
+    /* 𐐀 + \0 in CESU-8 */
+    const unsigned char input[] = { 0xED, 0xA0, 0x81, 0xED, 0xB0, 0x80, 0 };
     char output[sizeof(input)] = { 0 };
     
     nu_transform_str((const char *)input, output, nu_cesu8_read, nu_utf8_write);
