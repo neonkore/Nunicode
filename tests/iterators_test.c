@@ -23,4 +23,12 @@ void test_iterators_write() {
 	assert(u[6 * 2] == 0);
 }
 
+void test_iterators_transform() {
+	const unsigned char input[] = { 0xED, 0xA0, 0x81, 0xED, 0xB0, 0x80, 0 }; /* 𐐀 + \0 in CESU-8 */
+	char output[sizeof(input)] = { 0 };
+
+	assert(nu_transform_str((const char *)input, output, nu_cesu8_read, nu_utf8_write) == 0);
+	assert(strcmp(output, "𐐀") == 0);
+}
+
 #endif

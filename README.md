@@ -12,7 +12,7 @@ What it can do:
 Encodings supported ATM:
 
 * UTF-8
-* CESU-8 (Modified UTF-8)
+* CESU-8/Modified UTF-8
 
 What it *CAN'T* do:
 
@@ -75,6 +75,14 @@ See also "WHY ITS GOOD".
     uint32_t u[sizeof(test)] = { 0 }; /* should be enough */
 
     nu_read_str(input, u, nu_utf8_read);
+
+### recoding string from CESU-8 into UTF-8 with memory buffers
+
+    :::c
+    const unsigned char input[] = { 0xED, 0xA0, 0x81, 0xED, 0xB0, 0x80, 0 }; /* 𐐀 + \0 in CESU-8 */
+    char output[sizeof(input)] = { 0 };
+    
+    nu_transform_str((const char *)input, output, nu_cesu8_read, nu_utf8_write);
 
 ## DOCUMENTATION
 

@@ -38,4 +38,21 @@ int nu_write_str(const uint32_t *unicode, char *encoded, nu_write_iterator_t it)
 	return 0;
 }
 
+int nu_transform_str(const char *source, char *dest, nu_read_iterator_t read_it, nu_write_iterator_t write_it) {
+	const char *p = source;
+	char *d = dest;
+
+	while (p != 0) {
+		uint32_t u = 0;
+		p = read_it(p, &u);
+		d = write_it(u, d);
+		
+		if (*p == 0) {
+			break;
+		}
+	}
+
+	return 0;
+}
+
 #endif /* NU_WITH_ITERATORS */
