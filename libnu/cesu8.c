@@ -23,7 +23,7 @@ const char* nu_cesu8_read(const char *cesu8, uint32_t *unicode) {
 #ifdef NU_WITH_REVERSE_READ
 
 const char* nu_cesu8_revread(uint32_t *unicode, const char *cesu8) {
-	/** valid CESU-8 has either 10xxxxxx (continuation byte)
+	/* valid CESU-8 has either 10xxxxxx (continuation byte)
 	 * or beginning of byte sequence 
 	 * 
 	 * one exception is 11101101 followed by 1011xxxx which is 

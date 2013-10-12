@@ -1,6 +1,4 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
 #include <libnu/libnu.h>
 
@@ -8,7 +6,7 @@ int main() {
 	const char input[] = "диско";
 	printf(">>> input: %s\n", input);
 
-	char output[sizeof(input) + 1] = { 0 };
+	char output[sizeof(input)] = { 0 };
 
 	const char *in = input + sizeof(input) - 1;
 	char *ou = output;

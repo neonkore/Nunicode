@@ -22,7 +22,7 @@ const char* nu_utf8_read(const char *utf8, uint32_t *unicode) {
 #ifdef NU_WITH_REVERSE_READ
 
 const char* nu_utf8_revread(uint32_t *unicode, const char *utf8) {
-	/** valid UTF-8 has either 10xxxxxx (continuation byte)
+	/* valid UTF-8 has either 10xxxxxx (continuation byte)
 	 * or beginning of byte sequence */
 	const char *p = utf8 - 1;
 	while ((*p & 0xC0) == 0x80) { /* skip every 0b10000000 */
