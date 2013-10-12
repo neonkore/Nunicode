@@ -15,13 +15,20 @@ Encodings supported ATM:
 * CESU-8/Modified UTF-8
 * UTF-16 (BOM/LE/BE)
 
+String functions supported for all encodings (works on encoded strings):
+
+* strlen (nu\_strlen)
+* strnlen (nu\_strnlen)
+* strchr (nu\_strchr)
+* strnchr (nu\_strnchr)
+* strrchr (nu\_strrchr)
+* strrnchr (nu\_strrnchr)
+
 What it *CAN'T* do:
 
 * Unicode normal forms
 * Strings collation
 * Encoding verification (maybe later)
-
-At the moment this is just coding library.
 
 ## WHY YOU DO ANOTHER UNICODE LIBRARY
 
@@ -97,8 +104,8 @@ It will produce ``doc/html`` with Doxygen documentation in browesable HTML.
 ## NOTES ON UTF-8
 
 According to Unicode specification UTF-8 might contain byte order mark (BOM),
-but it doesn't make any sense to have BOM in UTF-8. Therefore nunicode has no
-embedded means to deal with UTF-8 BOM, neither detect, read or write it.
+however it doesn't make any sense to have BOM in UTF-8. Therefore nunicode has no
+embedded means to deal with UTF-8 BOM, neither detect, read or write.
 
 If you are facing this crap, just +3 char pointer to skip BOM. (Note that UTF-8
 BOM is 3 bytes long: EF BB BF). You can also safely nu\_utf8\_read() BOM, it will
@@ -117,7 +124,7 @@ Unicode defines 3 types of UTF-16 *each* affected by endianess.
 3. UTF-16BE (big endian)
 
 LE and BE are obviusly little-endian and big-endian, generic one's endianess is
-defined by byte order mark (BOM) at the beginning of the string. Thus generic
+defined by the byte order mark (BOM) at the beginning of the string. Thus generic
 UTF-16 is always BOM + either UTF-16LE or UTF-16BE.
 
 nunicode provide only nu\_utf16le and nu\_utf16be for the encoding and decoding,
@@ -187,13 +194,20 @@ UTF-16
 
 Misc
 
-* ``-DNU_WITH_ZERO_STRINGS`` - enable supported functions for 0-terminated strings
-* ``-DNU_WITH_N_STRINGS`` - enable supported functions fo unterminated strings
-* ``-DNU_WITH_STRINGS`` - implies ``-DNU_WITH_ZERO_STRINGS`` and ``-DNU_WITH_N_STRINGS``
+* ``-DNU_WITH_Z_STRINGS`` - supported functions for 0-terminated strings
+* ``-DNU_WITH_N_STRINGS`` - supported functions fo unterminated strings
+* ``-DNU_WITH_STRINGS`` - implies ``-DNU_WITH_Z_STRINGS`` and ``-DNU_WITH_N_STRINGS``
+* ``-DNU_WITH_Z_EXTRA`` - extra functions for 0-terminated strings
+* ``-DNU_WITH_N_EXTRA`` - extra functions fo unterminated strings
+* ``-DNU_WITH_EXTRA`` - implies ``-DNU_WITH_Z_EXTRA`` and ``-DNU_WITH_N_EXTRA``
 
 Everything
 
 * ``-DNU_WITH_EVERYTHING`` - implies everything above
+
+## ROADMAP
+
+* UTF-32 support
 
 ## QUESTIONS?
 
