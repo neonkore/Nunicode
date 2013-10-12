@@ -3,6 +3,7 @@ SHARED_TARGET = libnu.so
 TESTS_TARGET  = tests/test
 UTF8_SAMPLE   = samples/utf8
 UTF16_SAMPLE  = samples/utf16
+REVR_SAMPLE   = samples/revread
 DOCDIR        = doc
 
 OBJS = libnu/cesu8.o \
@@ -52,9 +53,14 @@ $(UTF8_SAMPLE): samples/utf8.o
 $(UTF16_SAMPLE): samples/utf16.o
 	$(CC) samples/utf16.o $(STATIC_TARGET) -o $(UTF16_SAMPLE) $(SAMPLES_LDFLAGS)
 
-samples: $(UTF8_SAMPLE) $(UTF16_SAMPLE)
+$(REVR_SAMPLE): samples/revread.o
+	$(CC) samples/revread.o $(STATIC_TARGET) -o $(REVR_SAMPLE) $(SAMPLES_LDFLAGS)
+
+samples: $(UTF8_SAMPLE) $(UTF16_SAMPLE) $(REVR_SAMPLE)
 
 clean:
-	rm -f "$(STATIC_TARGET)" "$(SHARED_TARGET)" "$(TESTS_TARGET)" "$(UTF8_SAMPLE)" "$(UTF16_SAMPLE)"
+	rm -f "$(STATIC_TARGET)" "$(SHARED_TARGET)"
+	rm -f "$(TESTS_TARGET)"
+	rm -f "$(UTF8_SAMPLE)" "$(UTF16_SAMPLE)" "$(REVR_SAMPLE)"
 	rm -f *.o libnu/*.o tests/*.o samples/*.o
 	rm -fr "$(DOCDIR)"
