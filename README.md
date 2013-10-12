@@ -93,7 +93,8 @@ See also "WHY ITS GOOD".
     const unsigned char input[] = { 0xED, 0xA0, 0x81, 0xED, 0xB0, 0x80 };
     char output[sizeof(input)] = { 0 };
     
-    nu_transformnstr((const char *)input, sizeof(input), output, nu_cesu8_read, nu_utf8_write);
+    nu_transformnstr((const char *)input, sizeof(input), output, 
+        nu_cesu8_read, nu_utf8_write);
 
 ## DOCUMENTATION
 
@@ -113,7 +114,7 @@ produce normal U+FEFF codepoint.
 
 Reference: [UTF BOM FAQ][]
 
-[UTF BOM FAQ]: http://www.unicode.org/faq/utf_bom.html
+[UTF BOM FAQ]: http://www.unicode.org/faq/utf_bom.html#bom5
 
 ## NOTES ON UTF-16
 
@@ -230,7 +231,8 @@ Everything
 
 ## ROADMAP
 
-* UTF-32 support
+* 0.8: UTF-32, RC1
+* 0.9: RC2
 
 ## QUESTIONS?
 
