@@ -71,17 +71,23 @@ testcase cases[] = {
 	test_utf16_write_bom,
 #endif
 
-#ifdef NU_WITH_ZERO_STRINGS
+#ifdef NU_WITH_Z_STRINGS
 	test_strings_strlen,
 	test_strings_bytelen,
-	test_strings_readstr,
-	test_strings_writestr,
-	test_strings_transformstr,
 #endif
 
 #ifdef NU_WITH_N_STRINGS
 	test_strings_strnlen,
 	test_strings_bytenlen,
+#endif
+
+#ifdef NU_WITH_Z_EXTRA
+	test_strings_readstr,
+	test_strings_writestr,
+	test_strings_transformstr,
+#endif
+
+#ifdef NU_WITH_N_EXTRA
 	test_strings_readnstr,
 	test_strings_writenstr,
 	test_strings_transformnstr,

@@ -8,6 +8,7 @@
 #	define NU_WITH_UTF16LE
 #	define NU_WITH_UTF16BE
 #	define NU_WITH_STRINGS
+#	define NU_WITH_EXTRA
 #endif /* NU_WITH_EVERYTHING */
 
 #ifdef NU_WITH_UTF8
@@ -46,8 +47,13 @@
 #endif /* NU_WITH_UTF16_WRITER */
 
 #ifdef NU_WITH_STRINGS
-#	define NU_WITH_ZERO_STRINGS
+#	define NU_WITH_Z_STRINGS
 #	define NU_WITH_N_STRINGS
+#endif /* NU_WITH_STRINGS */
+
+#ifdef NU_WITH_EXTRA
+#	define NU_WITH_Z_EXTRA
+#	define NU_WITH_N_EXTRA
 #endif /* NU_WITH_STRINGS */
 
 #endif /* NU_BUILD_CONFIG_H */

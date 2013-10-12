@@ -2,6 +2,7 @@
 #define NU_LIBNUNICODE_H
 
 #include "cesu8.h"
+#include "extra.h"
 #include "strings.h"
 #include "utf16.h"
 #include "utf16be.h"

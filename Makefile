@@ -6,6 +6,7 @@ UTF16_SAMPLE  = samples/utf16
 DOCDIR        = doc
 
 OBJS = libnu/cesu8.o \
+       libnu/extra.o \
        libnu/strings.o \
        libnu/utf16.o \
        libnu/utf16be.o \
@@ -13,6 +14,7 @@ OBJS = libnu/cesu8.o \
        libnu/utf8.o \
 
 TESTS_OBJS = tests/cesu8_test.o \
+             tests/extra_test.o \
              tests/strings_test.o \
              tests/utf16_test.o \
              tests/utf16be_test.o \
