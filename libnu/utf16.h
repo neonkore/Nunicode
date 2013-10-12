@@ -1,6 +1,8 @@
 #ifndef NU_UTF16_H
 #define NU_UTF16_H
 
+#include <stdint.h>
+
 #include "strings.h"
 
 /** @defgroup utf16 UTF-16 support
@@ -8,6 +10,11 @@
 
 #if defined (__cplusplus) || defined (c_plusplus)
 extern "C" {
+#endif
+
+
+#if (defined NU_WITH_UTF16_READER) || (defined NU_WITH_UTF16_WRITER)
+static const uint16_t NU_UTF16_BOM = 0; /** for sizeof() only */
 #endif
 
 typedef char* (*nu_utf16_write_bom_t)(char *);
@@ -54,4 +61,4 @@ char* nu_utf16be_write_bom(char *encoded);
 }
 #endif
 
-#endif /* NU_UTF8_H */
+#endif /* NU_UTF16_H */

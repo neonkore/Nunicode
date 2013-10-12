@@ -24,7 +24,7 @@ int main() {
 	char *utf8 = malloc(u8_len + 1);
 	memset(utf8, 0, u8_len + 1);
 
-	nu_transformnstr(encoded, sizeof(input) - 2, utf8, read, nu_utf8_write);
+	nu_transformnstr(encoded, sizeof(input) - sizeof(NU_UTF16_BOM), utf8, read, nu_utf8_write);
 	printf("<<< encoded utf8: %s\n", utf8);
 
 	return 0;
