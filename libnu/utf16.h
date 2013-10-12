@@ -1,7 +1,6 @@
 #ifndef NU_UTF16_H
 #define NU_UTF16_H
 
-#include "build_config.h"
 #include "strings.h"
 
 /** @defgroup utf16 UTF-16 support

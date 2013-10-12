@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-#include "build_config.h"
+#include "config.h"
 
 /** @defgroup cesu8 CESU-8 support
  *

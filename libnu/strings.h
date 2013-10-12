@@ -11,7 +11,7 @@
 #include <stdint.h>
 #include <sys/types.h>
 
-#include "build_config.h"
+#include "config.h"
 
 /**Read (decoding) iterator
  *

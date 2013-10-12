@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-#include "build_config.h"
+#include "config.h"
 
 /** @defgroup utf8 UTF-8 support
  *
