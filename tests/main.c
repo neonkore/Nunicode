@@ -6,12 +6,16 @@ typedef void (*testcase)(void);
 
 void test_utf8_decoding();
 void test_utf8_bom();
+void test_utf8_revread();
 void test_utf8_encoding();
 void test_cesu8_decoding();
+void test_cesu8_revread();
 void test_cesu8_encoding();
 void test_utf16le_decoding();
+void test_utf16le_revread();
 void test_utf16le_encoding();
 void test_utf16be_decoding();
+void test_utf16be_revread();
 void test_utf16be_encoding();
 void test_utf16_read_bom();
 void test_utf16_read_invalid_bom();
@@ -36,6 +40,9 @@ testcase cases[] = {
 #ifdef NU_WITH_UTF8_READER
 	test_utf8_decoding,
 	test_utf8_bom,
+#ifdef NU_WITH_REVERSE_READ
+	test_utf8_revread,
+#endif
 #endif
 
 #ifdef NU_WITH_UTF8_WRITER
@@ -44,6 +51,9 @@ testcase cases[] = {
 
 #ifdef NU_WITH_CESU8_READER
 	test_cesu8_decoding,
+#ifdef NU_WITH_REVERSE_READ
+	test_cesu8_revread,
+#endif
 #endif
 
 #ifdef NU_WITH_CESU8_WRITER
@@ -52,6 +62,9 @@ testcase cases[] = {
 
 #ifdef NU_WITH_UTF16LE_READER
 	test_utf16le_decoding,
+#ifdef NU_WITH_REVERSE_READ
+	test_utf16le_revread,
+#endif
 #endif
 
 #ifdef NU_WITH_UTF16LE_WRITER
@@ -60,6 +73,9 @@ testcase cases[] = {
 
 #ifdef NU_WITH_UTF16BE_READER
 	test_utf16be_decoding,
+#ifdef NU_WITH_REVERSE_READ
+	test_utf16be_revread,
+#endif
 #endif
 
 #ifdef NU_WITH_UTF16BE_WRITER

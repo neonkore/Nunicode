@@ -25,6 +25,23 @@ extern "C" {
  */
 const char* nu_cesu8_read(const char *cesu8, uint32_t *unicode);
 
+#ifdef NU_WITH_REVERSE_READ
+
+/** Read character from CESU-8 string in backward direction
+ *
+ * Note that it is your responsibility to check that this call
+ * is not going under beginning of encoded string. Normally you
+ * shouldn't call it like this: nu_cesu8_revread(&u, "hello"); which
+ * will result in undefined behavior
+ *
+ * @ingroup cesu8
+ * @param unicode output unicode codepoint or 0
+ * @param cesu8 pointer to CESU-8 encoded string
+ * @return pointer to previous character in CESU-8 string
+ */
+const char* nu_cesu8_revread(uint32_t *unicode, const char *utf8);
+
+#endif /* NU_WITH_REVERSE_READ */
 #endif /* NU_WITH_CESU8_READER */
 
 #ifdef NU_WITH_CESU8_WRITER

@@ -17,6 +17,12 @@ extern "C" {
  */
 const char* nu_utf16be_read(const char *utf16, uint32_t *unicode);
 
+/**
+ * @ingroup utf16
+ * @see nu_utf16le_revread
+ */
+const char* nu_utf16be_revread(uint32_t *unicode, const char *utf16);
+
 #endif /* NU_WITH_UTF16BE_READER */
 
 #ifdef NU_WITH_UTF16BE_WRITER

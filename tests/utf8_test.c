@@ -21,6 +21,26 @@ void test_utf8_bom() {
 	assert(nu_utf8_read("\xEF\xBB\xBF", &u) && u == 0xFEFF);
 }
 
+#ifdef NU_WITH_REVERSE_READ
+
+void test_utf8_revread() {
+	const char input[] = "привет";
+	uint32_t u = 0;
+	
+	assert(nu_utf8_revread(&u, input + 12) == input + 10);
+	assert(u == 0x0442);
+	assert(nu_utf8_revread(&u, input + 10) == input + 8);
+	assert(u == 0x0435);
+	
+	/* this is not supported, but should work anyway */
+	const char *long_input = "𠜱";
+	assert(nu_utf8_revread(&u, long_input + 1) == long_input);
+	assert(nu_utf8_revread(&u, long_input + 2) == long_input);
+	assert(nu_utf8_revread(&u, long_input + 3) == long_input);
+	assert(u == 0x020731);
+}
+
+#endif
 #endif
 
 #ifdef NU_WITH_UTF8_WRITER

@@ -19,6 +19,32 @@ void test_cesu8_decoding() {
 	assert(nu_cesu8_read((const char *)CESU9, &u) && u == 0x0F0000);
 }
 
+#ifdef NU_WITH_REVERSE_READ
+
+void test_cesu8_revread() {
+	const unsigned char uinput[] = {
+		0xD0, 0xBF, /* п */
+		0xED, 0xA0, 0x81, 0xED, 0xB0, 0x80,
+		0xED, 0xAE, 0x80, 0xED, 0xB0, 0x80
+	};
+	const char *input = (const char *)(uinput);
+	uint32_t u = 0;
+
+	assert(nu_cesu8_revread(&u, input + 14) == input + 8);
+	assert(u == 0x0F0000);
+	assert(nu_cesu8_revread(&u, input + 8) == input + 2);
+	assert(u == 0x010400);
+	assert(nu_cesu8_revread(&u, input + 2) == input);
+	assert(u == 0x043F);
+	
+	/* this is not supported, but should work anyway */
+	assert(nu_cesu8_revread(&u, input + 3) == input + 2);
+	assert(u == 0x010400);
+	assert(nu_cesu8_revread(&u, input + 6) == input + 2);
+	assert(u == 0x010400);
+}
+
+#endif
 #endif
 
 #ifdef NU_WITH_CESU8_WRITER

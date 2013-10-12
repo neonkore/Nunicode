@@ -29,11 +29,14 @@ typedef char* (*nu_utf16_write_bom_t)(char *);
  * Note it will always be 0 if NU_WITH_UTF16_WRITER is not enabled
  * @param rd optional, return pointer to detected decoding function
  * @param wr optional, return pointer to detected encoding function
+ * @param revrd optional, return pointer to detected reverse read (decode) function.
+ * Note it will always be 0 if NU_WITH_REVERSE_READ is not enabled
  * @return pointer to next character in UTF-16 string or 0 if BOM is
  * not found
  */
 const char* nu_utf16_read_bom(const char *encoded, nu_utf16_write_bom_t *bom, 
-	nu_read_iterator_t *rd, nu_write_iterator_t *wr);
+	nu_read_iterator_t *rd, nu_write_iterator_t *wr,
+	nu_revread_iterator_t *revrd);
 
 #endif
 

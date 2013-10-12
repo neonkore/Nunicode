@@ -26,6 +26,23 @@ extern "C" {
  */
 const char* nu_utf8_read(const char *utf8, uint32_t *unicode);
 
+#ifdef NU_WITH_REVERSE_READ
+
+/** Read character from UTF-8 string in backward direction
+ *
+ * Note that it is your responsibility to check that this call
+ * is not going under beginning of encoded string. Normally you
+ * shouldn't call it like this: nu_utf8_revread(&u, "hello"); which
+ * will result in undefined behavior
+ *
+ * @ingroup utf8
+ * @param unicode output unicode codepoint or 0
+ * @param utf8 pointer to UTF-8 encoded string
+ * @return pointer to previous character in UTF-8 string
+ */
+const char* nu_utf8_revread(uint32_t *unicode, const char *utf8);
+
+#endif /* NU_WITH_REVERSE_READ */
 #endif /* NU_WITH_UTF8_READER */
 
 #ifdef NU_WITH_UTF8_WRITER

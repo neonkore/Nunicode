@@ -55,7 +55,7 @@ See also "WHY ITS GOOD".
 
 ## WHY ITS GOOD
 
-* Small size: UTF-8 decoding - 1.5Kb, UTF-8 decoding/encoding - 2Kb, UTF-8 encoding/decoding + utility funcitons - 3Kb
+* Small size: UTF-8 encoding/decoding - 1.5Kb, UTF-8 encoding/decoding + 0-terminated string functions - 3Kb
 * Zero memory footprint
 * Small CPU footprint
 * Endianess-agnostic
@@ -134,6 +134,28 @@ just UTF-16LE/BE. Either you choose, you'll get valid UTF-16 variant.
 Note that nunicode will never report string endianess explicitely but will provide
 read, write and BOM write functions instead. See ``samples/utf16.c``.
 
+## NOTES ON REVERSE READING
+
+nunicode do not provide str\[i\] (access by index) equivalent since it will 
+always be slow. Instead you can do nu\_utf8\_revread(&u, encoded) and other
+encodings variants to read character in backward direction.
+
+It is always a bad idea to pass arbitrary pointer to revread(). UTF-8 and CESU-8
+can possibly recover from programming error (pointer poiting to the middle of 
+multibyte UTF-8 sequence), but UTF-16's revread will fail badly.
+
+Passed pointer is supposed to always come from call to nu\_utf8\_read(). Otherwise
+prepare to unforeseen consequences.
+
+As a side note, if you pass 0 as a pointer to decoded character, revread(), as you
+would expect, won't do any redundant decoding, but will just iterate over the string.
+
+    :::c
+    /* will skip 5 characters backwards */
+    for (int i = 0; i < 5; ++i) {
+    	p = nu_utf8_revread(0, p);
+    }
+
 ## DOWNLOADS
 
 See [downloads][] section. Take versioned file from "Tags" tab.
@@ -194,6 +216,7 @@ UTF-16
 
 Misc
 
+* ``-DNU_WITH_REVERSE_READ`` - read encoded string in reverse order functions
 * ``-DNU_WITH_Z_STRINGS`` - supported functions for 0-terminated strings
 * ``-DNU_WITH_N_STRINGS`` - supported functions fo unterminated strings
 * ``-DNU_WITH_STRINGS`` - implies ``-DNU_WITH_Z_STRINGS`` and ``-DNU_WITH_N_STRINGS``

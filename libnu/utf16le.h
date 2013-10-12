@@ -20,6 +20,27 @@ extern "C" {
  */
 const char* nu_utf16le_read(const char *utf16, uint32_t *unicode);
 
+#ifdef NU_WITH_REVERSE_READ
+
+/** Read character from UTF-16 string in backward direction
+ *
+ * Note that it is your responsibility to check that this call
+ * is not going under beginning of encoded string. Normally you
+ * shouldn't call it like this: nu_utf16_revread(&u, "\x67\x00"); which
+ * will result in undefined behavior.
+ *
+ * Also don't mess with pointers, nu_utf16_revread(&u, "\x67\x00\x67\x00" + 3);
+ * won't work correctly. You are supposed to pass pointer received from
+ * nu_utf16le_read().
+ *
+ * @ingroup utf16
+ * @param unicode output unicode codepoint or 0
+ * @param utf16 pointer to UTF-8 encoded string
+ * @return pointer to previous character in UTF-16 string
+ */
+const char* nu_utf16le_revread(uint32_t *unicode, const char *utf16);
+
+#endif /* NU_WITH_REVERSE_READ */
 #endif /* NU_WITH_UTF16LE_READER */
 
 #ifdef NU_WITH_UTF16LE_WRITER

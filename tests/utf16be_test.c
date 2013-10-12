@@ -15,6 +15,21 @@ void test_utf16be_decoding() {
 	assert(nu_utf16be_read("\xD8\x41\xDF\x31" /* 𠜱 */, &u) && u == 0x020731);
 }
 
+#ifdef NU_WITH_REVERSE_READ
+
+void test_utf16be_revread() {
+	const char *input = "\x02\x05\xD8\x01\xDC\x00\xD8\x41\xDF\x31"; /* ȅ𐐀𠜱 */
+	uint32_t u = 0;
+
+	assert(nu_utf16be_revread(&u, input + 2) == input);
+	assert(u == 0x0205);
+	assert(nu_utf16be_revread(&u, input + 6) == input + 2);
+	assert(u == 0x10400);
+	assert(nu_utf16be_revread(&u, input + 10) == input + 6);
+	assert(u == 0x020731);
+}
+
+#endif /* NU_WITH_REVERSE_READ */
 #endif /* NU_WITH_UTF16BE_READER */
 
 #ifdef NU_WITH_UTF16BE_WRITER

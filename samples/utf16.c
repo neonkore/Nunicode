@@ -13,7 +13,7 @@ int main() {
 	printf(">>> input: %d bytes\n", sizeof(input));
 
 	nu_read_iterator_t read = 0;
-	const char *encoded = nu_utf16_read_bom(input, 0, &read, 0);
+	const char *encoded = nu_utf16_read_bom(input, 0, &read, 0, 0);
 
 	ssize_t u_len = nu_strnlen(input, sizeof(input), read);
 	printf("--- decoded utf16 length: %d\n", u_len);

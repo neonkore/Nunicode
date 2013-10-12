@@ -15,6 +15,21 @@ void test_utf16le_decoding() {
 	assert(nu_utf16le_read("\x41\xD8\x31\xDF" /* 𠜱 */, &u) && u == 0x020731);
 }
 
+#ifdef NU_WITH_REVERSE_READ
+
+void test_utf16le_revread() {
+	const char *input = "\x05\x02\x01\xD8\x00\xDC\x41\xD8\x31\xDF"; /* ȅ𐐀𠜱 */
+	uint32_t u = 0;
+
+	assert(nu_utf16le_revread(&u, input + 2) == input);
+	assert(u == 0x0205);
+	assert(nu_utf16le_revread(&u, input + 6) == input + 2);
+	assert(u == 0x10400);
+	assert(nu_utf16le_revread(&u, input + 10) == input + 6);
+	assert(u == 0x020731);
+}
+
+#endif /* NU_WITH_REVERSE_READ */
 #endif /* NU_WITH_UTF16LE_READER */
 
 #ifdef NU_WITH_UTF16LE_WRITER

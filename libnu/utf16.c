@@ -5,7 +5,8 @@
 #ifdef NU_WITH_UTF16_READER
 
 const char* nu_utf16_read_bom(const char *encoded, nu_utf16_write_bom_t *bom, 
-	nu_read_iterator_t *rd, nu_write_iterator_t *wr) {
+	nu_read_iterator_t *rd, nu_write_iterator_t *wr,
+	nu_revread_iterator_t *revrd) {
 	unsigned char bom0 = *(unsigned char *)(encoded);
 	unsigned char bom1 = *(unsigned char *)(encoded + 1);
 
@@ -21,6 +22,11 @@ const char* nu_utf16_read_bom(const char *encoded, nu_utf16_write_bom_t *bom,
 			*bom = nu_utf16le_write_bom;
 		}
 #endif
+#ifdef NU_WITH_REVERSE_READ
+		if (revrd != 0) {
+			*revrd = nu_utf16le_revread;
+		}
+#endif
 	}
 	else if (bom0 == 0xFE && bom1 == 0xFF) {
 		if (rd != 0) {
@@ -32,6 +38,11 @@ const char* nu_utf16_read_bom(const char *encoded, nu_utf16_write_bom_t *bom,
 #ifdef NU_WITH_UTF16_WRITER
 		if (bom != 0) {
 			*bom = nu_utf16be_write_bom;
+		}
+#endif
+#ifdef NU_WITH_REVERSE_READ
+		if (revrd != 0) {
+			*revrd = nu_utf16be_revread;
 		}
 #endif
 	}

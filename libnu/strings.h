@@ -13,14 +13,27 @@
 
 #include "config.h"
 
-/**Read (decoding) iterator
+/** @defgroup iterators Iterators
+ */
+
+/** Read (decode) iterator
  *
  * @ingroup iterators
  * @see nu_utf8_read
  */
 typedef const char* (*nu_read_iterator_t)(const char *encoded, uint32_t *unicode);
 
-/** Write (encoding) iterator
+/** Read (decode) backwards iterator
+ *
+ * Arguments intentionally reversed to not mix this with nu_read_iterator_t.
+ * Reverse read is not compatible with any of string functions.
+ *
+ * @ingroup iterators
+ * @see nu_utf8_revread
+ */
+typedef const char* (*nu_revread_iterator_t)(uint32_t *unicode, const char *encoded);
+
+/** Write (encode) iterator
  *
  * @ingroup iterators
  * @see nu_utf8_write
