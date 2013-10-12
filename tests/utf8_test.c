@@ -15,6 +15,12 @@ void test_utf8_decoding() {
 	assert(nu_utf8_read("𠜱", &u) && u == 0x020731);
 }
 
+void test_utf8_bom() {
+	uint32_t u = 0;
+
+	assert(nu_utf8_read("\xEF\xBB\xBF", &u) && u == 0xFEFF);
+}
+
 #endif
 
 #ifdef NU_WITH_UTF8_WRITER

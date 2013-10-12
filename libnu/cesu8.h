@@ -2,7 +2,6 @@
 #define NU_CESU8_H
 
 #include <stdint.h>
-#include <sys/types.h>
 
 #include "build_config.h"
 
@@ -36,9 +35,7 @@ const char* nu_cesu8_read(const char *cesu8, uint32_t *unicode);
  * @param unicode unicode codepoint
  * @param cesu8 pointer to buffer to write CESU-8 encoded text to,
  * shoud be large enough to hold encoded value
- * @return number of bytes written
- *
- * @see nu_cesu8_bytelen
+ * @return pointer to byte after last written
  */
 char* nu_cesu8_write(uint32_t unicode, char *cesu8);
 

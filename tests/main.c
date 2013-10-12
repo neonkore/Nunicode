@@ -5,9 +5,17 @@
 typedef void (*testcase)(void);
 
 void test_utf8_decoding();
+void test_utf8_bom();
 void test_utf8_encoding();
 void test_cesu8_decoding();
 void test_cesu8_encoding();
+void test_utf16le_decoding();
+void test_utf16le_encoding();
+void test_utf16be_decoding();
+void test_utf16be_encoding();
+void test_utf16_read_bom();
+void test_utf16_read_invalid_bom();
+void test_utf16_write_bom();
 void test_strings_strlen();
 void test_strings_strnlen();
 void test_strings_bytelen();
@@ -23,6 +31,7 @@ testcase cases[] = {
 
 #ifdef NU_WITH_UTF8_READER
 	test_utf8_decoding,
+	test_utf8_bom,
 #endif
 
 #ifdef NU_WITH_UTF8_WRITER
@@ -35,6 +44,31 @@ testcase cases[] = {
 
 #ifdef NU_WITH_CESU8_WRITER
 	test_cesu8_encoding,
+#endif
+
+#ifdef NU_WITH_UTF16LE_READER
+	test_utf16le_decoding,
+#endif
+
+#ifdef NU_WITH_UTF16LE_WRITER
+	test_utf16le_encoding,
+#endif
+
+#ifdef NU_WITH_UTF16BE_READER
+	test_utf16be_decoding,
+#endif
+
+#ifdef NU_WITH_UTF16BE_WRITER
+	test_utf16be_encoding,
+#endif
+
+#ifdef NU_WITH_UTF16_READER
+	test_utf16_read_bom,
+	test_utf16_read_invalid_bom,
+#endif
+
+#ifdef NU_WITH_UTF16_WRITER
+	test_utf16_write_bom,
 #endif
 
 #ifdef NU_WITH_ZERO_STRINGS

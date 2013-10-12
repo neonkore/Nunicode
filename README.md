@@ -13,6 +13,7 @@ Encodings supported ATM:
 
 * UTF-8
 * CESU-8/Modified UTF-8
+* UTF-16 (BOM/LE/BE)
 
 What it *CAN'T* do:
 
@@ -50,8 +51,10 @@ See also "WHY ITS GOOD".
 * Small size: UTF-8 decoding - 1.5Kb, UTF-8 decoding/encoding - 2Kb, UTF-8 encoding/decoding + utility funcitons - 3Kb
 * Zero memory footprint
 * Small CPU footprint
+* Endianess-agnostic
 * Rich build options: you can strip every part you don't need
 * C99 compliant, -pedantic -Wall -Werror
+* No dependencies
 * MIT license
 
 ## EXAMPLES
@@ -91,6 +94,45 @@ See also "WHY ITS GOOD".
 
 It will produce ``doc/html`` with Doxygen documentation in browesable HTML.
 
+## NOTES ON UTF-8
+
+According to Unicode specification UTF-8 might contain byte order mark (BOM),
+but it doesn't make any sense to have BOM in UTF-8. Therefore nunicode has no
+embedded means to deal with UTF-8 BOM, neither detect, read or write it.
+
+If you are facing this crap, just +3 char pointer to skip BOM. (Note that UTF-8
+BOM is 3 bytes long: EF BB BF). You can also safely nu\_utf8\_read() BOM, it will
+produce normal U+FEFF codepoint.
+
+Reference: [UTF BOM FAQ][]
+
+[UTF BOM FAQ]: http://www.unicode.org/faq/utf_bom.html
+
+## NOTES ON UTF-16
+
+Unicode defines 3 types of UTF-16 *each* affected by endianess.
+
+1. UTF-16
+2. UTF-16LE (little endian)
+3. UTF-16BE (big endian)
+
+LE and BE are obviusly little-endian and big-endian, generic one's endianess is
+defined by byte order mark (BOM) at the beginning of the string. Thus generic
+UTF-16 is always BOM + either UTF-16LE or UTF-16BE.
+
+nunicode provide only nu\_utf16le and nu\_utf16be for the encoding and decoding,
+BOM is handled by nu\_utf16 functions. It's up to you to decide if you need BOM or
+just UTF-16LE/BE. Either you choose, you'll get valid UTF-16 variant.
+
+Note that nunicode will never report string endianess explicitely but will provide
+read, write and BOM write functions instead. See ``samples/utf16.c``.
+
+## DOWNLOADS
+
+See [downloads][] section. Take versioned file from "Tags" tab.
+
+[downloads]: https://bitbucket.org/alekseyt/nunicode/downloads
+
 ## WHATS INSIDE
 
 * ``src`` - library sources
@@ -117,15 +159,40 @@ You probably don't need those:
 
 ### library build options
 
-* ``-DNU_WITH_UTF8_READER`` - enable UTF-8 decoding
-* ``-DNU_WITH_UTF8_WRITER`` - enable UTF-8 encoding
+UTF-8
+
+* ``-DNU_WITH_UTF8_READER`` - UTF-8 decoding
+* ``-DNU_WITH_UTF8_WRITER`` - UTF-8 encoding
 * ``-DNU_WITH_UTF8`` - implies ``-DNU_WITH_UTF8_READER`` and ``-DNU_WITH_UTF8_WRITER``
-* ``-DNU_WITH_CESU8_READER`` - enable CESU-8 decoding
-* ``-DNU_WITH_CESU8_WRITER`` - enable CESU-8 encoding
+
+CESU-8
+
+* ``-DNU_WITH_CESU8_READER`` - CESU-8 decoding
+* ``-DNU_WITH_CESU8_WRITER`` - CESU-8 encoding
 * ``-DNU_WITH_CESU8`` - implies ``-DNU_WITH_CESU8_READER`` and ``-DNU_WITH_CESU8_WRITER``
+
+UTF-16
+
+* ``-DNU_WITH_UTF16LE_READER`` - UTF-16LE decoding
+* ``-DNU_WITH_UTF16LE_WRITER`` - UTF-16LE encoding
+* ``-DNU_WITH_UTF16LE`` - implies ``-DNU_WITH_UTF16LE_READER`` and ``-DNU_WITH_UTF16LE_WRITER``
+* ``-DNU_WITH_UTF16BE_READER`` - UTF-16BE decoding
+* ``-DNU_WITH_UTF16BE_WRITER`` - UTF-16BE encoding
+* ``-DNU_WITH_UTF16BE`` - implies ``-DNU_WITH_UTF16BE_READER`` and ``-DNU_WITH_UTF16BE_WRITER``
+* ``-DNU_WITH_UTF16_READER`` - UTF-16 decoding, also implies ``-DNU_WITH_UTF16LE_READER`` 
+  and ``-DNU_WITH_UTF16BE_READER``
+* ``-DNU_WITH_UTF16_WRITER`` - UTF-16 encoding, also implies ``-DNU_WITH_UTF16LE_WRITER``
+  and ``-DNU_WITH_UTF16BE_WRITER``
+* ``-DNU_WITH_UTF16`` - implies ``-DNU_WITH_UTF16_READER`` and ``-DNU_WITH_UTF16_WRITER``
+
+Misc
+
 * ``-DNU_WITH_ZERO_STRINGS`` - enable supported functions for 0-terminated strings
 * ``-DNU_WITH_N_STRINGS`` - enable supported functions fo unterminated strings
 * ``-DNU_WITH_STRINGS`` - implies ``-DNU_WITH_ZERO_STRINGS`` and ``-DNU_WITH_N_STRINGS``
+
+Everything
+
 * ``-DNU_WITH_EVERYTHING`` - implies everything above
 
 ## QUESTIONS?

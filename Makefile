@@ -1,21 +1,28 @@
 STATIC_TARGET = libnu.a
 SHARED_TARGET = libnu.so
-TESTS_TARGET  = test
-UTF8_SAMPLE   = utf8
+TESTS_TARGET  = tests/test
+UTF8_SAMPLE   = samples/utf8
+UTF16_SAMPLE  = samples/utf16
 DOCDIR        = doc
 
 OBJS = libnu/cesu8.o \
        libnu/strings.o \
+       libnu/utf16.o \
+       libnu/utf16be.o \
+       libnu/utf16le.o \
        libnu/utf8.o \
 
 TESTS_OBJS = tests/cesu8_test.o \
              tests/strings_test.o \
+             tests/utf16_test.o \
+             tests/utf16be_test.o \
+             tests/utf16le_test.o \
              tests/utf8_test.o \
              tests/main.o
 
 BUILD_OPTIONS = -DNU_WITH_EVERYTHING
 
-CFLAGS = -Wall -Werror -std=c99 -pedantic -Os $(BUILD_OPTIONS)
+CFLAGS = -fPIC -Wall -Werror -std=c99 -pedantic -Os $(BUILD_OPTIONS)
 SHARED_LDFLAGS = -s
 TESTS_LDFLAGS = -g
 SAMPLES_LDFLAGS = -s
@@ -40,9 +47,12 @@ $(TESTS_TARGET): $(STATIC_TARGET) $(TESTS_OBJS)
 $(UTF8_SAMPLE): samples/utf8.o
 	$(CC) samples/utf8.o $(STATIC_TARGET) -o $(UTF8_SAMPLE) $(SAMPLES_LDFLAGS)
 
-samples: $(UTF8_SAMPLE)
+$(UTF16_SAMPLE): samples/utf16.o
+	$(CC) samples/utf16.o $(STATIC_TARGET) -o $(UTF16_SAMPLE) $(SAMPLES_LDFLAGS)
+
+samples: $(UTF8_SAMPLE) $(UTF16_SAMPLE)
 
 clean:
-	rm -f "$(STATIC_TARGET)" "$(SHARED_TARGET)" "$(TESTS_TARGET)" "$(UTF8_SAMPLE)"
+	rm -f "$(STATIC_TARGET)" "$(SHARED_TARGET)" "$(TESTS_TARGET)" "$(UTF8_SAMPLE)" "$(UTF16_SAMPLE)"
 	rm -f *.o libnu/*.o tests/*.o samples/*.o
 	rm -fr "$(DOCDIR)"
