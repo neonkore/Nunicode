@@ -12,6 +12,9 @@ OBJS = libnu/cesu8.o \
        libnu/utf16.o \
        libnu/utf16be.o \
        libnu/utf16le.o \
+       libnu/utf32.o \
+       libnu/utf32be.o \
+       libnu/utf32le.o \
        libnu/utf8.o \
 
 TESTS_OBJS = tests/cesu8_test.o \
@@ -20,12 +23,15 @@ TESTS_OBJS = tests/cesu8_test.o \
              tests/utf16_test.o \
              tests/utf16be_test.o \
              tests/utf16le_test.o \
+             tests/utf32_test.o \
+             tests/utf32be_test.o \
+             tests/utf32le_test.o \
              tests/utf8_test.o \
              tests/main.o
 
 BUILD_OPTIONS = -DNU_WITH_EVERYTHING
 
-CFLAGS = -fPIC -Wall -Werror -std=c99 -pedantic -Os $(BUILD_OPTIONS)
+CFLAGS = -fPIC -Wall -Wextra -Werror -std=c99 -pedantic -Os $(BUILD_OPTIONS)
 SHARED_LDFLAGS = -s
 TESTS_LDFLAGS = -g
 SAMPLES_LDFLAGS = -s

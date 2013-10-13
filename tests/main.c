@@ -20,6 +20,15 @@ void test_utf16be_encoding();
 void test_utf16_read_bom();
 void test_utf16_read_invalid_bom();
 void test_utf16_write_bom();
+void test_utf32le_decoding();
+void test_utf32le_revread();
+void test_utf32le_encoding();
+void test_utf32be_decoding();
+void test_utf32be_revread();
+void test_utf32be_encoding();
+void test_utf32_read_bom();
+void test_utf32_read_invalid_bom();
+void test_utf32_write_bom();
 void test_strings_strlen();
 void test_strings_strnlen();
 void test_strings_bytelen();
@@ -91,6 +100,37 @@ testcase cases[] = {
 	test_utf16_write_bom,
 #endif
 
+#ifdef NU_WITH_UTF32LE_READER
+	test_utf32le_decoding,
+#ifdef NU_WITH_REVERSE_READ
+	test_utf32le_revread,
+#endif
+#endif
+
+#ifdef NU_WITH_UTF32LE_WRITER
+	test_utf32le_encoding,
+#endif
+
+#ifdef NU_WITH_UTF32LE_READER
+	test_utf32be_decoding,
+#ifdef NU_WITH_REVERSE_READ
+	test_utf32be_revread,
+#endif
+#endif
+
+#ifdef NU_WITH_UTF32LE_WRITER
+	test_utf32be_encoding,
+#endif
+
+#ifdef NU_WITH_UTF16_READER
+	test_utf32_read_bom,
+	test_utf32_read_invalid_bom,
+#endif
+
+#ifdef NU_WITH_UTF16_WRITER
+	test_utf32_write_bom,
+#endif
+
 #ifdef NU_WITH_Z_STRINGS
 	test_strings_strlen,
 	test_strings_bytelen,
@@ -119,7 +159,7 @@ testcase cases[] = {
 };
 
 int main() {
-	int i = 0; for (; i < sizeof(cases) / sizeof(*cases); ++i) {
+	size_t i = 0; for (; i < sizeof(cases) / sizeof(*cases); ++i) {
 		cases[i]();
 		printf(".");
 	}

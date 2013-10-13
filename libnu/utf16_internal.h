@@ -2,21 +2,25 @@
 #define NU_UTF16_INTERNAL_H
 
 static inline uint16_t nu_letohs(const char *p) {
-	return (*(p + 1) << 8 | (*p & 0xFF));
+	const unsigned char *up = (const unsigned char *)(p);
+	return (*(up + 1) << 8 | *(up));
 }
 
 static inline void nu_htoles(uint16_t s, char *p) {
-	*p = (s & 0xFF);
-	*(p + 1) = ((s & 0xFF00) >> 8);
+	unsigned char *up = (unsigned char *)(p);
+	*(up) = (s & 0xFF);
+	*(up + 1) = ((s & 0xFF00) >> 8);
 }
 
 static inline uint16_t nu_betohs(const char *p) {
-	return ((*p) << 8 | (*(p + 1) & 0xFF));
+	const unsigned char *up = (const unsigned char *)(p);
+	return (*(up) << 8 | *(up + 1));
 }
 
 static inline void nu_htobes(uint16_t s, char *p) {
-	*(p + 1) = (s & 0xFF);
-	*p = ((s & 0xFF00) >> 8);
+	unsigned char *up = (unsigned char *)(p);
+	*(up + 1) = (s & 0xFF);
+	*(up) = ((s & 0xFF00) >> 8);
 }
 
 static inline unsigned utf16_char_length(uint16_t c) {

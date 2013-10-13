@@ -12,7 +12,6 @@
 extern "C" {
 #endif
 
-
 #if (defined NU_WITH_UTF16_READER) || (defined NU_WITH_UTF16_WRITER)
 static const uint16_t NU_UTF16_BOM = 0; /** for sizeof() only */
 #endif
@@ -38,7 +37,7 @@ const char* nu_utf16_read_bom(const char *encoded, nu_utf16_write_bom_t *bom,
 	nu_read_iterator_t *rd, nu_write_iterator_t *wr,
 	nu_revread_iterator_t *revrd);
 
-#endif
+#endif /* NU_WITH_UTF16_READER */
 
 #ifdef NU_WITH_UTF16_WRITER
 

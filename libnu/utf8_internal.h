@@ -2,15 +2,19 @@
 #define NU_UTF8_INTERNAL_H
 
 static inline unsigned utf8_char_length(const char c) {
-	if ((c & 0x80) == 0) return 1;
-	if ((c & 0xE0) == 0xC0) return 2;
-	if ((c & 0xF0) == 0xE0) return 3;
-	if ((c & 0xF8) == 0xF0) return 4;
+	const unsigned char uc = c;
+
+	if ((uc & 0x80) == 0) return 1;
+	if ((uc & 0xE0) == 0xC0) return 2;
+	if ((uc & 0xF0) == 0xE0) return 3;
+	if ((uc & 0xF8) == 0xF0) return 4;
 
 	return 0; /* undefined */
 }
 
 static inline void utf8_2b(const char *p, uint32_t *codepoint) {
+	const unsigned char *up = (const unsigned char *)(p);
+
 	/* UTF-8: 110xxxxx 10xxxxxx
 	 *                                    |__ 1st unicode octet
 	 * 110xxx00 << 6 -> 00000xxx 00000000 |
@@ -18,12 +22,13 @@ static inline void utf8_2b(const char *p, uint32_t *codepoint) {
 	 * 110000xx << 6 -> 00000xxx xx000000 |__ 2nd unicode octet
 	 * 10xxxxxx      -> 00000xxx xxxxxxxx |
 	 *                           --------  */
-	*codepoint = 
-	(unsigned)(*p & 0x1C) << 6
-	| ((*p & 0x03) << 6 | (*(p + 1) & 0x3F));
+	*codepoint = (*(up) & 0x1C) << 6
+	| ((*(up) & 0x03) << 6 | (*(up + 1) & 0x3F));
 }
 
 static inline void utf8_3b(const char *p, uint32_t *codepoint) {
+	const unsigned char *up = (const unsigned char *)(p);
+
 	/* UTF-8: 1110xxxx 10xxxxxx 10xxxxxx
 	 *
 	 * 1110xxxx << 12 -> xxxx0000 0000000 |__ 1st unicode octet
@@ -33,11 +38,13 @@ static inline void utf8_3b(const char *p, uint32_t *codepoint) {
 	 * 10xxxxxx       -> xxxxxxxx xxxxxxx |
 	 *                            -------  */
 	*codepoint =
-	((unsigned)(*p & 0x0F) << 12 | (unsigned)(*(p + 1) & 0x3C) << 6)
-	| ((*(p + 1) & 0x03) << 6 | (*(p + 2) & 0x3F));
+	((*(up) & 0x0F) << 12 | (*(up + 1) & 0x3C) << 6)
+	| ((*(up + 1) & 0x03) << 6 | (*(up + 2) & 0x3F));
 }
 
 static inline void utf8_4b(const char *p, uint32_t *codepoint) {
+	const unsigned char *up = (const unsigned char *)(p);
+
 	/* UTF-8: 11110xxx 10xxxxxx 10xxxxxx 10xxxxxx
 	 *
 	 * 11110xxx << 18 -> 00xxx00 00000000 00000000 |__ 1st unicode octet
@@ -50,9 +57,9 @@ static inline void utf8_4b(const char *p, uint32_t *codepoint) {
 	 * 10xxxxxx       -> 00xxxxx xxxxxxxx xxxxxxxx |
 	 *                                    ---------  */
  	*codepoint = 
-	((unsigned)(*p & 0x07) << 18 | (unsigned)(*(p + 1) & 0x30) << 12)
-	| ((unsigned)(*(p + 1) & 0x0F) << 12 | (unsigned)(*(p + 2) & 0x3C) << 6)
-	| ((*(p + 2) & 0x03) << 6 | (*(p + 3) & 0x3F));
+	((*(up) & 0x07) << 18 | (*(up + 1) & 0x30) << 12)
+	| ((*(up + 1) & 0x0F) << 12 | (*(up + 2) & 0x3C) << 6)
+	| ((*(up + 2) & 0x03) << 6 | (*(up + 3) & 0x3F));
 }
 
 static inline unsigned utf8_codepoint_length(uint32_t codepoint) {
@@ -64,7 +71,9 @@ static inline unsigned utf8_codepoint_length(uint32_t codepoint) {
 	return 0; /* undefined */
 }
 
-static inline void b2_utf8(uint32_t codepoint, char *utf8) {
+static inline void b2_utf8(uint32_t codepoint, char *p) {
+	unsigned char *up = (unsigned char *)(p);
+
 	/* UNICODE: 00000xxx xxxxxxxx
 	 *
 	 * 00000xxx >> 6 -> 110xxx00 10000000 |__ 1st UTF-8 octet
@@ -73,11 +82,13 @@ static inline void b2_utf8(uint32_t codepoint, char *utf8) {
 	 *                                    |__ 2nd UTF-8 octet
 	 * xxxxxxxx      -> 110xxxxx 10xxxxxx |
 	 *                           --------  */
-	*utf8 = (0xC0 | (codepoint & 0xFF00) >> 6 | (codepoint & 0xFF) >> 6);
-	*(utf8 + 1) = (0x80 | (codepoint & 0x3F));
+	*(up) = (0xC0 | (codepoint & 0xFF00) >> 6 | (codepoint & 0xFF) >> 6);
+	*(up + 1) = (0x80 | (codepoint & 0x3F));
 }
 
-static inline void b3_utf8(uint32_t codepoint, char *utf8) {
+static inline void b3_utf8(uint32_t codepoint, char *p) {
+	unsigned char *up = (unsigned char *)(p);
+
 	/* UNICODE: xxxxxxxx xxxxxxxx
 	 *                                              |__ 1st UTF-8 octet
 	 * xxxxxxxx >> 12 -> 1110xxxx 10000000 10000000 |
@@ -88,12 +99,14 @@ static inline void b3_utf8(uint32_t codepoint, char *utf8) {
 	 *                                              |__ 3rd UTF-8 octet
 	 * xxxxxxxx       -> 1110xxxx 10xxxxxx 10xxxxxx |
 	 *                                     --------  */
-	*utf8 = (0xE0 | (codepoint & 0xF000) >> 12);
-	*(utf8 + 1) = (0x80 | (codepoint & 0x0F00) >> 6 | (codepoint & 0xC0) >> 6);
-	*(utf8 + 2) = (0x80 | (codepoint & 0x3F));
+	*(up) = (0xE0 | (codepoint & 0xF000) >> 12);
+	*(up + 1) = (0x80 | (codepoint & 0x0F00) >> 6 | (codepoint & 0xC0) >> 6);
+	*(up + 2) = (0x80 | (codepoint & 0x3F));
 }
 
-static inline void b4_utf8(uint32_t codepoint, char *utf8) {
+static inline void b4_utf8(uint32_t codepoint, char *p) {
+	unsigned char *up = (unsigned char *)(p);
+
 	/* UNICODE: 000xxxxx xxxxxxxx xxxxxxxx
 	 *                                                      |__ 1st UTF-8 octet
 	 * 000xxxxx >> 18 -> 11110xxx 1000000 10000000 10000000 |
@@ -106,10 +119,10 @@ static inline void b4_utf8(uint32_t codepoint, char *utf8) {
 	 *                                    --------
 	 *                                                      |__ 4th UTF-8 octet
 	 * xxxxxxxx       -> 11110xxx 10xxxxx 10xxxxxx 10000000 | */
-	*(unsigned char *)(utf8) = (0xF0 | ((codepoint & 0x1C0000) >> 18));
-	*(utf8 + 1) = (0x80 | (codepoint & 0x030000) >> 12 | (codepoint & 0x00E000) >> 12);
-	*(utf8 + 2) = (0x80 | (codepoint & 0x001F00) >> 6 | (codepoint & 0x0000E0) >> 6);
-	*(utf8 + 3) = (0x80 | (codepoint & 0x3F));
+	*(up) = (0xF0 | ((codepoint & 0x1C0000) >> 18));
+	*(up + 1) = (0x80 | (codepoint & 0x030000) >> 12 | (codepoint & 0x00E000) >> 12);
+	*(up + 2) = (0x80 | (codepoint & 0x001F00) >> 6 | (codepoint & 0x0000E0) >> 6);
+	*(up + 3) = (0x80 | (codepoint & 0x3F));
 }
 
 #endif /* NU_UTF8_INTERNAL_H */

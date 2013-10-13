@@ -60,7 +60,7 @@ See also "WHY ITS GOOD".
 * Small CPU footprint
 * Endianess-agnostic
 * Rich build options: you can strip every part you don't need
-* C99 compliant, -pedantic -Wall -Werror
+* C99 compliant, -pedantic -Wall -Wextra -Werror
 * No dependencies
 * MIT license
 
@@ -135,6 +135,10 @@ just UTF-16LE/BE. Either you choose, you'll get valid UTF-16 variant.
 Note that nunicode will never report string endianess explicitely but will provide
 read, write and BOM write functions instead. See ``samples/utf16.c``.
 
+## NOTES ON UTF-32
+
+Everything said above about UTF-16 also applies to UTF-32.
+
 ## NOTES ON REVERSE READING
 
 nunicode do not provide str\[i\] (access by index) equivalent since it will 
@@ -143,16 +147,17 @@ encodings variants to read character in backward direction.
 
 It is always a bad idea to pass arbitrary pointer to revread(). UTF-8 and CESU-8
 can possibly recover from programming error (pointer poiting to the middle of 
-multibyte UTF-8 sequence), but UTF-16's revread will fail badly.
+multibyte UTF-8 sequence), but UTF-16 and UTF-32 revread will fail badly. In fact,
+UTF-32 revread is just "const char \*p - 4".
 
-Passed pointer is supposed to always come from call to nu\_utf8\_read(). Otherwise
-prepare to unforeseen consequences.
+Pointer passed to revread() is supposed to always come from call to nu\_utf8\_read(). 
+Otherwise prepare to unforeseen consequences.
 
 As a side note, if you pass 0 as a pointer to decoded character, revread(), as you
 would expect, won't do any redundant decoding, but will just iterate over the string.
 
     :::c
-    /* will skip 5 characters backwards */
+    /* skip 5 characters backwards */
     for (int i = 0; i < 5; ++i) {
     	p = nu_utf8_revread(0, p);
     }
@@ -214,6 +219,10 @@ UTF-16
 * ``-DNU_WITH_UTF16_WRITER`` - UTF-16 encoding, also implies ``-DNU_WITH_UTF16LE_WRITER``
   and ``-DNU_WITH_UTF16BE_WRITER``
 * ``-DNU_WITH_UTF16`` - implies ``-DNU_WITH_UTF16_READER`` and ``-DNU_WITH_UTF16_WRITER``
+
+UTF-32
+
+* Very same options as for UTF-16, just replace 16 with 32
 
 Misc
 
