@@ -189,7 +189,7 @@ It will build static and shared libraries.
 
 You probably don't need those:
 
-* ``make test`` - units
+* ``make tests`` - units
 * ``make samples`` - examples
 
 ### library build options
