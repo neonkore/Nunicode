@@ -14,6 +14,7 @@ Encodings supported ATM:
 * UTF-8
 * CESU-8/Modified UTF-8
 * UTF-16 (BOM/LE/BE)
+* UTF-32 (BOM/LE/BE)
 
 String functions supported for all encodings (works on encoded strings):
 
@@ -102,7 +103,7 @@ See also "WHY ITS GOOD".
 
 It will produce ``doc/html`` with Doxygen documentation in browesable HTML.
 
-## NOTES ON UTF-8, UTF-16 and UTF-32
+## NOTES ON UTF-8, UTF-16 AND UTF-32
 
 According to Unicode specification UTF-8 might contain byte order mark (BOM),
 however it doesn't make any sense to have BOM in UTF-8. Therefore nunicode has no
@@ -168,8 +169,8 @@ See [downloads][] section. Take versioned file from "Tags" tab.
 
 * ``src`` - library sources
 * ``samples`` - usage examples
-* ``tests`` - units
-* ``Makefile`` - makefile
+* ``tests`` - unittests
+* ``Makefile`` - Makefile
 * ``Doxyfile`` - Doxygen configuration file
 
 ## BUILD
@@ -185,7 +186,7 @@ It will build static and shared libraries.
 
 You probably don't need those:
 
-* ``make tests`` - units
+* ``make tests`` - unittests
 * ``make samples`` - examples
 
 ### library build options
