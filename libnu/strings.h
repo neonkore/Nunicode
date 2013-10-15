@@ -13,6 +13,10 @@
 
 #include "config.h"
 
+#if defined (__cplusplus) || defined (c_plusplus)
+extern "C" {
+#endif
+
 /** @defgroup iterators Iterators
  */
 
@@ -47,6 +51,7 @@ typedef char* (*nu_write_iterator_t)(uint32_t unicode, char *encoded);
  * @ingroup strings
  * @param encoded encoded string
  * @param it decoding function
+ * @return string length or negative error
  *
  * @see nu_strnlen
  */
@@ -57,6 +62,7 @@ ssize_t nu_strlen(const char *encoded, nu_read_iterator_t it);
  * @ingroup strings
  * @param unicode unicode codepoints
  * @param it encoding function
+ * @return byte length or negative error
  *
  * @see nu_bytenlen
  */
@@ -89,7 +95,7 @@ const char* nu_strrchr(const char *encoded, uint32_t c, nu_read_iterator_t it);
 /** Get character length of string without terminating 0
  *
  * @ingroup strings
- * @param max_len nu_strnlen won't normally got further than max_len bytes. It might
+ * @param max_len nu_strnlen won't normally go further than max_len bytes. It might
  * go further if encoded character is longer than max_len though
  *
  * @see nu_strlen
@@ -124,5 +130,9 @@ const char* nu_strnchr(const char *encoded, size_t max_len, uint32_t c, nu_read_
 const char* nu_strrnchr(const char *encoded, size_t max_len, uint32_t c, nu_read_iterator_t it);
 
 #endif /* NU_WITH_N_STRINGS */
+
+#if defined (__cplusplus) || defined (c_plusplus)
+}
+#endif
 
 #endif /* NU_STRINGS_H */

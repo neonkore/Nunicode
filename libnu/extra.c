@@ -7,11 +7,13 @@ static int _nu_readstr(const char *encoded, const char *limit, uint32_t *unicode
 	size_t i = 0;
 
 	while (p < limit) {
-		if (p == 0) {
-			return -1;
+		const char *np = it(p, unicode + i);
+		
+		if (np == 0) {
+			return -(p - encoded + 1);
 		}
 
-		p = it(p, unicode + i);
+		p = np;
 		
 		if (*p == 0) {
 			break;
@@ -28,12 +30,12 @@ static int _nu_writestr(const uint32_t *unicode, const uint32_t *limit, char *en
 	const uint32_t *u = unicode;
 
 	while (u < limit) {
-		if (p == 0) {
-			return -1;
-		}
-
 		p = it(*u, p);
 	
+		if (p == 0) {
+			return -(u - unicode + 1);
+		}
+
 		if (*u == 0) {
 			break;
 		}
@@ -49,13 +51,20 @@ static int _nu_transformstr(const char *source, const char *limit, char *dest, n
 	char *d = dest;
 
 	while (p < limit) {
-		if (p == 0 || d == 0) {
-			return -1;
+		uint32_t u = 0;
+		const char *np = read_it(p, &u);
+		if (np == 0) {
+			return -(p - source + 1);
 		}
 
-		uint32_t u = 0;
-		p = read_it(p, &u);
-		d = write_it(u, d);
+		p = np;
+
+		char *nd = write_it(u, d);
+		if (nd == 0) {
+			return -(d - dest + 1) * 2;
+		}
+
+		d = nd;
 		
 		if (*p == 0) {
 			break;

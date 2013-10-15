@@ -12,7 +12,8 @@ const char* nu_utf16be_read(const char *utf16, uint32_t *unicode) {
 		case 2: *unicode = c0; break;
 		case 4: {
 			uint16_t c1 = nu_betohs(utf16 + 2);
-			utf16_4b(c0, c1, unicode); break;
+			utf16_4b(c0, c1, unicode);
+			break;
 		}
 		default: return 0; /* abort */
 		}

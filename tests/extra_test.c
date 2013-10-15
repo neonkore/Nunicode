@@ -3,8 +3,6 @@
 
 #include <libnu/libnu.h>
 
-#ifdef NU_WITH_Z_EXTRA
-
 void test_strings_readstr() {
 	const char input[] = "привет";
 	uint32_t u[sizeof(input)] = { 0 };
@@ -30,10 +28,6 @@ void test_strings_transformstr() {
 	assert(nu_transformstr((const char *)input, output, nu_cesu8_read, nu_utf8_write) == 0);
 	assert(strcmp(output, "𐐀") == 0);
 }
-
-#endif /* NU_WITH_Z_EXTRA */
-
-#ifdef NU_WITH_N_EXTRA
 
 void test_strings_readnstr() {
 	const char input[] = "привет";
@@ -81,5 +75,3 @@ void test_strings_transformnstr() {
 	assert(output[3] != 0);
 	assert(output[4] != 0); /* transform stopped on trailing 0 */
 }
-
-#endif /* NU_WITH_N_EXTRA */

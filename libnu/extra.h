@@ -52,7 +52,8 @@ int nu_writestr(const uint32_t *unicode, char *encoded, nu_write_iterator_t it);
  * @param dest dest encoded string, should be large enough
  * @param read_it decoding function
  * @param write_it encoding function
- * @return 0 on success or negative error
+ * @return 0 on success or negative error on decoding (source) error,
+ * double negative on error encoding (dest) error
  *
  * @see nu_utf8_bytelen
  * @see nu_utf8_read

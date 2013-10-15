@@ -13,8 +13,15 @@ const char* nu_cesu8_read(const char *cesu8, uint32_t *unicode) {
 		case 2: utf8_2b(cesu8, unicode); break;
 		case 3: utf8_3b(cesu8, unicode); break;
 		case 6: cesu8_6b(cesu8, unicode); break;
-		default: return 0; /* abort */
 		}
+	}
+
+	switch (len) {
+		case 1:
+		case 2:
+		case 3:
+		case 6: break;
+		default: return 0; /* abort */
 	}
 
 	return cesu8 + len;
@@ -30,12 +37,12 @@ const char* nu_cesu8_revread(uint32_t *unicode, const char *cesu8) {
 	 * trail surrogate of 6-byte sequence.
 	 */
 	const char *p = cesu8 - 1;
-	while ((*p & 0xC0) == 0x80) { /* skip every 0b10000000 */
+	while (((unsigned char)(*p) & 0xC0) == 0x80) { /* skip every 0b10000000 */
 		--p;
 	}
 
 	if ((unsigned char)(*p) == 0xED 
-	&& (*(p + 1) & 0xF0) == 0xB0) { /* trail surrogate */
+	&& ((unsigned char)*(p + 1) & 0xF0) == 0xB0) { /* trail surrogate */
 		p -= 3;
 	}
 
@@ -60,8 +67,15 @@ char* nu_cesu8_write(uint32_t unicode, char *cesu8) {
 		case 2: b2_utf8(unicode, cesu8); break;
 		case 3: b3_utf8(unicode, cesu8); break;
 		case 6: b6_cesu8(unicode, cesu8); break;
-		default: return 0; /* abort */
 		}
+	}
+
+	switch (codepoint_len) {
+		case 1:
+		case 2:
+		case 3:
+		case 6: break;
+		default: return 0; /* abort */
 	}
 
 	return cesu8 + codepoint_len;

@@ -12,10 +12,15 @@ const char* nu_utf16le_read(const char *utf16, uint32_t *unicode) {
 		case 2: *unicode = c0; break;
 		case 4: {
 			uint16_t c1 = nu_letohs(utf16 + 2);
-			utf16_4b(c0, c1, unicode); break;
+			utf16_4b(c0, c1, unicode);
+			break;
 		}
+		}
+	}
+
+	switch (len) {
+		case 2: case 4: break;
 		default: return 0; /* abort */
-		}
 	}
 
 	return utf16 + len;

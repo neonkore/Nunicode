@@ -43,119 +43,67 @@ void test_strings_writestr();
 void test_strings_writenstr();
 void test_strings_transformstr();
 void test_strings_transformnstr();
+void test_zstrings_basic_error_handling();
+void test_nstrings_basic_error_handling();
+void test_extra_zstrings_basic_error_handling();
+void test_extra_nstrings_basic_error_handling();
 
 testcase cases[] = {
 
-#ifdef NU_WITH_UTF8_READER
 	test_utf8_decoding,
 	test_utf8_bom,
-#ifdef NU_WITH_REVERSE_READ
 	test_utf8_revread,
-#endif
-#endif
-
-#ifdef NU_WITH_UTF8_WRITER
 	test_utf8_encoding,
-#endif
 
-#ifdef NU_WITH_CESU8_READER
 	test_cesu8_decoding,
-#ifdef NU_WITH_REVERSE_READ
 	test_cesu8_revread,
-#endif
-#endif
-
-#ifdef NU_WITH_CESU8_WRITER
 	test_cesu8_encoding,
-#endif
 
-#ifdef NU_WITH_UTF16LE_READER
 	test_utf16le_decoding,
-#ifdef NU_WITH_REVERSE_READ
 	test_utf16le_revread,
-#endif
-#endif
-
-#ifdef NU_WITH_UTF16LE_WRITER
 	test_utf16le_encoding,
-#endif
-
-#ifdef NU_WITH_UTF16BE_READER
 	test_utf16be_decoding,
-#ifdef NU_WITH_REVERSE_READ
 	test_utf16be_revread,
-#endif
-#endif
 
-#ifdef NU_WITH_UTF16BE_WRITER
 	test_utf16be_encoding,
-#endif
-
-#ifdef NU_WITH_UTF16_READER
 	test_utf16_read_bom,
 	test_utf16_read_invalid_bom,
-#endif
-
-#ifdef NU_WITH_UTF16_WRITER
 	test_utf16_write_bom,
-#endif
 
-#ifdef NU_WITH_UTF32LE_READER
 	test_utf32le_decoding,
-#ifdef NU_WITH_REVERSE_READ
 	test_utf32le_revread,
-#endif
-#endif
-
-#ifdef NU_WITH_UTF32LE_WRITER
 	test_utf32le_encoding,
-#endif
 
-#ifdef NU_WITH_UTF32LE_READER
 	test_utf32be_decoding,
-#ifdef NU_WITH_REVERSE_READ
 	test_utf32be_revread,
-#endif
-#endif
-
-#ifdef NU_WITH_UTF32LE_WRITER
 	test_utf32be_encoding,
-#endif
 
-#ifdef NU_WITH_UTF16_READER
 	test_utf32_read_bom,
 	test_utf32_read_invalid_bom,
-#endif
-
-#ifdef NU_WITH_UTF16_WRITER
 	test_utf32_write_bom,
-#endif
 
-#ifdef NU_WITH_Z_STRINGS
 	test_strings_strlen,
 	test_strings_bytelen,
 	test_strings_strchr,
 	test_strings_strrchr,
-#endif
-
-#ifdef NU_WITH_N_STRINGS
+	
 	test_strings_strnlen,
 	test_strings_bytenlen,
 	test_strings_strnchr,
 	test_strings_strrnchr,
-#endif
-
-#ifdef NU_WITH_Z_EXTRA
+	
 	test_strings_readstr,
 	test_strings_writestr,
 	test_strings_transformstr,
-#endif
 
-#ifdef NU_WITH_N_EXTRA
 	test_strings_readnstr,
 	test_strings_writenstr,
 	test_strings_transformnstr,
-#endif
+	
+	test_zstrings_basic_error_handling,
+	test_nstrings_basic_error_handling,
+	test_extra_zstrings_basic_error_handling,
+	test_extra_nstrings_basic_error_handling,
 };
 
 int main() {

@@ -12,8 +12,15 @@ const char* nu_utf8_read(const char *utf8, uint32_t *unicode) {
 		case 2: utf8_2b(utf8, unicode); break;
 		case 3: utf8_3b(utf8, unicode); break;
 		case 4: utf8_4b(utf8, unicode); break;
-		default: return 0; /* abort */
 		}
+	}
+
+	switch (len) {
+		case 1:
+		case 2:
+		case 3:
+		case 4: break;
+		default: return 0; /* abort */
 	}
 
 	return utf8 + len;
@@ -25,7 +32,7 @@ const char* nu_utf8_revread(uint32_t *unicode, const char *utf8) {
 	/* valid UTF-8 has either 10xxxxxx (continuation byte)
 	 * or beginning of byte sequence */
 	const char *p = utf8 - 1;
-	while ((*p & 0xC0) == 0x80) { /* skip every 0b10000000 */
+	while (((unsigned char)(*p) & 0xC0) == 0x80) { /* skip every 0b10000000 */
 		--p;
 	}
 
@@ -50,8 +57,15 @@ char* nu_utf8_write(uint32_t unicode, char *utf8) {
 			case 2: b2_utf8(unicode, utf8); break;
 			case 3: b3_utf8(unicode, utf8); break;
 			case 4: b4_utf8(unicode, utf8); break;
-			default: return 0; /* abort */
 		}
+	}
+
+	switch (codepoint_len) {
+		case 1:
+		case 2:
+		case 3:
+		case 4: break;
+		default: return 0; /* abort */
 	}
 
 	return utf8 + codepoint_len;
