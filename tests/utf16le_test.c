@@ -37,11 +37,11 @@ void test_utf16le_revread() {
 void test_utf16le_encoding() {
 	char p[32] = { 0 };
 
-	assert(nu_utf16le_write(0x0067, p) && strcmp("\x67\x00" /* g */, p) == 0);
-	assert(nu_utf16le_write(0x0205, p) && strcmp("\x05\x02" /* ȅ */, p) == 0);
-	assert(nu_utf16le_write(0x20AC, p) && strcmp("\xAC\x20" /* € */, p) == 0);
-	assert(nu_utf16le_write(0x10400, p) && strcmp("\x01\xD8\x00\xDC" /* 𐐀 */, p) == 0);
-	assert(nu_utf16le_write(0x020731, p) && strcmp("\x41\xD8\x31\xDF" /* 𠜱 */, p) == 0);
+	assert(nu_utf16le_write(0x0067, p) && memcmp("\x67\x00" /* g */, p, 2) == 0);
+	assert(nu_utf16le_write(0x0205, p) && memcmp("\x05\x02" /* ȅ */, p, 2) == 0);
+	assert(nu_utf16le_write(0x20AC, p) && memcmp("\xAC\x20" /* € */, p, 2) == 0);
+	assert(nu_utf16le_write(0x10400, p) && memcmp("\x01\xD8\x00\xDC" /* 𐐀 */, p, 4) == 0);
+	assert(nu_utf16le_write(0x020731, p) && memcmp("\x41\xD8\x31\xDF" /* 𠜱 */, p, 4) == 0);
 }
 
 #endif /* NU_WITH_UTF16LE_WRITER */

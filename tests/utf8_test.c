@@ -48,11 +48,11 @@ void test_utf8_revread() {
 void test_utf8_encoding() {
 	char p[32] = { 0 };
 	
-	assert(nu_utf8_write(0, p) && strcmp(p, "") == 0);
-	assert(nu_utf8_write(0x0067, p) && strcmp(p, "g") == 0);
-	assert(nu_utf8_write(0x043F, p) && strcmp(p, "п") == 0);
-	assert(nu_utf8_write(0x20AC, p) && strcmp(p, "€") == 0);
-	assert(nu_utf8_write(0x020731, p) && strcmp(p, "𠜱") == 0);
+	assert(nu_utf8_write(0, p) && memcmp(p, "", 1) == 0);
+	assert(nu_utf8_write(0x0067, p) && memcmp(p, "g", 1) == 0);
+	assert(nu_utf8_write(0x043F, p) && memcmp(p, "п", 2) == 0);
+	assert(nu_utf8_write(0x20AC, p) && memcmp(p, "€", 2) == 0);
+	assert(nu_utf8_write(0x020731, p) && memcmp(p, "𠜱", 3) == 0);
 }
 
 #endif

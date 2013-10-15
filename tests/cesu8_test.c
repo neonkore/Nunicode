@@ -52,12 +52,12 @@ void test_cesu8_revread() {
 void test_cesu8_encoding() {
 	char p[32] = { 0 };
 
-	assert(nu_cesu8_write(0, p) && strcmp(p, "") == 0);
-	assert(nu_cesu8_write(0x0067, p) && strcmp(p, "g") == 0);
-	assert(nu_cesu8_write(0x043F, p) && strcmp(p, "п") == 0);
-	assert(nu_cesu8_write(0x20AC, p) && strcmp(p, "€") == 0);
-	assert(nu_cesu8_write(0x010400, p) && strcmp(p, (const char *)CESU8) == 0);
-	assert(nu_cesu8_write(0x0F0000, p) && strcmp(p, (const char *)CESU9) == 0);
+	assert(nu_cesu8_write(0, p) && memcmp(p, "", 1) == 0);
+	assert(nu_cesu8_write(0x0067, p) && memcmp(p, "g", 1) == 0);
+	assert(nu_cesu8_write(0x043F, p) && memcmp(p, "п", 2) == 0);
+	assert(nu_cesu8_write(0x20AC, p) && memcmp(p, "€", 2) == 0);
+	assert(nu_cesu8_write(0x010400, p) && memcmp(p, (const char *)CESU8, sizeof(CESU8)) == 0);
+	assert(nu_cesu8_write(0x0F0000, p) && memcmp(p, (const char *)CESU9, sizeof(CESU9)) == 0);
 }
 
 #endif
