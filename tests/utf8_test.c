@@ -3,8 +3,6 @@
 
 #include <libnu/libnu.h>
 
-#ifdef NU_WITH_UTF8_READER
-
 void test_utf8_decoding() {
 	uint32_t u = 0;
 	
@@ -20,8 +18,6 @@ void test_utf8_bom() {
 
 	assert(nu_utf8_read("\xEF\xBB\xBF", &u) && u == 0xFEFF);
 }
-
-#ifdef NU_WITH_REVERSE_READ
 
 void test_utf8_revread() {
 	const char input[] = "привет";
@@ -40,11 +36,6 @@ void test_utf8_revread() {
 	assert(u == 0x020731);
 }
 
-#endif
-#endif
-
-#ifdef NU_WITH_UTF8_WRITER
-
 void test_utf8_encoding() {
 	char p[32] = { 0 };
 	
@@ -54,5 +45,3 @@ void test_utf8_encoding() {
 	assert(nu_utf8_write(0x20AC, p) && memcmp(p, "€", 2) == 0);
 	assert(nu_utf8_write(0x020731, p) && memcmp(p, "𠜱", 3) == 0);
 }
-
-#endif

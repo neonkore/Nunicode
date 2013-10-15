@@ -3,8 +3,6 @@
 
 #include <libnu/libnu.h>
 
-#ifdef NU_WITH_UTF32_READER
-
 void test_utf32_read_bom() {
 	nu_utf32_write_bom_t write_bom = 0;
 	nu_read_iterator_t read = 0;
@@ -12,32 +10,16 @@ void test_utf32_read_bom() {
 	nu_revread_iterator_t revread = 0;
 
 	assert(nu_utf32_read_bom("\xFF\xFE\x00\x00" /* LE */, &write_bom, &read, &write, &revread));
-#ifdef NU_WITH_UTF32_WRITER
 	assert(write_bom == nu_utf32le_write_bom);
-#else
-	assert(write_bom == 0);
-#endif
 	assert(read == nu_utf32le_read);
 	assert(write == nu_utf32le_write);
-#ifdef NU_WITH_REVERSE_READ
 	assert(revread == nu_utf32le_revread);
-#else
-	assert(revread == 0);
-#endif
 	
 	assert(nu_utf32_read_bom("\x00\x00\xFE\xFF" /* BE */, &write_bom, &read, &write, &revread));
-#ifdef NU_WITH_UTF32_WRITER
 	assert(write_bom == nu_utf32be_write_bom);
-#else
-	assert(write_bom == 0);
-#endif
 	assert(read == nu_utf32be_read);
 	assert(write == nu_utf32be_write);
-#ifdef NU_WITH_REVERSE_READ
 	assert(revread == nu_utf32be_revread);
-#else
-	assert(revread == 0);
-#endif
 }
 
 void test_utf32_read_invalid_bom() {
@@ -53,10 +35,6 @@ void test_utf32_read_invalid_bom() {
 	assert(revread == 0);
 }
 
-#endif /* NU_WITH_UTF32_READER */
-
-#ifdef NU_WITH_UTF32_WRITER
-
 void test_utf32_write_bom() {
 	char bom[4] = { 0 };
 
@@ -67,5 +45,3 @@ void test_utf32_write_bom() {
 		&& bom[0] == 0 && bom[1] == 0
 		&& (unsigned char)(bom[2]) == 0xFE && (unsigned char)(bom[3]) == 0xFF);
 }
-
-#endif /* NU_WITH_UTF32_WRITER */

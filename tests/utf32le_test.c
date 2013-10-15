@@ -3,8 +3,6 @@
 
 #include <libnu/libnu.h>
 
-#ifdef NU_WITH_UTF32LE_READER
-
 void test_utf32le_decoding() {
 	uint32_t u = 0;
 
@@ -14,8 +12,6 @@ void test_utf32le_decoding() {
 	assert(nu_utf32le_read("\x00\x04\x01\x00" /* 𐐀 */, &u) && u == 0x10400);
 	assert(nu_utf32le_read("\x31\x07\x02\x00" /* 𠜱 */, &u) && u == 0x020731);
 }
-
-#ifdef NU_WITH_REVERSE_READ
 
 void test_utf32le_revread() {
 	const char *input = "\x05\x02\x00\x00\x00\x04\x01\x00\x31\x07\x02\x00"; /* ȅ𐐀𠜱 */
@@ -29,11 +25,6 @@ void test_utf32le_revread() {
 	assert(u == 0x020731);
 }
 
-#endif /* NU_WITH_REVERSE_READ */
-#endif /* NU_WITH_UTF32LE_READER */
-
-#ifdef NU_WITH_UTF32LE_WRITER
-
 void test_utf32le_encoding() {
 	char p[32] = { 0 };
 
@@ -43,5 +34,3 @@ void test_utf32le_encoding() {
 	assert(nu_utf32le_write(0x10400, p) && memcmp("\x00\x04\x01\x00" /* 𐐀 */, p, 4) == 0);
 	assert(nu_utf32le_write(0x020731, p) && memcmp("\x31\x07\x02\x00" /* 𠜱 */, p, 4) == 0);
 }
-
-#endif /* NU_WITH_UTF32LE_WRITER */

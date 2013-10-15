@@ -6,8 +6,6 @@
 static const unsigned char CESU8[] = { 0xED, 0xA0, 0x81, 0xED, 0xB0, 0x80 };
 static const unsigned char CESU9[] = { 0xED, 0xAE, 0x80, 0xED, 0xB0, 0x80 };
 
-#ifdef NU_WITH_CESU8_READER
-
 void test_cesu8_decoding() {
 	uint32_t u = 0;
 	
@@ -18,8 +16,6 @@ void test_cesu8_decoding() {
 	assert(nu_cesu8_read((const char *)CESU8, &u) && u == 0x010400);
 	assert(nu_cesu8_read((const char *)CESU9, &u) && u == 0x0F0000);
 }
-
-#ifdef NU_WITH_REVERSE_READ
 
 void test_cesu8_revread() {
 	const unsigned char uinput[] = {
@@ -44,11 +40,6 @@ void test_cesu8_revread() {
 	assert(u == 0x010400);
 }
 
-#endif
-#endif
-
-#ifdef NU_WITH_CESU8_WRITER
-
 void test_cesu8_encoding() {
 	char p[32] = { 0 };
 
@@ -59,5 +50,3 @@ void test_cesu8_encoding() {
 	assert(nu_cesu8_write(0x010400, p) && memcmp(p, (const char *)CESU8, sizeof(CESU8)) == 0);
 	assert(nu_cesu8_write(0x0F0000, p) && memcmp(p, (const char *)CESU9, sizeof(CESU9)) == 0);
 }
-
-#endif

@@ -3,8 +3,6 @@
 
 #include <libnu/libnu.h>
 
-#ifdef NU_WITH_UTF16LE_READER
-
 void test_utf16le_decoding() {
 	uint32_t u = 0;
 
@@ -14,8 +12,6 @@ void test_utf16le_decoding() {
 	assert(nu_utf16le_read("\x01\xD8\x00\xDC" /* 𐐀 */, &u) && u == 0x10400);
 	assert(nu_utf16le_read("\x41\xD8\x31\xDF" /* 𠜱 */, &u) && u == 0x020731);
 }
-
-#ifdef NU_WITH_REVERSE_READ
 
 void test_utf16le_revread() {
 	const char *input = "\x05\x02\x01\xD8\x00\xDC\x41\xD8\x31\xDF"; /* ȅ𐐀𠜱 */
@@ -29,11 +25,6 @@ void test_utf16le_revread() {
 	assert(u == 0x020731);
 }
 
-#endif /* NU_WITH_REVERSE_READ */
-#endif /* NU_WITH_UTF16LE_READER */
-
-#ifdef NU_WITH_UTF16LE_WRITER
-
 void test_utf16le_encoding() {
 	char p[32] = { 0 };
 
@@ -43,5 +34,3 @@ void test_utf16le_encoding() {
 	assert(nu_utf16le_write(0x10400, p) && memcmp("\x01\xD8\x00\xDC" /* 𐐀 */, p, 4) == 0);
 	assert(nu_utf16le_write(0x020731, p) && memcmp("\x41\xD8\x31\xDF" /* 𠜱 */, p, 4) == 0);
 }
-
-#endif /* NU_WITH_UTF16LE_WRITER */

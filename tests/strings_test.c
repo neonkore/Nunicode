@@ -3,8 +3,6 @@
 
 #include <libnu/libnu.h>
 
-#ifdef NU_WITH_Z_STRINGS
-
 void test_strings_strlen() {
 	assert(nu_strlen("hello", nu_utf8_read) == 5);
 	assert(nu_strlen("привет", nu_utf8_read) == 6);
@@ -33,10 +31,6 @@ void test_strings_strrchr() {
 	assert(nu_strrchr(input, 0x0440 /* р */, nu_utf8_read) == input + 10);
 	assert(nu_strrchr(input, 0x0441, nu_utf8_read) == 0);
 }
-
-#endif /* NU_WITH_Z_STRINGS */
-
-#ifdef NU_WITH_N_STRINGS
 
 void test_strings_strnlen() {
 	assert(nu_strnlen("привет", 1, nu_utf8_read) == 1); /* might happen */
@@ -71,5 +65,3 @@ void test_strings_strrnchr() {
 	assert(nu_strrnchr(input, sizeof(input), 0x0441, nu_utf8_read) == 0); /* didn't go further than 0 */
 	assert(nu_strrnchr(input, 200, 0x0441, nu_utf8_read) == 0);
 }
-
-#endif /* NU_WITH_N_STRINGS */
