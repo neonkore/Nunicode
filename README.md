@@ -17,12 +17,12 @@ Encodings supported ATM:
 
 String functions supported for all encodings (works on encoded strings):
 
-* strlen (nu\_strlen)
-* strnlen (nu\_strnlen)
-* strchr (nu\_strchr)
-* strnchr (nu\_strnchr)
-* strrchr (nu\_strrchr)
-* strrnchr (nu\_strrnchr)
+* nu\_strlen
+* nu\_strnlen
+* nu\_strchr
+* nu\_strnchr
+* nu\_strrchr
+* nu\_strrnchr
 
 What it *CAN'T* do:
 
@@ -102,7 +102,7 @@ See also "WHY ITS GOOD".
 
 It will produce ``doc/html`` with Doxygen documentation in browesable HTML.
 
-## NOTES ON UTF-8
+## NOTES ON UTF-8, UTF-16 and UTF-32
 
 According to Unicode specification UTF-8 might contain byte order mark (BOM),
 however it doesn't make any sense to have BOM in UTF-8. Therefore nunicode has no
@@ -113,10 +113,6 @@ BOM is 3 bytes long: EF BB BF). You can also safely nu\_utf8\_read() BOM, it wil
 produce normal U+FEFF codepoint.
 
 Reference: [UTF BOM FAQ][]
-
-[UTF BOM FAQ]: http://www.unicode.org/faq/utf_bom.html#bom5
-
-## NOTES ON UTF-16
 
 Unicode defines 3 types of UTF-16 *each* affected by endianess.
 
@@ -133,11 +129,11 @@ BOM is handled by nu\_utf16 functions. It's up to you to decide if you need BOM 
 just UTF-16LE/BE. Either you choose, you'll get valid UTF-16 variant.
 
 Note that nunicode will never report string endianess explicitely but will provide
-read, write and BOM write functions instead. See ``samples/utf16.c``.
-
-## NOTES ON UTF-32
+read, reverse read, write and BOM write functions instead. See ``samples/utf16.c``.
 
 Everything said above about UTF-16 also applies to UTF-32.
+
+[UTF BOM FAQ]: http://www.unicode.org/faq/utf_bom.html#bom5
 
 ## NOTES ON REVERSE READING
 
@@ -240,7 +236,6 @@ Everything
 
 ## ROADMAP
 
-* 0.8: UTF-32, RC1
 * 0.9: RC2
 
 ## QUESTIONS?
