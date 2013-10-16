@@ -4,6 +4,7 @@
 #include "cesu8.h"
 #include "extra.h"
 #include "strings.h"
+#include "validate.h"
 #include "utf16.h"
 #include "utf16be.h"
 #include "utf16le.h"

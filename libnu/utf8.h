@@ -2,6 +2,7 @@
 #define NU_UTF8_H
 
 #include <stdint.h>
+#include <sys/types.h>
 
 #include "config.h"
 
@@ -43,6 +44,19 @@ const char* nu_utf8_read(const char *utf8, uint32_t *unicode);
 const char* nu_utf8_revread(uint32_t *unicode, const char *utf8);
 
 #endif /* NU_WITH_REVERSE_READ */
+
+#ifdef NU_WITH_VALIDATION
+
+/** Validate character in string
+ *
+ * @ingroup utf8
+ * @param encoded buffer with encoded string
+ * @param max_len buffer length
+ * @return character length or 0 on error
+ */
+int nu_utf8_validread(const char *encoded, size_t max_len);
+
+#endif /* NU_WITH_VALIDATION */
 #endif /* NU_WITH_UTF8_READER */
 
 #ifdef NU_WITH_UTF8_WRITER

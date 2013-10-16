@@ -44,6 +44,14 @@ const char* nu_utf8_revread(uint32_t *unicode, const char *utf8) {
 }
 
 #endif /* NU_WITH_REVERSE_READ */
+
+#ifdef NU_WITH_VALIDATION
+
+int nu_utf8_validread(const char *encoded, size_t max_len) {
+	return utf8_validread(encoded, max_len);
+}
+
+#endif /* NU_WITH_VALIDATION */
 #endif /* NU_WITH_UTF8_READER */
 
 #ifdef NU_WITH_UTF8_WRITER
