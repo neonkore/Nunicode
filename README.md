@@ -15,6 +15,7 @@ Encodings supported ATM:
 * CESU-8/Modified UTF-8
 * UTF-16 (BOM/LE/BE)
 * UTF-32 (BOM/LE/BE)
+* Encoding validation
 
 String functions supported for all encodings (works on encoded strings):
 
@@ -29,7 +30,6 @@ What it *CAN'T* do:
 
 * Unicode normal forms
 * Strings collation
-* Encoding verification (maybe later)
 
 ## WHY YOU DO ANOTHER UNICODE LIBRARY
 
@@ -224,6 +224,7 @@ UTF-32
 Misc
 
 * ``-DNU_WITH_REVERSE_READ`` - read encoded string in reverse order functions
+* ``-DNU_WITH_VALIDATION`` - string encoding validation functions
 * ``-DNU_WITH_Z_STRINGS`` - supported functions for 0-terminated strings
 * ``-DNU_WITH_N_STRINGS`` - supported functions fo unterminated strings
 * ``-DNU_WITH_STRINGS`` - implies ``-DNU_WITH_Z_STRINGS`` and ``-DNU_WITH_N_STRINGS``
