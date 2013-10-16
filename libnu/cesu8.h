@@ -39,7 +39,7 @@ const char* nu_cesu8_read(const char *cesu8, uint32_t *unicode);
  * @param cesu8 pointer to CESU-8 encoded string
  * @return pointer to previous character in CESU-8 string
  */
-const char* nu_cesu8_revread(uint32_t *unicode, const char *utf8);
+const char* nu_cesu8_revread(uint32_t *unicode, const char *cesu8);
 
 #endif /* NU_WITH_REVERSE_READ */
 #endif /* NU_WITH_CESU8_READER */
