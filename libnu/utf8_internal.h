@@ -130,8 +130,8 @@ static inline void b4_utf8(uint32_t codepoint, char *p) {
 static inline int utf8_validread(const char *p, size_t max_len) {
 	const unsigned char *up = (const unsigned char *)(p);
 
-	/* it should be 0b0xxxxxxx or 110xxxxx or 1110xxxx or 11110xxx
-	 * latter should be followed by 10xxxxxx */
+	/* it should be 0xxxxxxx or 110xxxxx or 1110xxxx or 11110xxx
+	 * latter should be followed by number of 10xxxxxx */
 
 	unsigned len = utf8_char_length(*p);
 

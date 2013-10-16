@@ -30,8 +30,7 @@ const char* nu_utf16be_revread(uint32_t *unicode, const char *utf16);
 
 #ifdef NU_WITH_VALIDATION
 
-/** Validate string
- *
+/**
  * @ingroup utf16
  * @see nu_utf16le_validread
  */

@@ -45,7 +45,7 @@ const char* nu_utf16le_revread(uint32_t *unicode, const char *utf16);
 
 #ifdef NU_WITH_VALIDATION
 
-/** Validate string
+/** Validate character in string
  *
  * @ingroup utf16
  * @param encoded buffer with encoded string
