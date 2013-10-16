@@ -159,6 +159,17 @@ would expect, won't do any redundant decoding, but will just iterate over the st
     	p = nu_utf8_revread(0, p);
     }
 
+## ENCODING VALIDATION
+
+All decoding functions has very limited error checking for performance reasons. nunicode
+expect valid UTF strings at input. It though provide nu\_validate() to check complete
+string before processing. This function won't fully decode string, but will run tests 
+instead.
+
+Normally you need validation at I/O boundaries only, actually at I boundary only,
+because if nu\_validate() is failing on product of nu\_\*\_write(), then this is bug
+in nunicode and it's need to be fixed.
+
 ## DOWNLOADS
 
 See [downloads][] section. Take versioned file from "Tags" tab.
