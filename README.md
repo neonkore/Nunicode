@@ -238,6 +238,8 @@ Everything
 ## ROADMAP
 
 * 0.9: RC2
+* 1.0
+* 1.1: encoded strings validation
 
 ## QUESTIONS?
 
