@@ -47,6 +47,11 @@ void test_zstrings_basic_error_handling();
 void test_nstrings_basic_error_handling();
 void test_extra_zstrings_basic_error_handling();
 void test_extra_nstrings_basic_error_handling();
+void test_validation_utf8();
+void test_validation_cesu8();
+void test_validation_utf16le();
+void test_validation_utf16be();
+void test_validation_utf32();
 
 testcase cases[] = {
 
@@ -104,6 +109,12 @@ testcase cases[] = {
 	test_nstrings_basic_error_handling,
 	test_extra_zstrings_basic_error_handling,
 	test_extra_nstrings_basic_error_handling,
+
+	test_validation_utf8,
+	test_validation_cesu8,
+	test_validation_utf16le,
+	test_validation_utf16be,
+	test_validation_utf32,
 };
 
 int main() {

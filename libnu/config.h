@@ -9,6 +9,7 @@
 #	define NU_WITH_STRINGS
 #	define NU_WITH_EXTRA
 #	define NU_WITH_REVERSE_READ
+#	define NU_WITH_VALIDATION
 #endif /* NU_WITH_EVERYTHING */
 
 #ifdef NU_WITH_UTF8

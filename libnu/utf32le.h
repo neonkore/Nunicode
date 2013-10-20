@@ -2,6 +2,7 @@
 #define NU_UTF32LE_H
 
 #include <stdint.h>
+#include <sys/types.h>
 
 #include "config.h"
 
@@ -26,6 +27,16 @@ const char* nu_utf32le_read(const char *utf32, uint32_t *unicode);
 const char* nu_utf32le_revread(uint32_t *unicode, const char *utf32);
 
 #endif /* NU_WITH_REVERSE_READ */
+
+#ifdef NU_WITH_VALIDATION
+
+/**
+ * @ingroup utf32
+ * @see nu_utf16le_validread
+ */
+int nu_utf32le_validread(const char *p, size_t max_len);
+
+#endif /* NU_WITH_VALIDATION */
 #endif /* NU_WITH_UTF32LE_READER */
 
 #ifdef NU_WITH_UTF32LE_WRITER

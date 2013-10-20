@@ -1,6 +1,8 @@
 #ifndef NU_UTF8_INTERNAL_H
 #define NU_UTF8_INTERNAL_H
 
+#include <sys/types.h>
+
 static inline unsigned utf8_char_length(const char c) {
 	const unsigned char uc = c;
 
@@ -123,6 +125,39 @@ static inline void b4_utf8(uint32_t codepoint, char *p) {
 	*(up + 1) = (0x80 | (codepoint & 0x030000) >> 12 | (codepoint & 0x00E000) >> 12);
 	*(up + 2) = (0x80 | (codepoint & 0x001F00) >> 6 | (codepoint & 0x0000E0) >> 6);
 	*(up + 3) = (0x80 | (codepoint & 0x3F));
+}
+
+static inline int utf8_validread(const char *p, size_t max_len) {
+	const unsigned char *up = (const unsigned char *)(p);
+
+	/* it should be 0xxxxxxx or 110xxxxx or 1110xxxx or 11110xxx
+	 * latter should be followed by number of 10xxxxxx */
+
+	unsigned len = utf8_char_length(*p);
+
+	switch (len) {
+		case 1: return 1; /* one byte character */
+		case 2:
+		case 3:
+		case 4: break;
+		default: return 0; /* abort */
+	}
+
+	if (max_len < len) {
+		return 0;
+	}
+
+	switch (len) {
+		case 2: return ((*(up + 1) & 0xC0) == 0x80 ? 2 : 0);
+		case 3: return ((*(up + 1) & 0xC0) == 0x80 
+		&& (*(up + 2) & 0xC0) == 0x80 ? 3 : 0);
+		
+		case 4: return ((*(up + 1) & 0xC0) == 0x80 
+		&& (*(up + 2) & 0xC0) == 0x80 
+		&& (*(up + 3) & 0xC0) == 0x80 ? 4 : 0);
+	}
+
+	return 0;
 }
 
 #endif /* NU_UTF8_INTERNAL_H */

@@ -2,6 +2,7 @@
 #define NU_CESU8_H
 
 #include <stdint.h>
+#include <sys/types.h>
 
 #include "config.h"
 
@@ -42,6 +43,19 @@ const char* nu_cesu8_read(const char *cesu8, uint32_t *unicode);
 const char* nu_cesu8_revread(uint32_t *unicode, const char *cesu8);
 
 #endif /* NU_WITH_REVERSE_READ */
+
+#ifdef NU_WITH_VALIDATION
+
+/** Validate character in string
+ *
+ * @ingroup utf8
+ * @param encoded buffer with encoded string
+ * @param max_len buffer length
+ * @return character length or 0 on error
+ */
+int nu_cesu8_validread(const char *encoded, size_t max_len);
+
+#endif /* NU_WITH_VALIDATION */
 #endif /* NU_WITH_CESU8_READER */
 
 #ifdef NU_WITH_CESU8_WRITER

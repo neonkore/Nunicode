@@ -42,6 +42,18 @@ const char* nu_utf16be_revread(uint32_t *unicode, const char *utf16) {
 }
 
 #endif /* NU_WITH_REVERSE_READ */
+
+#ifdef NU_WITH_VALIDATION
+
+int nu_utf16be_validread(const char *encoded, size_t max_len) {
+	if (max_len < 2) {
+		return 0;
+	}
+	
+	return utf16_validread(encoded, max_len);
+}
+
+#endif /* NU_WITH_VALIDATION */
 #endif /* NU_WITH_UTF16BE_READER */
 
 #ifdef NU_WITH_UTF16BE_WRITER

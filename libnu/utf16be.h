@@ -2,6 +2,7 @@
 #define NU_UTF16BE_H
 
 #include <stdint.h>
+#include <sys/types.h>
 
 #include "config.h"
 
@@ -26,6 +27,16 @@ const char* nu_utf16be_read(const char *utf16, uint32_t *unicode);
 const char* nu_utf16be_revread(uint32_t *unicode, const char *utf16);
 
 #endif /* NU_WITH_REVERSE_READ */
+
+#ifdef NU_WITH_VALIDATION
+
+/**
+ * @ingroup utf16
+ * @see nu_utf16le_validread
+ */
+int nu_utf16be_validread(const char *encoded, size_t max_len);
+
+#endif /* NU_WITH_VALIDATION */
 #endif /* NU_WITH_UTF16BE_READER */
 
 #ifdef NU_WITH_UTF16BE_WRITER

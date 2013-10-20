@@ -2,6 +2,7 @@
 #define NU_UTF16LE_H
 
 #include <stdint.h>
+#include <sys/types.h>
 
 #include "config.h"
 
@@ -41,6 +42,19 @@ const char* nu_utf16le_read(const char *utf16, uint32_t *unicode);
 const char* nu_utf16le_revread(uint32_t *unicode, const char *utf16);
 
 #endif /* NU_WITH_REVERSE_READ */
+
+#ifdef NU_WITH_VALIDATION
+
+/** Validate character in string
+ *
+ * @ingroup utf16
+ * @param encoded buffer with encoded string
+ * @param max_len buffer length
+ * @return character length or 0 on error
+ */
+int nu_utf16le_validread(const char *encoded, size_t max_len);
+
+#endif /* NU_WITH_VALIDATION */
 #endif /* NU_WITH_UTF16LE_READER */
 
 #ifdef NU_WITH_UTF16LE_WRITER

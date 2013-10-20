@@ -9,6 +9,7 @@ DOCDIR        = doc
 OBJS = libnu/cesu8.o \
        libnu/extra.o \
        libnu/strings.o \
+       libnu/validate.o \
        libnu/utf16.o \
        libnu/utf16be.o \
        libnu/utf16le.o \
@@ -21,6 +22,7 @@ TESTS_OBJS = tests/basic_error_handling_test.o \
              tests/cesu8_test.o \
              tests/extra_test.o \
              tests/strings_test.o \
+             tests/validation_test.o \
              tests/utf16_test.o \
              tests/utf16be_test.o \
              tests/utf16le_test.o \
