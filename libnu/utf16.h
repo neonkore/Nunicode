@@ -4,6 +4,7 @@
 #include <stdint.h>
 
 #include "strings.h"
+#include "validate.h"
 
 /** @defgroup utf16 UTF-16 support
  */
@@ -24,6 +25,7 @@ typedef struct {
 	nu_read_iterator_t read;
 	nu_write_iterator_t write;
 	nu_revread_iterator_t revread;
+	nu_validread_iterator_t validread;
 	nu_utf16_write_bom_t write_bom;
 } nu_utf16_bom_t;
 
@@ -32,8 +34,8 @@ typedef struct {
  * @ingroup utf16
  * @param encoded pointer to encoded strings
  * @param bom optional, this struct will be filled with read, write, etc
- * function for detected BOM. Note revread and write might be 0 if not
- * enabled in build options
+ * function for detected BOM. Note revread, validread and write might be 0
+ * if not enabled in build options
  * @return pointer to next character in UTF-16 string or 0 if BOM is
  * not found
  */

@@ -4,6 +4,7 @@
 #include <stdint.h>
 
 #include "strings.h"
+#include "validate.h"
 
 /** @defgroup utf32 UTF-32 support
  */
@@ -24,6 +25,7 @@ typedef struct {
 	nu_read_iterator_t read;
 	nu_write_iterator_t write;
 	nu_revread_iterator_t revread;
+	nu_validread_iterator_t validread;
 	nu_utf32_write_bom_t write_bom;
 } nu_utf32_bom_t;
 

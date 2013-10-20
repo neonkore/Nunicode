@@ -11,12 +11,14 @@ void test_utf16_read_bom() {
 	assert(bom.read == nu_utf16le_read);
 	assert(bom.write == nu_utf16le_write);
 	assert(bom.revread == nu_utf16le_revread);
+	assert(bom.validread == nu_utf16le_validread);
 	
 	assert(nu_utf16_read_bom("\xFE\xFF\x00\x67" /* g, BE */, &bom));
 	assert(bom.write_bom == nu_utf16be_write_bom);
 	assert(bom.read == nu_utf16be_read);
 	assert(bom.write == nu_utf16be_write);
 	assert(bom.revread == nu_utf16be_revread);
+	assert(bom.validread == nu_utf16be_validread);
 }
 
 void test_utf16_read_invalid_bom() {
@@ -27,6 +29,7 @@ void test_utf16_read_invalid_bom() {
 	assert(bom.read == 0);
 	assert(bom.write == 0);
 	assert(bom.revread == 0);
+	assert(bom.validread == 0);
 }
 
 void test_utf16_write_bom() {

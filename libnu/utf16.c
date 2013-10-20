@@ -18,6 +18,9 @@ const char* nu_utf16_read_bom(const char *encoded, nu_utf16_bom_t *bom) {
 #ifdef NU_WITH_REVERSE_READ
 			bom->revread = nu_utf16le_revread;
 #endif
+#ifdef NU_WITH_VALIDATION
+			bom->validread = nu_utf16le_validread;
+#endif
 		}
 	}
 	else if (bom0 == 0xFE && bom1 == 0xFF) {
@@ -29,6 +32,9 @@ const char* nu_utf16_read_bom(const char *encoded, nu_utf16_bom_t *bom) {
 			bom->write = nu_utf16be_write;
 #ifdef NU_WITH_REVERSE_READ
 			bom->revread = nu_utf16be_revread;
+#endif
+#ifdef NU_WITH_VALIDATION
+			bom->validread = nu_utf16be_validread;
 #endif
 		}
 	}

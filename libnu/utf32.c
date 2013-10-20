@@ -21,6 +21,9 @@ const char* nu_utf32_read_bom(const char *encoded, nu_utf32_bom_t *bom) {
 #ifdef NU_WITH_REVERSE_READ
 			bom->revread = nu_utf32le_revread;
 #endif
+#ifdef NU_WITH_VALIDATION
+			bom->validread = nu_utf32le_validread;
+#endif
 		}
 	}
 	else if (bom0 == 0 && bom1 == 0
@@ -33,6 +36,9 @@ const char* nu_utf32_read_bom(const char *encoded, nu_utf32_bom_t *bom) {
 			bom->write = nu_utf32be_write;
 #ifdef NU_WITH_REVERSE_READ
 			bom->revread = nu_utf32be_revread;
+#endif
+#ifdef NU_WITH_VALIDATION
+			bom->validread = nu_utf32be_validread;
 #endif
 		}
 	}
