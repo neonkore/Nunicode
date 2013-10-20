@@ -4,6 +4,7 @@ TESTS_TARGET  = tests/test
 UTF8_SAMPLE   = samples/utf8
 UTF16_SAMPLE  = samples/utf16
 REVR_SAMPLE   = samples/revread
+FOLD_SAMPLE   = samples/folding
 DOCDIR        = doc
 
 DECOMPS_SRC  = unicode.org/decomps.txt
@@ -33,6 +34,7 @@ OBJS = libnu/cesu8.o \
 TESTS_OBJS = tests/basic_error_handling_test.o \
              tests/cesu8_test.o \
              tests/extra_test.o \
+             tests/strcoll_test.o \
              tests/strings_test.o \
              tests/validation_test.o \
              tests/utf16_test.o \
@@ -53,7 +55,9 @@ SAMPLES_LDFLAGS = -s
 
 default: clean $(STATIC_TARGET) $(SHARED_TARGET)
 all: default $(TESTS_TARGET) samples
-gen: $(DUCET_DST) $(TOUPPER_DST) $(TOLOWER_DST)
+gen: clean_gen $(DUCET_DST) $(TOUPPER_DST) $(TOLOWER_DST)
+clean_gen:
+	rm -f libnu/gen/*.h
 
 %.o:%.c
 	$(CC) -I . $(CFLAGS) -c "$<" -o "$@"
@@ -89,11 +93,14 @@ $(UTF16_SAMPLE): samples/utf16.o
 $(REVR_SAMPLE): samples/revread.o
 	$(CC) samples/revread.o $(STATIC_TARGET) -o $(REVR_SAMPLE) $(SAMPLES_LDFLAGS)
 
-samples: $(UTF8_SAMPLE) $(UTF16_SAMPLE) $(REVR_SAMPLE)
+$(FOLD_SAMPLE): samples/folding.o
+	$(CC) samples/folding.o $(STATIC_TARGET) -o $(FOLD_SAMPLE) $(SAMPLES_LDFLAGS)
+
+samples: $(UTF8_SAMPLE) $(UTF16_SAMPLE) $(REVR_SAMPLE) $(FOLD_SAMPLE)
 
 clean:
 	rm -f "$(STATIC_TARGET)" "$(SHARED_TARGET)"
 	rm -f "$(TESTS_TARGET)"
-	rm -f "$(UTF8_SAMPLE)" "$(UTF16_SAMPLE)" "$(REVR_SAMPLE)"
+	rm -f "$(UTF8_SAMPLE)" "$(UTF16_SAMPLE)" "$(REVR_SAMPLE)" "$(FOLD_SAMPLE)"
 	rm -f *.o libnu/*.o tests/*.o samples/*.o
 	rm -fr "$(DOCDIR)"

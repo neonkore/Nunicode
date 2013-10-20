@@ -13,6 +13,7 @@
 # Fabiano C. Botelho, and Martin Dietzfelbinger
 
 import sys
+import time
 
 FNV_OFFSET_BASIS = 0xffffffff
 FNV_PRIME = 0x01000193
@@ -108,21 +109,29 @@ def PerfectHashLookup( G, key ):
     if d < 0: return -d-1
     return hash(d, key) % len(G)
 
+def GenerateInfo( G ):
+	print '''/*
+%d
+FNV_OFFSET_BASIS: %08X,
+FNV_PRIME: %08X,
+FNV_SIZE: %d
+*/''' % (time.time(), FNV_OFFSET_BASIS, FNV_PRIME, len(G))
+
 def Pass(c):
 	# Filter out non-characters from private area
 	return (ord(c) < 0xE000 or ord(c) > 0xF8FF)
 
 def FormatReplacement( r ):
-	chars = u''.join(filter(Pass, [ unichr(int(x, base=16)) for x in r ])).encode('utf-16le')
+	chars = u''.join(filter(Pass, [ unichr(int(x, base=16)) for x in r ])).encode('utf-8')
 	# Append \0 to int16-align strings
-	return '"%s\\x00"' % (''.join(( '\\x%02X' % (ord(x)) for x in chars )))
+	return '"%s"' % (''.join(( '\\x%02X' % (ord(x)) for x in chars )))
 
-VALUE_TEMPLATE = '''static const nu_udb_t VAL_%(codepoint)08X = {
-	0x%(codepoint)08X,
+VALUE_TEMPLATE = '''static const nu_udb_t V%(codepoint)05X = {
+	0x%(codepoint)05X,
 	%(decomps)s
 };'''
 
-VALUE_REF_TEMPLATE = '''&VAL_%(codepoint)08X'''
+VALUE_REF_TEMPLATE = '''&V%(codepoint)05X'''
 
 def GenerateValues( G, V ):
 	BOUNDARY = 6
@@ -130,7 +139,7 @@ def GenerateValues( G, V ):
 	for i, (codepoint, replacement) in enumerate(V):
 		print VALUE_TEMPLATE % { 'codepoint': int(codepoint, base=16), 
 		                         'decomps': FormatReplacement(replacement) }
-		pass
+		print
 
 	print
 	print 'static const nu_udb_t* VALUES[] = {';
@@ -152,7 +161,7 @@ def GenerateFNV( G ):
 	BOUNDARY = 12
 	
 	print
-	print 'static const uint16_t FNV[] = {'
+	print 'static const int16_t FNV[] = {'
 	for i, x in enumerate(G):
 		if i % BOUNDARY == 0:
 		    sys.stdout.write('\t')
@@ -176,5 +185,9 @@ for i, line in enumerate(sys.stdin):
 
 assert(len(G) == len(V))
 
+GenerateInfo(G)
 GenerateFNV(G)
 GenerateValues(G, V)
+
+#h = PerfectHashLookup(G, '0061')
+#print 'hash:', h, V[h]

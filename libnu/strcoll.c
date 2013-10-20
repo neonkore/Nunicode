@@ -31,7 +31,9 @@ static inline int _nu_uint32_encoded_cmp(uint32_t u, const char *encoded,
 	 * is different */
 
 	it(encoded, &eu);
-	return (eu == 0 ? 0 : -1);
+
+	cmp = (eu == 0 ? 0 : -1);
+	return cmp;
 }
 
 static inline int _nu_uint32casecmp(uint32_t u1, uint32_t u2) {
@@ -53,17 +55,18 @@ static inline int _nu_uint32casecmp(uint32_t u1, uint32_t u2) {
 			casemap_read, _nu_uint32cmp) * -1;
 	}
 
-	while (*casemap1 != 0 && *casemap2 != 0) {
-		uint32_t cu1 = 0, cu2 = 0;
+	uint32_t cu1 = 0, cu2 = 0;
+	do {
+		casemap1 = casemap_read(casemap1, &cu1);
+		casemap2 = casemap_read(casemap2, &cu2);
+		
 		int cmp = _nu_uint32cmp(cu1, cu2);
 
 		if (cmp != 0) {
 			return cmp;
 		}
-
-		++casemap1;
-		++casemap2;
 	}
+	while (cu1 != 0 && cu2 != 0);
 
 	return 0;
 }
@@ -97,8 +100,15 @@ static inline int _nu_encoded_decomposed_cmp(const char **encoded, const char **
 	uint32_t *u1, uint32_t *u2) {
 
 	do {
-		*encoded = encoded_read(*encoded, u1);
-		*decomposed = decomp_read(*decomposed, u2);
+		const char *d = decomp_read(*decomposed, u2);
+		const char *e = encoded_read(*encoded, u1);
+
+		if (*u2 == 0) { /* end of decomposed value */
+			break;
+		}
+
+		*decomposed = d;
+		*encoded = e;
 		
 		int cmp = compare(*u1, *u2);
 		if (cmp != 0) {
@@ -117,8 +127,8 @@ static int _nu_strcoll(const char *p1, const char *limit, const char *p2,
 	while (p1 < limit) {
 		uint32_t u1 = 0, u2 = 0;
 
-		it1(p1, &u1);
-		it2(p2, &u2);
+		const char *np1 = it1(p1, &u1);
+		const char *np2 = it2(p2, &u2);
 
 		if (u1 == 0 && u2 == 0) {
 			return 0;
@@ -131,6 +141,8 @@ static int _nu_strcoll(const char *p1, const char *limit, const char *p2,
 		int cmp = 0;
 		if (decomps1 == 0 && decomps2 == 0) {
 			cmp = compare(u1, u2);
+			p1 = np1;
+			p2 = np2;
 			goto pass;
 		}
 

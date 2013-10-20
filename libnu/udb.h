@@ -16,7 +16,7 @@ typedef struct {
 } nu_udb_t;
 
 const char* nu_udb_lookup(uint32_t codepoint, nu_read_iterator_t *it,
-	const uint16_t *FNV, size_t FNV_SIZE, const nu_udb_t **VALUES);
+	const int16_t *FNV, size_t FNV_SIZE, const nu_udb_t **VALUES);
 
 #if defined (__cplusplus) || defined (c_plusplus)
 }

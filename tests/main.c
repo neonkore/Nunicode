@@ -52,6 +52,10 @@ void test_validation_cesu8();
 void test_validation_utf16le();
 void test_validation_utf16be();
 void test_validation_utf32();
+void test_strcoll();
+void test_strncoll();
+void test_strcasecoll();
+void test_strcasencoll();
 
 testcase cases[] = {
 
@@ -115,6 +119,11 @@ testcase cases[] = {
 	test_validation_utf16le,
 	test_validation_utf16be,
 	test_validation_utf32,
+
+	test_strcoll,
+	test_strncoll,
+	test_strcasecoll,
+	test_strcasencoll,
 };
 
 int main() {
@@ -123,6 +132,6 @@ int main() {
 		printf(".");
 	}
 
-	printf(" OK - %d tests\n", i);
+	printf("\nOK - %d tests\n", i);
 	return 0;
 }

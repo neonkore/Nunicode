@@ -26,12 +26,13 @@ static inline uint32_t fnv(uint32_t hash, uint32_t codepoint) {
 	return hash;
 }
 
-static inline int32_t fnv_hash(const uint16_t *FNV, size_t size, uint32_t codepoint) {
-	int32_t hash = FNV[fnv(0, codepoint) % size];
-	if (hash < 0) {
-		return -hash - 1;
+static inline uint32_t fnv_hash(const int16_t *FNV, size_t size, uint32_t codepoint) {
+	uint32_t hash = fnv(0, codepoint);
+	int16_t offset = FNV[hash % size];
+	if (offset < 0) {
+		return (uint32_t)(-offset - 1);
 	}
-	return fnv(hash, codepoint) % size;
+	return (fnv(offset, codepoint) % size);
 }
 
 static inline const char* fnv_lookup(const nu_udb_t **V, uint32_t codepoint, uint32_t hash) {
