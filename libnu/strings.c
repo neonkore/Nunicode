@@ -11,12 +11,8 @@ static ssize_t _nu_strlen(const char *encoded, const char *limit, nu_read_iterat
 			break;
 		}
 		
-		const char *np = it(p, 0);
-		if (np == 0) {
-			return -(p - encoded + 1);
-		}
+		p = it(p, 0);
 
-		p = np;
 		++len;
 	}
 
@@ -35,10 +31,6 @@ static ssize_t _nu_bytelen(const uint32_t *unicode, const uint32_t *limit, nu_wr
 		size_t byte_len = (size_t)it(*p, 0);
 		len += byte_len;
 
-		if (byte_len == 0) {
-			return -(p - unicode + 1);
-		}
-
 		++p;
 	}
 
@@ -55,10 +47,6 @@ static const char* _nu_strchr(const char *encoded, const char *limit, uint32_t c
 
 		uint32_t u = 0;
 		const char *np = it(p, &u);
-
-		if (np == 0) {
-			return 0;
-		}
 
 		if (u == c) {
 			return p;
@@ -81,10 +69,6 @@ static const char* _nu_strrchr(const char *encoded, const char *limit, uint32_t 
 
 		uint32_t u = 0;
 		const char *np = it(p, &u);
-
-		if (np == 0) {
-			return 0;
-		}
 
 		if (u == c) {
 			last  = p;

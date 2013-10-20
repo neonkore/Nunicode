@@ -18,8 +18,7 @@ OBJS = libnu/cesu8.o \
        libnu/utf32le.o \
        libnu/utf8.o \
 
-TESTS_OBJS = tests/basic_error_handling_test.o \
-             tests/cesu8_test.o \
+TESTS_OBJS = tests/cesu8_test.o \
              tests/extra_test.o \
              tests/strings_test.o \
              tests/validation_test.o \

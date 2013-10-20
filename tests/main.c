@@ -43,10 +43,6 @@ void test_strings_writestr();
 void test_strings_writenstr();
 void test_strings_transformstr();
 void test_strings_transformnstr();
-void test_zstrings_basic_error_handling();
-void test_nstrings_basic_error_handling();
-void test_extra_zstrings_basic_error_handling();
-void test_extra_nstrings_basic_error_handling();
 void test_validation_utf8();
 void test_validation_cesu8();
 void test_validation_utf16le();
@@ -105,11 +101,6 @@ testcase cases[] = {
 	test_strings_writenstr,
 	test_strings_transformnstr,
 	
-	test_zstrings_basic_error_handling,
-	test_nstrings_basic_error_handling,
-	test_extra_zstrings_basic_error_handling,
-	test_extra_nstrings_basic_error_handling,
-
 	test_validation_utf8,
 	test_validation_cesu8,
 	test_validation_utf16le,
