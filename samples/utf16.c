@@ -12,10 +12,10 @@ int main() {
 
 	printf(">>> input: %d bytes\n", sizeof(input));
 
-	nu_read_iterator_t read = 0;
-	const char *encoded = nu_utf16_read_bom(input, 0, &read, 0, 0);
+	nu_utf16_bom_t bom = { 0 };
+	const char *encoded = nu_utf16_read_bom(input, &bom);
 
-	ssize_t u_len = nu_strnlen(input, sizeof(input), read);
+	ssize_t u_len = nu_strnlen(input, sizeof(input), bom.read);
 	printf("--- decoded utf16 length: %d\n", u_len);
 
 	ssize_t u8_len = u_len * 4;
@@ -24,7 +24,8 @@ int main() {
 	char *utf8 = malloc(u8_len + 1);
 	memset(utf8, 0, u8_len + 1);
 
-	nu_transformnstr(encoded, sizeof(input) - sizeof(NU_UTF16_BOM), utf8, read, nu_utf8_write);
+	nu_transformnstr(encoded, sizeof(input) - sizeof(NU_UTF16_BOM), 
+		utf8, bom.read, nu_utf8_write);
 	printf("<<< encoded utf8: %s\n", utf8);
 
 	return 0;
