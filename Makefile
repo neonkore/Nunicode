@@ -31,8 +31,7 @@ OBJS = libnu/cesu8.o \
        libnu/utf32le.o \
        libnu/utf8.o \
 
-TESTS_OBJS = tests/basic_error_handling_test.o \
-             tests/casemap_test.o \
+TESTS_OBJS = tests/casemap_test.o \
              tests/cesu8_test.o \
              tests/ducet_test.o \
              tests/extra_test.o \
