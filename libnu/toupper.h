@@ -9,7 +9,11 @@
 extern "C" {
 #endif
 
+#ifdef NU_WITH_TOUPPER
+
 const char* nu_toupper(uint32_t codepoint, nu_read_iterator_t *it);
+
+#endif /* NU_WITH_TOUPPER */
 
 #if defined (__cplusplus) || defined (c_plusplus)
 }

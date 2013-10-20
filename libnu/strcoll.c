@@ -184,6 +184,8 @@ pass:
 	return 0;
 }
 
+#ifdef NU_WITH_COLLATION
+
 int nu_strcmp(const char *s1, const char *s2, nu_read_iterator_t it1, nu_read_iterator_t it2) {
 	return _nu_strcmp(s1, (const char *)(-1), s2, it1, it2, _nu_uint32cmp);
 }
@@ -202,6 +204,10 @@ int nu_strncoll(const char *s1, const char *s2, size_t max_len, nu_read_iterator
 		nu_decompose, _nu_uint32cmp);
 }
 
+#endif /* NU_WITH_COLLATION */
+
+#ifdef NU_WITH_CASEMAP
+
 int nu_strcasecmp(const char *s1, const char *s2, nu_read_iterator_t it1, nu_read_iterator_t it2) {
 	return _nu_strcmp(s1, (const char *)(-1), s2, it1, it2, _nu_uint32casecmp);
 }
@@ -219,3 +225,5 @@ int nu_strcasencoll(const char *s1, const char *s2, size_t max_len, nu_read_iter
 	return _nu_strcoll(s1, s1 + max_len, s2, it1, it2, 
 		nu_decompose, _nu_uint32casecmp);
 }
+
+#endif /* NU_WITH_CASEMAP */

@@ -9,7 +9,11 @@
 extern "C" {
 #endif
 
+#ifdef NU_WITH_TOLOWER
+
 const char* nu_tolower(uint32_t codepoint, nu_read_iterator_t *it);
+
+#endif /* NU_WITH_TOLOWER */
 
 #if defined (__cplusplus) || defined (c_plusplus)
 }

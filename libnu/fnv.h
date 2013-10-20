@@ -1,6 +1,12 @@
 #ifndef NU_FNV_H
 #define NU_FNV_H
 
+/* Intentionally undocumented
+ *
+ * http://isthe.com/chongo/tech/comp/fnv/
+ * http://iswsa.acm.org/mphf/index.html
+ */
+
 #include <stdint.h>
 #include <sys/types.h>
 
@@ -13,6 +19,8 @@ extern "C" {
 #define FNV_OFFSET_BASIS 0xFFFFFFFF /* those need to be the same        */
 #define FNV_PRIME        0x01000193 /* values as used in MPH generation */
 
+/** Caclulate FNV number from codepoint
+ */
 static inline uint32_t fnv(uint32_t hash, uint32_t codepoint) {
 	if (hash == 0) {
 		hash = FNV_PRIME;
@@ -26,15 +34,19 @@ static inline uint32_t fnv(uint32_t hash, uint32_t codepoint) {
 	return hash;
 }
 
-static inline uint32_t fnv_hash(const int16_t *FNV, size_t size, uint32_t codepoint) {
+/** Get hash value of unicode codepoint
+ */
+static inline uint32_t fnv_hash(const int16_t *FNV, size_t FNV_SIZE, uint32_t codepoint) {
 	uint32_t hash = fnv(0, codepoint);
-	int16_t offset = FNV[hash % size];
+	int16_t offset = FNV[hash % FNV_SIZE];
 	if (offset < 0) {
 		return (uint32_t)(-offset - 1);
 	}
-	return (fnv(offset, codepoint) % size);
+	return (fnv(offset, codepoint) % FNV_SIZE);
 }
 
+/** Lookup value in MPH
+ */
 static inline const char* fnv_lookup(const nu_udb_t **V, uint32_t codepoint, uint32_t hash) {
 	const nu_udb_t *r = V[hash];
 

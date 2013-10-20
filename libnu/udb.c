@@ -2,6 +2,8 @@
 #include "udb.h"
 #include "utf8.h"
 
+#ifdef NU_WITH_UDB
+
 const char* nu_udb_lookup(uint32_t codepoint, nu_read_iterator_t *it,
 	const int16_t *FNV, size_t FNV_SIZE, const nu_udb_t ** VALUES) {
 
@@ -14,3 +16,5 @@ const char* nu_udb_lookup(uint32_t codepoint, nu_read_iterator_t *it,
 
 	return data;
 }
+
+#endif /* NU_WITH_UDB */
