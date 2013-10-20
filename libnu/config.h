@@ -10,6 +10,8 @@
 #	define NU_WITH_EXTRA
 #	define NU_WITH_REVERSE_READ
 #	define NU_WITH_VALIDATION
+#	define NU_WITH_COLLATION
+#	define NU_WITH_CASEMAP
 #endif /* NU_WITH_EVERYTHING */
 
 #ifdef NU_WITH_UTF8
@@ -71,5 +73,16 @@
 #	define NU_WITH_Z_EXTRA
 #	define NU_WITH_N_EXTRA
 #endif /* NU_WITH_STRINGS */
+
+#ifdef NU_WITH_COLLATION
+#	define NU_WITH_UTF16LE_READER
+#	define NU_WITH_TOUPPER
+#endif /* NU_WITH_COLLATION */
+
+#ifdef NU_WITH_CASEMAP
+#	define NU_WITH_UTF16LE_READER
+#	define NU_WITH_TOLOWER
+#	define NU_WITH_TOUPPER
+#endif /* NU_WITH_CASEMAP */
 
 #endif /* NU_BUILD_CONFIG_H */

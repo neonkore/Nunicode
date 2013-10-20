@@ -1,0 +1,16 @@
+#!/usr/bin/python
+
+import sys
+from unidata import *
+
+d = dict()
+
+for line in sys.stdin:
+	if not line or not line.strip() or line[0] == '#':
+		continue
+
+	codepoint, _, replacement = line.split(';')[0:3]
+	d[unidata_strip(codepoint)] = unidata_split(replacement)
+
+for codepoint, replacement in sorted(d.iteritems()):
+	print '%05X %s' % (int(codepoint, base=16), ','.join(replacement))

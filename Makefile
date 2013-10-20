@@ -6,10 +6,22 @@ UTF16_SAMPLE  = samples/utf16
 REVR_SAMPLE   = samples/revread
 DOCDIR        = doc
 
+DECOMPS_SRC  = unicode.org/decomps.txt
+UNIDATA_SRC  = unicode.org/UnicodeData.txt
+SPECIAL_SRC  = unicode.org/SpecialCasing.txt
+DUCET_DST    = libnu/gen/_ducet.h
+TOUPPER_DST  = libnu/gen/_toupper.h
+TOLOWER_DST  = libnu/gen/_tolower.h
+
 OBJS = libnu/cesu8.o \
+       libnu/ducet.o \
        libnu/extra.o \
+       libnu/strcoll.o \
        libnu/strings.o \
+       libnu/toupper.o \
+       libnu/tolower.o \
        libnu/validate.o \
+       libnu/udb.o \
        libnu/utf16.o \
        libnu/utf16be.o \
        libnu/utf16le.o \
@@ -39,13 +51,23 @@ SHARED_LDFLAGS = -s
 TESTS_LDFLAGS = -g
 SAMPLES_LDFLAGS = -s
 
-DOCDIR = "doc"
-
 default: clean $(STATIC_TARGET) $(SHARED_TARGET)
 all: default $(TESTS_TARGET) samples
+gen: $(DUCET_DST) $(TOUPPER_DST) $(TOLOWER_DST)
 
 %.o:%.c
 	$(CC) -I . $(CFLAGS) -c "$<" -o "$@"
+
+$(DUCET_DST):
+	cat $(DECOMPS_SRC) | tools/decomps-tokeys | tools/mph >$(DUCET_DST)
+
+$(TOUPPER_DST):
+	(cat $(UNIDATA_SRC) | tools/unidata-toupper && cat $(SPECIAL_SRC) \
+	| tools/special-toupper) | tools/mph >$(TOUPPER_DST)
+
+$(TOLOWER_DST):
+	(cat $(UNIDATA_SRC) | tools/unidata-tolower && cat $(SPECIAL_SRC) \
+	| tools/special-tolower) | tools/mph >$(TOLOWER_DST)
 
 $(STATIC_TARGET): $(OBJS)
 	$(AR) crs "$(STATIC_TARGET)" $(OBJS)

@@ -14,6 +14,10 @@
 #include "config.h"
 #include "strings.h"
 
+#if defined (__cplusplus) || defined (c_plusplus)
+extern "C" {
+#endif
+
 #ifdef NU_WITH_Z_EXTRA
 
 /** Read 0-terminated string
@@ -96,5 +100,9 @@ int nu_writenstr(const uint32_t *unicode, size_t max_len, char *encoded, nu_writ
 int nu_transformnstr(const char *source, size_t max_len, char *dest, nu_read_iterator_t read_it, nu_write_iterator_t write_it);
 
 #endif /* NU_WITH_N_EXTRA */
+
+#if defined (__cplusplus) || defined (c_plusplus)
+}
+#endif
 
 #endif /* NU_EXTRA_H */

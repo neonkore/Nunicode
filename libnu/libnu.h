@@ -3,8 +3,12 @@
 
 #include "cesu8.h"
 #include "extra.h"
+#include "strcoll.h"
 #include "strings.h"
+#include "tolower.h"
+#include "toupper.h"
 #include "validate.h"
+#include "udb.h"
 #include "utf16.h"
 #include "utf16be.h"
 #include "utf16le.h"

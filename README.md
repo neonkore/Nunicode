@@ -56,7 +56,8 @@ See also "WHY ITS GOOD".
 
 ## WHY ITS GOOD
 
-* Small size: UTF-8 encoding/decoding - 1.5Kb, UTF-8 encoding/decoding + 0-terminated string functions - 3Kb
+* Small size: UTF-8 encoding/decoding - 1.5Kb, UTF-8 encoding/decoding +
+  0-terminated string functions - 3Kb
 * Zero memory footprint
 * Small CPU footprint
 * Endianess-agnostic
@@ -106,12 +107,12 @@ It will produce ``doc/html`` with Doxygen documentation in browesable HTML.
 ## NOTES ON UTF-8, UTF-16 AND UTF-32
 
 According to Unicode specification UTF-8 might contain byte order mark (BOM),
-however it doesn't make any sense to have BOM in UTF-8. Therefore nunicode has no
-embedded means to deal with UTF-8 BOM, neither detect, read or write.
+however it doesn't make any sense to have BOM in UTF-8. Therefore nunicode has
+no embedded means to deal with UTF-8 BOM, neither detect, read or write.
 
 If you are facing this crap, just +3 char pointer to skip BOM. (Note that UTF-8
-BOM is 3 bytes long: EF BB BF). You can also safely nu\_utf8\_read() BOM, it will
-produce normal U+FEFF codepoint.
+BOM is 3 bytes long: EF BB BF). You can also safely nu\_utf8\_read() BOM, it
+will produce normal U+FEFF codepoint.
 
 Reference: [UTF BOM FAQ][]
 
@@ -122,36 +123,38 @@ Unicode defines 3 types of UTF-16 *each* affected by endianess.
 3. UTF-16BE (big endian)
 
 LE and BE are obviusly little-endian and big-endian, generic one's endianess is
-defined by the byte order mark (BOM) at the beginning of the string. Thus generic
-UTF-16 is always BOM + either UTF-16LE or UTF-16BE.
+defined by the byte order mark (BOM) at the beginning of the string. Thus
+generic UTF-16 is always BOM + either UTF-16LE or UTF-16BE.
 
 nunicode provide only nu\_utf16le and nu\_utf16be for the encoding and decoding,
-BOM is handled by nu\_utf16 functions. It's up to you to decide if you need BOM or
-just UTF-16LE/BE. Either you choose, you'll get valid UTF-16 variant.
+BOM is handled by nu\_utf16 functions. It's up to you to decide if you need BOM
+or just UTF-16LE/BE. Either you choose, you'll get valid UTF-16 variant.
 
-Note that nunicode will never report string endianess explicitely but will provide
-read, reverse read, write and BOM write functions instead. See ``samples/utf16.c``.
+Note that nunicode will never report string endianess explicitely but will
+provide read, reverse read, write and BOM write functions instead. See 
+``samples/utf16.c``.
 
 Everything said above about UTF-16 also applies to UTF-32.
 
 [UTF BOM FAQ]: http://www.unicode.org/faq/utf_bom.html#bom5
 
-## NOTES ON REVERSE READING
+## REVERSE READING
 
 nunicode do not provide str\[i\] (access by index) equivalent since it will 
 always be slow. Instead you can do nu\_utf8\_revread(&u, encoded) and other
 encodings variants to read character in backward direction.
 
-It is always a bad idea to pass arbitrary pointer to revread(). UTF-8 and CESU-8
-can possibly recover from programming error (pointer poiting to the middle of 
-multibyte UTF-8 sequence), but UTF-16 and UTF-32 revread will fail badly. In fact,
-UTF-32 revread is just "const char \*p - 4".
+It is always a bad idea to pass arbitrary pointer to revread(). UTF-8 and
+CESU-8 can possibly recover from programming error (pointer poiting to the 
+middle of multibyte UTF-8 sequence), but UTF-16 and UTF-32 revread will fail
+badly. In fact, UTF-32 revread is just "const char \*p - 4".
 
-Pointer passed to revread() is supposed to always come from call to nu\_utf8\_read(). 
-Otherwise prepare to unforeseen consequences.
+Pointer passed to revread() is supposed to always come from call to
+nu\_utf8\_read(). Otherwise prepare to unforeseen consequences.
 
-As a side note, if you pass 0 as a pointer to decoded character, revread(), as you
-would expect, won't do any redundant decoding, but will just iterate over the string.
+As a side note, if you pass 0 as a pointer to decoded character, revread(), as
+you would expect, won't do any redundant decoding, but will just iterate over
+the string.
 
     :::c
     /* skip 5 characters backwards */
@@ -161,14 +164,14 @@ would expect, won't do any redundant decoding, but will just iterate over the st
 
 ## ENCODING VALIDATION
 
-All decoding functions has very limited error checking for performance reasons. nunicode
-expect valid UTF strings at input. It though provide nu\_validate() to check complete
-string before processing. This function won't fully decode string, but will run tests 
-instead.
+All decoding functions has very limited error checking for performance
+reasons. nunicode expect valid UTF strings at input. It though provide
+nu\_validate() to check complete string before processing. This function
+won't fully decode string, but will run tests instead.
 
-Normally you need validation at I/O boundaries only, actually at I boundary only,
-because if nu\_validate() is failing on product of nu\_\*\_write(), then this is bug
-in nunicode and it's need to be fixed.
+Normally you need validation at I/O boundaries only, actually at I boundary
+only, because if nu\_validate() is failing on product of nu\_\*\_write(), then
+this is bug in nunicode and it's need to be fixed.
 
 ## DOWNLOADS
 
@@ -206,27 +209,32 @@ UTF-8
 
 * ``-DNU_WITH_UTF8_READER`` - UTF-8 decoding
 * ``-DNU_WITH_UTF8_WRITER`` - UTF-8 encoding
-* ``-DNU_WITH_UTF8`` - implies ``-DNU_WITH_UTF8_READER`` and ``-DNU_WITH_UTF8_WRITER``
+* ``-DNU_WITH_UTF8`` - implies ``-DNU_WITH_UTF8_READER``
+  and ``-DNU_WITH_UTF8_WRITER``
 
 CESU-8
 
 * ``-DNU_WITH_CESU8_READER`` - CESU-8 decoding
 * ``-DNU_WITH_CESU8_WRITER`` - CESU-8 encoding
-* ``-DNU_WITH_CESU8`` - implies ``-DNU_WITH_CESU8_READER`` and ``-DNU_WITH_CESU8_WRITER``
+* ``-DNU_WITH_CESU8`` - implies ``-DNU_WITH_CESU8_READER``
+  and ``-DNU_WITH_CESU8_WRITER``
 
 UTF-16
 
 * ``-DNU_WITH_UTF16LE_READER`` - UTF-16LE decoding
 * ``-DNU_WITH_UTF16LE_WRITER`` - UTF-16LE encoding
-* ``-DNU_WITH_UTF16LE`` - implies ``-DNU_WITH_UTF16LE_READER`` and ``-DNU_WITH_UTF16LE_WRITER``
+* ``-DNU_WITH_UTF16LE`` - implies ``-DNU_WITH_UTF16LE_READER``
+  and ``-DNU_WITH_UTF16LE_WRITER``
 * ``-DNU_WITH_UTF16BE_READER`` - UTF-16BE decoding
 * ``-DNU_WITH_UTF16BE_WRITER`` - UTF-16BE encoding
-* ``-DNU_WITH_UTF16BE`` - implies ``-DNU_WITH_UTF16BE_READER`` and ``-DNU_WITH_UTF16BE_WRITER``
-* ``-DNU_WITH_UTF16_READER`` - UTF-16 decoding, also implies ``-DNU_WITH_UTF16LE_READER`` 
-  and ``-DNU_WITH_UTF16BE_READER``
-* ``-DNU_WITH_UTF16_WRITER`` - UTF-16 encoding, also implies ``-DNU_WITH_UTF16LE_WRITER``
+* ``-DNU_WITH_UTF16BE`` - implies ``-DNU_WITH_UTF16BE_READER``
   and ``-DNU_WITH_UTF16BE_WRITER``
-* ``-DNU_WITH_UTF16`` - implies ``-DNU_WITH_UTF16_READER`` and ``-DNU_WITH_UTF16_WRITER``
+* ``-DNU_WITH_UTF16_READER`` - UTF-16 decoding, also implies 
+  ``-DNU_WITH_UTF16LE_READER`` and ``-DNU_WITH_UTF16BE_READER``
+* ``-DNU_WITH_UTF16_WRITER`` - UTF-16 encoding, also implies 
+  ``-DNU_WITH_UTF16LE_WRITER`` and ``-DNU_WITH_UTF16BE_WRITER``
+* ``-DNU_WITH_UTF16`` - implies ``-DNU_WITH_UTF16_READER``
+  and ``-DNU_WITH_UTF16_WRITER``
 
 UTF-32
 
@@ -238,10 +246,12 @@ Misc
 * ``-DNU_WITH_VALIDATION`` - string encoding validation functions
 * ``-DNU_WITH_Z_STRINGS`` - supported functions for 0-terminated strings
 * ``-DNU_WITH_N_STRINGS`` - supported functions fo unterminated strings
-* ``-DNU_WITH_STRINGS`` - implies ``-DNU_WITH_Z_STRINGS`` and ``-DNU_WITH_N_STRINGS``
+* ``-DNU_WITH_STRINGS`` - implies ``-DNU_WITH_Z_STRINGS``
+  and ``-DNU_WITH_N_STRINGS``
 * ``-DNU_WITH_Z_EXTRA`` - extra functions for 0-terminated strings
 * ``-DNU_WITH_N_EXTRA`` - extra functions fo unterminated strings
-* ``-DNU_WITH_EXTRA`` - implies ``-DNU_WITH_Z_EXTRA`` and ``-DNU_WITH_N_EXTRA``
+* ``-DNU_WITH_EXTRA`` - implies ``-DNU_WITH_Z_EXTRA``
+  and ``-DNU_WITH_N_EXTRA``
 
 Everything
 
