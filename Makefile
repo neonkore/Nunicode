@@ -34,6 +34,8 @@ OBJS = libnu/cesu8.o \
 TESTS_OBJS = tests/basic_error_handling_test.o \
              tests/cesu8_test.o \
              tests/extra_test.o \
+             tests/fnv_test.o \
+             tests/strcmp_test.o \
              tests/strcoll_test.o \
              tests/strings_test.o \
              tests/validation_test.o \

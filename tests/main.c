@@ -52,10 +52,15 @@ void test_validation_cesu8();
 void test_validation_utf16le();
 void test_validation_utf16be();
 void test_validation_utf32();
+void test_fnv_lookup();
 void test_strcoll();
 void test_strncoll();
 void test_strcasecoll();
 void test_strcasencoll();
+void test_strcmp();
+void test_strncmp();
+void test_strcasecmp();
+void test_strcasencmp();
 
 testcase cases[] = {
 
@@ -120,10 +125,17 @@ testcase cases[] = {
 	test_validation_utf16be,
 	test_validation_utf32,
 
+	test_fnv_lookup,
+
 	test_strcoll,
 	test_strncoll,
 	test_strcasecoll,
 	test_strcasencoll,
+
+	test_strcmp,
+	test_strncmp,
+	test_strcasecmp,
+	test_strcasencmp,
 };
 
 int main() {
