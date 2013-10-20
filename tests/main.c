@@ -53,6 +53,10 @@ void test_validation_utf16le();
 void test_validation_utf16be();
 void test_validation_utf32();
 void test_fnv_lookup();
+void test_udb_lookup();
+void test_ducet();
+void test_toupper();
+void test_tolower();
 void test_strcoll();
 void test_strncoll();
 void test_strcasecoll();
@@ -126,6 +130,10 @@ testcase cases[] = {
 	test_validation_utf32,
 
 	test_fnv_lookup,
+	test_udb_lookup,
+	test_ducet,
+	test_toupper,
+	test_tolower,
 
 	test_strcoll,
 	test_strncoll,

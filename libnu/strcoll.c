@@ -2,7 +2,7 @@
 
 #include "ducet.h"
 #include "strcoll.h"
-#include "toupper.h"
+#include "casemap.h"
 
 static inline int _nu_uint32cmp(uint32_t u1, uint32_t u2) {
 	if (u1 < u2) {
@@ -37,38 +37,11 @@ static inline int _nu_uint32_encoded_cmp(uint32_t u, const char *encoded,
 }
 
 static inline int _nu_uint32casecmp(uint32_t u1, uint32_t u2) {
-	nu_read_iterator_t casemap_read = 0;
-	const char *casemap1 = nu_toupper(u1, &casemap_read);
-	const char *casemap2 = nu_toupper(u2, &casemap_read);
+	uint32_t up1 = nu_toupper(u1);
+	uint32_t up2 = nu_toupper(u2);
 
-	if (casemap1 == 0 && casemap2 == 0) {
-		return _nu_uint32cmp(u1, u2);
-	}
-
-	if (casemap1 == 0) {
-		return _nu_uint32_encoded_cmp(u1, casemap2, 
-			casemap_read, _nu_uint32cmp);
-	}
-
-	if (casemap2 == 0) {
-		return _nu_uint32_encoded_cmp(u2, casemap1,
-			casemap_read, _nu_uint32cmp) * -1;
-	}
-
-	uint32_t cu1 = 0, cu2 = 0;
-	do {
-		casemap1 = casemap_read(casemap1, &cu1);
-		casemap2 = casemap_read(casemap2, &cu2);
-		
-		int cmp = _nu_uint32cmp(cu1, cu2);
-
-		if (cmp != 0) {
-			return cmp;
-		}
-	}
-	while (cu1 != 0 && cu2 != 0);
-
-	return 0;
+	return _nu_uint32cmp((up1 == 0 ? u1 : up1),
+		(up2 == 0 ? u2 : up2));
 }
 
 static int _nu_strcmp(const char *s1, const char *limit, const char *s2, 

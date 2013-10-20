@@ -1,12 +1,12 @@
 #ifndef NU_LIBNUNICODE_H
 #define NU_LIBNUNICODE_H
 
+#include "casemap.h"
 #include "cesu8.h"
+#include "ducet.h"
 #include "extra.h"
 #include "strcoll.h"
 #include "strings.h"
-#include "tolower.h"
-#include "toupper.h"
 #include "validate.h"
 #include "udb.h"
 #include "utf16.h"

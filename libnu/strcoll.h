@@ -6,6 +6,7 @@
 
 #include <sys/types.h>
 
+#include "config.h"
 #include "strings.h"
 
 #if defined (__cplusplus) || defined (c_plusplus)

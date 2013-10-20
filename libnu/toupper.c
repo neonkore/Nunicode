@@ -1,5 +1,5 @@
-#include "toupper.h"
-#include "udb.h"
+#include "casemap_internal.h"
+#include "casemap.h"
 
 #ifdef NU_WITH_TOUPPER
 
@@ -7,8 +7,8 @@
 
 static const size_t FNV_SIZE = sizeof(FNV) / sizeof(*FNV);
 
-const char* nu_toupper(uint32_t codepoint, nu_read_iterator_t *it) {
-	return nu_udb_lookup(codepoint, it, FNV, FNV_SIZE, VALUES);
+uint32_t nu_toupper(uint32_t codepoint) {
+	return to_something(codepoint, FNV, FNV_SIZE, VALUES);
 }
 
 #endif /* NU_WITH_TOUPPER */
