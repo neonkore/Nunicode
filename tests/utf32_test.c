@@ -4,35 +4,32 @@
 #include <libnu/libnu.h>
 
 void test_utf32_read_bom() {
-	nu_utf32_write_bom_t write_bom = 0;
-	nu_read_iterator_t read = 0;
-	nu_write_iterator_t write = 0;
-	nu_revread_iterator_t revread = 0;
+	nu_utf32_bom_t bom = { 0 };
 
-	assert(nu_utf32_read_bom("\xFF\xFE\x00\x00" /* LE */, &write_bom, &read, &write, &revread));
-	assert(write_bom == nu_utf32le_write_bom);
-	assert(read == nu_utf32le_read);
-	assert(write == nu_utf32le_write);
-	assert(revread == nu_utf32le_revread);
+	assert(nu_utf32_read_bom("\xFF\xFE\x00\x00" /* LE */, &bom));
+	assert(bom.write_bom == nu_utf32le_write_bom);
+	assert(bom.read == nu_utf32le_read);
+	assert(bom.write == nu_utf32le_write);
+	assert(bom.revread == nu_utf32le_revread);
+	assert(bom.validread == nu_utf32le_validread);
 	
-	assert(nu_utf32_read_bom("\x00\x00\xFE\xFF" /* BE */, &write_bom, &read, &write, &revread));
-	assert(write_bom == nu_utf32be_write_bom);
-	assert(read == nu_utf32be_read);
-	assert(write == nu_utf32be_write);
-	assert(revread == nu_utf32be_revread);
+	assert(nu_utf32_read_bom("\x00\x00\xFE\xFF" /* BE */, &bom));
+	assert(bom.write_bom == nu_utf32be_write_bom);
+	assert(bom.read == nu_utf32be_read);
+	assert(bom.write == nu_utf32be_write);
+	assert(bom.revread == nu_utf32be_revread);
+	assert(bom.validread == nu_utf32be_validread);
 }
 
 void test_utf32_read_invalid_bom() {
-	nu_utf32_write_bom_t write_bom = 0;
-	nu_read_iterator_t read = 0;
-	nu_write_iterator_t write = 0;
-	nu_revread_iterator_t revread = 0;
+	nu_utf32_bom_t bom = { 0 };
 
-	assert(nu_utf32_read_bom("\xFF\xFF\x00\x00", &write_bom, &read, &write, &revread) == 0);
-	assert(write_bom == 0);
-	assert(read == 0);
-	assert(write == 0);
-	assert(revread == 0);
+	assert(nu_utf32_read_bom("\xFF\xFF\x00\x00", &bom) == 0);
+	assert(bom.write_bom == 0);
+	assert(bom.read == 0);
+	assert(bom.write == 0);
+	assert(bom.revread == 0);
+	assert(bom.validread == 0);
 }
 
 void test_utf32_write_bom() {

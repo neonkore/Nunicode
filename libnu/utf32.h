@@ -4,6 +4,7 @@
 #include <stdint.h>
 
 #include "strings.h"
+#include "validate.h"
 
 /** @defgroup utf32 UTF-32 support
  */
@@ -20,13 +21,19 @@ typedef char* (*nu_utf32_write_bom_t)(char *);
 
 #ifdef NU_WITH_UTF32_READER
 
+typedef struct {
+	nu_read_iterator_t read;
+	nu_write_iterator_t write;
+	nu_revread_iterator_t revread;
+	nu_validread_iterator_t validread;
+	nu_utf32_write_bom_t write_bom;
+} nu_utf32_bom_t;
+
 /**
  * @ingroup utf21
  * @see nu_utf16_read_bom
  */
-const char* nu_utf32_read_bom(const char *encoded, nu_utf32_write_bom_t *bom, 
-	nu_read_iterator_t *rd, nu_write_iterator_t *wr,
-	nu_revread_iterator_t *revrd);
+const char* nu_utf32_read_bom(const char *encoded, nu_utf32_bom_t *bom);
 
 #endif /* NU_WITH_UTF32_READER */
 

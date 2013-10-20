@@ -4,47 +4,39 @@
 
 #ifdef NU_WITH_UTF16_READER
 
-const char* nu_utf16_read_bom(const char *encoded, nu_utf16_write_bom_t *bom, 
-	nu_read_iterator_t *rd, nu_write_iterator_t *wr,
-	nu_revread_iterator_t *revrd) {
+const char* nu_utf16_read_bom(const char *encoded, nu_utf16_bom_t *bom) {
 	unsigned char bom0 = *(unsigned char *)(encoded);
 	unsigned char bom1 = *(unsigned char *)(encoded + 1);
 
 	if (bom0 == 0xFF && bom1 == 0xFE) {
-#ifdef NU_WITH_UTF16_WRITER
 		if (bom != 0) {
-			*bom = nu_utf16le_write_bom;
-		}
+#ifdef NU_WITH_UTF16_WRITER
+			bom->write_bom = nu_utf16le_write_bom;
 #endif
-		if (rd != 0) {
-			*rd = nu_utf16le_read;
-		}
-		if (wr != 0) {
-			*wr = nu_utf16le_write;
-		}
+			bom->read = nu_utf16le_read;
+			bom->write = nu_utf16le_write;
 #ifdef NU_WITH_REVERSE_READ
-		if (revrd != 0) {
-			*revrd = nu_utf16le_revread;
-		}
+			bom->revread = nu_utf16le_revread;
 #endif
+#ifdef NU_WITH_VALIDATION
+			bom->validread = nu_utf16le_validread;
+#endif
+		}
 	}
 	else if (bom0 == 0xFE && bom1 == 0xFF) {
-#ifdef NU_WITH_UTF16_WRITER
 		if (bom != 0) {
-			*bom = nu_utf16be_write_bom;
-		}
+#ifdef NU_WITH_UTF16_WRITER
+			bom->write_bom = nu_utf16be_write_bom;
 #endif
-		if (rd != 0) {
-			*rd = nu_utf16be_read;
-		}
-		if (wr != 0) {
-			*wr = nu_utf16be_write;
-		}
+			bom->read = nu_utf16be_read;
+			bom->write = nu_utf16be_write;
 #ifdef NU_WITH_REVERSE_READ
-		if (revrd != 0) {
-			*revrd = nu_utf16be_revread;
-		}
+			bom->revread = nu_utf16be_revread;
 #endif
+#ifdef NU_WITH_VALIDATION
+			bom->validread = nu_utf16be_validread;
+#endif
+		}
 	}
 	else {
 		return 0;
