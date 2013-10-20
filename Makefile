@@ -102,9 +102,16 @@ $(FOLD_SAMPLE): samples/folding.o
 
 samples: $(UTF8_SAMPLE) $(UTF16_SAMPLE) $(REVR_SAMPLE) $(FOLD_SAMPLE)
 
+coverage: $(TESTS_TARGET)
+	$(TESTS_TARGET)
+	lcov -b . -d . -c -o coverage.info
+	genhtml -o coverage coverage.info
+
 clean:
 	rm -f "$(STATIC_TARGET)" "$(SHARED_TARGET)"
 	rm -f "$(TESTS_TARGET)"
 	rm -f "$(UTF8_SAMPLE)" "$(UTF16_SAMPLE)" "$(REVR_SAMPLE)" "$(FOLD_SAMPLE)"
 	rm -f *.o libnu/*.o tests/*.o samples/*.o
 	rm -fr "$(DOCDIR)"
+	rm -f coverage.info libnu/*.gcda libnu/*.gcno tests/*.gcda tests/*.gcno
+	rm -fr "coverage"

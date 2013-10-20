@@ -6,6 +6,7 @@
 void test_utf16le_decoding() {
 	uint32_t u = 0;
 
+	assert(nu_utf16le_read("\x67\x00" /* g */, 0));
 	assert(nu_utf16le_read("\x67\x00" /* g */, &u) && u == 0x0067);
 	assert(nu_utf16le_read("\x05\x02" /* ȅ */, &u) && u == 0x0205);
 	assert(nu_utf16le_read("\xAC\x20" /* € */, &u) && u == 0x20AC);
@@ -17,6 +18,7 @@ void test_utf16le_revread() {
 	const char *input = "\x05\x02\x01\xD8\x00\xDC\x41\xD8\x31\xDF"; /* ȅ𐐀𠜱 */
 	uint32_t u = 0;
 
+	assert(nu_utf16le_revread(0, input + 2));
 	assert(nu_utf16le_revread(&u, input + 2) == input);
 	assert(u == 0x0205);
 	assert(nu_utf16le_revread(&u, input + 6) == input + 2);

@@ -6,6 +6,7 @@
 void test_utf16be_decoding() {
 	uint32_t u = 0;
 
+	assert(nu_utf16be_read("\x00\x67" /* g */, 0));
 	assert(nu_utf16be_read("\x00\x67" /* g */, &u) && u == 0x0067);
 	assert(nu_utf16be_read("\x02\x05" /* ȅ */, &u) && u == 0x0205);
 	assert(nu_utf16be_read("\x20\xAC" /* € */, &u) && u == 0x20AC);
@@ -17,6 +18,7 @@ void test_utf16be_revread() {
 	const char *input = "\x02\x05\xD8\x01\xDC\x00\xD8\x41\xDF\x31"; /* ȅ𐐀𠜱 */
 	uint32_t u = 0;
 
+	assert(nu_utf16be_revread(0, input + 2));
 	assert(nu_utf16be_revread(&u, input + 2) == input);
 	assert(u == 0x0205);
 	assert(nu_utf16be_revread(&u, input + 6) == input + 2);
