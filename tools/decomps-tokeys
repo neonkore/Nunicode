@@ -9,6 +9,10 @@ def pass_mapping(mapping):
 		'<wide>', # full width characters
 		'<narrow>', # half width characters
 		'<small>', # CNS compat
+		'<initial>',
+		'<medial>',
+		'<final>',
+		'<isolated>',
 		'<sort>',
 	)
 
