@@ -9,27 +9,25 @@ int main() {
 		MASSE, Masse, 
 		nu_strcasecoll(MASSE, Masse, nu_utf8_read, nu_utf8_read));
 
-	const char *role = "rôle";
-	printf("nu_toupper(\"rôle\"): ");
+	const char role[] = "rôlÊ";
+	char upper_buffer[sizeof(role)] = { 0 };
+	char lower_buffer[sizeof(role)] = { 0 };
 
-	const char *lower = role;
-	while (*lower != 0) {
-		char buffer[32] = { 0 };
+	const char *p = role;
+	char *upper = upper_buffer;
+	char *lower = lower_buffer;
 
-		uint32_t lo = 0;
-		lower = nu_utf8_read(lower, &lo);
+	while (*p != 0) {
+		uint32_t in = 0;
+		p = nu_utf8_read(p, &in);
 		
-		uint32_t up = nu_toupper(lo);
+		uint32_t up = nu_toupper(in);
+		uint32_t lo = nu_tolower(in);
 
-		if (up == 0) {
-			nu_utf8_write(lo, buffer);
-			printf("%s", buffer);
-			continue;
-		}
-
-		nu_utf8_write(up, buffer);
-		printf("%s", buffer);
+		upper = nu_utf8_write(up == 0 ? in : up, upper);
+		lower = nu_utf8_write(lo == 0 ? in : lo, lower);
 	}
 
-	printf("\n");
+	printf("nu_toupper(\"%s\"): %s\n", role, upper_buffer);
+	printf("nu_tolower(\"%s\"): %s\n", role, lower_buffer);
 }
