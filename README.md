@@ -16,6 +16,8 @@ Encodings supported ATM:
 * UTF-16 (BOM/LE/BE)
 * UTF-32 (BOM/LE/BE)
 * Encoding validation
+* Strings collation
+* Case mapping
 
 String functions supported for all encodings (works on encoded strings):
 
@@ -29,7 +31,6 @@ String functions supported for all encodings (works on encoded strings):
 What it *CAN'T* do:
 
 * Unicode normal forms
-* Strings collation
 
 ## WHY YOU DO ANOTHER UNICODE LIBRARY
 
@@ -162,6 +163,51 @@ the string.
     	p = nu_utf8_revread(0, p);
     }
 
+## STRINGS COLLATION AND CASE MAPPING
+
+    If your browser can't display characters in this section then
+    that's too bad
+
+Case mapping uses complete set extracted from [UCD][].
+
+Note that nunicode **DO NOT** implement [UCA][]. Instead it use limited
+set of [decompositions][] extracted for UCA. It works this way:
+
+1. Normally cyrillic "ё" (begin of alphabet) > cyrillic "я" (very end
+   of alphabet)
+2. At the same time capital "Ё" < capital "Я"
+3. nunicode decomposes "ё" in "е" + ◌̈ (U+0308)
+4. Capital "Ё", as you would guess, also decomposes into "Е" + ◌̈ (U+0308)
+
+This is called "<sort>" decomposition in UCA. Obviously if you compare
+"е" and "е" + U+0308 binary, you will get correct strings order (for
+cyrillic at least).
+
+nunicode do not only implement <sort> decomposition, but also every other
+decomposition type except compatibility decompositions to avoid
+² -> 2 transformation. Hence you can say it somewhat similar to NFD, but
+not to NFCD. It also implement full collation when "Masse" is equal
+to "Maße".
+
+[UCD]: http://www.unicode.org/ucd/
+[UCA]: http://www.unicode.org/reports/tr10/
+[decompositions]: http://unicode.org/Public/UCA/6.3.0/decomps.txt
+
+### more on strings collation
+
+TBD
+
+### performance considerations
+
+Decomposition and case mapping are O(1). Internally both using [minimal
+perfect hash][] table for lookup. Hash is [FNV][] which is a little bit
+of bit-wise operations on 32-bits integer and couple of MOD's. Worth
+[reading][].
+
+[minimal perfect hash]: http://iswsa.acm.org/mphf/index.html
+[FNV]: http://isthe.com/chongo/tech/comp/fnv/
+[reading]: http://stevehanov.ca/blog/index.php?id=119
+
 ## ENCODING VALIDATION
 
 All decoding functions has very limited error checking for performance
@@ -169,9 +215,9 @@ reasons. nunicode expect valid UTF strings at input. It though provide
 nu\_validate() to check complete string before processing. This function
 won't fully decode string, but will run tests instead.
 
-Normally you need validation at I/O boundaries only, actually at I boundary
-only, because if nu\_validate() is failing on product of nu\_\*\_write(), then
-this is bug in nunicode and it's need to be fixed.
+Normally you need validation at I/O boundaries only, actually at I
+boundary only, because if nu\_validate() is failing on product of 
+nu\_\*\_write(), then this is bug in nunicode and it's need to be fixed.
 
 ## DOWNLOADS
 
@@ -239,6 +285,23 @@ UTF-16
 UTF-32
 
 * Very same options as for UTF-16, just replace 16 with 32
+
+Strings collation and case mapping
+
+    All collation and case mapping functions options imply
+    ``-DNU_WITH_UTF8_READER``
+
+* ``-DNU_WITH_TOUPPER`` - enable upper case mapping
+* ``-DNU_WITH_TOLOWER`` - enable lower case mapping
+* ``-DNU_WITH_CASEMAP`` - enable case insensitive string functions,
+  implies ``-DNU_WITH_TOUPPER`` and ``-DNU_WITH_TOLOWER``
+* ``-DNU_WITH_COLLATION`` - enable strings collation functions,
+  implies ``-DNU_WITH_TO_UPPER``
+
+Collation misc
+
+* ``-DNU_WITH_UDB`` - enable UDB functions, might be handy if you
+  need to implement your own decomposition
 
 Misc
 
