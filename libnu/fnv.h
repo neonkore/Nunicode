@@ -38,7 +38,7 @@ static inline uint32_t fnv(uint32_t hash, uint32_t codepoint) {
 
 /** Get hash value of unicode codepoint
  */
-static inline uint32_t fnv_hash(const int16_t *FNV, size_t FNV_SIZE, uint32_t codepoint) {
+static inline uint32_t fnv_hash(nu_fnv_table_t *FNV, size_t FNV_SIZE, uint32_t codepoint) {
 	uint32_t hash = fnv(0, codepoint);
 	int16_t offset = FNV[hash % FNV_SIZE];
 	if (offset < 0) {
@@ -49,8 +49,8 @@ static inline uint32_t fnv_hash(const int16_t *FNV, size_t FNV_SIZE, uint32_t co
 
 /** Lookup value in MPH
  */
-static inline const char* fnv_lookup(const nu_udb_t **V, uint32_t codepoint, uint32_t hash) {
-	const nu_udb_t *r = V[hash];
+static inline const char* fnv_lookup(const nu_udb_t *V, uint32_t codepoint, uint32_t hash) {
+	const nu_udb_t *r = (V + hash);
 
 	/* due to nature of minimal perfect hash, it will always 
 	 * produce collision for codepoints outside of MPH original set. 

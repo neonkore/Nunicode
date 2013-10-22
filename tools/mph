@@ -126,41 +126,22 @@ def FormatReplacement( r ):
 	# Append \0 to int16-align strings
 	return '"%s"' % (''.join(( '\\x%02X' % (ord(x)) for x in chars )))
 
-VALUE_TEMPLATE = '''static const nu_udb_t V%(codepoint)05X = {
-	0x%(codepoint)05X,
-	%(decomps)s
-};'''
+VALUE_TEMPLATE = '''	{ 0x%(codepoint)05X, %(decomps)s },'''
 
 VALUE_REF_TEMPLATE = '''&V%(codepoint)05X'''
 
 def GenerateValues( G, V ):
 	BOUNDARY = 6
 
+	print 'static const nu_udb_t VALUES[] = {';
 	for i, (codepoint, replacement) in enumerate(V):
-		print VALUE_TEMPLATE % { 'codepoint': int(codepoint, base=16), 
-		                         'decomps': FormatReplacement(replacement) }
-		print
-
-	print
-	print 'static const nu_udb_t* VALUES[] = {';
-	for i, (codepoint, replacement) in enumerate(V):
-		if i % BOUNDARY == 0:
-		    sys.stdout.write('\t')
-	
-		hash = PerfectHashLookup( G, list[i] )
-		sys.stdout.write('%s, ' % (VALUE_REF_TEMPLATE % { 'codepoint': int(codepoint, base=16) }))
-		
-		if (i + 1) % BOUNDARY == 0:
-		    sys.stdout.write('\n')
-
-	print
+		print VALUE_TEMPLATE % { 'codepoint': int(codepoint, base=16), 'decomps': FormatReplacement(replacement) }
 	print '};'
 	print
 
 def GenerateFNV( G ):
 	BOUNDARY = 12
 	
-	print
 	print 'static const int16_t FNV[] = {'
 	for i, x in enumerate(G):
 		if i % BOUNDARY == 0:
@@ -169,7 +150,6 @@ def GenerateFNV( G ):
 		sys.stdout.write(', ')
 		if (i + 1) % BOUNDARY == 0:
 		    sys.stdout.write('\n')
-	print
 	print '};'
 	print
     

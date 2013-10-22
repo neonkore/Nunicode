@@ -37,7 +37,7 @@ typedef struct {
  * @return looked up data or 0
  */
 const char* nu_udb_lookup(uint32_t codepoint, nu_read_iterator_t *it,
-	nu_fnv_table_t *FNV, size_t FNV_SIZE, const nu_udb_t **VALUES);
+	nu_fnv_table_t *FNV, size_t FNV_SIZE, const nu_udb_t *VALUES);
 
 #endif /* NU_WITH_UDB */
 
