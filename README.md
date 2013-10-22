@@ -2,12 +2,19 @@
 
 ## WHATS THIS
 
-This is Unicode encoding/decoding library.
+This is Unicode (6.3.0) library.
 
 What it can do:
 
 * Decode UTF strings into Unicode characters
 * Encode Unicode characters into UTF string
+* Validate UTF strings
+* Collate strings
+* Case map characters
+
+What it *CAN'T* do:
+
+* Unicode normal forms
 
 Encodings supported ATM:
 
@@ -15,9 +22,6 @@ Encodings supported ATM:
 * CESU-8/Modified UTF-8
 * UTF-16/UCS-2 (BOM/LE/BE)
 * UTF-32/UCS-4 (BOM/LE/BE)
-* Encoding validation
-* Strings collation
-* Case mapping
 
 String functions supported for all encodings (works on encoded strings):
 
@@ -27,10 +31,6 @@ String functions supported for all encodings (works on encoded strings):
 * nu\_strnchr
 * nu\_strrchr
 * nu\_strrnchr
-
-What it *CAN'T* do:
-
-* Unicode normal forms
 
 ## WHY YOU DO ANOTHER UNICODE LIBRARY
 
@@ -162,7 +162,8 @@ middle of multibyte UTF-8 sequence), but UTF-16 and UTF-32 revread will fail
 badly. In fact, UTF-32 revread is just "const char \*p - 4".
 
 Pointer passed to revread() is supposed to always come from call to
-nu\_utf8\_read(). Otherwise prepare to unforeseen consequences.
+nu\_utf8\_read(). Otherwise prepare to unforeseen consequences. (Actually,
+you can prepare to unforeseen consequences in any case).
 
 As a side note, if you pass 0 as a pointer to decoded character, revread(), as
 you would expect, won't do any redundant decoding, but will just iterate over
@@ -176,8 +177,8 @@ the string.
 
 ## STRINGS COLLATION AND CASE MAPPING
 
-    If your browser can't display characters in this section then
-    that's too bad
+*If your browser can't display characters in this section then
+that's too bad*
 
 Case mapping uses complete set extracted from [UCD][].
 
@@ -197,8 +198,8 @@ cyrillic at least).
 nunicode do not only implement <sort> decomposition, but also every other
 decomposition type except compatibility decompositions to avoid
 ² -> 2 transformation. Hence you can say it somewhat similar to NFD, but
-not to NFCD. It also implement full collation when "Masse" is equal
-to "Maße".
+not to NFKD, and it's also neither of those. It also implement full
+collation when "Masse" is equal to "Maße".
 
 [UCD]: http://www.unicode.org/ucd/
 [UCA]: http://www.unicode.org/reports/tr10/
@@ -299,8 +300,7 @@ UTF-32
 
 Strings collation and case mapping
 
-    All collation and case mapping functions options imply
-    ``-DNU_WITH_UTF8_READER``
+    All collation and case mapping functions options imply -DNU_WITH_UTF8_READER
 
 * ``-DNU_WITH_TOUPPER`` - enable upper case mapping
 * ``-DNU_WITH_TOLOWER`` - enable lower case mapping
