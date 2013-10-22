@@ -88,6 +88,19 @@ const char* nu_strchr(const char *encoded, uint32_t c, nu_read_iterator_t it);
  */
 const char* nu_strrchr(const char *encoded, uint32_t c, nu_read_iterator_t it);
 
+/** Find needle in haystack
+ *
+ * @ingroup strings
+ * @param haystack encoded haystack
+ * @param needle encoded needle
+ * @param it1 haystack read (decode) function
+ * @param it2 needle read (decode) function
+ * @return pointer to found string or 0, will return
+ * haystack if needle is empty string
+ */
+const char* nu_strstr(const char *haystack, const char *needle,
+	nu_read_iterator_t it1, nu_read_iterator_t it2);
+
 #endif /* NU_WITH_Z_STRINGS */
 
 #ifdef NU_WITH_N_STRINGS
@@ -128,6 +141,17 @@ const char* nu_strnchr(const char *encoded, size_t max_len, uint32_t c, nu_read_
  * @see nu_bytelen
  */
 const char* nu_strrnchr(const char *encoded, size_t max_len, uint32_t c, nu_read_iterator_t it);
+
+/** Find needle in haystack
+ *
+ * @ingroup strings
+ * @param max_len nu_strnlen won't normally go further than max_len bytes. It might
+ * go further if encoded character is longer than max_len though
+ *
+ * @see nu_strstr
+ */
+const char* nu_strnstr(const char *haystack, size_t max_len, const char *needle,
+	nu_read_iterator_t it1, nu_read_iterator_t it2);
 
 #endif /* NU_WITH_N_STRINGS */
 

@@ -35,6 +35,8 @@ void test_strings_bytelen();
 void test_strings_bytenlen();
 void test_strings_strchr();
 void test_strings_strnchr();
+void test_strings_strstr();
+void test_strings_strnstr();
 void test_strings_strrchr();
 void test_strings_strrnchr();
 void test_strings_readstr();
@@ -105,6 +107,8 @@ testcase cases[] = {
 	test_strings_bytenlen,
 	test_strings_strnchr,
 	test_strings_strrnchr,
+	test_strings_strstr,
+	test_strings_strnstr,
 	
 	test_strings_readstr,
 	test_strings_writestr,

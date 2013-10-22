@@ -25,12 +25,14 @@ Encodings supported ATM:
 
 String functions supported for all encodings (works on encoded strings):
 
-* nu\_strlen
-* nu\_strnlen
-* nu\_strchr
-* nu\_strnchr
-* nu\_strrchr
-* nu\_strrnchr
+* nu\_strlen (nu\_strnlen)
+* nu\_strchr (nu\_strnchr)
+* nu\_strrchr (nu\_strrnchr)
+* nu\_strstr (nu\_strnstr)
+* nu\_strcoll (nu\_strncoll)
+* nu\_strcmp (nu\_strncmp)
+* nu\_strcasecoll (nu\_strcasecoll)
+* nu\_strcasecmp (nu\_strcasencmp)
 
 ## WHY YOU DO ANOTHER UNICODE LIBRARY
 
@@ -162,7 +164,7 @@ middle of multibyte UTF-8 sequence), but UTF-16 and UTF-32 revread will fail
 badly. In fact, UTF-32 revread is just "const char \*p - 4".
 
 Pointer passed to revread() is supposed to always come from call to
-nu\_utf8\_read(). Otherwise prepare to unforeseen consequences. (Actually,
+nu\_\*\_read(). Otherwise prepare to unforeseen consequences. (Actually,
 you can prepare to unforeseen consequences in any case).
 
 As a side note, if you pass 0 as a pointer to decoded character, revread(), as
@@ -177,10 +179,10 @@ the string.
 
 ## STRINGS COLLATION AND CASE MAPPING
 
-*If your browser can't display characters in this section then
-that's too bad*
+    If your browser can't display characters in this section thats too bad
 
-Case mapping uses complete set extracted from [UCD][].
+Case mapping uses complete mapping set extracted from [UCD][] +
+untailored [special casing][].
 
 Note that nunicode **DO NOT** implement [UCA][]. Instead it use limited
 set of [decompositions][] extracted for UCA. It works this way:
@@ -201,13 +203,13 @@ decomposition type except compatibility decompositions to avoid
 not to NFKD, and it's also neither of those. It also implement full
 collation when "Masse" is equal to "Maße".
 
+Unicode also descibes several collation tailorings, but neither is
+implemented by nunicode ATM.
+
 [UCD]: http://www.unicode.org/ucd/
 [UCA]: http://www.unicode.org/reports/tr10/
 [decompositions]: http://unicode.org/Public/UCA/6.3.0/decomps.txt
-
-### more on strings collation
-
-TBD
+[special casing]: http://unicode.org/Public/6.3.0/ucd/SpecialCasing.txt
 
 ### performance considerations
 
@@ -306,8 +308,9 @@ Strings collation and case mapping
 * ``-DNU_WITH_TOLOWER`` - enable lower case mapping
 * ``-DNU_WITH_CASEMAP`` - enable case insensitive string functions,
   implies ``-DNU_WITH_TOUPPER`` and ``-DNU_WITH_TOLOWER``
-* ``-DNU_WITH_COLLATION`` - enable strings collation functions,
-  implies ``-DNU_WITH_TO_UPPER``
+* ``-DNU_WITH_COLLATION`` - enable strings collation functions, if
+  ``-DNU_WITH_TOUPPER`` is also defined, case-insensitive functions
+  are also enabled
 
 Collation misc
 
