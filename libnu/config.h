@@ -78,7 +78,6 @@
 #	define NU_WITH_DECOMPOSITION
 #	define NU_WITH_UDB
 #	define NU_WITH_UTF8_READER
-#	define NU_WITH_TOUPPER
 #endif /* NU_WITH_COLLATION */
 
 #ifdef NU_WITH_CASEMAP

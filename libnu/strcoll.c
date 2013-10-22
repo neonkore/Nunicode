@@ -4,6 +4,8 @@
 #include "strcoll.h"
 #include "casemap.h"
 
+#ifdef NU_WITH_COLLATION
+
 static inline int _nu_uint32cmp(uint32_t u1, uint32_t u2) {
 	if (u1 < u2) {
 		return -1;
@@ -36,6 +38,8 @@ static inline int _nu_uint32_encoded_cmp(uint32_t u, const char *encoded,
 	return cmp;
 }
 
+#ifdef NU_WITH_TOUPPER
+
 static inline int _nu_uint32casecmp(uint32_t u1, uint32_t u2) {
 	uint32_t up1 = nu_toupper(u1);
 	uint32_t up2 = nu_toupper(u2);
@@ -43,6 +47,8 @@ static inline int _nu_uint32casecmp(uint32_t u1, uint32_t u2) {
 	return _nu_uint32cmp((up1 == 0 ? u1 : up1),
 		(up2 == 0 ? u2 : up2));
 }
+
+#endif /* NU_WITH_TOUPPER */
 
 static int _nu_strcmp(const char *s1, const char *limit, const char *s2, 
 	nu_read_iterator_t it1, nu_read_iterator_t it2, 
@@ -67,7 +73,7 @@ static int _nu_strcmp(const char *s1, const char *limit, const char *s2,
 	return 0;
 }
 
-static inline int _nu_encoded_decomposed_cmp(const char **encoded, const char **decomposed,
+static int _nu_encoded_decomposed_cmp(const char **encoded, const char **decomposed,
 	nu_read_iterator_t encoded_read, nu_read_iterator_t decomp_read,
 	nu_codepointcmp_t compare,
 	uint32_t *u1, uint32_t *u2) {
@@ -157,6 +163,8 @@ pass:
 	return 0;
 }
 
+#endif /* NU_WITH_COLLATION*/
+
 #ifdef NU_WITH_COLLATION
 
 int nu_strcmp(const char *s1, const char *s2, nu_read_iterator_t it1, nu_read_iterator_t it2) {
@@ -177,9 +185,7 @@ int nu_strncoll(const char *s1, const char *s2, size_t max_len, nu_read_iterator
 		nu_decompose, _nu_uint32cmp);
 }
 
-#endif /* NU_WITH_COLLATION */
-
-#ifdef NU_WITH_CASEMAP
+#ifdef NU_WITH_TOUPPER
 
 int nu_strcasecmp(const char *s1, const char *s2, nu_read_iterator_t it1, nu_read_iterator_t it2) {
 	return _nu_strcmp(s1, (const char *)(-1), s2, it1, it2, _nu_uint32casecmp);
@@ -199,4 +205,5 @@ int nu_strcasencoll(const char *s1, const char *s2, size_t max_len, nu_read_iter
 		nu_decompose, _nu_uint32casecmp);
 }
 
-#endif /* NU_WITH_CASEMAP */
+#endif /* NU_WITH_TOUPPER */
+#endif /* NU_WITH_COLLATION */

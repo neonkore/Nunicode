@@ -16,6 +16,8 @@
 extern "C" {
 #endif
 
+#ifdef NU_WITH_UDB
+
 #define FNV_OFFSET_BASIS 0xFFFFFFFF /* those need to be the same        */
 #define FNV_PRIME        0x01000193 /* values as used in MPH generation */
 
@@ -57,6 +59,8 @@ static inline const char* fnv_lookup(const nu_udb_t **V, uint32_t codepoint, uin
 
 	return (r->codepoint != codepoint ? 0 : r->data);
 }
+
+#endif /* NU_WITH_UDB */
 
 #if defined (__cplusplus) || defined (c_plusplus)
 }

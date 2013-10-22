@@ -7,6 +7,8 @@
 #include "udb.h"
 #include "utf8.h"
 
+#if (defined NU_WITH_TOUPPER) || (defined NU_WITH_TOLOWER)
+
 static uint32_t to_something(uint32_t codepoint, 
 	nu_fnv_table_t *FNV, size_t FNV_SIZE, const nu_udb_t **VALUES) {
 
@@ -21,5 +23,7 @@ static uint32_t to_something(uint32_t codepoint,
 
 	return u;
 }
+
+#endif /* NU_WITH_TOUPPER || NU_WITH_TOLOWER */
 
 #endif /* NU_CASEMAP_INTERNAL_H */

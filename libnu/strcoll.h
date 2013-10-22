@@ -70,9 +70,7 @@ int nu_strcoll(const char *s1, const char *s2,
 int nu_strncoll(const char *s1, const char *s2, size_t max_len,
 	nu_read_iterator_t it1, nu_read_iterator_t it2);
 
-#endif /* NU_WITH_COLLATION */
-
-#ifdef NU_WITH_CASEMAP
+#ifdef NU_WITH_TOUPPER
 
 /** Compare characters in strings ignoring case. Will apply nu_toupper() to 
  * each character before comparision.
@@ -110,7 +108,8 @@ int nu_strcasecoll(const char *s1, const char *s2,
 int nu_strcasencoll(const char *s1, const char *s2, size_t max_len,
 	nu_read_iterator_t it1, nu_read_iterator_t it2);
 
-#endif /* NU_WITH_CASEMAP */
+#endif /* NU_WITH_TOUPPER */
+#endif /* NU_WITH_COLLATION */
 
 #if defined (__cplusplus) || defined (c_plusplus)
 }
