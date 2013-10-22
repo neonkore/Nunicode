@@ -13,8 +13,8 @@ Encodings supported ATM:
 
 * UTF-8
 * CESU-8/Modified UTF-8
-* UTF-16 (BOM/LE/BE)
-* UTF-32 (BOM/LE/BE)
+* UTF-16/UCS-2 (BOM/LE/BE)
+* UTF-32/UCS-4 (BOM/LE/BE)
 
 String functions supported for all encodings (works on encoded strings):
 
@@ -103,7 +103,7 @@ See also "WHY ITS GOOD".
 
 It will produce ``doc/html`` with Doxygen documentation in browesable HTML.
 
-## NOTES ON UTF-8, UTF-16 AND UTF-32
+## UTF-8, UTF-16 AND UTF-32
 
 According to Unicode specification UTF-8 might contain byte order mark (BOM),
 however it doesn't make any sense to have BOM in UTF-8. Therefore nunicode has no
@@ -136,7 +136,18 @@ Everything said above about UTF-16 also applies to UTF-32.
 
 [UTF BOM FAQ]: http://www.unicode.org/faq/utf_bom.html#bom5
 
-## NOTES ON REVERSE READING
+## UCS-2 and UCS-4
+
+UCS-4 is the same as UTF-32.
+
+UCS-2 reading is a part of UTF-16 reading, if you need to write UCS-2,
+just override nu\_utf16\*\_write() and don't write characters outside
+of [BMP][] (U+0000..U+FFFF). There is no embedded support of this in
+nunicode since UCS-2 was superseded by UTF-16 more than 15 years ago.
+
+[BMP]: http://en.wikipedia.org/wiki/Plane_(Unicode)#Basic_Multilingual_Plane
+
+## REVERSE READING
 
 nunicode do not provide str\[i\] (access by index) equivalent since it will 
 always be slow. Instead you can do nu\_utf8\_revread(&u, encoded) and other
