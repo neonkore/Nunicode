@@ -7,7 +7,7 @@
 
 #define MIN(x, y) (((x) < (y)) ? (x) : (y))
 
-#ifdef NU_WITH_COLLATION
+#if (defined NU_WITH_Z_COLLATION) || (defined NU_WITH_N_COLLATION)
 
 static inline int _nu_uint32cmp(uint32_t u1, uint32_t u2) {
 	if (u1 < u2) {
@@ -200,10 +200,9 @@ pass:
 	return 0;
 }
 
-#endif /* NU_WITH_COLLATION*/
+#endif /* NU_WITH_Z_COLLATION || NU_WITH_N_COLLATION */
 
-#ifdef NU_WITH_COLLATION
-#ifdef NU_WITH_Z_STRINGS
+#ifdef NU_WITH_Z_COLLATION
 
 int nu_strcmp(const char *s1, const char *s2, nu_read_iterator_t it1, nu_read_iterator_t it2) {
 	return _nu_strcmp(s1, (const char *)(-1), s2, it1, it2,
@@ -237,7 +236,9 @@ const char* nu_strnstr(const char *haystack, size_t max_len, const char *needle,
 		0, nu_decompose, _nu_uint32cmp);
 }
 
-#ifdef NU_WITH_TOUPPER
+#endif /* NU_WITH_Z_COLLATION */
+
+#ifdef NU_WITH_N_COLLATION
 
 int nu_strcasecmp(const char *s1, const char *s2, nu_read_iterator_t it1, nu_read_iterator_t it2) {
 	return _nu_strcmp(s1, (const char *)(-1), s2, it1, it2,
@@ -271,6 +272,4 @@ const char* nu_strcasenstr(const char *haystack, size_t max_len, const char *nee
 		nu_toupper, nu_decompose, _nu_uint32cmp);
 }
 
-#endif /* NU_WITH_TOUPPER */
-#endif /* NU_WITH_N_STRINGS */
-#endif /* NU_WITH_COLLATION */
+#endif /* NU_WITH_N_COLLATION */
