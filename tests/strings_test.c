@@ -3,6 +3,11 @@
 
 #include <libnu/libnu.h>
 
+void test_strings_len() {
+	assert(nu_len("hello", nu_utf8_read) == 5);
+	assert(nu_len("привет", nu_utf8_read) == 12);
+}
+
 void test_strings_strlen() {
 	assert(nu_strlen("hello", nu_utf8_read) == 5);
 	assert(nu_strlen("привет", nu_utf8_read) == 6);
@@ -30,6 +35,13 @@ void test_strings_strrchr() {
 	assert(nu_strrchr(input, 0x043F /* п */, nu_utf8_read) == input + 8);
 	assert(nu_strrchr(input, 0x0440 /* р */, nu_utf8_read) == input + 10);
 	assert(nu_strrchr(input, 0x0441, nu_utf8_read) == 0);
+}
+
+void test_strings_nlen() {
+	assert(nu_nlen("привет", 1, nu_utf8_read) == 2); /* might happen */
+	assert(nu_nlen("привет", 2, nu_utf8_read) == 2);
+	assert(nu_nlen("привет", 4, nu_utf8_read) == 4);
+	assert(nu_nlen("привет", 400, nu_utf8_read) == 12); /* didn't go over 0 */
 }
 
 void test_strings_strnlen() {

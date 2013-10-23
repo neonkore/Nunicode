@@ -29,6 +29,8 @@ void test_utf32be_encoding();
 void test_utf32_read_bom();
 void test_utf32_read_invalid_bom();
 void test_utf32_write_bom();
+void test_strings_len();
+void test_strings_nlen();
 void test_strings_strlen();
 void test_strings_strnlen();
 void test_strings_bytelen();
@@ -98,11 +100,13 @@ testcase cases[] = {
 	test_utf32_read_invalid_bom,
 	test_utf32_write_bom,
 
+	test_strings_len,
 	test_strings_strlen,
 	test_strings_bytelen,
 	test_strings_strchr,
 	test_strings_strrchr,
-	
+
+	test_strings_nlen,	
 	test_strings_strnlen,
 	test_strings_bytenlen,
 	test_strings_strnchr,

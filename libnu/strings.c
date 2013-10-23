@@ -2,6 +2,19 @@
 
 #if defined (NU_WITH_Z_STRINGS) || defined(NU_WITH_N_STRINGS)
 
+static ssize_t _nu_len(const char *encoded, const char *limit, nu_read_iterator_t it) {
+	const char *p = encoded;
+	while (p < limit) {
+		if (*p == 0) {
+			break;
+		}
+		
+		p = it(p, 0);
+	}
+
+	return (p - encoded);
+}
+
 static ssize_t _nu_strlen(const char *encoded, const char *limit, nu_read_iterator_t it) {
 	ssize_t len = 0;
 
@@ -154,6 +167,10 @@ pass:
 
 #ifdef NU_WITH_Z_STRINGS
 
+ssize_t nu_len(const char *encoded, nu_read_iterator_t it) {
+	return _nu_len(encoded, (const char *)(-1), it);
+}
+
 ssize_t nu_strlen(const char *encoded, nu_read_iterator_t it) {
 	return _nu_strlen(encoded, (const char *)(-1), it);
 }
@@ -178,6 +195,10 @@ const char* nu_strstr(const char *haystack, const char *needle,
 #endif /* NU_WITH_Z_STRINGS */
 
 #ifdef NU_WITH_N_STRINGS
+
+ssize_t nu_nlen(const char *encoded, size_t max_len, nu_read_iterator_t it) {
+	return _nu_len(encoded, encoded + max_len, it);
+}
 
 ssize_t nu_strnlen(const char *encoded, size_t max_len, nu_read_iterator_t it) {
 	return _nu_strlen(encoded, encoded + max_len, it);
