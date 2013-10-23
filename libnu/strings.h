@@ -68,7 +68,18 @@ ssize_t nu_len(const char *encoded, nu_read_iterator_t it);
  */
 ssize_t nu_strlen(const char *encoded, nu_read_iterator_t it);
 
-/** Get encoded string bytes length
+/** Get decoded string characters length
+ *
+ * @ingroup strings
+ * @param encoded encoded string
+ * @param it decoding function
+ * @return string length or negative error
+ *
+ * @see nu_strnlen
+ */
+ssize_t nu_charlen(const char *encoded, nu_read_iterator_t it);
+
+/** Get encoded string bytes length (encoding variant)
  *
  * @ingroup strings
  * @param unicode unicode codepoints
@@ -98,19 +109,6 @@ const char* nu_strchr(const char *encoded, uint32_t c, nu_read_iterator_t it);
  * @return pointer in encoded string or 0 if character is not found
  */
 const char* nu_strrchr(const char *encoded, uint32_t c, nu_read_iterator_t it);
-
-/** Find needle in haystack
- *
- * @ingroup strings
- * @param haystack encoded haystack
- * @param needle encoded needle
- * @param it1 haystack read (decode) function
- * @param it2 needle read (decode) function
- * @return pointer to found string or 0, will return
- * haystack if needle is empty string
- */
-const char* nu_strstr(const char *haystack, const char *needle,
-	nu_read_iterator_t it1, nu_read_iterator_t it2);
 
 #endif /* NU_WITH_Z_STRINGS */
 
@@ -150,14 +148,6 @@ const char* nu_strnchr(const char *encoded, size_t max_len, uint32_t c, nu_read_
  * @see nu_bytelen
  */
 const char* nu_strrnchr(const char *encoded, size_t max_len, uint32_t c, nu_read_iterator_t it);
-
-/** Find needle in haystack
- *
- * @ingroup strings
- * @see nu_strstr
- */
-const char* nu_strnstr(const char *haystack, size_t max_len, const char *needle,
-	nu_read_iterator_t it1, nu_read_iterator_t it2);
 
 #endif /* NU_WITH_N_STRINGS */
 

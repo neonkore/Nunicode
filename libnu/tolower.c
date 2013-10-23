@@ -8,7 +8,8 @@
 static const size_t FNV_SIZE = sizeof(FNV) / sizeof(*FNV);
 
 uint32_t nu_tolower(uint32_t codepoint) {
-	return to_something(codepoint, FNV, FNV_SIZE, VALUES);
+	uint32_t ret = to_something(codepoint, FNV, FNV_SIZE, VALUES);
+	return (ret == 0 ? codepoint : ret);
 }
 
 #endif /* NU_WITH_TOLOWER */

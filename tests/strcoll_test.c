@@ -23,6 +23,8 @@ void test_strcoll() {
 	assert(nu_strcoll("ss", "ß", nu_utf8_read, nu_utf8_read) == 0);
 	assert(nu_strcoll("Masse", "Maße", nu_utf8_read, nu_utf8_read) == 0);
 	assert(nu_strcoll("Maße", "Masse", nu_utf8_read, nu_utf8_read) == 0);
+
+	assert(nu_strcoll("абв", "а", nu_utf8_read, nu_utf8_read) > 0);
 }
 
 void test_strncoll() {
@@ -30,6 +32,8 @@ void test_strncoll() {
 	assert(nu_strncoll("vario", "varî", 2, nu_utf8_read, nu_utf8_read) == 0);
 	assert(nu_strncoll("vario", "varî", 3, nu_utf8_read, nu_utf8_read) == 0);
 	assert(nu_strncoll("vario", "varî", 4, nu_utf8_read, nu_utf8_read) < 0);
+
+	assert(nu_strncoll("абв", "аб", 4, nu_utf8_read, nu_utf8_read) == 0);
 }
 
 void test_strcasecoll() {
@@ -54,4 +58,38 @@ void test_strcasencoll() {
 	assert(nu_strcasencoll("MASSE", "Maßa", 3, nu_utf8_read, nu_utf8_read) == 0);
 	assert(nu_strcasencoll("MASSE", "Maßa", 4, nu_utf8_read, nu_utf8_read) == 0);
 	assert(nu_strcasencoll("MASSE", "Maßa", 5, nu_utf8_read, nu_utf8_read) > 0);
+}
+
+void test_strstr() {
+	const char *input = "привет";
+
+	assert(nu_strstr(input, "иве", nu_utf8_read, nu_utf8_read) == input + 4);
+	assert(nu_strstr(input, "привет", nu_utf8_read, nu_utf8_read) == input);
+	assert(nu_strstr(input, "т", nu_utf8_read, nu_utf8_read) == input + 10);
+	assert(nu_strstr(input, "примус", nu_utf8_read, nu_utf8_read) == 0);
+	assert(nu_strstr(input, "абырвагл", nu_utf8_read, nu_utf8_read) == 0);
+	assert(nu_strstr(input, "", nu_utf8_read, nu_utf8_read) == input);
+}
+
+void test_strnstr() {
+	const char *input = "привет";
+
+	assert(nu_strnstr(input, 200, "иве", nu_utf8_read, nu_utf8_read) == input + 4);
+	assert(nu_strnstr(input, 6, "иве", nu_utf8_read, nu_utf8_read) == 0);
+	assert(nu_strnstr(input, 10, "иве", nu_utf8_read, nu_utf8_read) == input + 4);
+	assert(nu_strnstr(input, 0, "", nu_utf8_read, nu_utf8_read) == input);
+}
+
+void test_strcasestr() {
+	const char *input = "привет";
+
+	assert(nu_strcasestr(input, "ИВЕ", nu_utf8_read, nu_utf8_read) == input + 4);
+	assert(nu_strcasestr(input, "", nu_utf8_read, nu_utf8_read) == input);
+}
+
+void test_strcasenstr() {
+	const char *input = "привет";
+
+	assert(nu_strcasenstr(input, 200, "ИВЕ", nu_utf8_read, nu_utf8_read) == input + 4);
+	assert(nu_strcasenstr(input, 0, "", nu_utf8_read, nu_utf8_read) == input);
 }

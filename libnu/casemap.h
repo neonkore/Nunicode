@@ -9,13 +9,15 @@
 extern "C" {
 #endif
 
+typedef uint32_t (*nu_casemapping_t)(uint32_t);
+
 #ifdef NU_WITH_TOUPPER
 
 /** Return uppercase value of codepoint
  *
  * @ingroup collation
  * @param codepoint unicode codepoint
- * @return unicode codepoint or 0
+ * @return uppercase codepoint or same if mapping doesn't exist
  */
 uint32_t nu_toupper(uint32_t codepoint);
 
@@ -27,7 +29,7 @@ uint32_t nu_toupper(uint32_t codepoint);
  *
  * @ingroup collation
  * @param codepoint unicode codepoint
- * @return unicode codepoint or 0
+ * @return lowercase codepoint or same if mapping doesn't exist
  */
 uint32_t nu_tolower(uint32_t codepoint);
 

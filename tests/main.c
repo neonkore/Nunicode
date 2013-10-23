@@ -37,8 +37,6 @@ void test_strings_bytelen();
 void test_strings_bytenlen();
 void test_strings_strchr();
 void test_strings_strnchr();
-void test_strings_strstr();
-void test_strings_strnstr();
 void test_strings_strrchr();
 void test_strings_strrnchr();
 void test_strings_readstr();
@@ -65,6 +63,10 @@ void test_strcmp();
 void test_strncmp();
 void test_strcasecmp();
 void test_strcasencmp();
+void test_strstr();
+void test_strnstr();
+void test_strcasestr();
+void test_strcasenstr();
 
 testcase cases[] = {
 
@@ -111,8 +113,6 @@ testcase cases[] = {
 	test_strings_bytenlen,
 	test_strings_strnchr,
 	test_strings_strrnchr,
-	test_strings_strstr,
-	test_strings_strnstr,
 	
 	test_strings_readstr,
 	test_strings_writestr,
@@ -138,11 +138,15 @@ testcase cases[] = {
 	test_strncoll,
 	test_strcasecoll,
 	test_strcasencoll,
+	test_strstr,
+	test_strcasestr,
 
 	test_strcmp,
 	test_strncmp,
 	test_strcasecmp,
 	test_strcasencmp,
+	test_strnstr,
+	test_strcasenstr,
 };
 
 int main() {

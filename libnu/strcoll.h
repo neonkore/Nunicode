@@ -2,6 +2,10 @@
 #define NU_STRCOLL_H
 
 /** @defgroup collation Collation functions
+ *
+ * Note on "n" functions variant: those are not for memory overrun control.
+ * They are just for strings not having terminating 0 byte and those
+ * functions won't go further than m-th *character* in string, not byte.
  */
 
 #include <sys/types.h>
@@ -70,6 +74,27 @@ int nu_strcoll(const char *s1, const char *s2,
 int nu_strncoll(const char *s1, const char *s2, size_t max_len,
 	nu_read_iterator_t it1, nu_read_iterator_t it2);
 
+/** Find needle in haystack
+ *
+ * @ingroup collation
+ * @param haystack encoded haystack
+ * @param needle encoded needle
+ * @param it1 haystack read (decode) function
+ * @param it2 needle read (decode) function
+ * @return pointer to found string or 0, will return
+ * haystack if needle is empty string
+ */
+const char* nu_strstr(const char *haystack, const char *needle,
+	nu_read_iterator_t it1, nu_read_iterator_t it2);
+
+/** Find needle in haystack (case-insensitive
+ *
+ * @ingroup collation
+ * @see nu_strstr
+ */
+const char* nu_strcasestr(const char *haystack, const char *needle,
+	nu_read_iterator_t it1, nu_read_iterator_t it2);
+
 #ifdef NU_WITH_TOUPPER
 
 /** Compare characters in strings ignoring case. Will apply nu_toupper() to 
@@ -106,6 +131,22 @@ int nu_strcasecoll(const char *s1, const char *s2,
  * @see nu_strncoll
  */
 int nu_strcasencoll(const char *s1, const char *s2, size_t max_len,
+	nu_read_iterator_t it1, nu_read_iterator_t it2);
+
+/** Find needle in haystack
+ *
+ * @ingroup collation
+ * @see nu_strstr
+ */
+const char* nu_strnstr(const char *haystack, size_t max_len, const char *needle,
+	nu_read_iterator_t it1, nu_read_iterator_t it2);
+
+/** Find needle in haystack (case-insensitive)
+ *
+ * @ingroup collation
+ * @see nu_strcasestr
+ */
+const char* nu_strcasenstr(const char *haystack, size_t max_len, const char *needle,
 	nu_read_iterator_t it1, nu_read_iterator_t it2);
 
 #endif /* NU_WITH_TOUPPER */

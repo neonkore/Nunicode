@@ -77,23 +77,3 @@ void test_strings_strrnchr() {
 	assert(nu_strrnchr(input, sizeof(input), 0x0441, nu_utf8_read) == 0); /* didn't go further than 0 */
 	assert(nu_strrnchr(input, 200, 0x0441, nu_utf8_read) == 0);
 }
-
-void test_strings_strstr() {
-	const char *input = "привет";
-
-	assert(nu_strstr(input, "иве", nu_utf8_read, nu_utf8_read) == input + 4);
-	assert(nu_strstr(input, "привет", nu_utf8_read, nu_utf8_read) == input);
-	assert(nu_strstr(input, "т", nu_utf8_read, nu_utf8_read) == input + 10);
-	assert(nu_strstr(input, "примус", nu_utf8_read, nu_utf8_read) == 0);
-	assert(nu_strstr(input, "абырвагл", nu_utf8_read, nu_utf8_read) == 0);
-	assert(nu_strstr(input, "", nu_utf8_read, nu_utf8_read) == input);
-}
-
-void test_strings_strnstr() {
-	const char *input = "привет";
-
-	assert(nu_strnstr(input, 200, "иве", nu_utf8_read, nu_utf8_read) == input + 4);
-	assert(nu_strnstr(input, 8, "иве", nu_utf8_read, nu_utf8_read) == 0);
-	assert(nu_strnstr(input, 10, "иве", nu_utf8_read, nu_utf8_read) == input + 4);
-	assert(nu_strnstr(input, 0, "", nu_utf8_read, nu_utf8_read) == input);
-}
