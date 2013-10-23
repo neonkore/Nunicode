@@ -1,10 +1,12 @@
 #include <assert.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include <libnu/libnu.h>
 
 void test_utf16_read_bom() {
-	nu_utf16_bom_t bom = { 0 };
+	nu_utf16_bom_t bom;
+	memset(&bom, 0, sizeof(bom));
 
 	assert(nu_utf16_read_bom("\xFF\xFE\x67\x00" /* g, LE */, &bom));
 	assert(bom.write_bom == nu_utf16le_write_bom);
@@ -22,7 +24,8 @@ void test_utf16_read_bom() {
 }
 
 void test_utf16_read_invalid_bom() {
-	nu_utf16_bom_t bom = { 0 };
+	nu_utf16_bom_t bom;
+	memset(&bom, 0, sizeof(bom));
 
 	assert(nu_utf16_read_bom("\xFF\xFF\x00\x67", &bom) == 0);
 	assert(bom.write_bom == 0);
