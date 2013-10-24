@@ -68,7 +68,9 @@ void test_strchr() {
 	assert(nu_strchr(input1, 'M', nu_utf8_read) == input1);
 	assert(nu_strchr(input1, 's', nu_utf8_read) == input1 + 2);
 	assert(nu_strchr(input1, 0x00DF /* 'ß' */, nu_utf8_read) == input1 + 2);
+
 	assert(nu_strchr(input2, 0x00DF /* 'ß' */, nu_utf8_read) == input2 + 2);
+	assert(nu_strchr(input2, 's', nu_utf8_read) == input2 + 2);
 }
 
 void test_strnchr() {
@@ -86,10 +88,13 @@ void test_strnchr() {
 
 void test_strcasechr() {
 	const char *input1 = "MASSE";
+	const char *input2 = "Maße";
 
 	assert(nu_strcasechr(input1, 'i', nu_utf8_read) == 0);
 	assert(nu_strcasechr(input1, 'e', nu_utf8_read) == input1 + 4);
 	assert(nu_strcasechr(input1, 0x00DF /* 'ß' */, nu_utf8_read) == input1 + 2);
+
+	assert(nu_strcasechr(input2, 'S', nu_utf8_read) == input2 + 2);
 }
 
 void test_strcasenchr() {
@@ -98,6 +103,30 @@ void test_strcasenchr() {
 	assert(nu_strcasenchr(input1, 200, 'i', nu_utf8_read) == 0);
 	assert(nu_strcasenchr(input1, 4, 'e', nu_utf8_read) == 0);
 	assert(nu_strcasenchr(input1, 5, 'e', nu_utf8_read) == input1 + 4);
-	assert(nu_strcasenchr(input1, 3, 0x00DF /* 'ß' */, nu_utf8_read) == 0);
-	assert(nu_strcasenchr(input1, 4, 0x00DF /* 'ß' */, nu_utf8_read) == input1 + 2);
+}
+
+void test_strstr() {
+	const char *input1 = "Masse";
+	const char *input2 = "Maße";
+	const char *input3 = "Massess";
+
+	assert(nu_strstr(input1, "ee", nu_utf8_read, nu_utf8_read) == 0);
+	assert(nu_strstr(input1, "ß", nu_utf8_read, nu_utf8_read) == input1 + 2);
+
+	assert(nu_strstr(input2, "ss", nu_utf8_read, nu_utf8_read) == input2 + 2);
+
+	assert(nu_strstr(input3, "s", nu_utf8_read, nu_utf8_read) == input3 + 2);
+	assert(nu_strstr(input3, "ss", nu_utf8_read, nu_utf8_read) == input3 + 2);
+	assert(nu_strstr(input3, "ess", nu_utf8_read, nu_utf8_read) == input3 + 4);
+}
+
+void test_strnstr() {
+	const char *input1 = "Masse";
+
+	assert(nu_strnstr(input1, 100, "ee", 4, nu_utf8_read, nu_utf8_read) == 0);
+	assert(nu_strnstr(input1, 100, "s", 1, nu_utf8_read, nu_utf8_read) == input1 + 2);
+	assert(nu_strnstr(input1, 2, "s", 1, nu_utf8_read, nu_utf8_read) == 0);
+	assert(nu_strnstr(input1, 200, "ß", 2, nu_utf8_read, nu_utf8_read) == input1 + 2);
+	assert(nu_strnstr(input1, 3, "ß", 2, nu_utf8_read, nu_utf8_read) == 0);
+	assert(nu_strnstr(input1, 4, "ß", 2, nu_utf8_read, nu_utf8_read) == input1 + 2);
 }

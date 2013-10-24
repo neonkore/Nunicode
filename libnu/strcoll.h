@@ -50,7 +50,7 @@ const char* nu_strcasechr(const char *encoded, uint32_t c, nu_read_iterator_t re
  * @return -1, 0, 1
  */
 int nu_strcoll(const char *s1, const char *s2,
-	nu_read_iterator_t it1, nu_read_iterator_t it2);
+	nu_read_iterator_t s1_read, nu_read_iterator_t s2_read);
 
 /** Compare characters in case ignoring case. It will also apply character
  * decomposition.
@@ -59,7 +59,7 @@ int nu_strcoll(const char *s1, const char *s2,
  * @see nu_strcoll
  */
 int nu_strcasecoll(const char *s1, const char *s2,
-	nu_read_iterator_t it1, nu_read_iterator_t it2);
+	nu_read_iterator_t s1_read, nu_read_iterator_t s2_read);
 
 /** Find needle in haystack
  *
@@ -72,7 +72,7 @@ int nu_strcasecoll(const char *s1, const char *s2,
  * haystack if needle is empty string
  */
 const char* nu_strstr(const char *haystack, const char *needle,
-	nu_read_iterator_t it1, nu_read_iterator_t it2);
+	nu_read_iterator_t haystack_read, nu_read_iterator_t needle_read);
 
 /** Find needle in haystack (case-insensitive
  *
@@ -80,7 +80,7 @@ const char* nu_strstr(const char *haystack, const char *needle,
  * @see nu_strstr
  */
 const char* nu_strcasestr(const char *haystack, const char *needle,
-	nu_read_iterator_t it1, nu_read_iterator_t it2);
+	nu_read_iterator_t haystack_read, nu_read_iterator_t needle_read);
 
 #endif /* NU_WITH_Z_COLLATION */
 
@@ -108,7 +108,7 @@ const char* nu_strcasenchr(const char *encoded, size_t max_len, uint32_t c, nu_r
  */
 int nu_strncoll(const char *s1, size_t s1_max_len,
 	const char *s2, size_t s2_max_len,
-	nu_read_iterator_t it1, nu_read_iterator_t it2);
+	nu_read_iterator_t s1_read, nu_read_iterator_t s2_read);
 
 /** Compare characters in case ignoring case. It will also apply character
  * decomposition.
@@ -118,7 +118,7 @@ int nu_strncoll(const char *s1, size_t s1_max_len,
  */
 int nu_strcasencoll(const char *s1, size_t s1_max_len,
 	const char *s2, size_t max_len,
-	nu_read_iterator_t it1, nu_read_iterator_t it2);
+	nu_read_iterator_t s1_read, nu_read_iterator_t s2_read);
 
 /** Find needle in haystack
  *
@@ -127,7 +127,7 @@ int nu_strcasencoll(const char *s1, size_t s1_max_len,
  */
 const char* nu_strnstr(const char *haystack, size_t haystack_max_len,
 	const char *needle, size_t needle_max_len,
-	nu_read_iterator_t it1, nu_read_iterator_t it2);
+	nu_read_iterator_t haystack_read, nu_read_iterator_t needle_read);
 
 /** Find needle in haystack (case-insensitive)
  *
@@ -136,7 +136,7 @@ const char* nu_strnstr(const char *haystack, size_t haystack_max_len,
  */
 const char* nu_strcasenstr(const char *haystack, size_t haystack_max_len,
 	const char *needle, size_t needle_max_len,
-	nu_read_iterator_t it1, nu_read_iterator_t it2);
+	nu_read_iterator_t haystack_read, nu_read_iterator_t needle_read);
 
 #endif /* NU_WITH_N_COLLATION */
 
