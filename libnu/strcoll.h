@@ -106,7 +106,8 @@ const char* nu_strcasenchr(const char *encoded, size_t max_len, uint32_t c, nu_r
  * @ingroup collation
  * @see nu_strcoll
  */
-int nu_strncoll(const char *s1, const char *s2, size_t max_len,
+int nu_strncoll(const char *s1, size_t s1_max_len,
+	const char *s2, size_t s2_max_len,
 	nu_read_iterator_t s1_read, nu_read_iterator_t s2_read);
 
 /** Compare characters in case ignoring case. It will also apply character
@@ -115,7 +116,8 @@ int nu_strncoll(const char *s1, const char *s2, size_t max_len,
  * @ingroup collation
  * @see nu_strncoll
  */
-int nu_strcasencoll(const char *s1, const char *s2, size_t max_len,
+int nu_strcasencoll(const char *s1, size_t s1_max_len,
+	const char *s2, size_t s2_max_len,
 	nu_read_iterator_t s1_read, nu_read_iterator_t s2_read);
 
 /** Find needle in haystack
