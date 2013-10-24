@@ -29,16 +29,18 @@ void test_utf32be_encoding();
 void test_utf32_read_bom();
 void test_utf32_read_invalid_bom();
 void test_utf32_write_bom();
-void test_strings_strlen();
-void test_strings_strnlen();
-void test_strings_bytelen();
-void test_strings_bytenlen();
-void test_strings_readstr();
-void test_strings_readnstr();
-void test_strings_writestr();
-void test_strings_writenstr();
-void test_strings_transformstr();
-void test_strings_transformnstr();
+void test_strlen();
+void test_strnlen();
+void test_bytelen();
+void test_bytenlen();
+void test_strbytelen();
+void test_strbytenlen();
+void test_readstr();
+void test_readnstr();
+void test_writestr();
+void test_writenstr();
+void test_transformstr();
+void test_transformnstr();
 void test_validation_utf8();
 void test_validation_cesu8();
 void test_validation_utf16le();
@@ -96,18 +98,19 @@ testcase cases[] = {
 	test_utf32_read_invalid_bom,
 	test_utf32_write_bom,
 
-	test_strings_strlen,
-	test_strings_bytelen,
-	test_strings_strnlen,
-	test_strings_bytenlen,
+	test_strlen,
+	test_bytelen,
+	test_strnlen,
+	test_bytenlen,
+	test_strbytelen,
 	
-	test_strings_readstr,
-	test_strings_writestr,
-	test_strings_transformstr,
+	test_readstr,
+	test_writestr,
+	test_transformstr,
 
-	test_strings_readnstr,
-	test_strings_writenstr,
-	test_strings_transformnstr,
+	test_readnstr,
+	test_writenstr,
+	test_transformnstr,
 	
 	test_validation_utf8,
 	test_validation_cesu8,

@@ -37,6 +37,23 @@ static ssize_t _nu_bytelen(const uint32_t *unicode, const uint32_t *limit, nu_wr
 	return len;
 }
 
+static ssize_t _nu_strbytelen(const char *encoded, const char *limit, nu_read_iterator_t it) {
+	uint32_t u = 0;
+	const char *p = encoded;
+
+	while (p < limit) {
+		const char *np = it(p, &u);
+
+		if (u == 0) {
+			return (p - encoded);
+		}
+
+		p = np;
+	}
+
+	return 0;
+}
+
 #endif /* NU_WITH_N_STRINGS || NU_WITH_Z_STRINGS */
 
 #ifdef NU_WITH_Z_STRINGS
@@ -47,6 +64,10 @@ ssize_t nu_strlen(const char *encoded, nu_read_iterator_t it) {
 
 ssize_t nu_bytelen(const uint32_t *unicode, nu_write_iterator_t it) {
 	return _nu_bytelen(unicode, (const uint32_t *)(-1), it);
+}
+
+ssize_t nu_strbytelen(const char *encoded, nu_read_iterator_t it) {
+	return _nu_strbytelen(encoded, (const char *)(-1), it);
 }
 
 #endif /* NU_WITH_Z_STRINGS */

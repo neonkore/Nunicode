@@ -68,6 +68,15 @@ ssize_t nu_strlen(const char *encoded, nu_read_iterator_t it);
  */
 ssize_t nu_bytelen(const uint32_t *unicode, nu_write_iterator_t it);
 
+/** Get encoded string bytes length
+ *
+ * @ingroup strings
+ * @param encoded encoded string
+ * @param it decoding function
+ * @return string length or negative error
+ */
+ssize_t nu_strbytelen(const char *encoded, nu_read_iterator_t it);
+
 #endif /* NU_WITH_Z_STRINGS */
 
 #ifdef NU_WITH_N_STRINGS

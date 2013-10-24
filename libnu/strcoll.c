@@ -125,7 +125,7 @@ static int _nu_collate(const char *lhs, const char *lhs_limit,
 	const char *rhs, const char *rhs_limit,
 	nu_read_iterator_t it1, nu_read_iterator_t it2, 
 	nu_casemapping_t casemap, nu_decompositor_t decompose, nu_codepointcmp_t compare,
-	size_t *collated_left, size_t *collated_right) {
+	ssize_t *collated_left, ssize_t *collated_right) {
 
 	int cmp = 0;
 
@@ -206,23 +206,6 @@ static int _nu_strcoll(const char *lhs, const char *lhs_limit,
 		casemap, decompose, compare, 0, 0);
 }
 
-static size_t _len(const char *encoded, nu_read_iterator_t it) {
-	uint32_t u = 0;
-	const char *p = encoded;
-	do {
-		const char *np = it(p, &u);
-
-		if (u == 0) {
-			return (p - encoded);
-		}
-
-		p = np;
-	}
-	while (u != 0);
-
-	return 0;
-}
-
 const char* _nu_strstr(const char *haystack, const char *haystack_limit, 
 	const char *needle, const char *needle_limit,
 	nu_read_iterator_t it1, nu_read_iterator_t it2,
@@ -238,9 +221,9 @@ const char* _nu_strstr(const char *haystack, const char *haystack_limit,
 		return haystack;
 	}
 
-	size_t needle_len = (needle_limit != (const char *)(-1)
-		? (size_t)(needle_limit - needle)
-		: _len(needle, it2));
+	ssize_t needle_len = (needle_limit != (const char *)(-1)
+		? (needle_limit - needle)
+		: nu_strbytelen(needle, it2));
 
 	const char *h0 = haystack;
 	do {
@@ -251,7 +234,7 @@ const char* _nu_strstr(const char *haystack, const char *haystack_limit,
 			break;
 		}
 
-		size_t collated_left = 0, collated_right = 0;
+		ssize_t collated_left = 0, collated_right = 0;
 		int cmp = _nu_collate(h0, haystack_limit, 
 			needle, needle_limit,
 			it1, it2,
