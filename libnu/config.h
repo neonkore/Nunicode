@@ -75,16 +75,23 @@
 #endif /* NU_WITH_STRINGS */
 
 #ifdef NU_WITH_COLLATION
-#	define NU_WITH_DECOMPOSITION
-#	define NU_WITH_UDB
-#	define NU_WITH_UTF8_READER
+#	define NU_WITH_Z_COLLATION
+#	define NU_WITH_N_COLLATION
 #endif /* NU_WITH_COLLATION */
 
 #ifdef NU_WITH_CASEMAP
 #	define NU_WITH_TOLOWER
 #	define NU_WITH_TOUPPER
+#endif /* NU_WITH_CASEMAP */
+
+#if (defined NU_WITH_Z_COLLATION) || (defined NU_WITH_N_COLLATION)
+#	define NU_WITH_DECOMPOSITION
+#endif
+
+#if (defined NU_WITH_Z_COLLATION) || (defined NU_WITH_N_COLLATION) \
+|| (defined NU_WITH_TOLOWER) || (defined NU_WITH_TOUPPER)
 #	define NU_WITH_UDB
 #	define NU_WITH_UTF8_READER
-#endif /* NU_WITH_CASEMAP */
+#endif
 
 #endif /* NU_BUILD_CONFIG_H */

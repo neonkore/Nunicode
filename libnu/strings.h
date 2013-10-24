@@ -57,7 +57,7 @@ typedef char* (*nu_write_iterator_t)(uint32_t unicode, char *encoded);
  */
 ssize_t nu_strlen(const char *encoded, nu_read_iterator_t it);
 
-/** Get encoded string bytes length
+/** Get encoded string bytes length (encoding variant)
  *
  * @ingroup strings
  * @param unicode unicode codepoints
@@ -68,38 +68,14 @@ ssize_t nu_strlen(const char *encoded, nu_read_iterator_t it);
  */
 ssize_t nu_bytelen(const uint32_t *unicode, nu_write_iterator_t it);
 
-/** Locate character in string
+/** Get encoded string bytes length
  *
  * @ingroup strings
  * @param encoded encoded string
- * @param c unicode character to locate
  * @param it decoding function
- * @return pointer in encoded string or 0 if character is not found
+ * @return string length or negative error
  */
-const char* nu_strchr(const char *encoded, uint32_t c, nu_read_iterator_t it);
-
-/** Locate last occurrence of character in string
- *
- * @ingroup strings
- * @param encoded encoded string
- * @param c unicode character to locate
- * @param it decoding function
- * @return pointer in encoded string or 0 if character is not found
- */
-const char* nu_strrchr(const char *encoded, uint32_t c, nu_read_iterator_t it);
-
-/** Find needle in haystack
- *
- * @ingroup strings
- * @param haystack encoded haystack
- * @param needle encoded needle
- * @param it1 haystack read (decode) function
- * @param it2 needle read (decode) function
- * @return pointer to found string or 0, will return
- * haystack if needle is empty string
- */
-const char* nu_strstr(const char *haystack, const char *needle,
-	nu_read_iterator_t it1, nu_read_iterator_t it2);
+ssize_t nu_strbytelen(const char *encoded, nu_read_iterator_t it);
 
 #endif /* NU_WITH_Z_STRINGS */
 
@@ -108,9 +84,6 @@ const char* nu_strstr(const char *haystack, const char *needle,
 /** Get character length of string without terminating 0
  *
  * @ingroup strings
- * @param max_len nu_strnlen won't normally go further than max_len bytes. It might
- * go further if encoded character is longer than max_len though
- *
  * @see nu_strlen
  */
 ssize_t nu_strnlen(const char *encoded, size_t max_len, nu_read_iterator_t it);
@@ -118,40 +91,9 @@ ssize_t nu_strnlen(const char *encoded, size_t max_len, nu_read_iterator_t it);
 /** Get length of encoded string
  *
  * @ingroup strings
- * @param max_len nu_bytenlen won't go further than max_len-th codepoint
- *
  * @see nu_bytelen
  */
 ssize_t nu_bytenlen(const uint32_t *unicode, size_t max_len, nu_write_iterator_t it);
-
-/** Locate character in string
- *
- * @ingroup strings
- * @param max_len nu_bytenlen won't go further than max_len-th codepoint
- *
- * @see nu_bytelen
- */
-const char* nu_strnchr(const char *encoded, size_t max_len, uint32_t c, nu_read_iterator_t it);
-
-/** Locate last occurrence of character in string
- *
- * @ingroup strings
- * @param max_len nu_bytenlen won't go further than max_len-th codepoint
- *
- * @see nu_bytelen
- */
-const char* nu_strrnchr(const char *encoded, size_t max_len, uint32_t c, nu_read_iterator_t it);
-
-/** Find needle in haystack
- *
- * @ingroup strings
- * @param max_len nu_strnlen won't normally go further than max_len bytes. It might
- * go further if encoded character is longer than max_len though
- *
- * @see nu_strstr
- */
-const char* nu_strnstr(const char *haystack, size_t max_len, const char *needle,
-	nu_read_iterator_t it1, nu_read_iterator_t it2);
 
 #endif /* NU_WITH_N_STRINGS */
 

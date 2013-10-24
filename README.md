@@ -303,14 +303,18 @@ UTF-32
 Strings collation and case mapping
 
     All collation and case mapping functions options imply -DNU_WITH_UTF8_READER
+    Collation functions also imply -DNU_WITH_UDB
 
 * ``-DNU_WITH_TOUPPER`` - enable upper case mapping
 * ``-DNU_WITH_TOLOWER`` - enable lower case mapping
 * ``-DNU_WITH_CASEMAP`` - enable case insensitive string functions,
   implies ``-DNU_WITH_TOUPPER`` and ``-DNU_WITH_TOLOWER``
-* ``-DNU_WITH_COLLATION`` - enable strings collation functions, if
-  ``-DNU_WITH_TOUPPER`` is also defined, case-insensitive functions
-  are also enabled
+* ``-DNU_WITH_Z_COLLATION`` - enable strings collation functions for 0-terminated
+  strings
+* ``-DNU_WITH_N_COLLATION`` - enable strings collation functions for unterminated
+  strings
+* ``-DNU_WITH_COLLATION`` - implies ``-DNU_WITH_Z_COLLATION``
+  and ``-DNU_WITH_N_COLLATION``
 
 Collation misc
 

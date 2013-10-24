@@ -7,7 +7,7 @@ void test_toupper() {
 	assert(nu_toupper(0x0451) == 0x0401);
 	assert(nu_toupper(0x00F4) == 0x00D4);
 
-	assert(nu_toupper(0x00A0) == 0);
+	assert(nu_toupper(0x00A0) == 0x00A0);
 }
 
 void test_tolower() {
@@ -15,5 +15,5 @@ void test_tolower() {
 	assert(nu_tolower(0x0401) == 0x0451);
 	assert(nu_tolower(0x00D4) == 0x00F4);
 
-	assert(nu_tolower(0x00A0) == 0);
+	assert(nu_tolower(0x00A0) == 0x00A0);
 }

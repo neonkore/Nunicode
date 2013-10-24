@@ -3,7 +3,7 @@
 
 #include <libnu/libnu.h>
 
-void test_strings_readstr() {
+void test_readstr() {
 	const char input[] = "привет";
 	uint32_t u[sizeof(input)] = { 0 };
 
@@ -12,7 +12,7 @@ void test_strings_readstr() {
 	assert(u[6] == 0);
 }
 
-void test_strings_writestr() {
+void test_writestr() {
 	const uint32_t input[] = { 0x043f, 0x0440, 0x0438, 0x0432, 0x0435, 0x0442, 0 };
 	char u[sizeof(input) * 2] = { 0 };
 
@@ -21,7 +21,7 @@ void test_strings_writestr() {
 	assert(u[6 * 2] == 0);
 }
 
-void test_strings_transformstr() {
+void test_transformstr() {
 	const unsigned char input[] = { 0xED, 0xA0, 0x81, 0xED, 0xB0, 0x80, 0 }; /* 𐐀 + \0 in CESU-8 */
 	char output[sizeof(input)] = { 0 };
 
@@ -29,7 +29,7 @@ void test_strings_transformstr() {
 	assert(strcmp(output, "𐐀") == 0);
 }
 
-void test_strings_readnstr() {
+void test_readnstr() {
 	const char input[] = "привет";
 	uint32_t u[sizeof(input)] = { 0 };
 
@@ -46,7 +46,7 @@ void test_strings_readnstr() {
 	assert(u[6] == 0);
 }
 
-void test_strings_writenstr() {
+void test_writenstr() {
 	const uint32_t input[] = { 0x043f, 0x0440, 0x0438, 0x0432, 0x0435, 0x0442, 0 };
 	char u[sizeof(input) * 2] = { 0 };
 
@@ -63,7 +63,7 @@ void test_strings_writenstr() {
 	assert(u[6 * 2] == 0);
 }
 
-void test_strings_transformnstr() {
+void test_transformnstr() {
 	const unsigned char input[] = { 0xED, 0xA0, 0x81, 0xED, 0xB0, 0x80, 0 }; /* 𐐀 + \0 in CESU-8 */
 	char output[sizeof(input)] = { 1, 1, 1, 1, 1, 1 }; /* in UTF-8 it's 4-bytes sequence */
 
