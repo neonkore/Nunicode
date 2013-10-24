@@ -59,6 +59,8 @@ void test_strcasechr();
 void test_strcasenchr();
 void test_strstr();
 void test_strnstr();
+void test_strcasestr();
+void test_strcasenstr();
 
 testcase cases[] = {
 
@@ -129,6 +131,8 @@ testcase cases[] = {
 	test_strcasenchr,
 	test_strstr,
 	test_strnstr,
+	test_strcasestr,
+	test_strcasenstr,
 };
 
 int main() {

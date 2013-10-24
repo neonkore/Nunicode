@@ -139,7 +139,7 @@ static int _nu_collate(const char *lhs, const char *lhs_limit,
 		const char *np2 = it2(p2, &u2);
 
 		if (u1 == 0 && u2 == 0) {
-			return 0;
+			goto pass;
 		}
 
 		nu_read_iterator_t decomps_read = 0;
@@ -154,30 +154,26 @@ static int _nu_collate(const char *lhs, const char *lhs_limit,
 		}
 
 		if (decomps1 == 0) {
-			const char *pro = decomps2;
 			cmp = _nu_encoded_decomposed_cmp(&p1, lhs_limit, 
 				&decomps2, it1, decomps_read, 
 				casemap, compare, &u1, &u2);
-			p2 += (decomps2 - pro);
+			p2 = np2;
 			goto pass;
 		}
 
 		if (decomps2 == 0) {
-			const char *pro = decomps1;
 			cmp = _nu_encoded_decomposed_cmp(&p2, rhs_limit, 
 				&decomps1, it2, decomps_read,
 				casemap, compare, &u1, &u2) * -1;
-			p1 += (decomps1 - pro);
+			p1 = np1;
 			goto pass;
 		}
 
-		const char *pro1 = decomps1;
-		const char *pro2 = decomps2;
 		cmp = _nu_encoded_decomposed_cmp(&decomps1, (const char *)(-1), &decomps2,
 			decomps_read, decomps_read, 
 			casemap, compare, &u1, &u2);
-		p1 += (decomps1 - pro1);
-		p2 += (decomps2 - pro2);
+		p1 = np1;
+		p2 = np2;
 
 pass:
 		if (cmp == 0) {
@@ -211,22 +207,20 @@ static int _nu_strcoll(const char *lhs, const char *lhs_limit,
 }
 
 static size_t _len(const char *encoded, nu_read_iterator_t it) {
-	size_t len = 0;
-
 	uint32_t u = 0;
 	const char *p = encoded;
 	do {
-		p = it(p, &u);
+		const char *np = it(p, &u);
 
 		if (u == 0) {
-			break;
+			return (p - encoded);
 		}
 
-		++len;
+		p = np;
 	}
 	while (u != 0);
 
-	return len;
+	return 0;
 }
 
 const char* _nu_strstr(const char *haystack, const char *haystack_limit, 
@@ -257,17 +251,18 @@ const char* _nu_strstr(const char *haystack, const char *haystack_limit,
 			break;
 		}
 
-		size_t collated_right = 0;
+		size_t collated_left = 0, collated_right = 0;
 		int cmp = _nu_collate(h0, haystack_limit, 
 			needle, needle_limit,
 			it1, it2,
 			casemap, decompose, compare,
-			0, &collated_right);
+			&collated_left, &collated_right);
 
 		/* if needle limit is reached cmp == 0
                  * if there is no limit, _nu_collate will go 
                  * until terminating 0 */
-		if (cmp == 0 || collated_right > needle_len) {
+		if ((cmp == 0 && collated_right == needle_len)
+		|| (collated_right > needle_len)) {
 			return h0;
 		}
 
@@ -313,6 +308,13 @@ const char* nu_strstr(const char *haystack, const char *needle,
 		casemap_nop, nu_decompose, _nu_uint32cmp);
 }
 
+const char* nu_strcasestr(const char *haystack, const char *needle,
+	nu_read_iterator_t haystack_read, nu_read_iterator_t needle_read) {
+	return _nu_strstr(haystack, (const char *)(-1), needle, (const char *)(-1),
+		haystack_read, needle_read,
+		nu_toupper, nu_decompose, _nu_uint32cmp);
+}
+
 #endif /* NU_WITH_Z_COLLATION */
 
 #ifdef NU_WITH_N_COLLATION
@@ -327,17 +329,15 @@ const char* nu_strcasenchr(const char *encoded, size_t max_len, uint32_t c, nu_r
 		nu_toupper, nu_decompose, _nu_uint32cmp);
 }
 
-int nu_strncoll(const char *s1, size_t s1_max_len,
-	const char *s2, size_t s2_max_len,
+int nu_strncoll(const char *s1, const char *s2, size_t max_len,
 	nu_read_iterator_t s1_read, nu_read_iterator_t s2_read) {
-	return _nu_strcoll(s1, s1 + s1_max_len, s2, s2 + s2_max_len,
+	return _nu_strcoll(s1, s1 + max_len, s2, s2 + max_len,
 		s1_read, s2_read, casemap_nop, nu_decompose, _nu_uint32cmp);
 }
 
-int nu_strcasencoll(const char *s1, size_t s1_max_len,
-	const char *s2, size_t s2_max_len,
+int nu_strcasencoll(const char *s1, const char *s2, size_t max_len,
 	nu_read_iterator_t s1_read, nu_read_iterator_t s2_read) {
-	return _nu_strcoll(s1, s1 + s1_max_len, s2, s2 + s2_max_len,
+	return _nu_strcoll(s1, s1 + max_len, s2, s2 + max_len,
 		s1_read, s2_read, nu_toupper, nu_decompose, _nu_uint32cmp);
 }
 
@@ -348,6 +348,15 @@ const char* nu_strnstr(const char *haystack, size_t haystack_max_len,
 		needle, needle + needle_max_len,
 		haystack_read, needle_read,
 		casemap_nop, nu_decompose, _nu_uint32cmp);
+}
+
+const char* nu_strcasenstr(const char *haystack, size_t haystack_max_len,
+	const char *needle, size_t needle_max_len,
+	nu_read_iterator_t haystack_read, nu_read_iterator_t needle_read) {
+	return _nu_strstr(haystack,  haystack + haystack_max_len, 
+		needle, needle + needle_max_len,
+		haystack_read, needle_read,
+		nu_toupper, nu_decompose, _nu_uint32cmp);
 }
 
 #endif /* NU_WITH_N_COLLATION */
