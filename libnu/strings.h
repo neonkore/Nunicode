@@ -46,17 +46,6 @@ typedef char* (*nu_write_iterator_t)(uint32_t unicode, char *encoded);
 
 #ifdef NU_WITH_Z_STRINGS
 
-/** Get encoded string byte length
- *
- * @ingroup strings
- * @param encoded encoded string
- * @param it decoding function
- * @return string length or negative error
- *
- * @see nu_nlen
- */
-ssize_t nu_len(const char *encoded, nu_read_iterator_t it);
-
 /** Get decoded string characters length
  *
  * @ingroup strings
@@ -67,17 +56,6 @@ ssize_t nu_len(const char *encoded, nu_read_iterator_t it);
  * @see nu_strnlen
  */
 ssize_t nu_strlen(const char *encoded, nu_read_iterator_t it);
-
-/** Get decoded string characters length
- *
- * @ingroup strings
- * @param encoded encoded string
- * @param it decoding function
- * @return string length or negative error
- *
- * @see nu_strnlen
- */
-ssize_t nu_charlen(const char *encoded, nu_read_iterator_t it);
 
 /** Get encoded string bytes length (encoding variant)
  *
@@ -90,36 +68,9 @@ ssize_t nu_charlen(const char *encoded, nu_read_iterator_t it);
  */
 ssize_t nu_bytelen(const uint32_t *unicode, nu_write_iterator_t it);
 
-/** Locate character in string
- *
- * @ingroup strings
- * @param encoded encoded string
- * @param c unicode character to locate
- * @param it decoding function
- * @return pointer in encoded string or 0 if character is not found
- */
-const char* nu_strchr(const char *encoded, uint32_t c, nu_read_iterator_t it);
-
-/** Locate last occurrence of character in string
- *
- * @ingroup strings
- * @param encoded encoded string
- * @param c unicode character to locate
- * @param it decoding function
- * @return pointer in encoded string or 0 if character is not found
- */
-const char* nu_strrchr(const char *encoded, uint32_t c, nu_read_iterator_t it);
-
 #endif /* NU_WITH_Z_STRINGS */
 
 #ifdef NU_WITH_N_STRINGS
-
-/** Get character length of string without terminating 0
- *
- * @ingroup strings
- * @see nu_len
- */
-ssize_t nu_nlen(const char *encoded, size_t max_len, nu_read_iterator_t it);
 
 /** Get character length of string without terminating 0
  *
@@ -134,20 +85,6 @@ ssize_t nu_strnlen(const char *encoded, size_t max_len, nu_read_iterator_t it);
  * @see nu_bytelen
  */
 ssize_t nu_bytenlen(const uint32_t *unicode, size_t max_len, nu_write_iterator_t it);
-
-/** Locate character in string
- *
- * @ingroup strings
- * @see nu_bytelen
- */
-const char* nu_strnchr(const char *encoded, size_t max_len, uint32_t c, nu_read_iterator_t it);
-
-/** Locate last occurrence of character in string
- *
- * @ingroup strings
- * @see nu_bytelen
- */
-const char* nu_strrnchr(const char *encoded, size_t max_len, uint32_t c, nu_read_iterator_t it);
 
 #endif /* NU_WITH_N_STRINGS */
 

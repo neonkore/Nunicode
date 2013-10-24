@@ -29,16 +29,10 @@ void test_utf32be_encoding();
 void test_utf32_read_bom();
 void test_utf32_read_invalid_bom();
 void test_utf32_write_bom();
-void test_strings_len();
-void test_strings_nlen();
 void test_strings_strlen();
 void test_strings_strnlen();
 void test_strings_bytelen();
 void test_strings_bytenlen();
-void test_strings_strchr();
-void test_strings_strnchr();
-void test_strings_strrchr();
-void test_strings_strrnchr();
 void test_strings_readstr();
 void test_strings_readnstr();
 void test_strings_writestr();
@@ -59,14 +53,8 @@ void test_strcoll();
 void test_strncoll();
 void test_strcasecoll();
 void test_strcasencoll();
-void test_strcmp();
-void test_strncmp();
-void test_strcasecmp();
-void test_strcasencmp();
-void test_strstr();
-void test_strnstr();
-void test_strcasestr();
-void test_strcasenstr();
+void test_strchr();
+void test_strnchr();
 
 testcase cases[] = {
 
@@ -102,17 +90,10 @@ testcase cases[] = {
 	test_utf32_read_invalid_bom,
 	test_utf32_write_bom,
 
-	test_strings_len,
 	test_strings_strlen,
 	test_strings_bytelen,
-	test_strings_strchr,
-	test_strings_strrchr,
-
-	test_strings_nlen,	
 	test_strings_strnlen,
 	test_strings_bytenlen,
-	test_strings_strnchr,
-	test_strings_strrnchr,
 	
 	test_strings_readstr,
 	test_strings_writestr,
@@ -138,15 +119,9 @@ testcase cases[] = {
 	test_strncoll,
 	test_strcasecoll,
 	test_strcasencoll,
-	test_strstr,
-	test_strcasestr,
-
-	test_strcmp,
-	test_strncmp,
-	test_strcasecmp,
-	test_strcasencmp,
-	test_strnstr,
-	test_strcasenstr,
+	test_strchr,
+	test_strnchr,
+//	test_strrchr,
 };
 
 int main() {
