@@ -32,6 +32,13 @@ typedef int (*nu_codepointcmp_t)(uint32_t u1, uint32_t u2, nu_casemapping_t case
  */
 const char* nu_strchr(const char *encoded, uint32_t c, nu_read_iterator_t read);
 
+/** Locate character in string ignoring case
+ *
+ * @ingroup collation
+ * @see nu_strchr
+ */
+const char* nu_strcasechr(const char *encoded, uint32_t c, nu_read_iterator_t read);
+
 /** Compare characters in case ignoring case. It will also apply character
  * decomposition.
  *
@@ -85,6 +92,13 @@ const char* nu_strcasestr(const char *haystack, const char *needle,
  * @see nu_strchr
  */
 const char* nu_strnchr(const char *encoded, size_t max_len, uint32_t c, nu_read_iterator_t read);
+
+/** Locate character in string ignoring case
+ *
+ * @ingroup collation
+ * @see nu_strcasechr
+ */
+const char* nu_strcasenchr(const char *encoded, size_t max_len, uint32_t c, nu_read_iterator_t read);
 
 /** Compare characters in case ignoring case. It will also apply character
  * decomposition.

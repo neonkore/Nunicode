@@ -205,6 +205,11 @@ const char* nu_strchr(const char *encoded, uint32_t c, nu_read_iterator_t read) 
 		casemap_nop, nu_decompose, _nu_uint32cmp);
 }
 
+const char* nu_strcasechr(const char *encoded, uint32_t c, nu_read_iterator_t read) {
+	return _nu_strchr(encoded, (const char *)(-1), c, read,
+		nu_toupper, nu_decompose, _nu_uint32cmp);
+}
+
 int nu_strcoll(const char *s1, const char *s2, nu_read_iterator_t it1, nu_read_iterator_t it2) {
 	return _nu_strcoll(s1, (const char *)(-1), s2, (const char *)(-1),
 		it1, it2, casemap_nop, nu_decompose, _nu_uint32cmp);
@@ -222,6 +227,11 @@ int nu_strcasecoll(const char *s1, const char *s2, nu_read_iterator_t it1, nu_re
 const char* nu_strnchr(const char *encoded, size_t max_len, uint32_t c, nu_read_iterator_t read) {
 	return _nu_strchr(encoded, encoded + max_len, c, read, 
 		casemap_nop, nu_decompose, _nu_uint32cmp);
+}
+
+const char* nu_strcasenchr(const char *encoded, size_t max_len, uint32_t c, nu_read_iterator_t read) {
+	return _nu_strchr(encoded, encoded + max_len, c, read, 
+		nu_toupper, nu_decompose, _nu_uint32cmp);
 }
 
 int nu_strncoll(const char *s1, size_t s1_max_len,

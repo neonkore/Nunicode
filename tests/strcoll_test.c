@@ -83,3 +83,21 @@ void test_strnchr() {
 	assert(nu_strnchr(input1, 4, 0x00DF /* 'ß' */, nu_utf8_read) == input1 + 2);
 	assert(nu_strnchr(input1, 3, 0x00DF /* 'ß' */, nu_utf8_read) == 0);
 }
+
+void test_strcasechr() {
+	const char *input1 = "MASSE";
+
+	assert(nu_strcasechr(input1, 'i', nu_utf8_read) == 0);
+	assert(nu_strcasechr(input1, 'e', nu_utf8_read) == input1 + 4);
+	assert(nu_strcasechr(input1, 0x00DF /* 'ß' */, nu_utf8_read) == input1 + 2);
+}
+
+void test_strcasenchr() {
+	const char *input1 = "MASSE";
+
+	assert(nu_strcasenchr(input1, 200, 'i', nu_utf8_read) == 0);
+	assert(nu_strcasenchr(input1, 4, 'e', nu_utf8_read) == 0);
+	assert(nu_strcasenchr(input1, 5, 'e', nu_utf8_read) == input1 + 4);
+	assert(nu_strcasenchr(input1, 3, 0x00DF /* 'ß' */, nu_utf8_read) == 0);
+	assert(nu_strcasenchr(input1, 4, 0x00DF /* 'ß' */, nu_utf8_read) == input1 + 2);
+}
