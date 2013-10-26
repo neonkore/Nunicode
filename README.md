@@ -26,13 +26,14 @@ Encodings supported ATM:
 String functions supported for all encodings (works on encoded strings):
 
 * nu\_strlen (nu\_strnlen)
+* nu\_bytelen (nu\_bytenlen)
+* nu\_strbytelen (nu\_strbytenlen)
 * nu\_strchr (nu\_strnchr)
-* nu\_strrchr (nu\_strrnchr)
-* nu\_strstr (nu\_strnstr)
+* nu\_strcasechr (nu\_strcasenchr)
 * nu\_strcoll (nu\_strncoll)
-* nu\_strcmp (nu\_strncmp)
-* nu\_strcasecoll (nu\_strcasecoll)
-* nu\_strcasecmp (nu\_strcasencmp)
+* nu\_strcasecoll (nu\_strcasencoll)
+* nu\_strstr (nu\_strnstr)
+* nu\_strcasestr (nu\_strcasenstr)
 
 ## WHY YOU DO ANOTHER UNICODE LIBRARY
 
