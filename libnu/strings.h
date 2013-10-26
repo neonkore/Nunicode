@@ -78,16 +78,6 @@ ssize_t nu_bytelen(const uint32_t *unicode, nu_write_iterator_t it);
  */
 const char* nu_strchr(const char *encoded, uint32_t c, nu_read_iterator_t it);
 
-/** Locate last occurrence of character in string
- *
- * @ingroup strings
- * @param encoded encoded string
- * @param c unicode character to locate
- * @param it decoding function
- * @return pointer in encoded string or 0 if character is not found
- */
-const char* nu_strrchr(const char *encoded, uint32_t c, nu_read_iterator_t it);
-
 #endif /* NU_WITH_Z_STRINGS */
 
 #ifdef NU_WITH_N_STRINGS
@@ -119,15 +109,6 @@ ssize_t nu_bytenlen(const uint32_t *unicode, size_t max_len, nu_write_iterator_t
  * @see nu_bytelen
  */
 const char* nu_strnchr(const char *encoded, size_t max_len, uint32_t c, nu_read_iterator_t it);
-
-/** Locate last occurrence of character in string
- *
- * @ingroup strings
- * @param max_len nu_bytenlen won't go further than max_len-th codepoint
- *
- * @see nu_bytelen
- */
-const char* nu_strrnchr(const char *encoded, size_t max_len, uint32_t c, nu_read_iterator_t it);
 
 #endif /* NU_WITH_N_STRINGS */
 

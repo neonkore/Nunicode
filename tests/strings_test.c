@@ -24,14 +24,6 @@ void test_strings_strchr() {
 	assert(nu_strchr(input, 0x0441, nu_utf8_read) == 0);
 }
 
-void test_strings_strrchr() {
-	const char *input = "прпрпр";
-
-	assert(nu_strrchr(input, 0x043F /* п */, nu_utf8_read) == input + 8);
-	assert(nu_strrchr(input, 0x0440 /* р */, nu_utf8_read) == input + 10);
-	assert(nu_strrchr(input, 0x0441, nu_utf8_read) == 0);
-}
-
 void test_strings_strnlen() {
 	assert(nu_strnlen("привет", 1, nu_utf8_read) == 1); /* might happen */
 	assert(nu_strnlen("привет", 2, nu_utf8_read) == 1);
@@ -55,13 +47,4 @@ void test_strings_strnchr() {
 	assert(nu_strnchr(input, sizeof(input), 0x0440 /* р */, nu_utf8_read) == input + 2); /* didn't go further than limit */
 	assert(nu_strnchr(input, sizeof(input), 0x0441, nu_utf8_read) == 0); /* didn't go further than 0 */
 	assert(nu_strnchr(input, 200, 0x0441, nu_utf8_read) == 0);
-}
-
-void test_strings_strrnchr() {
-	const char input[] = "прпрпр\0с"; /* inject cyrillic "с" after 0 for test */
-
-	assert(nu_strrnchr(input, 8, 0x043F /* п */, nu_utf8_read) == input + 4);
-	assert(nu_strrnchr(input, 8, 0x0440 /* р */, nu_utf8_read) == input + 6);
-	assert(nu_strrnchr(input, sizeof(input), 0x0441, nu_utf8_read) == 0); /* didn't go further than 0 */
-	assert(nu_strrnchr(input, 200, 0x0441, nu_utf8_read) == 0);
 }

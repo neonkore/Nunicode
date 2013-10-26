@@ -22,8 +22,6 @@ String functions supported for all encodings (works on encoded strings):
 * nu\_strnlen
 * nu\_strchr
 * nu\_strnchr
-* nu\_strrchr
-* nu\_strrnchr
 
 What it *CAN'T* do:
 
