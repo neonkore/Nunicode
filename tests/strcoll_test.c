@@ -4,15 +4,15 @@
 #include <libnu/libnu.h>
 
 void test_strchr() {
-	const char *input1 = "Masse";
+	const char *input1 = "Mass";
 	const char *input2 = "Maße";
 
 	assert(nu_strchr(input1, 'i', nu_utf8_read) == 0);
 	assert(nu_strchr(input1, 'M', nu_utf8_read) == input1);
 	assert(nu_strchr(input1, 's', nu_utf8_read) == input1 + 2);
-	assert(nu_strchr(input1, 0x00DF /* 'ß' */, nu_utf8_read) == input1 + 2);
+	assert(nu_strchr(input1, 0x00DF, nu_utf8_read) == input1 + 2);
 
-	assert(nu_strchr(input2, 0x00DF /* 'ß' */, nu_utf8_read) == input2 + 2);
+	assert(nu_strchr(input2, 0x00DF, nu_utf8_read) == input2 + 2);
 	assert(nu_strchr(input2, 's', nu_utf8_read) == input2 + 2);
 }
 
@@ -25,8 +25,8 @@ void test_strnchr() {
 	assert(nu_strnchr(input1, 0, 'M', nu_utf8_read) == 0);
 	assert(nu_strnchr(input1, 2, 's', nu_utf8_read) == 0);
 	assert(nu_strnchr(input1, 3, 's', nu_utf8_read) == input1 + 2);
-	assert(nu_strnchr(input1, 4, 0x00DF /* 'ß' */, nu_utf8_read) == input1 + 2);
-	assert(nu_strnchr(input1, 3, 0x00DF /* 'ß' */, nu_utf8_read) == 0);
+	assert(nu_strnchr(input1, 4, 0x00DF, nu_utf8_read) == input1 + 2);
+	assert(nu_strnchr(input1, 3, 0x00DF, nu_utf8_read) == 0);
 }
 
 void test_strcasechr() {
@@ -49,6 +49,18 @@ void test_strcasenchr() {
 }
 
 void test_strcoll() {
+	assert(nu_strcoll("ß", "ß", nu_utf8_read, nu_utf8_read) == 0);
+	assert(nu_strcoll("ß", "ss", nu_utf8_read, nu_utf8_read) == 0);
+	assert(nu_strcoll("ss", "ss", nu_utf8_read, nu_utf8_read) == 0);
+	assert(nu_strcoll("s", "ss", nu_utf8_read, nu_utf8_read) < 0);
+	assert(nu_strcoll("ss", "s", nu_utf8_read, nu_utf8_read) > 0);
+	assert(nu_strcoll("ßs", "sß", nu_utf8_read, nu_utf8_read) == 0);
+	assert(nu_strcoll("ßßs", "sßß", nu_utf8_read, nu_utf8_read) == 0);
+	assert(nu_strcoll("ßss", "ssß", nu_utf8_read, nu_utf8_read) == 0);
+	assert(nu_strcoll("ßss", "sßs", nu_utf8_read, nu_utf8_read) == 0);
+	assert(nu_strcoll("ßsßs", "sßsß", nu_utf8_read, nu_utf8_read) == 0);
+	assert(nu_strcoll("ßsßs", "ssssss", nu_utf8_read, nu_utf8_read) == 0);
+
 	assert(nu_strcoll("ё", "ё", nu_utf8_read, nu_utf8_read) == 0);
 	assert(nu_strcoll("е", "ё", nu_utf8_read, nu_utf8_read) < 0);
 	assert(nu_strcoll("Е", "Ё", nu_utf8_read, nu_utf8_read) < 0);
@@ -62,6 +74,7 @@ void test_strcoll() {
 	assert(nu_strcoll("Role", "role", nu_utf8_read, nu_utf8_read) < 0);
 	assert(nu_strcoll("Role", "rôle", nu_utf8_read, nu_utf8_read) < 0);
 	assert(nu_strcoll("Rôle", "rôle", nu_utf8_read, nu_utf8_read) < 0);
+	assert(nu_strcoll("vario", "varî", nu_utf8_read, nu_utf8_read) < 0);
 
 	assert(nu_strcoll("ß", "ß", nu_utf8_read, nu_utf8_read) == 0);
 	assert(nu_strcoll("ß", "ss", nu_utf8_read, nu_utf8_read) == 0);
@@ -72,9 +85,6 @@ void test_strcoll() {
 	assert(nu_strcoll("аб", "а", nu_utf8_read, nu_utf8_read) > 0);
 	assert(nu_strcoll("а", "аб", nu_utf8_read, nu_utf8_read) < 0);
 	assert(nu_strcoll("аб", "аб", nu_utf8_read, nu_utf8_read) == 0);
-
-	/* hard mode
-	assert(nu_strcoll("ßss", "sßs", nu_utf8_read, nu_utf8_read) == 0); */
 }
 
 void test_strncoll() {
@@ -82,10 +92,18 @@ void test_strncoll() {
 	assert(nu_strncoll("vario", 2, "varî", 2, nu_utf8_read, nu_utf8_read) == 0);
 	assert(nu_strncoll("vario", 3, "varî", 3, nu_utf8_read, nu_utf8_read) == 0);
 	assert(nu_strncoll("vario", 4, "varî", 4, nu_utf8_read, nu_utf8_read) < 0);
+	assert(nu_strncoll("vario", 5, "varî", 5, nu_utf8_read, nu_utf8_read) < 0);
 
 	assert(nu_strncoll("абв", 4, "аб", 4, nu_utf8_read, nu_utf8_read) == 0);
 	assert(nu_strncoll("абв", 6, "аб", 4, nu_utf8_read, nu_utf8_read) > 0);
 	assert(nu_strncoll("аб", 4, "абв", 6, nu_utf8_read, nu_utf8_read) < 0);
+
+	assert(nu_strncoll("ßss", 2, "sßs", 1, nu_utf8_read, nu_utf8_read) > 0);
+	assert(nu_strncoll("ßss", 2, "sßs", 3, nu_utf8_read, nu_utf8_read) < 0);
+	assert(nu_strncoll("ßss", 3, "sßs", 3, nu_utf8_read, nu_utf8_read) == 0);
+	assert(nu_strncoll("ßss", 3, "sßs", 4, nu_utf8_read, nu_utf8_read) < 0);
+	assert(nu_strncoll("ßss", 4, "sßs", 4, nu_utf8_read, nu_utf8_read) == 0);
+	assert(nu_strncoll("ßss", 4, "sßs", 3, nu_utf8_read, nu_utf8_read) > 0);
 }
 
 void test_strcasecoll() {
