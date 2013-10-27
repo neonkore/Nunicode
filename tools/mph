@@ -19,6 +19,7 @@ import time
 
 FNV_OFFSET_BASIS = 0xffffffff
 FNV_PRIME = 0x01000193
+INTERNAL_ENCODING = "UTF-8"
 
 
 # Calculates a distinct hash function for a given string. Each value of the
@@ -128,34 +129,44 @@ def GenerateInfo(G):
 %d
 FNV_OFFSET_BASIS: %08X,
 FNV_PRIME: %08X,
-FNV_SIZE: %d
-*/''' % (time.time(), FNV_OFFSET_BASIS, FNV_PRIME, len(G))
+FNV_SIZE: %d,
+ENCODING: %s,
+*/
+''' % (time.time(),
+		FNV_OFFSET_BASIS,
+		FNV_PRIME, len(G),
+		INTERNAL_ENCODING)
+
+VALUE_TEMPLATE = '''	{ 0x%(codepoint)05X, %(decomps)s },'''
+VALUE_REF_TEMPLATE = '''&V%(codepoint)05X'''
 
 
 # Filter out non-characters from private area
 def Pass(c):
+	assert(len(c) > 0)
 	return (ord(c) < 0xE000 or ord(c) > 0xF8FF)
 
 
 # Produce C-source-ready decomposition string
 def FormatReplacement(r):
 	chars = u''.join(
-		filter(Pass, [unichr(int(x, base=16)) for x in r])).encode('utf-8')
-	return '"%s"' % (''.join(('\\x%02X' % (ord(x)) for x in chars)))
-
-VALUE_TEMPLATE = '''	{ 0x%(codepoint)05X, %(decomps)s },'''
-VALUE_REF_TEMPLATE = '''&V%(codepoint)05X'''
+		filter(Pass, [unichr(int(x, base=16)) for x in r])).encode(INTERNAL_ENCODING)
+	if len(chars) == 0:
+		return
+	formatted = '"%s"' % (''.join(('\\x%02X' % (ord(x)) for x in chars)))
+	return formatted
 
 
 # Print values table
 def GenerateValues(G, V):
-	BOUNDARY = 6
-
 	print 'static const nu_udb_t VALUES[] = {'
 	for i, (codepoint, replacement) in enumerate(V):
+		assert(replacement is not None)
+		assert(len(replacement) > 0)
+
 		print VALUE_TEMPLATE % {
 			'codepoint': int(codepoint, base=16),
-			'decomps': FormatReplacement(replacement)
+			'decomps': replacement,
 		}
 	print '};'
 	print
@@ -176,12 +187,18 @@ def GenerateFNV(G):
 	print '};'
 	print
 
+
 dict = {}
 list = []
 
 for i, line in enumerate(sys.stdin):
 	codepoint, replacement = line.split(' ')
-	dict[codepoint] = (codepoint, replacement.strip().split(','))
+	formatted = FormatReplacement(replacement.strip().split(','))
+
+	if not formatted:
+		continue
+
+	dict[codepoint] = (codepoint, formatted)
 	list.append(codepoint)
 
 (G, V) = CreateMinimalPerfectHash(dict)
