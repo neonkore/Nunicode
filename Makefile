@@ -36,7 +36,6 @@ TESTS_OBJS = tests/casemap_test.o \
              tests/ducet_test.o \
              tests/extra_test.o \
              tests/fnv_test.o \
-             tests/strcmp_test.o \
              tests/strcoll_test.o \
              tests/strings_test.o \
              tests/validation_test.o \
@@ -52,12 +51,15 @@ TESTS_OBJS = tests/casemap_test.o \
 
 BUILD_OPTIONS = -DNU_WITH_EVERYTHING
 
-CFLAGS = -fPIC -Wall -Wextra -Werror -std=c99 -pedantic -Os $(BUILD_OPTIONS)
-SHARED_LDFLAGS = -s
-TESTS_LDFLAGS = -g
-SAMPLES_LDFLAGS = -s
+CFLAGS += -fPIC -Wall -Wextra -Werror -std=c99 -pedantic -Os $(BUILD_OPTIONS)
+LDFLAGS +=
+SHARED_LDFLAGS = $(LDFLAGS) -s
+TESTS_LDFLAGS = $(LDFLAGS)
+SAMPLES_LDFLAGS = $(LDFLAGS) -s
 
 default: clean $(STATIC_TARGET) $(SHARED_TARGET)
+debug:
+	CFLAGS="-g --coverage" LDFLAGS="-lgcov" $(MAKE) tests
 all: default $(TESTS_TARGET) samples
 gen: clean_gen $(DUCET_DST) $(TOUPPER_DST) $(TOLOWER_DST)
 clean_gen:
@@ -81,7 +83,7 @@ $(STATIC_TARGET): $(OBJS)
 	$(AR) crs "$(STATIC_TARGET)" $(OBJS)
 
 $(SHARED_TARGET): $(OBJS)
-	$(CC) $(OBJS) -shared -o "$(SHARED_TARGET)" "$(SHARED_LDFLAGS)"
+	$(CC) $(OBJS) -shared -o "$(SHARED_TARGET)" $(SHARED_LDFLAGS)
 
 $(TESTS_TARGET): $(STATIC_TARGET) $(TESTS_OBJS)
 	$(CC) $(TESTS_OBJS) $(STATIC_TARGET) -o $(TESTS_TARGET) $(TESTS_LDFLAGS)
@@ -114,4 +116,5 @@ clean:
 	rm -f *.o libnu/*.o tests/*.o samples/*.o
 	rm -fr "$(DOCDIR)"
 	rm -f coverage.info libnu/*.gcda libnu/*.gcno tests/*.gcda tests/*.gcno
+	rm -f samples/*.gcda samples/*.gcno
 	rm -fr "coverage"

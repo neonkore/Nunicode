@@ -34,7 +34,6 @@ void test_strnlen();
 void test_bytelen();
 void test_bytenlen();
 void test_strbytelen();
-void test_strbytenlen();
 void test_readstr();
 void test_readnstr();
 void test_writestr();
@@ -103,7 +102,7 @@ testcase cases[] = {
 	test_strnlen,
 	test_bytenlen,
 	test_strbytelen,
-	
+
 	test_readstr,
 	test_writestr,
 	test_transformstr,
@@ -111,7 +110,7 @@ testcase cases[] = {
 	test_readnstr,
 	test_writenstr,
 	test_transformnstr,
-	
+
 	test_validation_utf8,
 	test_validation_cesu8,
 	test_validation_utf16le,

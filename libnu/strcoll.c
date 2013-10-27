@@ -329,7 +329,7 @@ static int _nu_strcoll(const char *lhs, const char *lhs_limit,
 		casemap, decompose, compare, 0, 0);
 }
 
-const char* _nu_strstr(const char *haystack, const char *haystack_limit, 
+static const char* _nu_strstr(const char *haystack, const char *haystack_limit,
 	const char *needle, const char *needle_limit,
 	nu_read_iterator_t it1, nu_read_iterator_t it2,
 	nu_casemapping_t casemap, nu_decompositor_t decompose,
