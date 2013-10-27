@@ -1,6 +1,11 @@
+1.0
+
+[-] removed strrchr
+
 0.9
 
 [*] added extra error checking until validation is released
+[*] changed BOM detection interface
 
 0.8
 
