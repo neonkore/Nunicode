@@ -1,3 +1,4 @@
+#include "defines.h"
 #include "strings.h"
 
 #if defined (NU_WITH_Z_EXTRA) || defined(NU_WITH_N_EXTRA)
@@ -59,15 +60,15 @@ static int _nu_transformstr(const char *source, const char *limit, char *dest, n
 #ifdef NU_WITH_Z_EXTRA
 
 int nu_readstr(const char *encoded, uint32_t *unicode, nu_read_iterator_t it) {
-	return _nu_readstr(encoded, (const char *)(-1), unicode, it);
+	return _nu_readstr(encoded, NU_UNLIMITED, unicode, it);
 }
 
 int nu_writestr(const uint32_t *unicode, char *encoded, nu_write_iterator_t it) {
-	return _nu_writestr(unicode, (const uint32_t *)(-1), encoded, it);
+	return _nu_writestr(unicode, NU_UNLIMITED, encoded, it);
 }
 
 int nu_transformstr(const char *source, char *dest, nu_read_iterator_t read_it, nu_write_iterator_t write_it) {
-	return _nu_transformstr(source, (const char *)(-1), dest, read_it, write_it);
+	return _nu_transformstr(source, NU_UNLIMITED, dest, read_it, write_it);
 }
 
 #endif /* NU_WITH_Z_EXTRA */

@@ -1,3 +1,4 @@
+#include "defines.h"
 #include "strings.h"
 
 #if defined (NU_WITH_Z_STRINGS) || defined(NU_WITH_N_STRINGS)
@@ -59,15 +60,15 @@ static ssize_t _nu_strbytelen(const char *encoded, const char *limit, nu_read_it
 #ifdef NU_WITH_Z_STRINGS
 
 ssize_t nu_strlen(const char *encoded, nu_read_iterator_t it) {
-	return _nu_strlen(encoded, (const char *)(-1), it);
+	return _nu_strlen(encoded, NU_UNLIMITED, it);
 }
 
 ssize_t nu_bytelen(const uint32_t *unicode, nu_write_iterator_t it) {
-	return _nu_bytelen(unicode, (const uint32_t *)(-1), it);
+	return _nu_bytelen(unicode, NU_UNLIMITED, it);
 }
 
 ssize_t nu_strbytelen(const char *encoded, nu_read_iterator_t it) {
-	return _nu_strbytelen(encoded, (const char *)(-1), it);
+	return _nu_strbytelen(encoded, NU_UNLIMITED, it);
 }
 
 #endif /* NU_WITH_Z_STRINGS */

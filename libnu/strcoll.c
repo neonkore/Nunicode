@@ -344,7 +344,7 @@ const char* _nu_strstr(const char *haystack, const char *haystack_limit,
 		return haystack;
 	}
 
-	ssize_t needle_len = (needle_limit != (const char *)(-1)
+	ssize_t needle_len = (needle_limit != NU_UNLIMITED
 		? (needle_limit - needle)
 		: nu_strbytelen(needle, it2));
 
