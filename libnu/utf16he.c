@@ -54,7 +54,27 @@ int nu_utf16he_validread(const char *encoded, size_t max_len) {
 		return 0;
 	}
 
-	return utf16_validread(encoded + 1, max_len);
+	char lead = (*(uint16_t *)(encoded) & 0xFF00) >> 8;
+
+	if (utf16_valid_lead(lead) != 0) {
+		if (max_len < 4) {
+			return 0;
+		}
+
+		char trail = (*(uint16_t *)(encoded + 2) & 0xFF00) >> 8;
+
+		if (utf16_valid_trail(trail) == 0) {
+			return 0;
+		}
+
+		return 4;
+	}
+
+	if (utf16_valid_trail(lead) != 0) {
+		return 0;
+	}
+
+	return 2;
 }
 
 #endif /* NU_WITH_VALIDATION */

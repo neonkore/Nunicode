@@ -63,6 +63,16 @@ static inline void b4_utf16(uint32_t codepoint, uint16_t *lead, uint16_t *trail)
 	 *trail = 0xDC00 | (codepoint & 0x03FF);
 }
 
+static inline int utf16_valid_lead(char lead_high_byte) {
+	unsigned char up = (unsigned char)(lead_high_byte);
+	return (up >= 0xD8 && up <= 0xDB) ? 1 : 0;
+}
+
+static inline int utf16_valid_trail(char trail_high_byte) {
+	unsigned char up = (unsigned char)(trail_high_byte);
+	return (up >= 0xDC && up <= 0xDF) ? 1 : 0;
+}
+
 static inline int utf16_validread(const char *lead_high_byte, size_t max_len) {
 
 	/* this implementation use the fact that
@@ -80,14 +90,12 @@ static inline int utf16_validread(const char *lead_high_byte, size_t max_len) {
 	 *
 	 * note though that max_len is real max_len of original pointer */
 
-	const unsigned char *up = (const unsigned char *)(lead_high_byte);
-
-	if (*(up) >= 0xD8 && *(up) <= 0xDB) { /* lead surrogate */
+	if (utf16_valid_lead(*lead_high_byte) != 0) { /* lead surrogate */
 		if (max_len < 4) {
 			return 0;
 		}
 
-		if (*(up + 2) < 0xDC || *(up + 2) > 0xDF) { /* trail surrogate */
+		if (utf16_valid_trail(*(lead_high_byte + 2)) == 0) { /* trail surrogate */
 			return 0;
 		}
 
@@ -95,7 +103,7 @@ static inline int utf16_validread(const char *lead_high_byte, size_t max_len) {
 	}
 
 	/* detect misplaced surrogates */
-	if (*(up) >= 0xDC && *(up) <= 0xDF) {
+	if (utf16_valid_trail(*lead_high_byte) != 0) {
 		return 0;
 	}
 
