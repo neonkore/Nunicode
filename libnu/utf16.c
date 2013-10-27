@@ -23,7 +23,7 @@ const char* nu_utf16_read_bom(const char *encoded, nu_utf16_bom_t *bom) {
 #endif
 		}
 	}
-	else if (bom0 == 0xFE && bom1 == 0xFF) {
+	else {
 		if (bom != 0) {
 #ifdef NU_WITH_UTF16_WRITER
 			bom->write_bom = nu_utf16be_write_bom;
@@ -37,9 +37,13 @@ const char* nu_utf16_read_bom(const char *encoded, nu_utf16_bom_t *bom) {
 			bom->validread = nu_utf16be_validread;
 #endif
 		}
-	}
-	else {
-		return 0;
+
+		if (bom0 == 0xFE && bom1 == 0xFF) {
+			return encoded + 2;
+		}
+		else {
+			return encoded;
+		}
 	}
 
 	return encoded + 2;

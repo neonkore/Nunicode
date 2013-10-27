@@ -31,12 +31,14 @@ typedef struct {
 
 /** Read BOM from encoded string
  *
+ * Note that if BOM is not specified in string, it defaults to big-endian
+ *
  * @ingroup utf16
  * @param encoded pointer to encoded strings
  * @param bom optional, this struct will be filled with read, write, etc
  * function for detected BOM. Note revread, validread and write might be 0
  * if not enabled in build options
- * @return pointer to next character in UTF-16 string or 0 if BOM is
+ * @return pointer to next character in UTF-16 string or encoded if BOM is
  * not found
  */
 const char* nu_utf16_read_bom(const char *encoded, nu_utf16_bom_t *bom);

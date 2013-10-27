@@ -30,7 +30,7 @@ typedef struct {
 } nu_utf32_bom_t;
 
 /**
- * @ingroup utf21
+ * @ingroup utf32
  * @see nu_utf16_read_bom
  */
 const char* nu_utf32_read_bom(const char *encoded, nu_utf32_bom_t *bom);

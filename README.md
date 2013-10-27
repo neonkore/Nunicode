@@ -127,8 +127,9 @@ Unicode defines 3 types of UTF-16 *each* affected by endianess.
 3. UTF-16BE (big endian)
 
 LE and BE are obviusly little-endian and big-endian, generic one's endianess is
-defined by the byte order mark (BOM) at the beginning of the string. Thus
-generic UTF-16 is always BOM + either UTF-16LE or UTF-16BE.
+defined by the byte order mark (BOM) at the beginning of the string or defaults
+to BE if BOM is absent. Thus generic UTF-16 is always BOM + either UTF-16LE or
+UTF-16BE.
 
 nunicode provide only nu\_utf16le and nu\_utf16be for the encoding and decoding,
 BOM is handled by nu\_utf16 functions. It's up to you to decide if you need BOM
