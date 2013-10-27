@@ -116,7 +116,7 @@ however it doesn't make any sense to have BOM in UTF-8. Therefore nunicode has
 no embedded means to deal with UTF-8 BOM, neither detect, read or write.
 
 If you are facing this crap, just +3 char pointer to skip BOM. (Note that UTF-8
-BOM is 3 bytes long: EF BB BF). You can also safely nu\_utf8\_read() BOM, it
+BOM is 3 bytes long: EF BB BF). You can also safely ``nu_utf8_read()`` BOM, it
 will produce normal U+FEFF codepoint.
 
 Reference: [UTF BOM FAQ][]
@@ -132,9 +132,10 @@ defined by the byte order mark (BOM) at the beginning of the string or defaults
 to BE if BOM is absent. Thus generic UTF-16 is always BOM + either UTF-16LE or
 UTF-16BE.
 
-nunicode provide only nu\_utf16le and nu\_utf16be for the encoding and decoding,
-BOM is handled by nu\_utf16 functions. It's up to you to decide if you need BOM
-or just UTF-16LE/BE. Either you choose, you'll get valid UTF-16 variant.
+nunicode provide only ``nu_utf16le_*`` and ``nu_utf16be_*`` for the encoding
+and decoding, BOM is handled by ``nu_utf16_*`` functions. It's up to you to
+decide if you need BOM or just UTF-16LE/BE. Either you choose, you'll get valid
+UTF-16 variant.
 
 Note that nunicode will never report string endianess explicitely but will
 provide read, reverse read, write and BOM write functions instead. See 
@@ -151,18 +152,18 @@ should be considered BE, however sometimes you can see UTF-16 defined
 simply as "host-endian". For the purpose of decoding and encoding strings
 in host endianess, nunicode implements UTF-16HE and UTF-32HE encodings.
 
-Note that nu\_utf16\_read\_bom() will default encoding to UTF-16BE if
+Note that ``nu_utf16_read_bom()`` will default encoding to UTF-16BE if
 BOM is not present in string, therefore HE variants are need to be used
 explicitely when required.
 
-[ISO/IEC 10646]: www.itscj.ipsj.or.jp/sc2/open/02n4125/FCD10646-Main.pdf
+[ISO/IEC 10646]: http://www.itscj.ipsj.or.jp/sc2/open/02n4125/FCD10646-Main.pdf
 
 ## UCS-2 and UCS-4
 
 UCS-4 is the same as UTF-32.
 
 UCS-2 reading is a part of UTF-16 reading, if you need to write UCS-2,
-just override nu\_utf16\*\_write() and don't write characters outside
+just override ``nu_utf16*_write()`` and don't write characters outside
 of [BMP][] (U+0000..U+FFFF). There is no embedded support of this in
 nunicode since UCS-2 was superseded by UTF-16 more than 15 years ago.
 
@@ -171,16 +172,16 @@ nunicode since UCS-2 was superseded by UTF-16 more than 15 years ago.
 ## REVERSE READING
 
 nunicode do not provide str\[i\] (access by index) equivalent since it will 
-always be slow. Instead you can do nu\_utf8\_revread(&u, encoded) and other
+always be slow. Instead you can do ``nu_utf8_revread(&u, encoded)`` and other
 encodings variants to read character in backward direction.
 
 It is always a bad idea to pass arbitrary pointer to revread(). UTF-8 and
 CESU-8 can possibly recover from programming error (pointer poiting to the 
 middle of multibyte UTF-8 sequence), but UTF-16 and UTF-32 revread will fail
-badly. In fact, UTF-32 revread is just "const char \*p - 4".
+badly. In fact, UTF-32 revread is just ``const char *p - 4``.
 
 Pointer passed to revread() is supposed to always come from call to
-nu\_\*\_read(). Otherwise prepare to unforeseen consequences. (Actually,
+``nu_*_read()``. Otherwise prepare to unforeseen consequences. (Actually,
 you can prepare to unforeseen consequences in any case).
 
 As a side note, if you pass 0 as a pointer to decoded character, revread(), as
@@ -195,7 +196,7 @@ the string.
 
 ## STRINGS COLLATION AND CASE MAPPING
 
-    If your browser can't display characters in this section thats too bad
+    If your browser cant display characters in this section thats too bad
 
 Case mapping uses complete mapping set extracted from [UCD][] +
 untailored [special casing][].
@@ -242,12 +243,12 @@ of bit-wise operations on 32-bits integer and couple of MOD's. Worth
 
 All decoding functions has very limited error checking for performance
 reasons. nunicode expect valid UTF strings at input. It though provide
-nu\_validate() to check complete string before processing. This function
+``nu_validate()`` to check complete string before processing. This function
 won't fully decode string, but will run tests instead.
 
 Normally you need validation at I/O boundaries only, actually at I
-boundary only, because if nu\_validate() is failing on product of 
-nu\_\*\_write(), then this is bug in nunicode and it's need to be fixed.
+boundary only, because if ``nu_validate()`` is failing on product of 
+``nu_*_write()``, then this is bug in nunicode and it's need to be fixed.
 
 ## DOWNLOADS
 
