@@ -3,18 +3,21 @@
 import sys
 from unidata import *
 
+
 def pass_mapping(mapping):
-	return mapping.strip() in ('', 
+	allowed = ('',
 		'<noBreak>',
-		'<wide>', # full width characters
-		'<narrow>', # half width characters
-		'<small>', # CNS compat
+		'<wide>',     # full width characters
+		'<narrow>',   # half width characters
+		'<small>',    # CNS compat
 		'<initial>',
 		'<medial>',
 		'<final>',
 		'<isolated>',
 		'<sort>',
 	)
+
+	return mapping.strip() in allowed
 
 d = dict()
 
@@ -27,7 +30,7 @@ for line in sys.stdin:
 
 	if not pass_mapping(mapping):
 		continue
-	
+
 	d[unidata_strip(codepoint)] = unidata_split(replacement)
 
 for codepoint, replacement in sorted(d.iteritems()):

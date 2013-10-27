@@ -14,7 +14,7 @@ for line in sys.stdin:
 	condition = unidata_strip(tokens[4])
 	tolower, toupper = unidata_strip(tokens[1]), unidata_strip(tokens[3])
 
-	if condition or not tolower or tolower == codepoint: # only unconditional
+	if condition or not tolower or tolower == codepoint:  # only unconditional
 		continue
 
 	d[unidata_strip(codepoint)] = unidata_split(toupper)
