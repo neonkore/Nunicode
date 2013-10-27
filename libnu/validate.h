@@ -30,7 +30,7 @@ typedef int (*nu_validread_iterator_t)(const char *p, size_t max_len);
  * @param it validating iterator (e.g. nu_utf8_validread)
  * @return 0 on valid string, pointer to invalid segment in string on
  * validation error
- * 
+ *
  * @see nu_utf8_validread
  */
 const char* nu_validate(const char *encoded, size_t max_len, nu_validread_iterator_t it);

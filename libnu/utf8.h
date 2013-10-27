@@ -8,7 +8,7 @@
 
 /** @defgroup utf8 UTF-8 support
  *
- * Note: There is no utf8_string[i] equivalent - it will be slow, 
+ * Note: There is no utf8_string[i] equivalent - it will be slow,
  * use nu_utf8_next() instead
  */
 

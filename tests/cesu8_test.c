@@ -8,7 +8,7 @@ static const unsigned char CESU9[] = { 0xED, 0xAE, 0x80, 0xED, 0xB0, 0x80 };
 
 void test_cesu8_decoding() {
 	uint32_t u = 0;
-	
+
 	assert(nu_cesu8_read("", &u) && u == 0);
 	assert(nu_cesu8_read("g", &u) && u == 0x0067);
 	assert(nu_cesu8_read("п", &u) && u == 0x043F);
@@ -32,7 +32,7 @@ void test_cesu8_revread() {
 	assert(u == 0x010400);
 	assert(nu_cesu8_revread(&u, input + 2) == input);
 	assert(u == 0x043F);
-	
+
 	/* this is not supported, but should work anyway */
 	assert(nu_cesu8_revread(&u, input + 3) == input + 2);
 	assert(u == 0x010400);

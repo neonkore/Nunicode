@@ -5,7 +5,7 @@
 
 void test_utf8_decoding() {
 	uint32_t u = 0;
-	
+
 	assert(nu_utf8_read("", &u) && u == 0);
 	assert(nu_utf8_read("g", &u) && u == 0x0067);
 	assert(nu_utf8_read("п", &u) && u == 0x043F);
@@ -22,12 +22,12 @@ void test_utf8_bom() {
 void test_utf8_revread() {
 	const char input[] = "привет";
 	uint32_t u = 0;
-	
+
 	assert(nu_utf8_revread(&u, input + 12) == input + 10);
 	assert(u == 0x0442);
 	assert(nu_utf8_revread(&u, input + 10) == input + 8);
 	assert(u == 0x0435);
-	
+
 	/* this is not supported, but should work anyway */
 	const char *long_input = "𠜱";
 	assert(nu_utf8_revread(&u, long_input + 1) == long_input);
@@ -38,7 +38,7 @@ void test_utf8_revread() {
 
 void test_utf8_encoding() {
 	char p[32] = { 0 };
-	
+
 	assert(nu_utf8_write(0, p) && memcmp(p, "", 1) == 0);
 	assert(nu_utf8_write(0x0067, p) && memcmp(p, "g", 1) == 0);
 	assert(nu_utf8_write(0x043F, p) && memcmp(p, "п", 2) == 0);

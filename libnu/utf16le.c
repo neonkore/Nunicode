@@ -53,7 +53,7 @@ int nu_utf16le_validread(const char *encoded, size_t max_len) {
 	if (max_len < 2) {
 		return 0;
 	}
-	
+
 	return utf16_validread(encoded + 1, max_len);
 }
 

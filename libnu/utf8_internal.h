@@ -58,7 +58,7 @@ static inline void utf8_4b(const char *p, uint32_t *codepoint) {
 	 * 100000xx << 6  -> 00xxxxx xxxxxxxx xx000000 |__ 3rd unicode octet
 	 * 10xxxxxx       -> 00xxxxx xxxxxxxx xxxxxxxx |
 	 *                                    ---------  */
- 	*codepoint = 
+	 *codepoint =
 	((*(up) & 0x07) << 18 | (*(up + 1) & 0x30) << 12)
 	| ((*(up + 1) & 0x0F) << 12 | (*(up + 2) & 0x3C) << 6)
 	| ((*(up + 2) & 0x03) << 6 | (*(up + 3) & 0x3F));
@@ -149,11 +149,11 @@ static inline int utf8_validread(const char *p, size_t max_len) {
 
 	switch (len) {
 		case 2: return ((*(up + 1) & 0xC0) == 0x80 ? 2 : 0);
-		case 3: return ((*(up + 1) & 0xC0) == 0x80 
+		case 3: return ((*(up + 1) & 0xC0) == 0x80
 		&& (*(up + 2) & 0xC0) == 0x80 ? 3 : 0);
-		
-		case 4: return ((*(up + 1) & 0xC0) == 0x80 
-		&& (*(up + 2) & 0xC0) == 0x80 
+
+		case 4: return ((*(up + 1) & 0xC0) == 0x80
+		&& (*(up + 2) & 0xC0) == 0x80
 		&& (*(up + 3) & 0xC0) == 0x80 ? 4 : 0);
 	}
 

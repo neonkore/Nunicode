@@ -5,8 +5,8 @@
 int main() {
 	const char *MASSE = "MASSE";
 	const char *Masse = "Maße";
-	printf("nustrnu_strcoll(%s, %s): %d\n", 
-		MASSE, Masse, 
+	printf("nustrnu_strcoll(%s, %s): %d\n",
+		MASSE, Masse,
 		nu_strcasecoll(MASSE, Masse, nu_utf8_read, nu_utf8_read));
 
 	const char role[] = "rôlÊ";
@@ -20,7 +20,7 @@ int main() {
 	while (*p != 0) {
 		uint32_t in = 0;
 		p = nu_utf8_read(p, &in);
-		
+
 		uint32_t up = nu_toupper(in);
 		uint32_t lo = nu_tolower(in);
 

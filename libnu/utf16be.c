@@ -49,7 +49,7 @@ int nu_utf16be_validread(const char *encoded, size_t max_len) {
 	if (max_len < 2) {
 		return 0;
 	}
-	
+
 	return utf16_validread(encoded, max_len);
 }
 

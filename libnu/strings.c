@@ -11,7 +11,7 @@ static ssize_t _nu_strlen(const char *encoded, const char *limit, nu_read_iterat
 		if (*p == 0) {
 			break;
 		}
-		
+
 		p = it(p, 0);
 
 		++len;

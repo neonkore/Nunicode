@@ -14,7 +14,7 @@ void test_utf32_read_bom() {
 	assert(bom.write == nu_utf32le_write);
 	assert(bom.revread == nu_utf32le_revread);
 	assert(bom.validread == nu_utf32le_validread);
-	
+
 	assert(nu_utf32_read_bom("\x00\x00\xFE\xFF" /* BE */, &bom));
 	assert(bom.write_bom == nu_utf32be_write_bom);
 	assert(bom.read == nu_utf32be_read);

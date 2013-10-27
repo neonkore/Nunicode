@@ -9,7 +9,7 @@
 
 #if (defined NU_WITH_TOUPPER) || (defined NU_WITH_TOLOWER)
 
-static uint32_t to_something(uint32_t codepoint, 
+static uint32_t to_something(uint32_t codepoint,
 	nu_fnv_table_t *FNV, size_t FNV_SIZE, const nu_udb_t *VALUES) {
 
 	nu_read_iterator_t it = 0;

@@ -20,11 +20,11 @@ int main() {
 
 	ssize_t u8_len = u_len * 4;
 	printf("--- encoded utf8 max length: %d\n", u8_len);
-	
+
 	char *utf8 = malloc(u8_len + 1);
 	memset(utf8, 0, u8_len + 1);
 
-	nu_transformnstr(encoded, sizeof(input) - sizeof(NU_UTF16_BOM), 
+	nu_transformnstr(encoded, sizeof(input) - sizeof(NU_UTF16_BOM),
 		utf8, bom.read, nu_utf8_write);
 	printf("<<< encoded utf8: %s\n", utf8);
 

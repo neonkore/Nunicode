@@ -36,11 +36,11 @@ void test_readnstr() {
 	assert(nu_readnstr(input, 2, u, nu_utf8_read) == 0);
 	assert(u[0] != 0);
 	assert(u[1] == 0);
-	
+
 	assert(nu_readnstr(input, 4, u, nu_utf8_read) == 0);
 	assert(u[1] != 0);
 	assert(u[2] == 0);
-	
+
 	assert(nu_readnstr(input, 400, u, nu_utf8_read) == 0); /* didn't go over 0 */
 	assert(u[5] != 0);
 	assert(u[6] == 0);
@@ -53,11 +53,11 @@ void test_writenstr() {
 	assert(nu_writenstr(input, 1, u, nu_utf8_write) == 0);
 	assert(u[0 * 2] != 0);
 	assert(u[1 * 2] == 0);
-	
+
 	assert(nu_writenstr(input, 2, u, nu_utf8_write) == 0);
 	assert(u[1 * 2] != 0);
 	assert(u[2 * 2] == 0);
-	
+
 	assert(nu_writenstr(input, 200, u, nu_utf8_write) == 0); /* didn't go over 0 */
 	assert(u[5 * 2] != 0);
 	assert(u[6 * 2] == 0);
@@ -70,7 +70,7 @@ void test_transformnstr() {
 	assert(nu_transformnstr((const char *)input, 1, output, nu_cesu8_read, nu_utf8_write) == 0);
 	assert(output[3] != 0);
 	assert(output[4] != 0);
-	
+
 	assert(nu_transformnstr((const char *)input, 2, output, nu_cesu8_read, nu_utf8_write) == 0);
 	assert(output[3] != 0);
 	assert(output[4] != 0); /* transform stopped on trailing 0 */

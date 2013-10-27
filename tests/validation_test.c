@@ -81,7 +81,7 @@ void test_validation_utf32() {
 	assert(nu_validate(input1, sizeof(input1), nu_utf32le_validread) == input1);
 	assert(nu_validate(input2, sizeof(input2), nu_utf32le_validread) == input2);
 	assert(nu_validate(input3, sizeof(input3), nu_utf32le_validread) == input3);
-	
+
 	assert(nu_validate(input0_ok, sizeof(input0_ok), nu_utf32be_validread) == 0);
 	assert(nu_validate(input1, sizeof(input1), nu_utf32be_validread) == input1);
 	assert(nu_validate(input2, sizeof(input2), nu_utf32be_validread) == input2);

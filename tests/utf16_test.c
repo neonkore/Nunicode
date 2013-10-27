@@ -14,7 +14,7 @@ void test_utf16_read_bom() {
 	assert(bom.write == nu_utf16le_write);
 	assert(bom.revread == nu_utf16le_revread);
 	assert(bom.validread == nu_utf16le_validread);
-	
+
 	assert(nu_utf16_read_bom("\xFE\xFF\x00\x67" /* g, BE */, &bom));
 	assert(bom.write_bom == nu_utf16be_write_bom);
 	assert(bom.read == nu_utf16be_read);

@@ -31,9 +31,9 @@ const char* nu_cesu8_read(const char *cesu8, uint32_t *unicode) {
 
 const char* nu_cesu8_revread(uint32_t *unicode, const char *cesu8) {
 	/* valid CESU-8 has either 10xxxxxx (continuation byte)
-	 * or beginning of byte sequence 
-	 * 
-	 * one exception is 11101101 followed by 1011xxxx which is 
+	 * or beginning of byte sequence
+	 *
+	 * one exception is 11101101 followed by 1011xxxx which is
 	 * trail surrogate of 6-byte sequence.
 	 */
 	const char *p = cesu8 - 1;
@@ -41,7 +41,7 @@ const char* nu_cesu8_revread(uint32_t *unicode, const char *cesu8) {
 		--p;
 	}
 
-	if ((unsigned char)(*p) == 0xED 
+	if ((unsigned char)(*p) == 0xED
 	&& ((unsigned char)*(p + 1) & 0xF0) == 0xB0) { /* trail surrogate */
 		p -= 3;
 	}
@@ -61,12 +61,12 @@ int nu_cesu8_validread(const char *encoded, size_t max_len) {
 	const unsigned char *up = (const unsigned char *)(encoded);
 
 	/* i guess there is no way to detect misplaceed CESU-8
-	 * trail surrogate alone, it will produce valid UTF-8 sequence 
+	 * trail surrogate alone, it will produce valid UTF-8 sequence
 	 * greater than U+10000 */
 
 	/* 6-bytes sequence
 	 *
-	 * 11101101 followed by 1010xxxx should be 
+	 * 11101101 followed by 1010xxxx should be
 	 * then followed by xxxxxxxx 11101101 1011xxxx xxxxxxxx */
 	if (*(up) == 0xED && (*(up + 1) & 0xF0) == 0xA0) {
 		if (max_len < 6) {
