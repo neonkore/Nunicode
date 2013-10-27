@@ -146,13 +146,14 @@ Everything said above about UTF-16 also applies to UTF-32.
 
 ### host-endianess
 
-ISO/IEC 10646 clearly says that if BOM is not present, encoding should be
-considered BE, however sometimes you can see UTF-16 defined simply as
-"host-endian". For that purpose nunicode implements UTF-16HE and UTF-32HE
-encodings. HE stands for host-endian.
+[ISO/IEC 10646][] clearly says that if BOM is not present, encoding
+should be considered BE, however sometimes you can see UTF-16 defined
+simply as "host-endian". For the purpose of decoding and encoding strings
+in host endianess, nunicode implements UTF-16HE and UTF-32HE encodings.
 
-Note that nu\_utf16\_read\_bom() will default encoding to UTF-16BE,
-therefore HE variants are need to be used explicitely when required.
+Note that nu\_utf16\_read\_bom() will default encoding to UTF-16BE if
+BOM is not present in string, therefore HE variants are need to be used
+explicitely when required.
 
 [ISO/IEC 10646]: www.itscj.ipsj.or.jp/sc2/open/02n4125/FCD10646-Main.pdf
 

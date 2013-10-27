@@ -1,3 +1,17 @@
+1.1
+
+[+] encoded strings verification
+[+] nu_strbytelen
+[+] nu_strcoll
+[+] nu_strchr redone for collation
+[+] nu_strstr
+[+] nu_toupper/nu_tolower
+[+] UTF-16HE/UTF-32HE
+
+[*] nu_utf16_read_bom() and nu_utf32_read_bom() will
+    default encoding to BE if BOM is not present in
+    string
+
 1.0
 
 [-] removed strrchr
