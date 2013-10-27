@@ -58,6 +58,19 @@ void test_validation_utf16le() {
 	assert(nu_validate((const char *)(input3), sizeof(input3), nu_utf16le_validread) == (const char *)(input3));
 }
 
+void test_validation_utf16he() {
+	const uint16_t input0_ok[] = { 0xD841, 0xDC00 };
+	const uint16_t input1[] = { 0xD841 }; /* no trail */
+	const uint16_t input2[] = { 0xDC00, 0xD841 }; /* misplaced lead and trail */
+	const uint16_t input3[] = { 0xD841, 0xEC00 }; /* invalid surrogate */
+
+	assert(nu_validate((const char *)(input0_ok), sizeof(input0_ok), nu_utf16he_validread) == 0);
+	assert(nu_validate((const char *)(input0_ok), 1, nu_utf16he_validread) == (const char *)(input0_ok)); /* short read */
+	assert(nu_validate((const char *)(input1), sizeof(input1), nu_utf16he_validread) == (const char *)(input1));
+	assert(nu_validate((const char *)(input2), sizeof(input2), nu_utf16he_validread) == (const char *)(input2));
+	assert(nu_validate((const char *)(input3), sizeof(input3), nu_utf16he_validread) == (const char *)(input3));
+}
+
 void test_validation_utf16be() {
 	const unsigned char input0_ok[] = { 0xD8, 0x41, 0xDC, 0x00 };
 	const unsigned char input1[] = { 0xD8, 0x41, }; /* no trail */

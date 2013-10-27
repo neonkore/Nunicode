@@ -17,6 +17,9 @@ void test_utf16le_encoding();
 void test_utf16be_decoding();
 void test_utf16be_revread();
 void test_utf16be_encoding();
+void test_utf16he_decoding();
+void test_utf16he_revread();
+void test_utf16he_encoding();
 void test_utf16_read_bom();
 void test_utf16_read_invalid_bom();
 void test_utf16_write_bom();
@@ -26,6 +29,9 @@ void test_utf32le_encoding();
 void test_utf32be_decoding();
 void test_utf32be_revread();
 void test_utf32be_encoding();
+void test_utf32he_decoding();
+void test_utf32he_revread();
+void test_utf32he_encoding();
 void test_utf32_read_bom();
 void test_utf32_read_invalid_bom();
 void test_utf32_write_bom();
@@ -42,8 +48,9 @@ void test_transformstr();
 void test_transformnstr();
 void test_validation_utf8();
 void test_validation_cesu8();
-void test_validation_utf16le();
 void test_validation_utf16be();
+void test_validation_utf16he();
+void test_validation_utf16le();
 void test_validation_utf32();
 void test_fnv_lookup();
 void test_udb_lookup();
@@ -77,10 +84,15 @@ testcase cases[] = {
 	test_utf16le_decoding,
 	test_utf16le_revread,
 	test_utf16le_encoding,
+
 	test_utf16be_decoding,
 	test_utf16be_revread,
-
 	test_utf16be_encoding,
+
+	test_utf16he_decoding,
+	test_utf16he_revread,
+	test_utf16he_encoding,
+
 	test_utf16_read_bom,
 	test_utf16_read_invalid_bom,
 	test_utf16_write_bom,
@@ -92,6 +104,10 @@ testcase cases[] = {
 	test_utf32be_decoding,
 	test_utf32be_revread,
 	test_utf32be_encoding,
+
+	test_utf32he_decoding,
+	test_utf32he_revread,
+	test_utf32he_encoding,
 
 	test_utf32_read_bom,
 	test_utf32_read_invalid_bom,
@@ -113,8 +129,9 @@ testcase cases[] = {
 
 	test_validation_utf8,
 	test_validation_cesu8,
-	test_validation_utf16le,
 	test_validation_utf16be,
+	test_validation_utf16he,
+	test_validation_utf16le,
 	test_validation_utf32,
 
 	test_fnv_lookup,

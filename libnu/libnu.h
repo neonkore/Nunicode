@@ -12,9 +12,11 @@
 #include "udb.h"
 #include "utf16.h"
 #include "utf16be.h"
+#include "utf16he.h"
 #include "utf16le.h"
 #include "utf32.h"
 #include "utf32be.h"
+#include "utf32he.h"
 #include "utf32le.h"
 #include "utf8.h"
 

@@ -22,6 +22,7 @@ Encodings supported ATM:
 * CESU-8/Modified UTF-8
 * UTF-16/UCS-2 (BOM/LE/BE)
 * UTF-32/UCS-4 (BOM/LE/BE)
+* UTF-16HE/UTF-32HE (see notes)
 
 String functions supported for all encodings (works on encoded strings):
 
@@ -142,6 +143,18 @@ provide read, reverse read, write and BOM write functions instead. See
 Everything said above about UTF-16 also applies to UTF-32.
 
 [UTF BOM FAQ]: http://www.unicode.org/faq/utf_bom.html#bom5
+
+### host-endianess
+
+ISO/IEC 10646 clearly says that if BOM is not present, encoding should be
+considered BE, however sometimes you can see UTF-16 defined simply as
+"host-endian". For that purpose nunicode implements UTF-16HE and UTF-32HE
+encodings. HE stands for host-endian.
+
+Note that nu\_utf16\_read\_bom() will default encoding to UTF-16BE,
+therefore HE variants are need to be used explicitely when required.
+
+[ISO/IEC 10646]: www.itscj.ipsj.or.jp/sc2/open/02n4125/FCD10646-Main.pdf
 
 ## UCS-2 and UCS-4
 
@@ -287,14 +300,10 @@ UTF-16
 * ``-DNU_WITH_UTF16LE_WRITER`` - UTF-16LE encoding
 * ``-DNU_WITH_UTF16LE`` - implies ``-DNU_WITH_UTF16LE_READER``
   and ``-DNU_WITH_UTF16LE_WRITER``
-* ``-DNU_WITH_UTF16BE_READER`` - UTF-16BE decoding
-* ``-DNU_WITH_UTF16BE_WRITER`` - UTF-16BE encoding
-* ``-DNU_WITH_UTF16BE`` - implies ``-DNU_WITH_UTF16BE_READER``
-  and ``-DNU_WITH_UTF16BE_WRITER``
-* ``-DNU_WITH_UTF16_READER`` - UTF-16 decoding, also implies 
-  ``-DNU_WITH_UTF16LE_READER`` and ``-DNU_WITH_UTF16BE_READER``
-* ``-DNU_WITH_UTF16_WRITER`` - UTF-16 encoding, also implies 
-  ``-DNU_WITH_UTF16LE_WRITER`` and ``-DNU_WITH_UTF16BE_WRITER``
+* Same options for ``NU_WITH_UTF16BE_*``
+* Same options for ``NU_WITH_UTF16HE_*``
+* ``-DNU_WITH_UTF16_READER`` - complete UTF-16 decoding 
+* ``-DNU_WITH_UTF16_WRITER`` - complete UTF-16 encoding 
 * ``-DNU_WITH_UTF16`` - implies ``-DNU_WITH_UTF16_READER``
   and ``-DNU_WITH_UTF16_WRITER``
 

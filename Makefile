@@ -25,9 +25,11 @@ OBJS = libnu/cesu8.o \
        libnu/udb.o \
        libnu/utf16.o \
        libnu/utf16be.o \
+       libnu/utf16he.o \
        libnu/utf16le.o \
        libnu/utf32.o \
        libnu/utf32be.o \
+       libnu/utf32he.o \
        libnu/utf32le.o \
        libnu/utf8.o \
 
@@ -42,9 +44,11 @@ TESTS_OBJS = tests/casemap_test.o \
              tests/udb_test.o \
              tests/utf16_test.o \
              tests/utf16be_test.o \
+             tests/utf16he_test.o \
              tests/utf16le_test.o \
              tests/utf32_test.o \
              tests/utf32be_test.o \
+             tests/utf32he_test.o \
              tests/utf32le_test.o \
              tests/utf8_test.o \
              tests/main.o
