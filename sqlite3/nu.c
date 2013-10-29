@@ -390,6 +390,7 @@ int sqlite3_extension_init(sqlite3 *db, char **err_msg,  const sqlite3_api_routi
 	REGISTER_LOWER(rc, db, SQLITE_UTF16BE, nunicode_sqlite3_lower_utf16be);
 	REGISTER_LOWER(rc, db, SQLITE_UTF16, nunicode_sqlite3_lower_utf16he);
 
+	fprintf(stderr, "nunicode version: %s\n", NU_VERSION);
 	fprintf(stderr, "nunicode unicode: %04d\n", NU_UNICODE_VERSION);
 	fprintf(stderr, "nunicode sqlite3 extension: %s\n", NU_SQLITE3_EXT_VERSION);
 
