@@ -137,6 +137,7 @@ void test_strstr() {
 
 	assert(nu_strstr(input1, "", nu_utf8_read, nu_utf8_read) == input1);
 	assert(nu_strstr(input1, "ee", nu_utf8_read, nu_utf8_read) == 0);
+	assert(nu_strstr(input1, "asd", nu_utf8_read, nu_utf8_read) == 0);
 	assert(nu_strstr(input1, "Ma", nu_utf8_read, nu_utf8_read) == input1);
 	assert(nu_strstr(input1, "ß", nu_utf8_read, nu_utf8_read) == input1 + 2);
 
@@ -173,6 +174,8 @@ void test_strcasestr() {
 
 void test_strcasenstr() {
 	const char *input1 = "MASSE";
+
+	assert(nu_strcasenstr(input1, 100, "asd", 3, nu_utf8_read, nu_utf8_read) == 0);
 
 	assert(nu_strcasenstr(input1, 100, "ße", 3, nu_utf8_read, nu_utf8_read) == input1 + 2);
 	assert(nu_strcasenstr(input1, 3, "ße", 3, nu_utf8_read, nu_utf8_read) == 0);

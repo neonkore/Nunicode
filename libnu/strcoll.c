@@ -299,6 +299,20 @@ static int _nu_collate(const char *lhs, const char *lhs_limit,
 		}
 	}
 
+	/* collated_left and collated_right should count
+	 * number of successfully collated bytes, not taking
+	 * into account limits. therefore if cmp != 0,
+	 * number of collated bytes is decresed by (at least) 1
+	 * and cmp is limits-fixed afterwards */
+
+	if (collated_left != 0) {
+		*collated_left = (p1 - lhs) - (cmp == 0 ? 0 : 1);
+	}
+
+	if (collated_right != 0) {
+		*collated_right = (p2 - rhs) - (cmp == 0 ? 0 : 1);
+	}
+
 	if (cmp == 0) {
 		if ((p2 != rhs_limit && p1 == lhs_limit)
 		|| (rhs_tail != 0 && lhs_tail == 0)) {
@@ -308,14 +322,6 @@ static int _nu_collate(const char *lhs, const char *lhs_limit,
 		|| (lhs_tail != 0 && rhs_tail == 0)) {
 			cmp = 1;
 		}
-	}
-
-	if (collated_left != 0) {
-		*collated_left = (p1 - lhs);
-	}
-
-	if (collated_right != 0) {
-		*collated_right = (p2 - rhs);
 	}
 
 	return cmp;
@@ -358,7 +364,7 @@ static const char* _nu_strstr(const char *haystack, const char *haystack_limit,
 		}
 
 		ssize_t collated_left = 0, collated_right = 0;
-		int cmp = _nu_collate(h0, haystack_limit,
+		_nu_collate(h0, haystack_limit,
 			needle, needle_limit,
 			it1, it2,
 			casemap, decompose, compare,
@@ -366,7 +372,7 @@ static const char* _nu_strstr(const char *haystack, const char *haystack_limit,
 
 		/* it doesn't matter what collate result is
 		 * if whole needle was successfully collated */
-		if (cmp >= 0 && collated_right >= needle_len) {
+		if (collated_right >= needle_len) {
 			return h0;
 		}
 
