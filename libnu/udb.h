@@ -18,8 +18,16 @@ extern "C" {
 
 typedef const int16_t nu_fnv_table_t;
 
+/** Unicode database record reference
+ *
+ * @ingroup udb
+ */
 typedef struct {
+	/** Original unicode codepoint
+	 */
 	uint32_t codepoint;
+	/** Encoded data associated with codepoint
+	 */
 	const char *data;
 } nu_udb_t;
 

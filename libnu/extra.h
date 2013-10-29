@@ -26,7 +26,7 @@ extern "C" {
  * @param encoded source buffer
  * @param unicode destination buffer, should be large enough to hold
  * decoded string
- * @param it read function
+ * @param it read (decode) function
  * @return 0 in success or negative error
  *
  * @see nu_utf8_read
@@ -41,6 +41,7 @@ int nu_readstr(const char *encoded, uint32_t *unicode, nu_read_iterator_t it);
  * @param unicode 0x0000-terminated codepoints
  * @param encoded destination buffer, should be large enough to hold
  * encoded string
+ * @param it write (encode) function
  * @return 0 on success or negative error
  *
  * @see nu_utf8_write
@@ -73,9 +74,6 @@ int nu_transformstr(const char *source, char *dest, nu_read_iterator_t read_it, 
 /** Read encoded string
  *
  * @ingroup extra
- * @param max_len nu_readnstr won't normally got further than max_len bytes. It might
- * go further if encoded character is longer than max_len though
- *
  * @see nu_readstr
  */
 int nu_readnstr(const char *encoded, size_t max_len, uint32_t *unicode, nu_read_iterator_t it);
@@ -83,8 +81,6 @@ int nu_readnstr(const char *encoded, size_t max_len, uint32_t *unicode, nu_read_
 /** Write encoded string
  *
  * @ingroup extra
- * @param max_len nu_writenstr won't go further than max_len-th codepoint
- *
  * @see nu_writestr
  */
 int nu_writenstr(const uint32_t *unicode, size_t max_len, char *encoded, nu_write_iterator_t it);
@@ -92,9 +88,6 @@ int nu_writenstr(const uint32_t *unicode, size_t max_len, char *encoded, nu_writ
 /** Recode string
  *
  * @ingroup extra
- * @param max_len nu_transformnstr won't normally got further than max_len bytes. It might
- * go further if encoded character is longer than max_len though
- *
  * @see nu_transformstr
  */
 int nu_transformnstr(const char *source, size_t max_len, char *dest, nu_read_iterator_t read_it, nu_write_iterator_t write_it);

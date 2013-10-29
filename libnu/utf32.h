@@ -14,18 +14,35 @@ extern "C" {
 #endif
 
 #if (defined NU_WITH_UTF32_READER) || (defined NU_WITH_UTF32_WRITER)
-static const uint32_t NU_UTF32_BOM = 0; /** for sizeof() only */
+/** For sizeof() only */
+static const uint32_t NU_UTF32_BOM = 0;
 #endif
 
+/** Endianess-specific UTF-32 write BOM function */
 typedef char* (*nu_utf32_write_bom_t)(char *);
 
 #ifdef NU_WITH_UTF32_READER
 
+/** Holder for endianess-specific UTF-32 functions
+ *
+ * @ingroup utf32
+ * @see nu_utf32_write_bom
+ */
 typedef struct {
+	/** Read (decode) function
+	 */
 	nu_read_iterator_t read;
+	/** Write (encode) function
+	 */
 	nu_write_iterator_t write;
+	/** Reverse-read (decode) function
+	 */
 	nu_revread_iterator_t revread;
+	/** Validation function
+	 */
 	nu_validread_iterator_t validread;
+	/** BOM writing function
+	 */
 	nu_utf32_write_bom_t write_bom;
 } nu_utf32_bom_t;
 

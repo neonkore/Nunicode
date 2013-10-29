@@ -12,6 +12,11 @@
 extern "C" {
 #endif
 
+/** Validation function
+ *
+ * @ingroup iterators
+ * @see nu_utf8_validread
+ */
 typedef int (*nu_validread_iterator_t)(const char *p, size_t max_len);
 
 #ifdef NU_WITH_VALIDATION

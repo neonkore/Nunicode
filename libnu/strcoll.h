@@ -45,8 +45,8 @@ const char* nu_strcasechr(const char *encoded, uint32_t c, nu_read_iterator_t re
  * @ingroup collation
  * @param s1 first encoded strings
  * @param s2 second encoded strings
- * @param it1 read (decode) function for first string
- * @param it2 read (decode) function for second string
+ * @param s1_read read (decode) function for first string
+ * @param s2_read read (decode) function for second string
  * @return -1, 0, 1
  */
 int nu_strcoll(const char *s1, const char *s2,
@@ -66,8 +66,8 @@ int nu_strcasecoll(const char *s1, const char *s2,
  * @ingroup collation
  * @param haystack encoded haystack
  * @param needle encoded needle
- * @param it1 haystack read (decode) function
- * @param it2 needle read (decode) function
+ * @param haystack_read haystack read (decode) function
+ * @param needle_read needle read (decode) function
  * @return pointer to found string or 0, will return
  * haystack if needle is empty string
  */
