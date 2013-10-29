@@ -85,10 +85,6 @@ def CreateMinimalPerfectHash(dict):
 		for i in range(len(bucket)):
 			values[slots[i]] = dict[bucket[i]]
 
-		if (b % 1000) == 0:
-#            print "bucket %d    r" % (b),
-			sys.stdout.flush()
-
 	# Only buckets with 1 item remain. Process them more quickly by directly
 	# placing them into a free slot. Use a negative value of d to indicate
 	# this.
@@ -108,9 +104,6 @@ def CreateMinimalPerfectHash(dict):
 		# used.
 		G[hash(0, bucket[0]) % size] = -slot - 1
 		values[slot] = dict[bucket[0]]
-		if (b % 1000) == 0:
-#            print "bucket %d    r" % (b),
-			sys.stdout.flush()
 
 	return (G, values)
 
@@ -136,6 +129,7 @@ ENCODING: %s,
 		FNV_OFFSET_BASIS,
 		FNV_PRIME, len(G),
 		INTERNAL_ENCODING)
+
 
 VALUE_TEMPLATE = '''	{ 0x%(codepoint)05X, %(decomps)s },'''
 VALUE_REF_TEMPLATE = '''&V%(codepoint)05X'''
