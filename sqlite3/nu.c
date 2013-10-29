@@ -4,6 +4,16 @@
 
 #include <libnu/libnu.h>
 
+#include "version.h"
+
+#define FAST_BUFFER_SIZE 1024
+
+#ifdef _WIN32
+# define NU_SQLITE3_EXPORT __declspec(dllexport)
+#else
+# define NU_SQLITE3_EXPORT
+#endif
+
 SQLITE_EXTENSION_INIT1
 
 /** This LIKE implementation is intended to do proper collation as
@@ -212,6 +222,121 @@ static int nunicode_sqlite3_collate_nocase_utf16he(void *context, int s1_len, co
 	return _nunicode_collate_nocase(s1, s1_len, s2, s2_len, nu_utf16he_read);
 }
 
+static char* _nunicode_casing(const char *encoded, nu_casemapping_t casemap,
+	nu_read_iterator_t read, nu_write_iterator_t write) {
+
+	uint32_t fast_buffer[FAST_BUFFER_SIZE];
+	uint32_t *unicode_buffer = fast_buffer;
+
+	ssize_t unicode_len = nu_strlen(encoded, read);
+	if (unicode_len >= FAST_BUFFER_SIZE) {
+		unicode_buffer = sqlite3_malloc(sizeof(*unicode_buffer) * (unicode_len + 1));
+	}
+
+	uint32_t u;
+	unsigned i = 0;
+	do {
+		encoded = read(encoded, &u);
+		unicode_buffer[i] = casemap(u);
+
+		if (u == 0) {
+			break;
+		}
+	} while (++i);
+
+	ssize_t reencoded_len = nu_bytelen(unicode_buffer, write);
+	char *reencoded = sqlite3_malloc(reencoded_len + 1);
+	
+	nu_writestr(unicode_buffer, reencoded, write);
+
+	if (unicode_buffer != fast_buffer) {
+		sqlite3_free(unicode_buffer);
+	}
+
+	return reencoded;
+}
+
+static void nunicode_sqlite3_casing_utf8(sqlite3_context *context, int argc, sqlite3_value **argv,
+	nu_casemapping_t casemap) {
+	if (argc < 1 || sqlite3_value_type(argv[0]) != SQLITE_TEXT) {
+		sqlite3_result_null(context);
+	}
+
+	const char *lower = (const char *)sqlite3_value_text(argv[0]);
+	char *upper = _nunicode_casing(lower, casemap, nu_utf8_read, nu_utf8_write);
+
+	sqlite3_result_text(context, upper, -1, sqlite3_free);
+}
+
+static void nunicode_sqlite3_casing_utf16le(sqlite3_context *context, int argc, sqlite3_value **argv,
+	nu_casemapping_t casemap) {
+	if (argc < 1 || sqlite3_value_type(argv[0]) != SQLITE_TEXT) {
+		sqlite3_result_null(context);
+	}
+
+	const char *lower = (const char *)sqlite3_value_text(argv[0]);
+	char *upper = _nunicode_casing(lower, casemap, nu_utf16le_read, nu_utf16le_write);
+
+	sqlite3_result_text16le(context, upper, -1, sqlite3_free);
+}
+
+static void nunicode_sqlite3_casing_utf16be(sqlite3_context *context, int argc, sqlite3_value **argv,
+	nu_casemapping_t casemap) {
+	if (argc < 1 || sqlite3_value_type(argv[0]) != SQLITE_TEXT) {
+		sqlite3_result_null(context);
+	}
+
+	const char *lower = (const char *)sqlite3_value_text(argv[0]);
+	char *upper = _nunicode_casing(lower, casemap, nu_utf16be_read, nu_utf16be_write);
+
+	sqlite3_result_text16be(context, upper, -1, sqlite3_free);
+}
+
+
+static void nunicode_sqlite3_casing_utf16he(sqlite3_context *context, int argc, sqlite3_value **argv,
+	nu_casemapping_t casemap) {
+	if (argc < 1 || sqlite3_value_type(argv[0]) != SQLITE_TEXT) {
+		sqlite3_result_null(context);
+	}
+
+	const char *lower = (const char *)sqlite3_value_text(argv[0]);
+	char *upper = _nunicode_casing(lower, casemap, nu_utf16he_read, nu_utf16he_write);
+
+	sqlite3_result_text16(context, upper, -1, sqlite3_free);
+}
+
+static void nunicode_sqlite3_upper_utf8(sqlite3_context *context, int argc, sqlite3_value **argv) {
+	nunicode_sqlite3_casing_utf8(context, argc, argv, nu_toupper);
+}
+
+static void nunicode_sqlite3_upper_utf16le(sqlite3_context *context, int argc, sqlite3_value **argv) {
+	nunicode_sqlite3_casing_utf16le(context, argc, argv, nu_toupper);
+}
+
+static void nunicode_sqlite3_upper_utf16be(sqlite3_context *context, int argc, sqlite3_value **argv) {
+	nunicode_sqlite3_casing_utf16be(context, argc, argv, nu_toupper);
+}
+
+static void nunicode_sqlite3_upper_utf16he(sqlite3_context *context, int argc, sqlite3_value **argv) {
+	nunicode_sqlite3_casing_utf16he(context, argc, argv, nu_toupper);
+}
+
+static void nunicode_sqlite3_lower_utf8(sqlite3_context *context, int argc, sqlite3_value **argv) {
+	nunicode_sqlite3_casing_utf8(context, argc, argv, nu_tolower);
+}
+
+static void nunicode_sqlite3_lower_utf16le(sqlite3_context *context, int argc, sqlite3_value **argv) {
+	nunicode_sqlite3_casing_utf16le(context, argc, argv, nu_tolower);
+}
+
+static void nunicode_sqlite3_lower_utf16be(sqlite3_context *context, int argc, sqlite3_value **argv) {
+	nunicode_sqlite3_casing_utf16be(context, argc, argv, nu_tolower);
+}
+
+static void nunicode_sqlite3_lower_utf16he(sqlite3_context *context, int argc, sqlite3_value **argv) {
+	nunicode_sqlite3_casing_utf16he(context, argc, argv, nu_tolower);
+}
+
 #define REGISTER_LIKE(rc, db, sqlite_encoding, nu_wrapper) \
 	(rc) = sqlite3_create_function((db), "like", 2, (sqlite_encoding), 0, \
 	(nu_wrapper), 0, 0); \
@@ -222,9 +347,17 @@ static int nunicode_sqlite3_collate_nocase_utf16he(void *context, int s1_len, co
 	(nu_wrapper)); \
 	if ((rc) != SQLITE_OK) return rc;
 
-#ifdef _WIN32
-__declspec(dllexport)
-#endif
+#define REGISTER_UPPER(rc, db, sqlite_encoding, nu_wrapper) \
+	(rc) = sqlite3_create_function((db), "upper", 1, (sqlite_encoding), 0, \
+	(nu_wrapper), 0, 0); \
+	if ((rc) != SQLITE_OK) return rc;
+
+#define REGISTER_LOWER(rc, db, sqlite_encoding, nu_wrapper) \
+	(rc) = sqlite3_create_function((db), "lower", 1, (sqlite_encoding), 0, \
+	(nu_wrapper), 0, 0); \
+	if ((rc) != SQLITE_OK) return rc;
+
+NU_SQLITE3_EXPORT
 int sqlite3_extension_init(sqlite3 *db, char **err_msg,  const sqlite3_api_routines *api) {
 	(void)(err_msg);
 
@@ -246,6 +379,19 @@ int sqlite3_extension_init(sqlite3 *db, char **err_msg,  const sqlite3_api_routi
 	REGISTER_COLLATION(rc, db, SQLITE_UTF16LE, "NOCASE", nunicode_sqlite3_collate_nocase_utf16le);
 	REGISTER_COLLATION(rc, db, SQLITE_UTF16BE, "NOCASE", nunicode_sqlite3_collate_nocase_utf16be);
 	REGISTER_COLLATION(rc, db, SQLITE_UTF16, "NOCASE", nunicode_sqlite3_collate_nocase_utf16he);
+
+	REGISTER_UPPER(rc, db, SQLITE_UTF8, nunicode_sqlite3_upper_utf8);
+	REGISTER_UPPER(rc, db, SQLITE_UTF16LE, nunicode_sqlite3_upper_utf16le);
+	REGISTER_UPPER(rc, db, SQLITE_UTF16BE, nunicode_sqlite3_upper_utf16be);
+	REGISTER_UPPER(rc, db, SQLITE_UTF16, nunicode_sqlite3_upper_utf16he);
+
+	REGISTER_LOWER(rc, db, SQLITE_UTF8, nunicode_sqlite3_lower_utf8);
+	REGISTER_LOWER(rc, db, SQLITE_UTF16LE, nunicode_sqlite3_lower_utf16le);
+	REGISTER_LOWER(rc, db, SQLITE_UTF16BE, nunicode_sqlite3_lower_utf16be);
+	REGISTER_LOWER(rc, db, SQLITE_UTF16, nunicode_sqlite3_lower_utf16he);
+
+	fprintf(stderr, "nunicode unicode: %04d\n", NU_UNICODE_VERSION);
+	fprintf(stderr, "nunicode sqlite3 extension: %s\n", NU_SQLITE3_EXT_VERSION);
 
 	return SQLITE_OK;
 }
