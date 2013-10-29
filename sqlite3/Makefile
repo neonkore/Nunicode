@@ -1,14 +1,10 @@
-STATIC_TARGET = nu.a
-SHARED_TARGET = nu.so
+STATIC_TARGET = libnusqlite3.a
+SHARED_TARGET = libnusqlite3.so
 LIBNU         = ../libnu.a
 
 OBJS = nu.o \
 
 BUILD_OPTIONS = -DNU_WITH_EVERYTHING
-#BUILD_OPTIONS = -DNU_WITH_UTF8_READER -DNU_WITH_UTF8_WRITER \
-#	-DNU_WITH_UTF16LE_READER -DNU_WITH_UTF16LE_WRITER \
-#	-DNU_WITH_UTF16BE_READER -DNU_WITH_UTF16BE_WRITER \
-#	-DNU_WITH_Z_STRINGS -DNU_WITH_CASEMAP -DNU_WITH_N_COLLATION
 
 CFLAGS = -fPIC -Wall -Wextra -Werror -std=c99 -pedantic -Os $(BUILD_OPTIONS)
 SHARED_LDFLAGS = -s
@@ -26,7 +22,7 @@ $(SHARED_TARGET): $(OBJS)
 	$(CC) $(OBJS) $(LIBNU) -shared -o "$(SHARED_TARGET)" $(SHARED_LDFLAGS)
 
 tests:
-	cat tests.sql | sqlite3
+	cat tests.sql | ./testsuite | sqlite3 | tee /dev/stderr | (grep "FAILED" && exit 1 || exit 0)
 
 clean:
 	rm -f "$(STATIC_TARGET)" "$(SHARED_TARGET)"

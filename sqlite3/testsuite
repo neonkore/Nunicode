@@ -1,6 +1,6 @@
 #!/bin/sh
 
-NU='./nu.so'
+NU='./libnusqlite3.so'
 
 echo ".load $NU"
 
