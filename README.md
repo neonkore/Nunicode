@@ -9,12 +9,14 @@ What it can do:
 * Decode UTF strings into Unicode characters
 * Encode Unicode characters into UTF string
 * Validate UTF strings
-* Collate strings
+* Collate strings (Latin, Cyrillic scripts)
 * Case map characters
 
 What it *CAN'T* do:
 
+* UCA
 * Unicode normal forms
+* Collation tailoring
 
 Encodings supported ATM:
 
@@ -111,13 +113,14 @@ It will produce ``doc/html`` with Doxygen documentation in browesable HTML.
 
 ## UTF-8, UTF-16 AND UTF-32
 
-According to Unicode specification UTF-8 might contain byte order mark (BOM),
-however it doesn't make any sense to have BOM in UTF-8. Therefore nunicode has
-no embedded means to deal with UTF-8 BOM, neither detect, read or write.
+According to Unicode specification UTF-8 might contain byte order mark
+(BOM), however it doesn't make any sense to have BOM in UTF-8. Therefore
+nunicode has no embedded means to deal with UTF-8 BOM, neither detect,
+read or write.
 
-If you are facing this crap, just +3 char pointer to skip BOM. (Note that UTF-8
-BOM is 3 bytes long: EF BB BF). You can also safely ``nu_utf8_read()`` BOM, it
-will produce normal U+FEFF codepoint.
+If you are facing this crap, just +3 char pointer to skip BOM. (Note
+that UTF-8 BOM is 3 bytes long: EF BB BF). You can also safely
+``nu_utf8_read()`` BOM, it will produce normal U+FEFF codepoint.
 
 Reference: [UTF BOM FAQ][]
 
@@ -127,15 +130,15 @@ Unicode defines 3 types of UTF-16 *each* affected by endianess.
 2. UTF-16LE (little endian)
 3. UTF-16BE (big endian)
 
-LE and BE are obviusly little-endian and big-endian, generic one's endianess is
-defined by the byte order mark (BOM) at the beginning of the string or defaults
-to BE if BOM is absent. Thus generic UTF-16 is always BOM + either UTF-16LE or
-UTF-16BE.
+LE and BE are obviusly little-endian and big-endian, generic one's
+endianess is defined by the byte order mark (BOM) at the beginning of the
+string or defaults to BE if BOM is absent. Thus generic UTF-16 is always
+BOM + either UTF-16LE or UTF-16BE.
 
-nunicode provide only ``nu_utf16le_*`` and ``nu_utf16be_*`` for the encoding
-and decoding, BOM is handled by ``nu_utf16_*`` functions. It's up to you to
-decide if you need BOM or just UTF-16LE/BE. Either you choose, you'll get valid
-UTF-16 variant.
+nunicode provide only ``nu_utf16le_*`` and ``nu_utf16be_*`` for the
+encoding and decoding, BOM is handled by ``nu_utf16_*`` functions. It's
+up to you to decide if you need BOM or just UTF-16LE/BE. Either you
+choose, you'll get valid UTF-16 variant.
 
 Note that nunicode will never report string endianess explicitely but will
 provide read, reverse read, write and BOM write functions instead. See 
@@ -149,8 +152,9 @@ Everything said above about UTF-16 also applies to UTF-32.
 
 [ISO/IEC 10646][] clearly says that if BOM is not present, encoding
 should be considered BE, however sometimes you can see UTF-16 defined
-simply as "host-endian". For the purpose of decoding and encoding strings
-in host endianess, nunicode implements UTF-16HE and UTF-32HE encodings.
+simply as "host-endian". This is misinterpretation of UTF-16 definition,
+but for the purpose of decoding and encoding strings in host endianess,
+nunicode implements UTF-16HE and UTF-32HE encodings.
 
 Note that ``nu_utf16_read_bom()`` will default encoding to UTF-16BE if
 BOM is not present in string, therefore HE variants are need to be used
@@ -171,22 +175,22 @@ nunicode since UCS-2 was superseded by UTF-16 more than 15 years ago.
 
 ## REVERSE READING
 
-nunicode do not provide str\[i\] (access by index) equivalent since it will 
-always be slow. Instead you can do ``nu_utf8_revread(&u, encoded)`` and other
-encodings variants to read character in backward direction.
+nunicode do not provide str\[i\] (access by index) equivalent since it
+will always be slow. Instead you can do ``nu_utf8_revread(&u, encoded)``
+and other encodings variants to read character in backward direction.
 
 It is always a bad idea to pass arbitrary pointer to revread(). UTF-8 and
-CESU-8 can possibly recover from programming error (pointer poiting to the 
-middle of multibyte UTF-8 sequence), but UTF-16 and UTF-32 revread will fail
-badly. In fact, UTF-32 revread is just ``const char *p - 4``.
+CESU-8 can possibly recover from programming error (pointer poiting to
+the middle of multibyte UTF-8 sequence), but UTF-16 and UTF-32 revread
+will fail badly. In fact, UTF-32 revread is just ``const char *p - 4``.
 
 Pointer passed to revread() is supposed to always come from call to
 ``nu_*_read()``. Otherwise prepare to unforeseen consequences. (Actually,
 you can prepare to unforeseen consequences in any case).
 
-As a side note, if you pass 0 as a pointer to decoded character, revread(), as
-you would expect, won't do any redundant decoding, but will just iterate over
-the string.
+As a side note, if you pass 0 as a pointer to decoded character,
+``revread()``, as you would expect, won't do any redundant decoding,
+but will just iterate over the string.
 
     :::c
     /* skip 5 characters backwards */
@@ -243,8 +247,8 @@ of bit-wise operations on 32-bits integer and couple of MOD's. Worth
 
 All decoding functions has very limited error checking for performance
 reasons. nunicode expect valid UTF strings at input. It though provide
-``nu_validate()`` to check complete string before processing. This function
-won't fully decode string, but will run tests instead.
+``nu_validate()`` to check complete string before processing. This
+function won't fully decode string, but will run tests instead.
 
 Normally you need validation at I/O boundaries only, actually at I
 boundary only, because if ``nu_validate()`` is failing on product of 
@@ -315,17 +319,19 @@ UTF-32
 
 Strings collation and case mapping
 
-    All collation and case mapping functions options imply -DNU_WITH_UTF8_READER
+    All collation and case mapping functions options imply
+    -DNU_WITH_UTF8_READER
+
     Collation functions also imply -DNU_WITH_UDB
 
 * ``-DNU_WITH_TOUPPER`` - enable upper case mapping
 * ``-DNU_WITH_TOLOWER`` - enable lower case mapping
 * ``-DNU_WITH_CASEMAP`` - enable case insensitive string functions,
   implies ``-DNU_WITH_TOUPPER`` and ``-DNU_WITH_TOLOWER``
-* ``-DNU_WITH_Z_COLLATION`` - enable strings collation functions for 0-terminated
-  strings
-* ``-DNU_WITH_N_COLLATION`` - enable strings collation functions for unterminated
-  strings
+* ``-DNU_WITH_Z_COLLATION`` - enable strings collation functions for
+  0-terminated strings
+* ``-DNU_WITH_N_COLLATION`` - enable strings collation functions for
+  unterminated strings
 * ``-DNU_WITH_COLLATION`` - implies ``-DNU_WITH_Z_COLLATION``
   and ``-DNU_WITH_N_COLLATION``
 
@@ -336,7 +342,8 @@ Collation misc
 
 Misc
 
-* ``-DNU_WITH_REVERSE_READ`` - read encoded string in reverse order functions
+* ``-DNU_WITH_REVERSE_READ`` - read encoded string in reverse order
+  functions
 * ``-DNU_WITH_VALIDATION`` - string encoding validation functions
 * ``-DNU_WITH_Z_STRINGS`` - supported functions for 0-terminated strings
 * ``-DNU_WITH_N_STRINGS`` - supported functions fo unterminated strings
