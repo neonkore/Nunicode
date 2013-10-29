@@ -9,6 +9,7 @@
 #include "strcoll.h"
 #include "strings.h"
 #include "validate.h"
+#include "version.h"
 #include "udb.h"
 #include "utf16.h"
 #include "utf16be.h"

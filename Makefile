@@ -6,6 +6,7 @@ UTF16_SAMPLE  = samples/utf16
 REVR_SAMPLE   = samples/revread
 FOLD_SAMPLE   = samples/folding
 DOCDIR        = doc
+GIT_REVISION  = $$(expr substr $$(git rev-parse HEAD) 1 8)
 
 DECOMPS_SRC  = unicode.org/decomps.txt
 UNIDATA_SRC  = unicode.org/UnicodeData.txt
@@ -61,13 +62,16 @@ SHARED_LDFLAGS = $(LDFLAGS) -s
 TESTS_LDFLAGS = $(LDFLAGS)
 SAMPLES_LDFLAGS = $(LDFLAGS) -s
 
-default: clean $(STATIC_TARGET) $(SHARED_TARGET)
+default: clean version $(STATIC_TARGET) $(SHARED_TARGET)
 debug:
 	CFLAGS="-g --coverage" LDFLAGS="-lgcov" $(MAKE) tests
 all: default $(TESTS_TARGET) samples
 gen: clean_gen $(DUCET_DST) $(TOUPPER_DST) $(TOLOWER_DST)
 clean_gen:
 	rm -f libnu/gen/*.h
+
+version:
+	echo "#define NU_VERSION \"$(GIT_REVISION)\"" >libnu/version.h
 
 %.o:%.c
 	$(CC) -I . $(CFLAGS) -c "$<" -o "$@"
