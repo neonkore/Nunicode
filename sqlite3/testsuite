@@ -1,0 +1,14 @@
+#!/bin/sh
+
+NU='./nu.so'
+
+echo ".load $NU"
+
+while read -r SQL; do
+	if [ -z "$SQL" ]; then
+		continue
+	fi
+
+	ESCAPED_SQL=$(echo $SQL | sed -r "s|'|''|g")
+	echo "SELECT '$ESCAPED_SQL: ' || (CASE WHEN ($SQL) THEN 'OK' ELSE 'FAILED' END);"
+done

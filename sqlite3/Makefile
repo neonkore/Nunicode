@@ -1,0 +1,33 @@
+STATIC_TARGET = nu.a
+SHARED_TARGET = nu.so
+LIBNU         = ../libnu.a
+
+OBJS = nu.o \
+
+BUILD_OPTIONS = -DNU_WITH_EVERYTHING
+#BUILD_OPTIONS = -DNU_WITH_UTF8_READER -DNU_WITH_UTF8_WRITER \
+#	-DNU_WITH_UTF16LE_READER -DNU_WITH_UTF16LE_WRITER \
+#	-DNU_WITH_UTF16BE_READER -DNU_WITH_UTF16BE_WRITER \
+#	-DNU_WITH_Z_STRINGS -DNU_WITH_CASEMAP -DNU_WITH_N_COLLATION
+
+CFLAGS = -fPIC -Wall -Wextra -Werror -std=c99 -pedantic -Os $(BUILD_OPTIONS)
+SHARED_LDFLAGS = -s
+
+default: clean $(STATIC_TARGET) $(SHARED_TARGET)
+all: default
+
+%.o:%.c
+	$(CC) -I .. $(CFLAGS) -c "$<" -o "$@"
+
+$(STATIC_TARGET): $(OBJS)
+	$(AR) crs "$(STATIC_TARGET)" $(OBJS)
+
+$(SHARED_TARGET): $(OBJS)
+	$(CC) $(OBJS) $(LIBNU) -shared -o "$(SHARED_TARGET)" $(SHARED_LDFLAGS)
+
+tests:
+	cat tests.sql | sqlite3
+
+clean:
+	rm -f "$(STATIC_TARGET)" "$(SHARED_TARGET)"
+	rm -f *.o

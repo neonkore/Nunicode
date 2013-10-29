@@ -1,0 +1,45 @@
+
+SELECT 'MASSE' LIKE 'MASE' == 0
+SELECT 'MASSE' LIKE 'MADE' == 0
+
+SELECT 'MASSE' LIKE 'Maße' == 1
+SELECT 'Maße' LIKE '%SS%' == 1
+SELECT 'æ' LIKE 'Æ' == 1
+SELECT 'æ' LIKE 'AE' == 1
+
+SELECT 'MASSE' LIKE '%ß%' == 1
+SELECT 'MASSE' LIKE '%ßß%' == 0
+
+SELECT 'EN MASSE' LIKE '' == 0
+SELECT 'EN MASSE' LIKE 'Mass' == 0
+SELECT 'EN MASSE' LIKE '%Mass' == 0
+SELECT 'EN MASSE' LIKE 'Mass%' == 0
+SELECT 'EN MASSE' LIKE '%Mass%' == 1
+
+SELECT 'EN MASSE' LIKE '%Masse' == 1
+SELECT 'EN MASSE' LIKE 'Masse%' == 0
+SELECT 'EN MASSE' LIKE '%Masse%' == 1
+
+SELECT 'EN MASSE' LIKE 'En' == 0
+SELECT 'EN MASSE' LIKE 'En%' == 1
+SELECT 'EN MASSE' LIKE '%En' == 0
+SELECT 'EN MASSE' LIKE '%En%' == 1
+
+SELECT 'MASSE' LIKE 'Ma_e' == 0
+SELECT 'MASSE' LIKE 'Ma__e' == 1
+SELECT 'MASSE' LIKE 'Ma%_e' == 1
+SELECT 'MASSE' LIKE 'Ma_%e' == 1
+SELECT 'MASSE' LIKE 'Ma_%s' == 0
+SELECT 'MASSE' LIKE 'Ma_%s%' == 1
+SELECT 'MASSE' LIKE 'Ma_%s_' == 1
+SELECT 'MASSE' LIKE 'Ma_%s__' == 0
+SELECT 'MASSE' LIKE 'Ma__%e' == 1
+SELECT 'MASSE' LIKE 'Ma___e' == 0
+SELECT 'MASSE' LIKE 'Ma___%e' == 0
+
+SELECT 'MA_SE' LIKE 'ma\\_se' ESCAPE '\' == 1
+SELECT 'MASSE' LIKE 'ma\\_se' ESCAPE '\' == 0
+SELECT 'MA%SE' LIKE 'ma\\%se' ESCAPE '\' == 1
+SELECT 'MASSE' LIKE 'ma\\%se' ESCAPE '\' == 0
+
+SELECT 'MA_SE' LIKE 'maя_se' ESCAPE 'я' == 1
