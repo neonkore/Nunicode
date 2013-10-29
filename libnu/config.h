@@ -7,6 +7,7 @@
 # define NU_WITH_UTF16
 # define NU_WITH_UTF16HE
 # define NU_WITH_UTF32
+# define NU_WITH_UTF32HE
 # define NU_WITH_STRINGS
 # define NU_WITH_EXTRA
 # define NU_WITH_REVERSE_READ
