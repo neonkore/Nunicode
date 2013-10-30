@@ -5,6 +5,7 @@
 #include <sys/types.h>
 
 #include "config.h"
+#include "defines.h"
 #include "strings.h"
 
 /** @defgroup udb Unicode Database (kind of)
@@ -44,6 +45,7 @@ typedef struct {
  * @param VALUES second MPH table
  * @return looked up data or 0
  */
+NU_EXPORT
 const char* nu_udb_lookup(uint32_t codepoint, nu_read_iterator_t *it,
 	nu_fnv_table_t *FNV, size_t FNV_SIZE, const nu_udb_t *VALUES);
 

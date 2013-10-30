@@ -3,6 +3,8 @@
 
 #include <stdint.h>
 
+#include "config.h"
+#include "defines.h"
 #include "strings.h"
 #include "validate.h"
 
@@ -61,6 +63,7 @@ typedef struct {
  * @return pointer to next character in UTF-16 string or encoded if BOM is
  * not found
  */
+NU_EXPORT
 const char* nu_utf16_read_bom(const char *encoded, nu_utf16_bom_t *bom);
 
 #endif /* NU_WITH_UTF16_READER */
@@ -73,6 +76,7 @@ const char* nu_utf16_read_bom(const char *encoded, nu_utf16_bom_t *bom);
  * @param encoded pointer to encoded string or 0
  * @return pointer to byte after written BOM
  */
+NU_EXPORT
 char* nu_utf16le_write_bom(char *encoded);
 
 /** Write big-endian BOM to a string
@@ -81,6 +85,7 @@ char* nu_utf16le_write_bom(char *encoded);
  * @param encoded pointer to encoded string or 0
  * @return pointer to byte after written BOM
  */
+NU_EXPORT
 char* nu_utf16be_write_bom(char *encoded);
 
 #endif /* NU_WITH_UTF16_WRITER */

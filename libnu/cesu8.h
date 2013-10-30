@@ -5,6 +5,7 @@
 #include <sys/types.h>
 
 #include "config.h"
+#include "defines.h"
 
 /** @defgroup cesu8 CESU-8 support
  *
@@ -24,6 +25,7 @@ extern "C" {
  * @param unicode output unicode codepoint or 0
  * @return pointer to next character in CESU-8 string
  */
+NU_EXPORT
 const char* nu_cesu8_read(const char *cesu8, uint32_t *unicode);
 
 #ifdef NU_WITH_REVERSE_READ
@@ -40,6 +42,7 @@ const char* nu_cesu8_read(const char *cesu8, uint32_t *unicode);
  * @param cesu8 pointer to CESU-8 encoded string
  * @return pointer to previous character in CESU-8 string
  */
+NU_EXPORT
 const char* nu_cesu8_revread(uint32_t *unicode, const char *cesu8);
 
 #endif /* NU_WITH_REVERSE_READ */
@@ -53,6 +56,7 @@ const char* nu_cesu8_revread(uint32_t *unicode, const char *cesu8);
  * @param max_len buffer length
  * @return character length or 0 on error
  */
+NU_EXPORT
 int nu_cesu8_validread(const char *encoded, size_t max_len);
 
 #endif /* NU_WITH_VALIDATION */
@@ -68,6 +72,7 @@ int nu_cesu8_validread(const char *encoded, size_t max_len);
  * shoud be large enough to hold encoded value
  * @return pointer to byte after last written
  */
+NU_EXPORT
 char* nu_cesu8_write(uint32_t unicode, char *cesu8);
 
 #endif /* NU_WITH_CESU8_WRITER */

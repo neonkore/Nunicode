@@ -5,6 +5,7 @@
 #include <sys/types.h>
 
 #include "config.h"
+#include "defines.h"
 
 /** @defgroup utf8 UTF-8 support
  *
@@ -25,6 +26,7 @@ extern "C" {
  * @param unicode output unicode codepoint or 0
  * @return pointer to next character in UTF-8 string
  */
+NU_EXPORT
 const char* nu_utf8_read(const char *utf8, uint32_t *unicode);
 
 #ifdef NU_WITH_REVERSE_READ
@@ -41,6 +43,7 @@ const char* nu_utf8_read(const char *utf8, uint32_t *unicode);
  * @param utf8 pointer to UTF-8 encoded string
  * @return pointer to previous character in UTF-8 string
  */
+NU_EXPORT
 const char* nu_utf8_revread(uint32_t *unicode, const char *utf8);
 
 #endif /* NU_WITH_REVERSE_READ */
@@ -54,6 +57,7 @@ const char* nu_utf8_revread(uint32_t *unicode, const char *utf8);
  * @param max_len buffer length
  * @return character length or 0 on error
  */
+NU_EXPORT
 int nu_utf8_validread(const char *encoded, size_t max_len);
 
 #endif /* NU_WITH_VALIDATION */
@@ -69,6 +73,7 @@ int nu_utf8_validread(const char *encoded, size_t max_len);
  * should be large enough to hold encoded value
  * @return pointer to byte after last written
  */
+NU_EXPORT
 char* nu_utf8_write(uint32_t unicode, char *utf8);
 
 #endif /* NU_WITH_UTF8_WRITER */

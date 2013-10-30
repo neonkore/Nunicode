@@ -4,6 +4,7 @@
 #include <stdint.h>
 
 #include "config.h"
+#include "defines.h"
 #include "strings.h"
 
 #if defined (__cplusplus) || defined (c_plusplus)
@@ -29,6 +30,7 @@ typedef const char* (*nu_casemapping_t)(uint32_t codepoint, nu_read_iterator_t *
  * @param read output upper case read (decode) function
  * @return uppercase codepoint or same if mapping doesn't exist
  */
+NU_EXPORT
 const char* nu_toupper(uint32_t codepoint, nu_read_iterator_t *read);
 
 #endif /* NU_WITH_TOUPPER */
@@ -42,6 +44,7 @@ const char* nu_toupper(uint32_t codepoint, nu_read_iterator_t *read);
  * @param read output lower case read (decode) function
  * @return lowercase codepoint or same if mapping doesn't exist
  */
+NU_EXPORT
 const char* nu_tolower(uint32_t codepoint, nu_read_iterator_t *read);
 
 #endif /* NU_WITH_TOLOWER */

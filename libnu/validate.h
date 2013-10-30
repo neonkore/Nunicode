@@ -7,6 +7,7 @@
 #include <sys/types.h>
 
 #include "config.h"
+#include "defines.h"
 
 #if defined (__cplusplus) || defined (c_plusplus)
 extern "C" {
@@ -38,6 +39,7 @@ typedef int (*nu_validread_iterator_t)(const char *p, size_t max_len);
  *
  * @see nu_utf8_validread
  */
+NU_EXPORT
 const char* nu_validate(const char *encoded, size_t max_len, nu_validread_iterator_t it);
 
 #endif /* NU_WITH_VALIDATION */

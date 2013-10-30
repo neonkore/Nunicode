@@ -5,6 +5,7 @@
 #include <sys/types.h>
 
 #include "config.h"
+#include "defines.h"
 
 #if defined (__cplusplus) || defined (c_plusplus)
 extern "C" {
@@ -19,6 +20,7 @@ extern "C" {
  * @param unicode output unicode codepoint or 0
  * @return pointer to next character in UTF-16 string
  */
+NU_EXPORT
 const char* nu_utf16le_read(const char *utf16, uint32_t *unicode);
 
 #ifdef NU_WITH_REVERSE_READ
@@ -39,6 +41,7 @@ const char* nu_utf16le_read(const char *utf16, uint32_t *unicode);
  * @param utf16 pointer to UTF-8 encoded string
  * @return pointer to previous character in UTF-16 string
  */
+NU_EXPORT
 const char* nu_utf16le_revread(uint32_t *unicode, const char *utf16);
 
 #endif /* NU_WITH_REVERSE_READ */
@@ -52,6 +55,7 @@ const char* nu_utf16le_revread(uint32_t *unicode, const char *utf16);
  * @param max_len buffer length
  * @return character length or 0 on error
  */
+NU_EXPORT
 int nu_utf16le_validread(const char *encoded, size_t max_len);
 
 #endif /* NU_WITH_VALIDATION */
@@ -70,6 +74,7 @@ int nu_utf16le_validread(const char *encoded, size_t max_len);
  * should be large enough to hold encoded value
  * @return pointer to byte after last written
  */
+NU_EXPORT
 char* nu_utf16le_write(uint32_t unicode, char *utf16);
 
 #endif /* NU_WITH_UTF16LE_WRITER */

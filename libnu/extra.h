@@ -76,6 +76,7 @@ int nu_transformstr(const char *source, char *dest, nu_read_iterator_t read_it, 
  * @ingroup extra
  * @see nu_readstr
  */
+NU_EXPORT
 int nu_readnstr(const char *encoded, size_t max_len, uint32_t *unicode, nu_read_iterator_t it);
 
 /** Write encoded string
@@ -83,6 +84,7 @@ int nu_readnstr(const char *encoded, size_t max_len, uint32_t *unicode, nu_read_
  * @ingroup extra
  * @see nu_writestr
  */
+NU_EXPORT
 int nu_writenstr(const uint32_t *unicode, size_t max_len, char *encoded, nu_write_iterator_t it);
 
 /** Recode string
@@ -90,6 +92,7 @@ int nu_writenstr(const uint32_t *unicode, size_t max_len, char *encoded, nu_writ
  * @ingroup extra
  * @see nu_transformstr
  */
+NU_EXPORT
 int nu_transformnstr(const char *source, size_t max_len, char *dest, nu_read_iterator_t read_it, nu_write_iterator_t write_it);
 
 #endif /* NU_WITH_N_EXTRA */

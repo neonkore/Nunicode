@@ -3,6 +3,8 @@
 
 #include <stdint.h>
 
+#include "config.h"
+#include "defines.h"
 #include "strings.h"
 #include "validate.h"
 
@@ -50,6 +52,7 @@ typedef struct {
  * @ingroup utf32
  * @see nu_utf16_read_bom
  */
+NU_EXPORT
 const char* nu_utf32_read_bom(const char *encoded, nu_utf32_bom_t *bom);
 
 #endif /* NU_WITH_UTF32_READER */
@@ -60,12 +63,14 @@ const char* nu_utf32_read_bom(const char *encoded, nu_utf32_bom_t *bom);
  * @ingroup utf32
  * @see nu_utf16le_write_bom
  */
+NU_EXPORT
 char* nu_utf32le_write_bom(char *encoded);
 
 /**
  * @ingroup utf32
  * @see nu_utf16be_write_bom
  */
+NU_EXPORT
 char* nu_utf32be_write_bom(char *encoded);
 
 #endif /* NU_WITH_UTF32_WRITER */

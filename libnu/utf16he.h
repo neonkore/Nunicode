@@ -5,6 +5,7 @@
 #include <sys/types.h>
 
 #include "config.h"
+#include "defines.h"
 
 #if defined (__cplusplus) || defined (c_plusplus)
 extern "C" {
@@ -17,6 +18,7 @@ extern "C" {
  * @ingroup utf16
  * @see nu_utf16le_read
  */
+NU_EXPORT
 const char* nu_utf16he_read(const char *utf16, uint32_t *unicode);
 
 #ifdef NU_WITH_REVERSE_READ
@@ -26,6 +28,7 @@ const char* nu_utf16he_read(const char *utf16, uint32_t *unicode);
  * @ingroup utf16
  * @see nu_utf16le_revread
  */
+NU_EXPORT
 const char* nu_utf16he_revread(uint32_t *unicode, const char *utf16);
 
 #endif /* NU_WITH_REVERSE_READ */
@@ -37,6 +40,7 @@ const char* nu_utf16he_revread(uint32_t *unicode, const char *utf16);
  * @ingroup utf16
  * @see nu_utf16le_validread
  */
+NU_EXPORT
 int nu_utf16he_validread(const char *encoded, size_t max_len);
 
 #endif /* NU_WITH_VALIDATION */
@@ -49,6 +53,7 @@ int nu_utf16he_validread(const char *encoded, size_t max_len);
  * @ingroup utf16
  * @see nu_utf16le_write
  */
+NU_EXPORT
 char* nu_utf16he_write(uint32_t unicode, char *utf16);
 
 #endif /* NU_WITH_UTF16HE_WRITER */

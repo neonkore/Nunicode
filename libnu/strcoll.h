@@ -12,6 +12,7 @@
 
 #include "config.h"
 #include "casemap.h"
+#include "defines.h"
 #include "strings.h"
 
 #if defined (__cplusplus) || defined (c_plusplus)
@@ -30,6 +31,7 @@ typedef int (*nu_codepointcmp_t)(uint32_t u1, uint32_t u2, nu_casemapping_t case
  * @param read read (decode) function for encoded string
  * @return pointer to character in string or 0
  */
+NU_EXPORT
 const char* nu_strchr(const char *encoded, uint32_t c, nu_read_iterator_t read);
 
 /** Locate character in string ignoring case
@@ -37,6 +39,7 @@ const char* nu_strchr(const char *encoded, uint32_t c, nu_read_iterator_t read);
  * @ingroup collation
  * @see nu_strchr
  */
+NU_EXPORT
 const char* nu_strcasechr(const char *encoded, uint32_t c, nu_read_iterator_t read);
 
 /** Compare characters in case ignoring case. It will also apply character
@@ -49,6 +52,7 @@ const char* nu_strcasechr(const char *encoded, uint32_t c, nu_read_iterator_t re
  * @param s2_read read (decode) function for second string
  * @return -1, 0, 1
  */
+NU_EXPORT
 int nu_strcoll(const char *s1, const char *s2,
 	nu_read_iterator_t s1_read, nu_read_iterator_t s2_read);
 
@@ -58,6 +62,7 @@ int nu_strcoll(const char *s1, const char *s2,
  * @ingroup collation
  * @see nu_strcoll
  */
+NU_EXPORT
 int nu_strcasecoll(const char *s1, const char *s2,
 	nu_read_iterator_t s1_read, nu_read_iterator_t s2_read);
 
@@ -71,6 +76,7 @@ int nu_strcasecoll(const char *s1, const char *s2,
  * @return pointer to found string or 0, will return
  * haystack if needle is empty string
  */
+NU_EXPORT
 const char* nu_strstr(const char *haystack, const char *needle,
 	nu_read_iterator_t haystack_read, nu_read_iterator_t needle_read);
 
@@ -79,6 +85,7 @@ const char* nu_strstr(const char *haystack, const char *needle,
  * @ingroup collation
  * @see nu_strstr
  */
+NU_EXPORT
 const char* nu_strcasestr(const char *haystack, const char *needle,
 	nu_read_iterator_t haystack_read, nu_read_iterator_t needle_read);
 
@@ -91,6 +98,7 @@ const char* nu_strcasestr(const char *haystack, const char *needle,
  * @ingroup collation
  * @see nu_strchr
  */
+NU_EXPORT
 const char* nu_strnchr(const char *encoded, size_t max_len, uint32_t c, nu_read_iterator_t read);
 
 /** Locate character in string ignoring case
@@ -98,6 +106,7 @@ const char* nu_strnchr(const char *encoded, size_t max_len, uint32_t c, nu_read_
  * @ingroup collation
  * @see nu_strcasechr
  */
+NU_EXPORT
 const char* nu_strcasenchr(const char *encoded, size_t max_len, uint32_t c, nu_read_iterator_t read);
 
 /** Compare characters in case ignoring case. It will also apply character
@@ -106,6 +115,7 @@ const char* nu_strcasenchr(const char *encoded, size_t max_len, uint32_t c, nu_r
  * @ingroup collation
  * @see nu_strcoll
  */
+NU_EXPORT
 int nu_strncoll(const char *s1, size_t s1_max_len,
 	const char *s2, size_t s2_max_len,
 	nu_read_iterator_t s1_read, nu_read_iterator_t s2_read);
@@ -116,6 +126,7 @@ int nu_strncoll(const char *s1, size_t s1_max_len,
  * @ingroup collation
  * @see nu_strncoll
  */
+NU_EXPORT
 int nu_strcasencoll(const char *s1, size_t s1_max_len,
 	const char *s2, size_t s2_max_len,
 	nu_read_iterator_t s1_read, nu_read_iterator_t s2_read);
@@ -125,6 +136,7 @@ int nu_strcasencoll(const char *s1, size_t s1_max_len,
  * @ingroup collation
  * @see nu_strstr
  */
+NU_EXPORT
 const char* nu_strnstr(const char *haystack, size_t haystack_max_len,
 	const char *needle, size_t needle_max_len,
 	nu_read_iterator_t haystack_read, nu_read_iterator_t needle_read);
@@ -134,6 +146,7 @@ const char* nu_strnstr(const char *haystack, size_t haystack_max_len,
  * @ingroup collation
  * @see nu_strcasestr
  */
+NU_EXPORT
 const char* nu_strcasenstr(const char *haystack, size_t haystack_max_len,
 	const char *needle, size_t needle_max_len,
 	nu_read_iterator_t haystack_read, nu_read_iterator_t needle_read);
