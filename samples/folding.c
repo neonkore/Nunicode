@@ -21,11 +21,41 @@ int main() {
 		uint32_t in = 0;
 		p = nu_utf8_read(p, &in);
 
-		uint32_t up = nu_toupper(in);
-		uint32_t lo = nu_tolower(in);
+		nu_read_iterator_t casemap_read = 0;
 
-		upper = nu_utf8_write(up == 0 ? in : up, upper);
-		lower = nu_utf8_write(lo == 0 ? in : lo, lower);
+		const char* up = nu_toupper(in, &casemap_read);
+		const char* lo = nu_tolower(in, &casemap_read);
+
+		/* note that nu_toupper and nu_tolower might
+		 * return more than one character, but in this
+		 * example every lowercase/uppercase character
+		 * maps to only one another character */
+
+		if (up != 0) {
+			uint32_t u = 0;
+			do {
+				up = casemap_read(up, &u);
+				if (u == 0) break;
+				upper = nu_utf8_write(u, upper);
+			}
+			while (u != 0);
+		}
+		else {
+			upper = nu_utf8_write(in, upper);
+		}
+
+		if (lo != 0) {
+			uint32_t u = 0;
+			do {
+				lo = casemap_read(lo, &u);
+				if (u == 0) break;
+				lower = nu_utf8_write(u, lower);
+			}
+			while (u != 0);
+		}
+		else {
+			lower = nu_utf8_write(in, lower);
+		}
 	}
 
 	printf("nu_toupper(\"%s\"): %s\n", role, upper_buffer);
