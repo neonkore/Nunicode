@@ -6,13 +6,36 @@
 
 #include "version.h"
 
-#define FAST_BUFFER_SIZE 1024
+/** This extension provide functions for the following statements:
+ *
+ * - X LIKE Y ESCAPE Z
+ * - upper(X)
+ * - lower(X)
+ * - COLLATE NUNICODE
+ * - COLLATE NOCASE
+ *
+ * Suported encodings:
+ *
+ * - UTF8
+ * - UTF16LE
+ * - UTF16BE
+ * - UTF16 (nunicode encoding: UTF-16HE)
+ */
 
 #ifdef _WIN32
 # define NU_SQLITE3_EXPORT __declspec(dllexport)
 #else
 # define NU_SQLITE3_EXPORT
 #endif
+
+/** Buffer of this size will be allocated on *stack* to support
+ * upper()/lower() transformations internally. Internal buffer
+ * for strings longer than this will be allocated in *heap*.
+ *
+ * You can adjust this value to enable handling of longer strings
+ * on stack.
+ */
+#define FAST_BUFFER_SIZE 4096 /* bytes */
 
 SQLITE_EXTENSION_INIT1
 
@@ -111,6 +134,8 @@ pass:
 	return 0;
 }
 
+/** SQLite-nu bridge
+ */
 static void _nunicode_sqlite3_like(sqlite3_context *context,
 	int argc, sqlite3_value **argv, nu_read_iterator_t it) {
 
@@ -164,6 +189,12 @@ static void nunicode_sqlite3_like_utf16he(sqlite3_context *context, int argc, sq
 	_nunicode_sqlite3_like(context, argc, argv, nu_utf16he_read);
 }
 
+/** Strings collation
+ *
+ * This is full Unicode collation when "Maße" matches "Masse". Also note that
+ * while nunicode support different encodings for s1 and s2, same encoding is
+ * used in SQLite extension.
+ */
 static int _nunicode_collate(const char *s1, size_t s1_max_len,
 	const char *s2, size_t s2_max_len, nu_read_iterator_t it) {
 	return nu_strncoll(s1, s1_max_len, s2, s2_max_len, it, it);
@@ -193,6 +224,18 @@ static int nunicode_sqlite3_collate_utf16he(void *context, int s1_len, const voi
 	return _nunicode_collate(s1, s1_len, s2, s2_len, nu_utf16he_read);
 }
 
+/** Case-insensitive strings collation
+ *
+ * This is full Unicode collation when "Maße" matches "MASSE". Also note that
+ * while nunicode support different encodings for s1 and s2, same encoding is
+ * used in SQLite extension.
+ *
+ * Internall, folding method is nu_tolower()
+ *
+ * @see _nunicode_collate
+ * @see nu_tolower
+ * @see nu_toupper
+ */
 static int _nunicode_collate_nocase(const char *s1, size_t s1_max_len,
 	const char *s2, size_t s2_max_len, nu_read_iterator_t it) {
 	return nu_strcasencoll(s1, s1_max_len, s2, s2_max_len, it, it);
@@ -222,6 +265,19 @@ static int nunicode_sqlite3_collate_nocase_utf16he(void *context, int s1_len, co
 	return _nunicode_collate_nocase(s1, s1_len, s2, s2_len, nu_utf16he_read);
 }
 
+/** This is implementation of full Unicode case mapping when string might
+ * change length after transformed. E.g. upper("Maße") -> "MASSE".
+ *
+ * To transform string two passes required:
+ *
+ *   1. Decode string into Unicode codepoints + apply casemapping
+ *   2. Re-encode casemapped string
+ *
+ * 1 and 2 share uint32_t buffer with decoded string internally. To reduce
+ * number of allocations in heap, if string is shorter than FAST_BUFFER_SIZE
+ * internal buffer will be allocated on stack. You can adjust this value to
+ * handle longer strings also on stack.
+ */
 static char* _nunicode_casing(const char *encoded, nu_casemapping_t casemap,
 	nu_read_iterator_t read, nu_write_iterator_t write) {
 
@@ -258,7 +314,7 @@ static char* _nunicode_casing(const char *encoded, nu_casemapping_t casemap,
 		}
 	}
 
-	if (unicode_len >= FAST_BUFFER_SIZE) {
+	if (unicode_len >= FAST_BUFFER_SIZE - 1) {
 		unicode_buffer = sqlite3_malloc(sizeof(*unicode_buffer) * (unicode_len + 1));
 	}
 
@@ -413,6 +469,8 @@ int sqlite3_extension_init(sqlite3 *db, char **err_msg,  const sqlite3_api_routi
 	SQLITE_EXTENSION_INIT2(api);
 
 	int rc = SQLITE_OK;
+
+	/* each macro would exit(rc); in case of error */
 
 	REGISTER_LIKE(rc, db, SQLITE_UTF8, nunicode_sqlite3_like_utf8);
 	REGISTER_LIKE(rc, db, SQLITE_UTF16LE, nunicode_sqlite3_like_utf16le);

@@ -53,6 +53,7 @@ SELECT 'æ' == 'Æ' COLLATE NUNICODE == 0
 SELECT 'æ' == 'Æ' COLLATE NOCASE
 SELECT 'ß' == 'SS' COLLATE NUNICODE == 0
 SELECT 'ß' == 'SS' COLLATE NOCASE
+SELECT 'ß' == 'ss' COLLATE NOCASE
 
 SELECT upper('Maße') == 'MASSE' /* casemapping */
 SELECT lower('Maße') == 'maße'
