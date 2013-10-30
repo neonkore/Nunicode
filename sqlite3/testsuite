@@ -9,6 +9,6 @@ while read -r SQL; do
 		continue
 	fi
 
-	ESCAPED_SQL=$(echo $SQL | sed -r "s|'|''|g")
+	ESCAPED_SQL=$(echo "$SQL" | sed -r "s|'|''|g")
 	echo "SELECT '$ESCAPED_SQL: ' || (CASE WHEN ($SQL) THEN 'OK' ELSE 'FAILED' END);"
 done

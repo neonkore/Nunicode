@@ -228,21 +228,70 @@ static char* _nunicode_casing(const char *encoded, nu_casemapping_t casemap,
 	uint32_t fast_buffer[FAST_BUFFER_SIZE];
 	uint32_t *unicode_buffer = fast_buffer;
 
-	ssize_t unicode_len = nu_strlen(encoded, read);
+	ssize_t unicode_len = 0;
+	const char *p = encoded;
+	while (1) {
+		uint32_t u;
+		p = read(p, &u);
+
+		if (u == 0) {
+			break;
+		}
+
+		nu_read_iterator_t casemap_read;
+		const char *map = casemap(u, &casemap_read);
+
+		if (map != 0) {
+			uint32_t mu;
+			while (1) {
+				map = casemap_read(map, &mu);
+
+				if (mu == 0) {
+					break;
+				}
+
+				++unicode_len;
+			}
+		}
+		else {
+			++unicode_len;
+		}
+	}
+
 	if (unicode_len >= FAST_BUFFER_SIZE) {
 		unicode_buffer = sqlite3_malloc(sizeof(*unicode_buffer) * (unicode_len + 1));
 	}
 
 	uint32_t u;
 	unsigned i = 0;
-	do {
+	while (1) {
 		encoded = read(encoded, &u);
-		unicode_buffer[i] = casemap(u);
+
+		nu_read_iterator_t casemap_read;
+		const char *map = casemap(u, &casemap_read);
+
+		if (map != 0) {
+			uint32_t mu;
+			while (1) {
+				map = casemap_read(map, &mu);
+
+				if (mu == 0) {
+					break;
+				}
+
+				unicode_buffer[i] = mu;
+				++i;
+			}
+		}
+		else {
+			unicode_buffer[i] = u;
+			++i;
+		}
 
 		if (u == 0) {
 			break;
 		}
-	} while (++i);
+	}
 
 	ssize_t reencoded_len = nu_bytelen(unicode_buffer, write);
 	char *reencoded = sqlite3_malloc(reencoded_len + 1);

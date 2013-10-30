@@ -25,7 +25,7 @@ $(STATIC_TARGET): $(OBJS)
 $(SHARED_TARGET): $(OBJS)
 	$(CC) $(OBJS) $(LIBNU) -shared -o "$(SHARED_TARGET)" $(SHARED_LDFLAGS)
 
-tests:
+tests: $(STATIC_TARGET)
 	cat tests.sql | ./testsuite | sqlite3 | tee /dev/stderr | (grep "FAILED" && exit 1 || exit 0)
 
 clean:
