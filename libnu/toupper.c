@@ -7,9 +7,8 @@
 
 static const size_t FNV_SIZE = sizeof(FNV) / sizeof(*FNV);
 
-uint32_t nu_toupper(uint32_t codepoint) {
-	uint32_t ret = to_something(codepoint, FNV, FNV_SIZE, VALUES);
-	return (ret == 0 ? codepoint : ret);
+const char* nu_toupper(uint32_t codepoint, nu_read_iterator_t *read) {
+	return to_something(codepoint, read, FNV, FNV_SIZE, VALUES);
 }
 
 #endif /* NU_WITH_TOUPPER */

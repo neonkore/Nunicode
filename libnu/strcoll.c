@@ -7,13 +7,34 @@
 
 #if (defined NU_WITH_Z_COLLATION) || (defined NU_WITH_N_COLLATION)
 
-static uint32_t casemap_nop(uint32_t codepoint) {
-	return codepoint;
+static const char* casemap_nop(uint32_t codepoint, nu_read_iterator_t *it) {
+	(void)(codepoint);
+	(void)(it);
+	return 0;
 }
 
-static inline int _nu_uint32cmp(uint32_t u1, uint32_t u2, nu_casemapping_t casemap) {
-	uint32_t cu1 = casemap(u1);
-	uint32_t cu2 = casemap(u2);
+static inline int _nu_uint32cmp(uint32_t u1, uint32_t u2, nu_casemapping_t casemap) {	
+	nu_read_iterator_t casemap_read = 0;
+	const char *u1_mapping = casemap(u1, &casemap_read);
+	const char *u2_mapping = casemap(u2, &casemap_read);
+
+	/* normally case mapping might return more than one character
+	 * but all strings partipiating in collation are required to be
+	 * decomposed, that is Æ transforms into A + E casemapped into
+	 * a + e, ß transmorms into s + s and casemapped into S + S.
+	 *
+	 * Therefore it is only necessary to read first character from
+	 * casemapped value*/
+
+	uint32_t cu1 = u1, cu2 = u2;
+
+	if (u1_mapping != 0) {
+		casemap_read(u1_mapping, &cu1);
+	}
+
+	if (u2_mapping != 0) {
+		casemap_read(u2_mapping, &cu2);
+	}
 
 	if (cu1 < cu2) {
 		return -1;
@@ -396,7 +417,7 @@ const char* nu_strchr(const char *encoded, uint32_t c, nu_read_iterator_t read) 
 
 const char* nu_strcasechr(const char *encoded, uint32_t c, nu_read_iterator_t read) {
 	return _nu_strchr(encoded, NU_UNLIMITED, c, read,
-		nu_toupper, nu_decompose, _nu_uint32cmp);
+		nu_tolower, nu_decompose, _nu_uint32cmp);
 }
 
 int nu_strcoll(const char *s1, const char *s2,
@@ -408,7 +429,7 @@ int nu_strcoll(const char *s1, const char *s2,
 int nu_strcasecoll(const char *s1, const char *s2,
 	nu_read_iterator_t s1_read, nu_read_iterator_t s2_read) {
 	return _nu_strcoll(s1, NU_UNLIMITED, s2, NU_UNLIMITED,
-		s1_read, s2_read, nu_toupper, nu_decompose, _nu_uint32cmp);
+		s1_read, s2_read, nu_tolower, nu_decompose, _nu_uint32cmp);
 }
 
 const char* nu_strstr(const char *haystack, const char *needle,
@@ -422,7 +443,7 @@ const char* nu_strcasestr(const char *haystack, const char *needle,
 	nu_read_iterator_t haystack_read, nu_read_iterator_t needle_read) {
 	return _nu_strstr(haystack, NU_UNLIMITED, needle, NU_UNLIMITED,
 		haystack_read, needle_read,
-		nu_toupper, nu_decompose, _nu_uint32cmp);
+		nu_tolower, nu_decompose, _nu_uint32cmp);
 }
 
 #endif /* NU_WITH_Z_COLLATION */
@@ -436,7 +457,7 @@ const char* nu_strnchr(const char *encoded, size_t max_len, uint32_t c, nu_read_
 
 const char* nu_strcasenchr(const char *encoded, size_t max_len, uint32_t c, nu_read_iterator_t read) {
 	return _nu_strchr(encoded, encoded + max_len, c, read,
-		nu_toupper, nu_decompose, _nu_uint32cmp);
+		nu_tolower, nu_decompose, _nu_uint32cmp);
 }
 
 int nu_strncoll(const char *s1, size_t s1_max_len,
@@ -450,7 +471,7 @@ int nu_strcasencoll(const char *s1, size_t s1_max_len,
 	const char *s2, size_t s2_max_len,
 	nu_read_iterator_t s1_read, nu_read_iterator_t s2_read) {
 	return _nu_strcoll(s1, s1 + s1_max_len, s2, s2 + s2_max_len,
-		s1_read, s2_read, nu_toupper, nu_decompose, _nu_uint32cmp);
+		s1_read, s2_read, nu_tolower, nu_decompose, _nu_uint32cmp);
 }
 
 const char* nu_strnstr(const char *haystack, size_t haystack_max_len,
@@ -468,7 +489,7 @@ const char* nu_strcasenstr(const char *haystack, size_t haystack_max_len,
 	return _nu_strstr(haystack,  haystack + haystack_max_len,
 		needle, needle + needle_max_len,
 		haystack_read, needle_read,
-		nu_toupper, nu_decompose, _nu_uint32cmp);
+		nu_tolower, nu_decompose, _nu_uint32cmp);
 }
 
 #endif /* NU_WITH_N_COLLATION */

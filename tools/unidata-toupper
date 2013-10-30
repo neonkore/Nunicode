@@ -18,4 +18,4 @@ for line in sys.stdin:
 	d[unidata_strip(codepoint)] = unidata_split(upper)
 
 for codepoint, replacement in sorted(d.iteritems()):
-	print '%08X %s' % (int(codepoint, base=16), ','.join(replacement))
+	print '%06X %s' % (int(codepoint, base=16), ','.join(replacement))
