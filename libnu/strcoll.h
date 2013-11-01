@@ -3,6 +3,15 @@
 
 /** @defgroup collation Collation functions
  *
+ * All functions in this group are following full Unicode collation rules,
+ * i.e. nu_strstr(haystack, "Æ") will find "AE" in haystack and
+ * nu_strstr(haystack, "ß") will find "ss".
+ *
+ * Same applies for *every* function, nu_strchr(str, 0x00DF), as you would
+ * guess, will also find "ss" in str.
+ *
+ * Please expect this.
+ *
  * Note on "n" functions variant: those are not for memory overrun control.
  * They are just for strings not having terminating 0 byte and those
  * functions won't go further than m-th *character* in string, not byte.
@@ -99,7 +108,8 @@ const char* nu_strcasestr(const char *haystack, const char *needle,
  * @see nu_strchr
  */
 NU_EXPORT
-const char* nu_strnchr(const char *encoded, size_t max_len, uint32_t c, nu_read_iterator_t read);
+const char* nu_strnchr(const char *encoded, size_t max_len, uint32_t c,
+	nu_read_iterator_t read);
 
 /** Locate character in string ignoring case
  *
@@ -107,7 +117,8 @@ const char* nu_strnchr(const char *encoded, size_t max_len, uint32_t c, nu_read_
  * @see nu_strcasechr
  */
 NU_EXPORT
-const char* nu_strcasenchr(const char *encoded, size_t max_len, uint32_t c, nu_read_iterator_t read);
+const char* nu_strcasenchr(const char *encoded, size_t max_len, uint32_t c,
+	nu_read_iterator_t read);
 
 /** Compare characters in case ignoring case. It will also apply character
  * decomposition.

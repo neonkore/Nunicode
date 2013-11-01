@@ -57,7 +57,8 @@ typedef char* (*nu_write_iterator_t)(uint32_t unicode, char *encoded);
  * @see nu_strnlen
  */
 NU_EXPORT
-ssize_t nu_strlen(const char *encoded, nu_read_iterator_t it);
+ssize_t nu_strlen(const char *encoded,
+	nu_read_iterator_t it);
 
 /** Get encoded string bytes length (encoding variant)
  *
@@ -69,7 +70,8 @@ ssize_t nu_strlen(const char *encoded, nu_read_iterator_t it);
  * @see nu_bytenlen
  */
 NU_EXPORT
-ssize_t nu_bytelen(const uint32_t *unicode, nu_write_iterator_t it);
+ssize_t nu_bytelen(const uint32_t *unicode,
+	nu_write_iterator_t it);
 
 /** Get encoded string bytes length
  *
@@ -79,7 +81,8 @@ ssize_t nu_bytelen(const uint32_t *unicode, nu_write_iterator_t it);
  * @return string length or negative error
  */
 NU_EXPORT
-ssize_t nu_strbytelen(const char *encoded, nu_read_iterator_t it);
+ssize_t nu_strbytelen(const char *encoded,
+	nu_read_iterator_t it);
 
 #endif /* NU_WITH_Z_STRINGS */
 
@@ -91,7 +94,8 @@ ssize_t nu_strbytelen(const char *encoded, nu_read_iterator_t it);
  * @see nu_strlen
  */
 NU_EXPORT
-ssize_t nu_strnlen(const char *encoded, size_t max_len, nu_read_iterator_t it);
+ssize_t nu_strnlen(const char *encoded, size_t max_len,
+	nu_read_iterator_t it);
 
 /** Get length of encoded string
  *
@@ -99,7 +103,8 @@ ssize_t nu_strnlen(const char *encoded, size_t max_len, nu_read_iterator_t it);
  * @see nu_bytelen
  */
 NU_EXPORT
-ssize_t nu_bytenlen(const uint32_t *unicode, size_t max_len, nu_write_iterator_t it);
+ssize_t nu_bytenlen(const uint32_t *unicode, size_t max_len,
+	nu_write_iterator_t it);
 
 #endif /* NU_WITH_N_STRINGS */
 

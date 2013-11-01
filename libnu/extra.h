@@ -33,7 +33,8 @@ extern "C" {
  * @see nu_utf8_strlen
  * @see nu_readnstr
  */
-int nu_readstr(const char *encoded, uint32_t *unicode, nu_read_iterator_t it);
+int nu_readstr(const char *encoded, uint32_t *unicode,
+	nu_read_iterator_t it);
 
 /** Write 0-terminated string
  *
@@ -48,7 +49,8 @@ int nu_readstr(const char *encoded, uint32_t *unicode, nu_read_iterator_t it);
  * @see nu_utf8_bytelen
  * @see nu_writenstr
  */
-int nu_writestr(const uint32_t *unicode, char *encoded, nu_write_iterator_t it);
+int nu_writestr(const uint32_t *unicode, char *encoded,
+	nu_write_iterator_t it);
 
 /** Recode string
  *
@@ -65,7 +67,8 @@ int nu_writestr(const uint32_t *unicode, char *encoded, nu_write_iterator_t it);
  * @see nu_utf8_write
  * @see nu_transformnstr
  */
-int nu_transformstr(const char *source, char *dest, nu_read_iterator_t read_it, nu_write_iterator_t write_it);
+int nu_transformstr(const char *source, char *dest,
+	nu_read_iterator_t read_it, nu_write_iterator_t write_it);
 
 #endif /* NU_WITH_Z_EXTRA */
 
@@ -77,7 +80,8 @@ int nu_transformstr(const char *source, char *dest, nu_read_iterator_t read_it, 
  * @see nu_readstr
  */
 NU_EXPORT
-int nu_readnstr(const char *encoded, size_t max_len, uint32_t *unicode, nu_read_iterator_t it);
+int nu_readnstr(const char *encoded, size_t max_len, uint32_t *unicode,
+	nu_read_iterator_t it);
 
 /** Write encoded string
  *
@@ -85,7 +89,8 @@ int nu_readnstr(const char *encoded, size_t max_len, uint32_t *unicode, nu_read_
  * @see nu_writestr
  */
 NU_EXPORT
-int nu_writenstr(const uint32_t *unicode, size_t max_len, char *encoded, nu_write_iterator_t it);
+int nu_writenstr(const uint32_t *unicode, size_t max_len, char *encoded,
+	nu_write_iterator_t it);
 
 /** Recode string
  *
@@ -93,7 +98,8 @@ int nu_writenstr(const uint32_t *unicode, size_t max_len, char *encoded, nu_writ
  * @see nu_transformstr
  */
 NU_EXPORT
-int nu_transformnstr(const char *source, size_t max_len, char *dest, nu_read_iterator_t read_it, nu_write_iterator_t write_it);
+int nu_transformnstr(const char *source, size_t max_len, char *dest,
+	nu_read_iterator_t read_it, nu_write_iterator_t write_it);
 
 #endif /* NU_WITH_N_EXTRA */
 
