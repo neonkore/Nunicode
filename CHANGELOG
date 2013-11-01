@@ -1,6 +1,6 @@
 1.1
 
-[+] encoded strings verification
+[+] strings encoding validation
 [+] nu_strbytelen
 [+] nu_strcoll
 [+] nu_strchr redone for collation

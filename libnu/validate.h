@@ -29,6 +29,11 @@ typedef int (*nu_validread_iterator_t)(const char *p, size_t max_len);
  * or so. Returned pointer is to provide you with means to deal with
  * invalid character.
  *
+ * Also note that this is encoding validation, not Unicode strings
+ * validation. That is, it might check that UTF-8 string is encoded
+ * properly with nu_utf8_validread, but it WON'T do full decoding and
+ * check that UTF-16 reserved characters are not in the strings.
+ *
  * @ingroup validation
  * @param encoded encoded string
  * @param max_len length of the buffer, nu_validate() won't go further

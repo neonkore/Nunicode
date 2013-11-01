@@ -8,7 +8,7 @@ What it can do:
 
 * Decode UTF strings into Unicode characters
 * Encode Unicode characters into UTF string
-* Validate UTF strings
+* UTF strings encoding validation
 * Collate strings (Latin, Cyrillic scripts)
 * Case map characters
 
@@ -16,7 +16,7 @@ What it *CAN'T* do:
 
 * UCA
 * Unicode normal forms
-* Collation tailoring
+* Collation tailoring (yet)
 
 Encodings supported ATM:
 

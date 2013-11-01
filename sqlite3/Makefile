@@ -1,14 +1,14 @@
 STATIC_TARGET = libnusqlite3.a
 SHARED_TARGET = libnusqlite3.so
-LIBNU         = ../libnu.a
+LIBNU         ?= 
 GIT_REVISION  = $$(expr substr $$(git rev-parse HEAD) 1 8)
 
 OBJS = nu.o \
 
 BUILD_OPTIONS = -DNU_WITH_EVERYTHING
 
-CFLAGS = -fPIC -Wall -Wextra -Werror -std=c99 -pedantic -Os $(BUILD_OPTIONS)
-SHARED_LDFLAGS = -s
+CFLAGS ?= -fPIC -Wall -Wextra -Werror -std=c99 -pedantic -Os $(BUILD_OPTIONS)
+SHARED_LDFLAGS ?= -s
 
 default: clean version $(STATIC_TARGET) $(SHARED_TARGET)
 all: default

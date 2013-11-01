@@ -54,11 +54,11 @@ TESTS_OBJS = tests/casemap_test.o \
              tests/utf8_test.o \
              tests/main.o
 
-BUILD_OPTIONS = -DNU_WITH_EVERYTHING
+BUILD_OPTIONS ?= -DNU_WITH_EVERYTHING
 
-CFLAGS += -fPIC -Wall -Wextra -Werror -std=c99 -pedantic -Os $(BUILD_OPTIONS)
-LDFLAGS +=
-SHARED_LDFLAGS = $(LDFLAGS) -s
+CFLAGS ?= -fPIC -Wall -Wextra -Werror -std=c99 -pedantic -Os $(BUILD_OPTIONS)
+LDFLAGS ?=
+SHARED_LDFLAGS ?= $(LDFLAGS) -s
 TESTS_LDFLAGS = $(LDFLAGS)
 SAMPLES_LDFLAGS = $(LDFLAGS) -s
 
