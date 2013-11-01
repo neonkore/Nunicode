@@ -1,5 +1,8 @@
 STATIC_TARGET = libnu.a
 SHARED_TARGET = libnu.so
+W32_SHARED_TARGET = libnu.dll
+W32_IMPLIB    = $(W32_SHARED_TARGET).a
+W32_ZIP       = libnu-$(GIT_REVISION)-w32.zip
 TESTS_TARGET  = tests/test
 UTF8_SAMPLE   = samples/utf8
 UTF16_SAMPLE  = samples/utf16
@@ -56,7 +59,8 @@ TESTS_OBJS = tests/casemap_test.o \
 
 BUILD_OPTIONS ?= -DNU_WITH_EVERYTHING
 
-CFLAGS ?= -fPIC -Wall -Wextra -Werror -std=c99 -pedantic -O3 $(BUILD_OPTIONS)
+CFLAGS ?= -fPIC -Wall -Wextra -Werror -std=c99 -pedantic -O3
+CFLAGS += $(BUILD_OPTIONS)
 LDFLAGS ?=
 SHARED_LDFLAGS ?= $(LDFLAGS) -s
 TESTS_LDFLAGS = $(LDFLAGS)
@@ -96,6 +100,11 @@ $(SHARED_TARGET): $(OBJS)
 $(TESTS_TARGET): $(STATIC_TARGET) $(TESTS_OBJS)
 	$(CC) $(TESTS_OBJS) $(STATIC_TARGET) -o $(TESTS_TARGET) $(TESTS_LDFLAGS)
 
+win32:
+	CC=i586-mingw32msvc-cc AR=i586-mingw32msvc-ar CFLAGS="-O3" LDFLAGS="-Wl,--out-implib,$(W32_IMPLIB)" $(MAKE)
+	mv "$(SHARED_TARGET)" "$(W32_SHARED_TARGET)"
+	zip $(W32_ZIP) "$(STATIC_TARGET)" "$(W32_SHARED_TARGET)" "$(W32_IMPLIB)"
+
 tests: $(TESTS_TARGET)
 
 $(UTF8_SAMPLE): samples/utf8.o
@@ -119,6 +128,7 @@ coverage: $(TESTS_TARGET)
 
 clean:
 	rm -f "$(STATIC_TARGET)" "$(SHARED_TARGET)"
+	rm -f "$(W32_SHARED_TARGET)" "$(W32_IMPLIB)" "$(W32_ZIP)"
 	rm -f "$(TESTS_TARGET)"
 	rm -f "$(UTF8_SAMPLE)" "$(UTF16_SAMPLE)" "$(REVR_SAMPLE)" "$(FOLD_SAMPLE)"
 	rm -f *.o libnu/*.o tests/*.o samples/*.o
