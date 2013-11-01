@@ -5,7 +5,7 @@
 int main() {
 	const char *MASSE = "MASSE";
 	const char *Masse = "Maße";
-	printf("nustrnu_strcoll(%s, %s): %d\n",
+	printf("nu_strcoll(%s, %s): %d\n",
 		MASSE, Masse,
 		nu_strcasecoll(MASSE, Masse, nu_utf8_read, nu_utf8_read));
 
