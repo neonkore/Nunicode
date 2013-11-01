@@ -64,7 +64,8 @@ See also "WHY ITS GOOD".
 ## WHY ITS GOOD
 
 * Small size: UTF-8 encoding/decoding - 1.5Kb, UTF-8 encoding/decoding +
-  0-terminated string functions - 3Kb
+  0-terminated string functions - 3Kb; case mapping - 30Kb, full Unicode
+  collation - 55Kb
 * Zero memory footprint
 * Small CPU footprint
 * Endianess-agnostic
