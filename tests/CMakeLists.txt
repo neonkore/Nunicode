@@ -22,5 +22,5 @@ set(TESTS_SRC
 
 include_directories(${CMAKE_SOURCE_DIR})
 
-link_libraries(units nu_static)
+link_libraries(units nu)
 add_executable(units ${TESTS_SRC})

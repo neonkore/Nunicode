@@ -23,18 +23,11 @@ if(CMAKE_COMPILER_IS_GNUCC)
 	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Werror -pedantic -std=c99 -O3")
 endif(CMAKE_COMPILER_IS_GNUCC)
 
-add_library(nu_obj OBJECT ${LIBNU_SRC})
-add_library(nu SHARED $<TARGET_OBJECTS:nu_obj>)
-add_library(nu_static STATIC $<TARGET_OBJECTS:nu_obj>)
-set_target_properties(nu_static PROPERTIES OUTPUT_NAME nu)
-
-if(CMAKE_BUILD_TYPE MATCHES RELEASE)
-	add_dependencies(nu_obj nu_git_version)
-endif(CMAKE_BUILD_TYPE MATCHES RELEASE)
+add_library(nu STATIC ${LIBNU_SRC})
 
 file(GLOB INCLUDES *.h)
 install(FILES ${INCLUDES} DESTINATION include/libnu)
-install(TARGETS nu nu_static 
+install(TARGETS nu 
 	LIBRARY DESTINATION lib
 	ARCHIVE DESTINATION lib
 )
