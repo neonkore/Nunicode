@@ -56,7 +56,7 @@ TESTS_OBJS = tests/casemap_test.o \
 
 BUILD_OPTIONS ?= -DNU_WITH_EVERYTHING
 
-CFLAGS ?= -fPIC -Wall -Wextra -Werror -std=c99 -pedantic -Os $(BUILD_OPTIONS)
+CFLAGS ?= -fPIC -Wall -Wextra -Werror -std=c99 -pedantic -O3 $(BUILD_OPTIONS)
 LDFLAGS ?=
 SHARED_LDFLAGS ?= $(LDFLAGS) -s
 TESTS_LDFLAGS = $(LDFLAGS)

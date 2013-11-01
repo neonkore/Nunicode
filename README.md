@@ -275,6 +275,9 @@ See [downloads][] section. Take versioned file from "Tags" tab.
 
 It will build static and shared libraries.
 
+By default nunicode is compiled with -O3, you can change it to -Os to save
+approximately 8Kb.
+
 ### build variants
 
 * ``make libnu.a`` - static library
