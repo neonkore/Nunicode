@@ -237,12 +237,10 @@ implemented by nunicode ATM.
 
 Decomposition and case mapping are O(1). Internally both using [minimal
 perfect hash][] table for lookup. Hash is [FNV][] which is a little bit
-of bit-wise operations on 32-bits integer and couple of MOD's. Worth
-[reading][].
+of bit-wise operations on 32-bits integer and couple of MOD's.
 
 [minimal perfect hash]: http://iswsa.acm.org/mphf/index.html
 [FNV]: http://isthe.com/chongo/tech/comp/fnv/
-[reading]: http://stevehanov.ca/blog/index.php?id=119
 
 ## ENCODING VALIDATION
 
@@ -271,22 +269,24 @@ See [downloads][] section. Take versioned file from "Tags" tab.
 
 ## BUILD
 
-``make``
+By default nunicode use [CMake][] for building, but you can simply
+compile all required .c with needed build options - see below.
 
-It will build static and shared libraries.
+``mkdir build && cd build && cmake .. && make nu``
 
-By default nunicode is compiled with -O3, you can change it to -Os to save
-approximately 8Kb.
+It will build static library.
 
-### build variants
+By default nunicode is compiled with -O3 (gcc), you can change it to -Os
+to save 4-8Kb. See BUILD for details.
 
-* ``make libnu.a`` - static library
-* ``make libnu.so`` - shared library
+[CMake]: http://www.cmake.org/
 
-You probably don't need those:
+### SQLite3 extension
 
-* ``make tests`` - unittests
-* ``make samples`` - examples
+``make nusqlite3``
+
+It will build shared library libnusqlite3 with nu linked into it
+statically. See BUILD for details.
 
 ### library build options
 
