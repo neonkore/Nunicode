@@ -1,7 +1,5 @@
 cmake_minimum_required (VERSION 2.6) 
-project(nu C)
-
-include("${CMAKE_SOURCE_DIR}/cmake/GitVersion.cmake")
+project(libnu C)
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 set(NU_BUILD_OPTIONS "-DNU_WITH_EVERYTHING")

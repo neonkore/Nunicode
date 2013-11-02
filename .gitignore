@@ -1,7 +1,8 @@
 .settings
-build
+build*
 *.o
 *.a
 *.so
 doc/
 *.pyc
+*.zip
