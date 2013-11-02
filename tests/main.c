@@ -158,11 +158,11 @@ testcase cases[] = {
 };
 
 int main() {
-	size_t i = 0; for (; i < sizeof(cases) / sizeof(*cases); ++i) {
+	unsigned i = 0; for (; i < sizeof(cases) / sizeof(*cases); ++i) {
 		cases[i]();
 		printf(".");
 	}
 
-	printf("\nOK - %d tests\n", i);
+	printf("\nOK - %u tests\n", i);
 	return 0;
 }

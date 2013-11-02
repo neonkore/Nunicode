@@ -9,14 +9,14 @@ int main() {
 	printf(">>> input: %s\n", input);
 
 	ssize_t u_len = nu_strlen(input, nu_utf8_read) + 1; /* for trailing 0 */
-	printf("--- decoded utf8 length: %d\n", u_len - 1);
+	printf("--- decoded utf8 length: %d\n", (int)(u_len - 1));
 
 	uint32_t *decoded = malloc(sizeof(*decoded) * u_len);
 
 	nu_readstr(input, decoded, nu_utf8_read);
 
 	ssize_t u8_len = nu_bytelen(decoded, nu_utf8_write);
-	printf("--- encoded utf8 length: %d\n", u8_len);
+	printf("--- encoded utf8 length: %d\n", (int)(u8_len));
 
 	char *encoded = malloc(sizeof(*encoded) * u8_len + 1);
 	encoded[u8_len] = 0;

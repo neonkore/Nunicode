@@ -10,16 +10,16 @@ int main() {
 		"\x32\x04\x35\x04\x42\x04\x20\x00"
 		"\x3c\x04\x38\x04\x40\x04\x21\x00";
 
-	printf(">>> input: %d bytes\n", sizeof(input));
+	printf(">>> input: %u bytes\n", (unsigned)sizeof(input));
 
 	nu_utf16_bom_t bom = { 0 };
 	const char *encoded = nu_utf16_read_bom(input, &bom);
 
 	ssize_t u_len = nu_strnlen(input, sizeof(input), bom.read);
-	printf("--- decoded utf16 length: %d\n", u_len);
+	printf("--- decoded utf16 length: %d\n", (int)u_len);
 
 	ssize_t u8_len = u_len * 4;
-	printf("--- encoded utf8 max length: %d\n", u8_len);
+	printf("--- encoded utf8 max length: %d\n", (int)u8_len);
 
 	char *utf8 = malloc(u8_len + 1);
 	memset(utf8, 0, u8_len + 1);

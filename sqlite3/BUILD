@@ -1,5 +1,5 @@
 1. Build libnu.a
-2. gcc -I.. -DNU_WITH_EVERYTHING -O3 nu.c libnu.a -o libnusqlite3.so
+2. gcc -I.. -DNU_WITH_EVERYTHING -fPIC -shared -O3 nu.c libnu.a -o libnusqlite3.so
 
 Or
 
