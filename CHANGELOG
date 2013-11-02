@@ -7,6 +7,8 @@
 [+] nu_strstr
 [+] nu_toupper/nu_tolower
 [+] UTF-16HE/UTF-32HE
+[+] sqlite3 extension: COLLATE NOCASE, COLLATE NUNICODE,
+    like(), upper(), lower()
 
 [*] nu_utf16_read_bom() and nu_utf32_read_bom() will
     default encoding to BE if BOM is not present in
