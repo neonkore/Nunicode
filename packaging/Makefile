@@ -14,7 +14,7 @@ version:
 
 win32_zip:
 	mkdir -p $(WIN32_BUILD)
-	(cd $(WIN32_BUILD) && cmake ../.. -DCMAKE_TOOLCHAIN_FILE=../$(WIN32_TOOLCHAIN))
+	(cd $(WIN32_BUILD) && cmake ../.. -DCMAKE_TOOLCHAIN_FILE=../$(WIN32_TOOLCHAIN) -DCMAKE_BUILD_TYPE=RELEASE)
 	(cd $(WIN32_BUILD) && make nu nusqlite3)
 	zip -j $(WIN32_ZIP) $(WIN32_BUILD)/libnu/libnu.a
 	zip -j $(WIN32_SQLITE_ZIP) $(WIN32_BUILD)/sqlite3/libnusqlite3.dll $(WIN32_BUILD)/sqlite3/libnusqlite3.dll.a
