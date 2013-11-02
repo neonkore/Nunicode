@@ -1,6 +1,6 @@
 set(LIBNU_SRC
 	cesu8.c
-	ducet.c
+	decomps.c
 	extra.c
 	strcoll.c
 	strings.c
@@ -19,15 +19,11 @@ set(LIBNU_SRC
 	validate.c
 )
 
-if(CMAKE_COMPILER_IS_GNUCC)
-	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Werror -pedantic -std=c99 -O3")
-endif(CMAKE_COMPILER_IS_GNUCC)
-
 add_library(nu STATIC ${LIBNU_SRC})
 
 file(GLOB INCLUDES *.h)
 install(FILES ${INCLUDES} DESTINATION include/libnu)
-install(TARGETS nu 
+install(TARGETS nu
 	LIBRARY DESTINATION lib
 	ARCHIVE DESTINATION lib
 )

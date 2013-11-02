@@ -1,7 +1,7 @@
 #include <stdint.h>
 
+#include "decomps.h"
 #include "defines.h"
-#include "ducet.h"
 #include "strcoll.h"
 #include "casemap.h"
 
@@ -13,7 +13,7 @@ static const char* casemap_nop(uint32_t codepoint, nu_read_iterator_t *it) {
 	return 0;
 }
 
-static inline int _nu_uint32cmp(uint32_t u1, uint32_t u2, nu_casemapping_t casemap) {	
+static inline int _nu_uint32cmp(uint32_t u1, uint32_t u2, nu_casemapping_t casemap) {
 	nu_read_iterator_t casemap_read = 0;
 	const char *u1_mapping = casemap(u1, &casemap_read);
 	const char *u2_mapping = casemap(u2, &casemap_read);

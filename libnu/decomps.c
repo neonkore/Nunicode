@@ -1,9 +1,9 @@
-#include "ducet.h"
+#include "decomps.h"
 #include "udb.h"
 
 #ifdef NU_WITH_DECOMPOSITION
 
-#include "gen/_ducet.h"
+#include "gen/_decomps.h"
 
 static const size_t FNV_SIZE = sizeof(FNV) / sizeof(*FNV);
 

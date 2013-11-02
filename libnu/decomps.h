@@ -1,5 +1,5 @@
-#ifndef NU_DUCET_H
-#define NU_DUCET_H
+#ifndef NU_DECOMPS_H
+#define NU_DECOMPS_H
 
 /** @defgroup decompose Decompositing
  */
@@ -42,4 +42,4 @@ const char* nu_decompose(uint32_t codepoint, nu_read_iterator_t *it);
 }
 #endif
 
-#endif /* NU_DUCET_H */
+#endif /* NU_DECOMPS_H */

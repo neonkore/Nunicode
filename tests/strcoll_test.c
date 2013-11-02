@@ -182,3 +182,11 @@ void test_strcasenstr() {
 	assert(nu_strcasenstr(input1, 4, "ße", 3, nu_utf8_read, nu_utf8_read) == 0);
 	assert(nu_strcasenstr(input1, 5, "ße", 3, nu_utf8_read, nu_utf8_read) == input1 + 2);
 }
+
+void test_crossencoding_strcoll() {
+	const char *input_utf8 = "Maße";
+	const char *input_utf16be = "\x00\x4D\x00\x61\x00\x73\x00\x73\x00\x65\x00\x00"; /* "Masse" */
+
+	assert(nu_strcoll(input_utf8, input_utf16be, nu_utf8_read, nu_utf16be_read) == 0);
+	assert(nu_strcoll(input_utf16be, input_utf8, nu_utf16be_read, nu_utf8_read) == 0);
+}
