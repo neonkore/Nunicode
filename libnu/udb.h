@@ -27,9 +27,9 @@ typedef struct {
 	/** Original unicode codepoint
 	 */
 	uint32_t codepoint;
-	/** Encoded data associated with codepoint
+	/** Offset in COMBINED associated with codepoint
 	 */
-	const char *data;
+	uint32_t combined_offset;
 } nu_udb_t;
 
 /** Lookup data in UDB
@@ -47,7 +47,7 @@ typedef struct {
  */
 NU_EXPORT
 const char* nu_udb_lookup(uint32_t codepoint, nu_read_iterator_t *it,
-	nu_fnv_table_t *FNV, size_t FNV_SIZE, const nu_udb_t *VALUES);
+	nu_fnv_table_t *FNV, size_t FNV_SIZE, const nu_udb_t *VALUES, const uint8_t *COMBINED);
 
 #endif /* NU_WITH_UDB */
 

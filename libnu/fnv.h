@@ -49,7 +49,7 @@ static inline uint32_t fnv_hash(nu_fnv_table_t *FNV, size_t FNV_SIZE, uint32_t c
 
 /** Lookup value in MPH
  */
-static inline const char* fnv_lookup(const nu_udb_t *V, uint32_t codepoint, uint32_t hash) {
+static inline uint32_t fnv_lookup(const nu_udb_t *V, uint32_t codepoint, uint32_t hash) {
 	const nu_udb_t *r = (V + hash);
 
 	/* due to nature of minimal perfect hash, it will always
@@ -57,7 +57,7 @@ static inline const char* fnv_lookup(const nu_udb_t *V, uint32_t codepoint, uint
 	 * thus nu_udb_t contain original codepoint to check if
 	 * collision occurred */
 
-	return (r->codepoint != codepoint ? 0 : r->data);
+	return (r->codepoint != codepoint ? 0 : r->combined_offset);
 }
 
 #endif /* NU_WITH_UDB */

@@ -8,7 +8,7 @@
 static const size_t FNV_SIZE = sizeof(FNV) / sizeof(*FNV);
 
 const char* nu_decompose(uint32_t codepoint, nu_read_iterator_t *it) {
-	return nu_udb_lookup(codepoint, it, FNV, FNV_SIZE, VALUES);
+	return nu_udb_lookup(codepoint, it, FNV, FNV_SIZE, VALUES, COMBINED);
 }
 
 #endif /* NU_WITH_DECOMPOSITION */
