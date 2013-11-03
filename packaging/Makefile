@@ -1,12 +1,20 @@
-GIT_REVISION=$$(expr substr $$(git rev-parse HEAD) 1 8)
-VERSION="1.1-1:$(GIT_REVISION)"
+GIT_REVISION="$$(expr substr $$(git rev-parse HEAD) 1 8)"
+BUILD="1.1"
+VERSION="$(BUILD)-$(GIT_REVISION)"
+
+I386_BUILD="build_i386"
+I386_BZ="libnusqlite3-$(VERSION)-i386.tar.bz2"
+
+AMD64_BUILD="build_amd64"
+AMD64_TOOLCHAIN="../cmake/Toolchain-Amd64.cmake"
+AMD64_BZ="libnusqlite3-$(VERSION)-amd64.tar.bz2"
+
 WIN32_BUILD="build_mingw32"
 WIN32_TOOLCHAIN="../cmake/Toolchain-Mingw32.cmake"
-WIN32_ZIP="libnu-$(VERSION)-win32.zip"
-WIN32_SQLITE_ZIP="libnusqlite3-$(VERSION)-win32.zip"
+WIN32_ZIP="libnusqlite3-$(VERSION)-win32.zip"
 
 default: all
-all: clean version win32_zip
+all: clean version win32_zip i386_bz amd64_bz
 
 version:
 	echo "#define NU_VERSION \"$(VERSION)\"" >../libnu/version.h
@@ -15,9 +23,22 @@ version:
 win32_zip:
 	mkdir -p $(WIN32_BUILD)
 	(cd $(WIN32_BUILD) && cmake ../.. -DCMAKE_TOOLCHAIN_FILE=../$(WIN32_TOOLCHAIN) -DCMAKE_BUILD_TYPE=RELEASE)
-	(cd $(WIN32_BUILD) && make nu nusqlite3)
-	zip -j $(WIN32_ZIP) $(WIN32_BUILD)/libnu/libnu.a
-	zip -j $(WIN32_SQLITE_ZIP) $(WIN32_BUILD)/sqlite3/libnusqlite3.dll $(WIN32_BUILD)/sqlite3/libnusqlite3.dll.a
+	(cd $(WIN32_BUILD) && make nusqlite3)
+	zip -j $(WIN32_ZIP) $(WIN32_BUILD)/sqlite3/libnusqlite3.dll $(WIN32_BUILD)/sqlite3/libnusqlite3.dll.a
+
+i386_bz:
+	mkdir -p $(I386_BUILD)
+	(cd $(I386_BUILD) && cmake ../.. -DCMAKE_BUILD_TYPE=RELEASE)
+	(cd $(I386_BUILD) && make nusqlite3)
+	tar -cjf "$(I386_BZ)" --directory=$(I386_BUILD)/sqlite3/ libnusqlite3.so
+
+amd64_bz:
+	mkdir -p $(AMD64_BUILD)
+	(cd $(AMD64_BUILD) && cmake ../.. -DCMAKE_TOOLCHAIN_FILE=../$(AMD64_TOOLCHAIN) -DCMAKE_BUILD_TYPE=RELEASE)
+	(cd $(AMD64_BUILD) && make nusqlite3)
+	tar -cjf "$(AMD64_BZ)" --directory=$(AMD64_BUILD)/sqlite3/ libnusqlite3.so
 
 clean:
-	rm -fr $(WIN32_BUILD) $(WIN32_ZIP) $(WIN32_SQLITE_ZIP)
+	rm -fr $(WIN32_BUILD) $(WIN32_ZIP)
+	rm -fr $(I386_BUILD) $(I386_BZ)
+	rm -fr $(AMD64_BUILD) $(AMD64_BZ)
