@@ -253,6 +253,23 @@ Normally you need validation at I/O boundaries only, actually at I
 boundary only, because if ``nu_validate()`` is failing on product of 
 ``nu_*_write()``, then this is bug in nunicode and it's need to be fixed.
 
+## SQLITE3 EXTENSION
+
+It can be compiled into shared library and loaded with 
+``sqlite3_load_extension()`` (see *sqlite3/samples/loadextension.c*) or
+it can be lined statically into your application or library and enabled
+for every new sqlite3 connection.
+
+Latter is recommended way of using it, all you need to do to enable this
+extenstion is the following call:
+
+    :::c
+    nunicode_init(0);
+
+After this point, every connection you open with ``sqlite3_open()`` will
+have nunicode extension enabled. See *sqlite3/samples/autoextension.c*
+for the reference.
+
 ## DOWNLOADS
 
 See [downloads][] section. Take versioned file from "Tags" tab.
@@ -264,7 +281,7 @@ See [downloads][] section. Take versioned file from "Tags" tab.
 * ``src`` - library sources
 * ``samples`` - usage examples
 * ``tests`` - unittests
-* ``Makefile`` - Makefile
+* ``sqlite3`` - SQLite3 extension
 * ``Doxyfile`` - Doxygen configuration file
 
 ## BUILD

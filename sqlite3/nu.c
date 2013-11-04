@@ -4,6 +4,7 @@
 
 #include <libnu/libnu.h>
 
+#include "nu.h"
 #include "version.h"
 
 /** This extension provide functions for the following statements:
@@ -11,7 +12,7 @@
  * - X LIKE Y ESCAPE Z
  * - upper(X)
  * - lower(X)
- * - COLLATE NUNICODE
+ * - COLLATE NUNICODE - case-sensitive Unicode collation
  * - COLLATE NOCASE
  *
  * Suported encodings:
@@ -43,7 +44,7 @@ SQLITE_EXTENSION_INIT1
  * opposed to doing strcmp() on strings by comparing each charater.
  *
  * _nunicode_like exploits the fact that the same approach is
- * implemented in nu_strcasestr() therefore LIKE is a serie of 
+ * implemented in nu_strcasestr() therefore LIKE is a serie of
  * nu_strcasestr() performed on haystack and needles extracted from
  * "%needle%", "needle_needle%needle" and so
  *
@@ -110,7 +111,7 @@ static int _nunicode_like(const char *lhs, const char *rhs, uint32_t escape,
 			p1 = lhs_read(p1, 0); /* otherwise skip skip one character */
 			goto pass;
 		}
-		
+
 		prev_escape = (u == escape ? (p2 - rhs) : 0);
 
 		/* end of needle should match end of haystack
@@ -122,7 +123,7 @@ static int _nunicode_like(const char *lhs, const char *rhs, uint32_t escape,
 		if (needle == 0) {
 			needle = rhs;
 		}
-		
+
 		if (needle != 0) {
 			needle_len += (p2 - rhs);
 		}
@@ -148,7 +149,7 @@ static void _nunicode_sqlite3_like(sqlite3_context *context,
 	const char *lhs = (const char *)sqlite3_value_text(argv[1]);
 	const char *rhs = (const char *)sqlite3_value_text(argv[0]);
 	uint32_t escape = 0;
-	
+
 	if (argc == 3) {
 		if (sqlite3_value_type(argv[2]) != SQLITE_TEXT) {
 			sqlite3_result_int(context, 0);
@@ -169,7 +170,7 @@ static void _nunicode_sqlite3_like(sqlite3_context *context,
 	if (lhs != 0 && rhs != 0) {
 		ret = _nunicode_like(lhs, rhs, escape, it, it);
 	}
-	
+
 	sqlite3_result_int(context, ret);
 }
 
@@ -351,7 +352,7 @@ static char* _nunicode_casing(const char *encoded, nu_casemapping_t casemap,
 
 	ssize_t reencoded_len = nu_bytelen(unicode_buffer, write);
 	char *reencoded = sqlite3_malloc(reencoded_len + 1);
-	
+
 	nu_writestr(unicode_buffer, reencoded, write);
 
 	if (unicode_buffer != fast_buffer) {
@@ -497,9 +498,19 @@ int sqlite3_extension_init(sqlite3 *db, char **err_msg,  const sqlite3_api_routi
 	REGISTER_LOWER(rc, db, SQLITE_UTF16BE, nunicode_sqlite3_lower_utf16be);
 	REGISTER_LOWER(rc, db, SQLITE_UTF16, nunicode_sqlite3_lower_utf16he);
 
-	fprintf(stderr, "nunicode version: %s\n", NU_VERSION);
-	fprintf(stderr, "nunicode unicode: %04d\n", NU_UNICODE_VERSION);
-	fprintf(stderr, "nunicode sqlite3 extension: %s\n", NU_SQLITE3_EXT_VERSION);
-
 	return SQLITE_OK;
 }
+
+#ifndef NU_DYNAMIC_EXTENSION
+
+void nunicode_init(int verbose) {
+	sqlite3_auto_extension((void (*)(void))(sqlite3_extension_init));
+
+	if (verbose != 0) {
+		fprintf(stderr, "nunicode version: %s\n", NU_VERSION);
+		fprintf(stderr, "nunicode unicode: %04d\n", NU_UNICODE_VERSION);
+		fprintf(stderr, "nunicode sqlite3 extension: %s\n", NU_SQLITE3_EXT_VERSION);
+	}
+}
+
+#endif /* NU_DYNAMIC_EXTENSION */
