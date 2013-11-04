@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <sqlite3ext.h>
 
+SQLITE_EXTENSION_INIT1
+
 #include <libnu/libnu.h>
 
 #include "nu.h"
@@ -37,8 +39,6 @@
  * on stack.
  */
 #define FAST_BUFFER_SIZE 4096 /* bytes */
-
-SQLITE_EXTENSION_INIT1
 
 /** This LIKE implementation is intended to do proper collation as
  * opposed to doing strcmp() on strings by comparing each charater.
@@ -463,6 +463,7 @@ static void nunicode_sqlite3_lower_utf16he(sqlite3_context *context, int argc, s
 	(nu_wrapper), 0, 0); \
 	if ((rc) != SQLITE_OK) return rc;
 
+/* FIXME: rename to sqlite3_nunicode_init */
 NU_SQLITE3_EXPORT
 int sqlite3_extension_init(sqlite3 *db, char **err_msg,  const sqlite3_api_routines *api) {
 	(void)(err_msg);
