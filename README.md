@@ -256,8 +256,8 @@ boundary only, because if ``nu_validate()`` is failing on product of
 ## SQLITE3 EXTENSION
 
 It can be compiled into shared library and loaded with 
-``sqlite3_load_extension()`` (see *sqlite3/samples/loadextension.c*) or
-it can be lined statically into your application or library and enabled
+``sqlite3_load_extension()`` ([doc][]) (see *sqlite3/samples/loadextension.c*)
+or it can be lined statically into your application or library and enabled
 for every new sqlite3 connection.
 
 Latter is recommended way of using it, all you need to do to enable this
@@ -269,6 +269,8 @@ extenstion is the following call:
 After this point, every connection you open with ``sqlite3_open()`` will
 have nunicode extension enabled. See *sqlite3/samples/autoextension.c*
 for the reference.
+
+[doc]: http://www.sqlite.org/c3ref/load_extension.html
 
 ## DOWNLOADS
 
