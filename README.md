@@ -264,7 +264,7 @@ Latter is recommended way of using it, all you need to do to enable this
 extenstion is the following call:
 
     :::c
-    nunicode_init(0);
+    nunicode_sqlite3_init(0);
 
 After this point, every connection you open with ``sqlite3_open()`` will
 have nunicode extension enabled. See *sqlite3/samples/autoextension.c*

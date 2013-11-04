@@ -504,7 +504,7 @@ int sqlite3_extension_init(sqlite3 *db, char **err_msg,  const sqlite3_api_routi
 
 #ifndef NU_DYNAMIC_EXTENSION
 
-void nunicode_init(int verbose) {
+void nunicode_sqlite3_init(int verbose) {
 	sqlite3_auto_extension((void (*)(void))(sqlite3_extension_init));
 
 	if (verbose != 0) {

@@ -1,3 +1,10 @@
+1.1.1
+
+[+] fixed amd64 library size issue
+[+] introduced nunicode_sqlite3_init() for SQLite3 autoextension
+
+[*] some SQLite3 samples
+
 1.1
 
 [+] strings encoding validation
