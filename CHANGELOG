@@ -1,3 +1,11 @@
+1.1.2
+
+[+] strrchr (collation)
+[+] strtransformlen (extra)
+
+[*] SQLite3 extension updated with new strtransformlen
+[*] improved documentation
+
 1.1.1
 
 [+] fixed amd64 library size issue
@@ -8,11 +16,11 @@
 1.1
 
 [+] strings encoding validation
-[+] nu_strbytelen
-[+] nu_strcoll
-[+] nu_strchr redone for collation
-[+] nu_strstr
-[+] nu_toupper/nu_tolower
+[+] nu_strbytelen (strings)
+[+] nu_strcoll (collation)
+[+] nu_strchr redone for (collation)
+[+] nu_strstr (collation)
+[+] nu_toupper/nu_tolower (collation)
 [+] UTF-16HE/UTF-32HE
 [+] sqlite3 extension: COLLATE NOCASE, COLLATE NUNICODE,
     like(), upper(), lower()
@@ -23,7 +31,7 @@
 
 1.0
 
-[-] removed strrchr
+[-] removed strrchr (strings)
 
 0.9
 
