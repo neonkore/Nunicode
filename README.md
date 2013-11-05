@@ -270,6 +270,11 @@ After this point, every connection you open with ``sqlite3_open()`` will
 have nunicode extension enabled. See *sqlite3/samples/autoextension.c*
 for the reference.
 
+To load SQLite3 extension dynamically:
+
+    :::c
+    sqlite3_load_extension(db, "libnusqlite3.so", "sqlite3_nunicode_init", 0);
+
 [doc]: http://www.sqlite.org/c3ref/load_extension.html
 
 ## DOWNLOADS

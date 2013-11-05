@@ -41,7 +41,7 @@ SQLITE_EXTENSION_INIT1
 #define FAST_BUFFER_SIZE 4096 /* bytes */
 
 /** This LIKE implementation is intended to do proper collation as
- * opposed to doing strcmp() on strings by comparing each charater.
+ * opposed to doing strcmp() on strings by comparing each character.
  *
  * _nunicode_like exploits the fact that the same approach is
  * implemented in nu_strcasestr() therefore LIKE is a serie of
@@ -231,7 +231,7 @@ static int nunicode_sqlite3_collate_utf16he(void *context, int s1_len, const voi
  * while nunicode support different encodings for s1 and s2, same encoding is
  * used in SQLite extension.
  *
- * Internall, folding method is nu_tolower()
+ * Internally, folding method is nu_tolower()
  *
  * @see _nunicode_collate
  * @see nu_tolower
@@ -465,7 +465,7 @@ static void nunicode_sqlite3_lower_utf16he(sqlite3_context *context, int argc, s
 
 /* FIXME: rename to sqlite3_nunicode_init */
 NU_SQLITE3_EXPORT
-int sqlite3_extension_init(sqlite3 *db, char **err_msg,  const sqlite3_api_routines *api) {
+int sqlite3_nunicode_init(sqlite3 *db, char **err_msg,  const sqlite3_api_routines *api) {
 	(void)(err_msg);
 
 	SQLITE_EXTENSION_INIT2(api);
@@ -500,6 +500,11 @@ int sqlite3_extension_init(sqlite3 *db, char **err_msg,  const sqlite3_api_routi
 	REGISTER_LOWER(rc, db, SQLITE_UTF16, nunicode_sqlite3_lower_utf16he);
 
 	return SQLITE_OK;
+}
+
+NU_SQLITE3_EXPORT
+int sqlite3_extension_init(sqlite3 *db, char **err_msg,  const sqlite3_api_routines *api) {
+	return sqlite3_nunicode_init(db, err_msg, api);
 }
 
 #ifndef NU_DYNAMIC_EXTENSION
