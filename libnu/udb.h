@@ -43,11 +43,13 @@ typedef struct {
  * @param FNV first MPH table
  * @param FNV_SIZE first table number of elements (original MPH set size)
  * @param VALUES second MPH table
+ * @param COMBINED joined values addressed by index stored in VALUES
  * @return looked up data or 0
  */
 NU_EXPORT
 const char* nu_udb_lookup(uint32_t codepoint, nu_read_iterator_t *it,
-	nu_fnv_table_t *FNV, size_t FNV_SIZE, const nu_udb_t *VALUES, const uint8_t *COMBINED);
+	nu_fnv_table_t *FNV, size_t FNV_SIZE, const nu_udb_t *VALUES,
+	const uint8_t *COMBINED);
 
 #endif /* NU_WITH_UDB */
 

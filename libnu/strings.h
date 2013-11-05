@@ -97,8 +97,7 @@ ssize_t nu_strbytelen(const char *encoded,
 
 #ifdef NU_WITH_N_STRINGS
 
-/** Get character length of string without terminating 0
- *
+/**
  * @ingroup strings
  * @see nu_strlen
  */
@@ -106,8 +105,7 @@ NU_EXPORT
 ssize_t nu_strnlen(const char *encoded, size_t max_len,
 	nu_read_iterator_t it);
 
-/** Get length of encoded string
- *
+/**
  * @ingroup strings
  * @see nu_bytelen
  */

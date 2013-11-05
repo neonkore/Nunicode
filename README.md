@@ -251,13 +251,13 @@ function won't fully decode string, but will run tests instead.
 
 Normally you need validation at I/O boundaries only, actually at I
 boundary only, because if ``nu_validate()`` is failing on product of 
-``nu_*_write()``, then this is bug in nunicode and it's need to be fixed.
+``nu_*_write()``, then this is bug in nunicode and it need to be fixed.
 
 ## SQLITE3 EXTENSION
 
 It can be compiled into shared library and loaded with 
 ``sqlite3_load_extension()`` ([doc][]) (see *sqlite3/samples/loadextension.c*)
-or it can be lined statically into your application or library and enabled
+or it can be linked statically into your application or library and enabled
 for every new sqlite3 connection.
 
 Latter is recommended way of using it, all you need to do to enable this

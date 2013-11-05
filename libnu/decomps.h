@@ -25,6 +25,7 @@ typedef nu_transformation_t nu_decompositor_t;
  * no superscript or subscript transformation. It is used only for strings
  * collation.
  *
+ * @ingroup decompose
  * @param codepoint unicode codepoint
  * @param it read function to fetch decomposed codepoints
  * @return encoded decomposed codepoints
