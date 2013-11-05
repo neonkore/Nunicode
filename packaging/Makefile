@@ -13,6 +13,8 @@ WIN32_BUILD="build_mingw32"
 WIN32_TOOLCHAIN="../cmake/Toolchain-Mingw32.cmake"
 WIN32_ZIP="libnusqlite3-$(VERSION)-win32.zip"
 
+DOC_ZIP="libnu-$(VERSION)-doxygen-doc.zip"
+
 default: all
 all: clean version win32_zip i386_bz amd64_bz
 
@@ -38,7 +40,12 @@ amd64_bz:
 	(cd $(AMD64_BUILD) && make nusqlite3)
 	tar -cjf "$(AMD64_BZ)" --directory=$(AMD64_BUILD)/sqlite3/ libnusqlite3.so
 
+doc_zip:
+	(cd .. && doxygen)
+	(cd ../doc && mv html libnu-$(VERSION) && zip -r ../packaging/$(DOC_ZIP) .)
+
 clean:
 	rm -fr $(WIN32_BUILD) $(WIN32_ZIP)
 	rm -fr $(I386_BUILD) $(I386_BZ)
 	rm -fr $(AMD64_BUILD) $(AMD64_BZ)
+	rm -fr ../doc/ $(DOC_ZIP)

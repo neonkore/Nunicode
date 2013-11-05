@@ -106,12 +106,6 @@ See also "WHY ITS GOOD".
     nu_transformnstr((const char *)input, sizeof(input), output, 
         nu_cesu8_read, nu_utf8_write);
 
-## DOCUMENTATION
-
-``doxygen``
-
-It will produce ``doc/html`` with Doxygen documentation in browesable HTML.
-
 ## UTF-8, UTF-16 AND UTF-32
 
 According to Unicode specification UTF-8 might contain byte order mark
@@ -276,6 +270,15 @@ To load SQLite3 extension dynamically:
     sqlite3_load_extension(db, "libnusqlite3.so", "sqlite3_nunicode_init", 0);
 
 [doc]: http://www.sqlite.org/c3ref/load_extension.html
+
+## DOCUMENTATION
+
+Take a look into [downloads][] section, there should be latest doc available
+for download. You can also build documentation from sources by executing
+
+``doxygen``
+
+It will produce ``doc/html`` with Doxygen documentation in browesable HTML.
 
 ## DOWNLOADS
 
