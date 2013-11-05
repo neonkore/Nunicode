@@ -46,6 +46,8 @@ void test_writestr();
 void test_writenstr();
 void test_transformstr();
 void test_transformnstr();
+void test_strtransformlen();
+void test_strtransformnlen();
 void test_validation_utf8();
 void test_validation_cesu8();
 void test_validation_utf16be();
@@ -123,10 +125,11 @@ testcase cases[] = {
 	test_readstr,
 	test_writestr,
 	test_transformstr,
-
+	test_strtransformlen,
 	test_readnstr,
 	test_writenstr,
 	test_transformnstr,
+	test_strtransformnlen,
 
 	test_validation_utf8,
 	test_validation_cesu8,

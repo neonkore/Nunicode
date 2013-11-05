@@ -75,3 +75,15 @@ void test_transformnstr() {
 	assert(output[3] != 0);
 	assert(output[4] != 0); /* transform stopped on trailing 0 */
 }
+
+void test_strtransformlen() {
+	assert(nu_strtransformlen("Masse", nu_utf8_read, nu_decompose) == 5);
+	assert(nu_strtransformlen("Maße", nu_utf8_read, nu_decompose) == 5);
+}
+
+void test_strtransformnlen() {
+	/* "Maße" - 5 bytes, "Masse" - 5 characters */
+	assert(nu_strtransformnlen("Maße", 5, nu_utf8_read, nu_decompose) == 5);
+	assert(nu_strtransformnlen("Maße", 2, nu_utf8_read, nu_decompose) == 2);
+	assert(nu_strtransformnlen("Maße", 3, nu_utf8_read, nu_decompose) == 4);
+}

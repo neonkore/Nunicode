@@ -11,15 +11,7 @@
 extern "C" {
 #endif
 
-/** Case mapping function, it takes codepoint and return
- * case mapped value along with mapped value reading function.
- *
- * Note that mapped value might contain more than one character.
- *
- * @ingroup collation
- * @see nu_tolower
- */
-typedef const char* (*nu_casemapping_t)(uint32_t codepoint, nu_read_iterator_t *read);
+typedef nu_transformation_t nu_casemapping_t;
 
 #ifdef NU_WITH_TOUPPER
 

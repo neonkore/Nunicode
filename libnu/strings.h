@@ -38,6 +38,15 @@ typedef const char* (*nu_read_iterator_t)(const char *encoded, uint32_t *unicode
  */
 typedef const char* (*nu_revread_iterator_t)(uint32_t *unicode, const char *encoded);
 
+/** Transform codepoint
+ *
+ * @ingroup decompose
+ * @see nu_decompose
+ * @see nu_toupper
+ * @see nu_tolower
+ */
+typedef const char* (*nu_transformation_t)(uint32_t codepoint, nu_read_iterator_t *it);
+
 /** Write (encode) iterator
  *
  * @ingroup iterators

@@ -285,35 +285,7 @@ static char* _nunicode_casing(const char *encoded, nu_casemapping_t casemap,
 	uint32_t fast_buffer[FAST_BUFFER_SIZE];
 	uint32_t *unicode_buffer = fast_buffer;
 
-	ssize_t unicode_len = 0;
-	const char *p = encoded;
-	while (1) {
-		uint32_t u;
-		p = read(p, &u);
-
-		if (u == 0) {
-			break;
-		}
-
-		nu_read_iterator_t casemap_read;
-		const char *map = casemap(u, &casemap_read);
-
-		if (map != 0) {
-			uint32_t mu;
-			while (1) {
-				map = casemap_read(map, &mu);
-
-				if (mu == 0) {
-					break;
-				}
-
-				++unicode_len;
-			}
-		}
-		else {
-			++unicode_len;
-		}
-	}
+	ssize_t unicode_len = nu_strtransformlen(encoded, read, casemap);
 
 	if (unicode_len >= FAST_BUFFER_SIZE - 1) {
 		unicode_buffer = sqlite3_malloc(sizeof(*unicode_buffer) * (unicode_len + 1));

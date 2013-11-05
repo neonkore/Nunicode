@@ -13,12 +13,7 @@
 extern "C" {
 #endif
 
-/** Decompose codepoint
- *
- * @ingroup decompose
- * @see nu_decompose
- */
-typedef const char* (*nu_decompositor_t)(uint32_t codepoint, nu_read_iterator_t *it);
+typedef nu_transformation_t nu_decompositor_t;
 
 #ifdef NU_WITH_DECOMPOSITION
 
