@@ -59,14 +59,18 @@ void test_udb_lookup();
 void test_ducet();
 void test_toupper();
 void test_tolower();
-void test_strcoll();
-void test_strncoll();
-void test_strcasecoll();
-void test_strcasencoll();
 void test_strchr();
 void test_strnchr();
 void test_strcasechr();
 void test_strcasenchr();
+void test_strrchr();
+void test_strrnchr();
+void test_strrcasechr();
+void test_strrcasenchr();
+void test_strcoll();
+void test_strncoll();
+void test_strcasecoll();
+void test_strcasencoll();
 void test_strstr();
 void test_strnstr();
 void test_strcasestr();
@@ -148,6 +152,10 @@ testcase cases[] = {
 	test_strnchr,
 	test_strcasechr,
 	test_strcasenchr,
+	test_strrchr,
+	test_strrnchr,
+	test_strrcasechr,
+	test_strrcasenchr,
 	test_strcoll,
 	test_strncoll,
 	test_strcasecoll,

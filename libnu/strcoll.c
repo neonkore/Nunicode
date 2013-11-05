@@ -275,6 +275,32 @@ static const char* _nu_strchr(const char *lhs, const char *lhs_limit, uint32_t u
 	return 0;
 }
 
+static const char* _nu_strrchr(const char *encoded, const char *limit, uint32_t c,
+	nu_read_iterator_t read,
+	nu_casemapping_t casemap, nu_decompositor_t decompose, nu_codepointcmp_t compare) {
+
+	/* there is probably not a lot of sense to find string end by decoding it
+	 * and then reverse read string again, therefore this is serie
+	 * of _nu_strchr() */
+
+	const char *p = encoded;
+	const char *last = 0;
+
+	while (p < limit) {
+		p = _nu_strchr(p, limit, c, read,
+			casemap, decompose, compare);
+
+		if (p == 0) {
+			return last;
+		}
+
+		last = p;
+		p = read(p, 0); /* skip one character and continue */
+	}
+
+	return last;
+}
+
 static int _nu_collate(const char *lhs, const char *lhs_limit,
 	const char *rhs, const char *rhs_limit,
 	nu_read_iterator_t it1, nu_read_iterator_t it2,
@@ -420,6 +446,16 @@ const char* nu_strcasechr(const char *encoded, uint32_t c, nu_read_iterator_t re
 		nu_tolower, nu_decompose, _nu_uint32cmp);
 }
 
+const char* nu_strrchr(const char *encoded, uint32_t c, nu_read_iterator_t read) {
+	return _nu_strrchr(encoded, NU_UNLIMITED, c, read,
+		casemap_nop, nu_decompose, _nu_uint32cmp);
+}
+
+const char* nu_strrcasechr(const char *encoded, uint32_t c, nu_read_iterator_t read) {
+	return _nu_strrchr(encoded, NU_UNLIMITED, c, read,
+		nu_tolower, nu_decompose, _nu_uint32cmp);
+}
+
 int nu_strcoll(const char *s1, const char *s2,
 	nu_read_iterator_t s1_read, nu_read_iterator_t s2_read) {
 	return _nu_strcoll(s1, NU_UNLIMITED, s2, NU_UNLIMITED,
@@ -457,6 +493,17 @@ const char* nu_strnchr(const char *encoded, size_t max_len, uint32_t c, nu_read_
 
 const char* nu_strcasenchr(const char *encoded, size_t max_len, uint32_t c, nu_read_iterator_t read) {
 	return _nu_strchr(encoded, encoded + max_len, c, read,
+		nu_tolower, nu_decompose, _nu_uint32cmp);
+}
+
+const char* nu_strrnchr(const char *encoded, size_t max_len, uint32_t c, nu_read_iterator_t read) {
+	return _nu_strrchr(encoded, encoded + max_len, c, read,
+		casemap_nop, nu_decompose, _nu_uint32cmp);
+}
+
+const char* nu_strrcasenchr(const char *encoded, size_t max_len, uint32_t c,
+	nu_read_iterator_t read) {
+	return _nu_strrchr(encoded, encoded + max_len, c, read,
 		nu_tolower, nu_decompose, _nu_uint32cmp);
 }
 
