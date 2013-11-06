@@ -171,7 +171,7 @@ def GenerateValues(G, V):
 def GenerateFNV(G):
 	BOUNDARY = 12
 
-	print 'static const int16_t FNV[] = {'
+	print 'static const int16_t G[] = {'
 	for i, x in enumerate(G):
 		if i % BOUNDARY == 0:
 			sys.stdout.write('\t')

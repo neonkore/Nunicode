@@ -38,13 +38,13 @@ static inline uint32_t fnv(uint32_t hash, uint32_t codepoint) {
 
 /** Get hash value of unicode codepoint
  */
-static inline uint32_t fnv_hash(nu_fnv_table_t *FNV, size_t FNV_SIZE, uint32_t codepoint) {
+static inline uint32_t fnv_hash(nu_fnv_table_t *G, size_t G_SIZE, uint32_t codepoint) {
 	uint32_t hash = fnv(0, codepoint);
-	int16_t offset = FNV[hash % FNV_SIZE];
+	int16_t offset = G[hash % G_SIZE];
 	if (offset < 0) {
 		return (uint32_t)(-offset - 1);
 	}
-	return (fnv(offset, codepoint) % FNV_SIZE);
+	return (fnv(offset, codepoint) % G_SIZE);
 }
 
 /** Lookup value in MPH

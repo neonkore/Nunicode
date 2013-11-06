@@ -5,10 +5,10 @@
 
 #include "gen/_toupper.h"
 
-static const size_t FNV_SIZE = sizeof(FNV) / sizeof(*FNV);
+static const size_t G_SIZE = sizeof(G) / sizeof(*G);
 
 const char* nu_toupper(uint32_t codepoint, nu_read_iterator_t *read) {
-	return to_something(codepoint, read, FNV, FNV_SIZE, VALUES, COMBINED);
+	return to_something(codepoint, read, G, G_SIZE, VALUES, COMBINED);
 }
 
 #endif /* NU_WITH_TOUPPER */

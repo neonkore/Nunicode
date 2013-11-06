@@ -1,7 +1,7 @@
 set(TESTS_SRC
 	casemap_test.c
 	cesu8_test.c
-	ducet_test.c
+	decomps_test.c
 	extra_test.c
 	fnv_test.c
 	main.c

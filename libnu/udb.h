@@ -48,7 +48,7 @@ typedef struct {
  */
 NU_EXPORT
 const char* nu_udb_lookup(uint32_t codepoint, nu_read_iterator_t *it,
-	nu_fnv_table_t *FNV, size_t FNV_SIZE, const nu_udb_t *VALUES,
+	nu_fnv_table_t *G, size_t G_SIZE, const nu_udb_t *VALUES,
 	const uint8_t *COMBINED);
 
 #endif /* NU_WITH_UDB */
