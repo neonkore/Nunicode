@@ -9,8 +9,8 @@ What it can do:
 * Decode UTF strings into Unicode characters
 * Encode Unicode characters into UTF string
 * UTF strings encoding validation
-* Collate strings (Latin, Cyrillic scripts)
-* Case map characters
+* Collate UTF strings (Latin, Cyrillic scripts)
+* Case map Unicode characters
 
 What it *CAN'T* do:
 
@@ -30,9 +30,11 @@ String functions supported for all encodings (works on encoded strings):
 
 * nu\_strlen (nu\_strnlen)
 * nu\_bytelen (nu\_bytenlen)
-* nu\_strbytelen (nu\_strbytenlen)
+* nu\_strbytelen
 * nu\_strchr (nu\_strnchr)
 * nu\_strcasechr (nu\_strcasenchr)
+* nu\_strrchr (nu\_strrnchr)
+* nu\_strrcasechr (nu\_strrcasenchr)
 * nu\_strcoll (nu\_strncoll)
 * nu\_strcasecoll (nu\_strcasencoll)
 * nu\_strstr (nu\_strnstr)
@@ -229,19 +231,25 @@ implemented by nunicode ATM.
 
 ### performance considerations
 
-Decomposition and case mapping are O(1). Internally both using [minimal
-perfect hash][] table for lookup. Hash is [FNV][] which is a little bit
-of bit-wise operations on 32-bits integer and couple of MOD's.
+Decomposition and case mapping are O(1). Internally both use [minimal
+perfect hash][] table for lookup. Hash is [Fowler–Noll–Vo][] which is
+a little bit of bit-wise operations on 32-bits integer and couple of
+MOD's.
 
 [minimal perfect hash]: http://iswsa.acm.org/mphf/index.html
-[FNV]: http://isthe.com/chongo/tech/comp/fnv/
+[Fowler–Noll–Vo]: http://isthe.com/chongo/tech/comp/fnv/
 
 ## ENCODING VALIDATION
 
 All decoding functions has very limited error checking for performance
 reasons. nunicode expect valid UTF strings at input. It though provide
-``nu_validate()`` to check complete string before processing. This
-function won't fully decode string, but will run tests instead.
+``nu_validate()`` to check complete string before processing.
+
+This function perform UTF encoding validation, do not expect it to
+validate decoded Unicode string, or even decode UTF string completely.
+E.g. U+D801 will pass UTF-32 check: it's malformed for UTF-32 because
+this range is reserved for UTF-16, but it's still correctly **encoded**
+UTF-32.
 
 Normally you need validation at I/O boundaries only, actually at I
 boundary only, because if ``nu_validate()`` is failing on product of 
@@ -288,22 +296,22 @@ See [downloads][] section. Take versioned file from "Tags" tab.
 
 ## WHATS INSIDE
 
-* ``src`` - library sources
+* ``libnu`` - library sources
 * ``samples`` - usage examples
 * ``tests`` - unittests
-* ``sqlite3`` - SQLite3 extension
+* ``sqlite3``, ``sqlite3/samples`` - SQLite3 extension and examples
 * ``Doxyfile`` - Doxygen configuration file
 
 ## BUILD
 
 By default nunicode use [CMake][] for building, but you can simply
-compile all required .c with needed build options - see below.
+compile all required ``*.c`` with needed build options - see below.
 
 ``mkdir build && cd build && cmake .. && make nu``
 
 It will build static library.
 
-By default nunicode is compiled with -O3 (gcc), you can change it to -Os
+Normally nunicode is compiled with -O3 (gcc), you can change it to -Os
 to save 4-8Kb. See BUILD for details.
 
 [CMake]: http://www.cmake.org/
