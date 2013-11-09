@@ -236,12 +236,9 @@ is implemented by nunicode ATM.
 ### performance considerations
 
 Decomposition and case mapping are O(1). Internally both use [minimal
-perfect hash][] table for lookup. Hash is [Fowler–Noll–Vo][] which is
-a little bit of bit-wise operations on 32-bits integer and couple of
-MOD's.
+perfect hash][] table for lookup. Hash is a couple of XORs.
 
 [minimal perfect hash]: http://iswsa.acm.org/mphf/index.html
-[Fowler–Noll–Vo]: http://isthe.com/chongo/tech/comp/fnv/
 
 ## ENCODING VALIDATION
 

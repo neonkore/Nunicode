@@ -54,7 +54,7 @@ void test_validation_utf16be();
 void test_validation_utf16he();
 void test_validation_utf16le();
 void test_validation_utf32();
-void test_fnv_lookup();
+void test_mph_lookup();
 void test_udb_lookup();
 void test_ducet();
 void test_toupper();
@@ -142,7 +142,7 @@ testcase cases[] = {
 	test_validation_utf16le,
 	test_validation_utf32,
 
-	test_fnv_lookup,
+	test_mph_lookup,
 	test_udb_lookup,
 	test_ducet,
 	test_toupper,

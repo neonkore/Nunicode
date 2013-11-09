@@ -17,8 +17,7 @@
 import sys
 import time
 
-FNV_OFFSET_BASIS = 0xffffffff
-FNV_PRIME = 0x01000193
+PRIME = 0x01000193
 INTERNAL_ENCODING = "UTF-8"
 
 
@@ -26,21 +25,15 @@ INTERNAL_ENCODING = "UTF-8"
 # integer d results in a different hash value.
 def hash(d, str):
 	if d == 0:
-		d = FNV_PRIME
+		d = PRIME
 
-	# Use the FNV algorithm from http://isthe.com/chongo/tech/comp/fnv/
 	c = int(str, base=16)
-	c1 = c & 0xFF000000
-	c2 = c & 0x00FF0000
-	c3 = c & 0x0000FF00
-	c4 = c & 0x000000FF
 
-	d = (((d * FNV_PRIME) ^ c1) & FNV_OFFSET_BASIS)
-	d = (((d * FNV_PRIME) ^ c2) & FNV_OFFSET_BASIS)
-	d = (((d * FNV_PRIME) ^ c3) & FNV_OFFSET_BASIS)
-	d = (((d * FNV_PRIME) ^ c4) & FNV_OFFSET_BASIS)
+	# It doesn't matter for MPH if it's FVN or not until G
+	# is correctly filled, therefore simple XOR is enough to produce
+	# required randomness while it fits into uint16_t
 
-	return d
+	return d ^ c
 
 
 # Computes a minimal perfect hash table using the given python dictionary. It
@@ -120,15 +113,13 @@ def PerfectHashLookup(G, key):
 def GenerateInfo(G, combined):
 	print '''/*
 %d
-FNV_OFFSET_BASIS: %08X,
-FNV_PRIME: %08X,
-FNV_SIZE: %d,
-COMBINED LENGTH: %d,
+PRIME: %08X,
+G_SIZE: %d,
+COMBINED_LENGTH: %d,
 ENCODING: %s,
 */
 ''' % (time.time(),
-		FNV_OFFSET_BASIS,
-		FNV_PRIME, len(G),
+		PRIME, len(G),
 		len(combined) / 4,
 		INTERNAL_ENCODING)
 
@@ -168,7 +159,7 @@ def GenerateValues(G, V):
 
 
 # Print first hash table
-def GenerateFNV(G):
+def GenerateG(G):
 	BOUNDARY = 12
 
 	print 'static const int16_t G[] = {'
@@ -222,7 +213,7 @@ for i, line in enumerate(sys.stdin):
 assert(len(G) == len(V))
 
 GenerateInfo(G, combined)
-GenerateFNV(G)
+GenerateG(G)
 GenerateValues(G, V)
 GenerateCombined(combined)
 

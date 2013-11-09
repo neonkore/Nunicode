@@ -3,8 +3,8 @@ set(TESTS_SRC
 	cesu8_test.c
 	decomps_test.c
 	extra_test.c
-	fnv_test.c
 	main.c
+	mph_test.c
 	strcoll_test.c
 	strings_test.c
 	udb_test.c

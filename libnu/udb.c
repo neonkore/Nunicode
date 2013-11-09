@@ -1,4 +1,4 @@
-#include "fnv.h"
+#include "mph.h"
 #include "udb.h"
 #include "utf8.h"
 
@@ -9,8 +9,8 @@ static const nu_read_iterator_t udb_decoding_function = nu_utf8_read;
 const char* nu_udb_lookup(uint32_t codepoint, nu_read_iterator_t *it,
 	nu_fnv_table_t *G, size_t G_SIZE, const nu_udb_t *VALUES, const uint8_t *COMBINED) {
 
-	uint32_t hash = fnv_hash(G, G_SIZE, codepoint);
-	uint32_t combined_offset = fnv_lookup(VALUES, codepoint, hash);
+	uint32_t hash = mph_hash(G, G_SIZE, codepoint);
+	uint32_t combined_offset = mph_lookup(VALUES, codepoint, hash);
 
 	if (combined_offset == 0) {
 		return 0;
