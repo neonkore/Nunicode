@@ -1,5 +1,5 @@
 GIT_REVISION="$$(expr substr $$(git rev-parse HEAD) 1 8)"
-BUILD="1.1.1"
+BUILD="1.1.2"
 VERSION="$(BUILD)-$(GIT_REVISION)"
 
 I386_BUILD="build_i386"
@@ -16,7 +16,7 @@ WIN32_ZIP="libnusqlite3-$(VERSION)-win32.zip"
 DOC_ZIP="libnu-$(VERSION)-doxygen-doc.zip"
 
 default: all
-all: clean version win32_zip i386_bz amd64_bz
+all: clean version doc_zip win32_zip i386_bz amd64_bz
 
 version:
 	echo "#define NU_VERSION \"$(VERSION)\"" >../libnu/version.h
