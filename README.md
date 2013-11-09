@@ -15,7 +15,7 @@ Unicode is not only character set, but also specification of different
 script rules. nunicode is trying to follow the spec with reasonable
 constraints to produce small and fast Unicode implementation.
 
-What it *DON'T* do:
+What it *DOESN'T* do:
 
 * UCA
 * Unicode normal forms
