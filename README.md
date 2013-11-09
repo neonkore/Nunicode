@@ -2,17 +2,20 @@
 
 ## WHATS THIS
 
-This is Unicode (6.3.0) library.
+This is i18n library implementing Unicode 6.3.0.
 
 What it can do:
 
 * Decode UTF strings into Unicode characters
 * Encode Unicode characters into UTF string
-* UTF strings encoding validation
-* Collate UTF strings (Latin, Cyrillic scripts)
-* Case map Unicode characters
+* Collate UTF strings (full unicode collation, "Maße" == "Masse")
+* Correctly casemap Unicode characters ("Maße" -> "MASSE")
 
-What it *CAN'T* do:
+Unicode is not only character set, but also specification of different
+script rules. nunicode is trying to follow the spec with reasonable
+constraints to produce small and fast Unicode implementation.
+
+What it *DON'T* do:
 
 * UCA
 * Unicode normal forms
@@ -26,19 +29,9 @@ Encodings supported ATM:
 * UTF-32/UCS-4 (BOM/LE/BE)
 * UTF-16HE/UTF-32HE (see notes)
 
-String functions supported for all encodings (works on encoded strings):
-
-* nu\_strlen (nu\_strnlen)
-* nu\_bytelen (nu\_bytenlen)
-* nu\_strbytelen
-* nu\_strchr (nu\_strnchr)
-* nu\_strcasechr (nu\_strcasenchr)
-* nu\_strrchr (nu\_strrnchr)
-* nu\_strrcasechr (nu\_strrcasenchr)
-* nu\_strcoll (nu\_strncoll)
-* nu\_strcasecoll (nu\_strcasencoll)
-* nu\_strstr (nu\_strnstr)
-* nu\_strcasestr (nu\_strcasenstr)
+All string functions provided by nunicode work on encoded strings (no need
+to decode anything explicitely) and usually come with case-insensitive
+variant.
 
 ## WHY YOU DO ANOTHER UNICODE LIBRARY
 
@@ -75,8 +68,11 @@ See also "WHY ITS GOOD".
 * C99 compliant, -pedantic -Wall -Wextra -Werror
 * No dependencies
 * MIT license
+* 100% awesome
 
 ## EXAMPLES
+
+See samples/ directory for complete examples of nunicode usage.
 
 ### decoding UTF-8 (stream-like)
 
@@ -208,7 +204,7 @@ set of [decompositions][] extracted for UCA. It works this way:
 1. Normally cyrillic "ё" (begin of alphabet) > cyrillic "я" (very end
    of alphabet)
 2. At the same time capital "Ё" < capital "Я"
-3. nunicode decomposes "ё" in "е" + ◌̈ (U+0308)
+3. nunicode decomposes "ё" into "е" + ◌̈ (U+0308)
 4. Capital "Ё", as you would guess, also decomposes into "Е" + ◌̈ (U+0308)
 
 This is called "<sort>" decomposition in UCA. Obviously if you compare
@@ -217,17 +213,25 @@ cyrillic at least).
 
 nunicode do not only implement <sort> decomposition, but also every other
 decomposition type except compatibility decompositions to avoid
-² -> 2 transformation. Hence you can say it somewhat similar to NFD, but
-not to NFKD, and it's also neither of those. It also implement full
-collation when "Masse" is equal to "Maße".
+² -> 2 transformation. Hence you can say it somewhat similar to [NFD][],
+but not to NFKD, and it's also neither of those.
 
-Unicode also descibes several collation tailorings, but neither is
-implemented by nunicode ATM.
+Both collation and case mapping use full decomposition of characters
+(as opposed to simple decomposition) and take into account that each
+Unicode character might grow in size during collation or casemapping.
+
+For instance, "ß" transforms into "SS" inside of ``nu_toupper()`` and
+``nu_strcasecoll("Maße", "MASSE")`` will report equivalence of these
+strings.
+
+Note that Unicode also descibes several collation tailorings, but neither
+is implemented by nunicode ATM.
 
 [UCD]: http://www.unicode.org/ucd/
 [UCA]: http://www.unicode.org/reports/tr10/
 [decompositions]: http://unicode.org/Public/UCA/6.3.0/decomps.txt
 [special casing]: http://unicode.org/Public/6.3.0/ucd/SpecialCasing.txt
+[NFD]: http://unicode.org/reports/tr15/#Norm_Forms
 
 ### performance considerations
 
@@ -258,9 +262,9 @@ boundary only, because if ``nu_validate()`` is failing on product of
 ## SQLITE3 EXTENSION
 
 It can be compiled into shared library and loaded with 
-``sqlite3_load_extension()`` ([doc][]) (see *sqlite3/samples/loadextension.c*)
-or it can be linked statically into your application or library and enabled
-for every new sqlite3 connection.
+``sqlite3_load_extension()`` ([doc][]) (see
+*sqlite3/samples/loadextension.c*) or it can be linked statically into
+your application or library and enabled for every new sqlite3 connection.
 
 Latter is recommended way of using it, all you need to do to enable this
 extenstion is the following call:
