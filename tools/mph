@@ -31,7 +31,11 @@ def hash(d, str):
 
 	# It doesn't matter for MPH if it's FVN or not until G
 	# is correctly filled, therefore simple XOR is enough to produce
-	# required randomness while it fits into uint16_t
+	# required randomness while produced index fits into uint16_t.
+	#
+	# You can consider this as usage of Unicode codepoint as a hash
+	# itself, but it need to depend on d to distibute values between
+	# buckets
 
 	return d ^ c
 

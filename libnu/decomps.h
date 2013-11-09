@@ -30,6 +30,7 @@ typedef nu_transformation_t nu_decompositor_t;
  * @param it read function to fetch decomposed codepoints
  * @return encoded decomposed codepoints
  */
+NU_EXPORT
 const char* nu_decompose(uint32_t codepoint, nu_read_iterator_t *it);
 
 #endif /* NU_WITH_DECOMPOSITION */
