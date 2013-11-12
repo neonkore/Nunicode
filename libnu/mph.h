@@ -3,7 +3,6 @@
 
 /* Intentionally undocumented
  *
- * http://isthe.com/chongo/tech/comp/fnv/
  * http://iswsa.acm.org/mphf/index.html
  */
 

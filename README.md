@@ -357,10 +357,9 @@ UTF-32
 
 * Very same options as for UTF-16, just replace 16 with 32
 
-Strings collation and case mapping
+Strings collation and casemapping
 
-    All collation and case mapping functions options imply
-    -DNU_WITH_UTF8_READER
+    All collation and casemapping functions options imply -DNU_WITH_UTF8_READER
 
     Collation functions also imply -DNU_WITH_UDB
 
