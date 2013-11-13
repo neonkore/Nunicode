@@ -476,13 +476,17 @@ int sqlite3_nunicode_init(sqlite3 *db, char **err_msg,  const sqlite3_api_routin
 
 NU_SQLITE3_EXPORT
 int sqlite3_extension_init(sqlite3 *db, char **err_msg,  const sqlite3_api_routines *api) {
+	fprintf(stderr, "WARNING: sqlite3_extension_init() is deprecated and will be"
+	" removed in future releases so you better hurry and replace it with a call"
+	" to sqlite3_nunicode_init(). Why it so is explained on this page:"
+	" http://www.sqlite.org/loadext.html\n");
 	return sqlite3_nunicode_init(db, err_msg, api);
 }
 
 #ifndef NU_DYNAMIC_EXTENSION
 
 void nunicode_sqlite3_init(int verbose) {
-	sqlite3_auto_extension((void (*)(void))(sqlite3_extension_init));
+	sqlite3_auto_extension((void (*)(void))(sqlite3_nunicode_init));
 
 	if (verbose != 0) {
 		fprintf(stderr, "nunicode version: %s\n", NU_VERSION);

@@ -3,7 +3,7 @@
 [+] nu_strrchr (collation)
 [+] nu_strtransformlen (extra)
 
-[*] SQLite3 extension updated with new strtransformlen
+[*] SQLite3 extension updated with new nu_strtransformlen
 [*] improved documentation
 
 1.1.1
@@ -44,5 +44,5 @@
 [+] CESU-8
 [+] UTF-16
 [+] UTF-32
-[+] strlen, strchr, strrchr
+[+] nu_strlen, nu_strchr, nu_strrchr (strings)
 [+] reverse reading
