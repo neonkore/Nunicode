@@ -19,7 +19,7 @@ static inline int _nu_uint32cmp(uint32_t u1, uint32_t u2, nu_casemapping_t casem
 	const char *u2_mapping = casemap(u2, &casemap_read);
 
 	/* normally case mapping might return more than one character
-	 * but all strings partipiating in collation are required to be
+	 * but all strings participating in collation are required to be
 	 * decomposed, that is Æ transforms into A + E casemapped into
 	 * a + e, ß transmorms into s + s and casemapped into S + S.
 	 *
@@ -423,6 +423,7 @@ static const char* _nu_strstr(const char *haystack, const char *haystack_limit,
 			return h0;
 		}
 
+		/* skip one character in haystack */
 		if (h0 < haystack_limit) {
 			h0 = it1(h0, 0);
 		}

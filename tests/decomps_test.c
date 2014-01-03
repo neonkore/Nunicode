@@ -11,10 +11,6 @@ void test_ducet() {
 	assert(nothing_decomposed == 0);
 	assert(read == 0);
 
-	const char *ss_decomposed = nu_decompose(0x00DF, &read);
-	assert(memcmp(ss_decomposed, "ss", 3) == 0);
-	assert(read != 0);
-
 	const char *yo_decomposed = nu_decompose(0x0451, &read);
 	assert(memcmp(yo_decomposed, "\xD0\xB5\xCC\x88", 5) == 0);
 	assert(read != 0);

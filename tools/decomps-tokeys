@@ -14,7 +14,6 @@ def pass_mapping(mapping):
 		'<medial>',
 		'<final>',
 		'<isolated>',
-		'<sort>',
 	)
 
 	return mapping.strip() in allowed
@@ -22,7 +21,7 @@ def pass_mapping(mapping):
 d = dict()
 
 for line in sys.stdin:
-	if not line or not line.strip() or line[0] == '#':
+	if unidata_comment(line):
 		continue
 
 	tokens = line.split(';')

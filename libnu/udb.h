@@ -32,6 +32,12 @@ typedef struct {
 	uint32_t combined_offset;
 } nu_udb_t;
 
+/** Lookup value in UDB
+ */
+NU_EXPORT
+uint32_t nu_udb_lookup_value(uint32_t codepoint,
+	nu_fnv_table_t *G, size_t G_SIZE, const nu_udb_t *VALUES);
+
 /** Lookup data in UDB
  *
  * Returned data is encoded, therefore you need to use p = it(p, &u) to
@@ -40,8 +46,8 @@ typedef struct {
  * @ingroup udb
  * @param codepoint unicode codepoint
  * @param it returned read iterator for looked up data
- * @param FNV first MPH table
- * @param FNV_SIZE first table number of elements (original MPH set size)
+ * @param G first MPH table
+ * @param G_SIZE first table number of elements (original MPH set size)
  * @param VALUES second MPH table
  * @param COMBINED joined values addressed by index stored in VALUES
  * @return looked up data or 0
