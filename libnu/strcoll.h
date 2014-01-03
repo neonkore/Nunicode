@@ -28,7 +28,7 @@
 extern "C" {
 #endif
 
-typedef int (*nu_codepointcmp_t)(uint32_t u1, uint32_t u2, nu_casemapping_t casemap);
+typedef int (*nu_codepointcmp_t)(uint32_t u1, uint32_t u2);
 
 #ifdef NU_WITH_Z_COLLATION
 

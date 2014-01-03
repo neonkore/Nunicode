@@ -3,7 +3,6 @@
 from mph import *
 
 dict = {}
-list = []
 combined = '\\x00'  # offset 0 is normally impossible, it is used for signaling collision
 
 for i, line in enumerate(sys.stdin):
@@ -17,7 +16,6 @@ for i, line in enumerate(sys.stdin):
 	combined += replacement + '\\x00'
 
 	dict[codepoint] = (codepoint, offset)
-	list.append(codepoint)
 
 (G, V) = CreateMinimalPerfectHash(dict)
 

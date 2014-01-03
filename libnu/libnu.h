@@ -4,7 +4,6 @@
 #include "casemap.h"
 #include "cesu8.h"
 #include "defines.h"
-#include "decomps.h"
 #include "extra.h"
 #include "strcoll.h"
 #include "strings.h"

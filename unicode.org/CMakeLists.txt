@@ -4,18 +4,13 @@ set(GEN ${CMAKE_SOURCE_DIR}/libnu/gen)
 
 set(DUCET ${DATA}/allkeys.txt)
 set(SORTABLE ${DATA}/sortable.tmp)
-set(DECOMPS ${DATA}/decomps.txt)
 set(UNIDATA ${DATA}/UnicodeData.txt)
 set(SPECIAL ${DATA}/SpecialCasing.txt)
 
-add_custom_target(_decomps
-	COMMAND cat ${DECOMPS} | ${TOOLS}/decomps-tokeys 
-	| ${TOOLS}/mph-combined >${GEN}/_decomps.h
-)
-
 add_custom_target(_ducet
 	COMMAND cat ${UNIDATA} | ${TOOLS}/unidata-tosortable >${SORTABLE}
-	COMMAND cat ${DUCET} | ${TOOLS}/allkeys-tokeys | ${TOOLS}/filter-sortable ${SORTABLE} | ${TOOLS}/mph >${GEN}/_ducet.h
+	COMMAND cat ${DUCET} | ${TOOLS}/allkeys-tokeys | ${TOOLS}/filter-sortable ${SORTABLE}
+		| ${TOOLS}/mph-indexed >${GEN}/_ducet.h
 	COMMAND rm ${SORTABLE}
 )
 
@@ -31,4 +26,4 @@ add_custom_target(_tolower
 	| ${TOOLS}/mph-combined >${GEN}/_tolower.h
 )
 
-add_custom_target(gen DEPENDS _decomps _toupper _tolower)
+add_custom_target(gen DEPENDS _toupper _tolower _ducet)

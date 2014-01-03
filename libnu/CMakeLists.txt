@@ -1,6 +1,6 @@
 set(LIBNU_SRC
 	cesu8.c
-	decomps.c
+	ducet.c
 	extra.c
 	strcoll.c
 	strings.c
