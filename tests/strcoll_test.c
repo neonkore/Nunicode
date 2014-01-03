@@ -93,9 +93,9 @@ void test_strcoll() {
 	assert(nu_strcoll("role", "roles", nu_utf8_read, nu_utf8_read) < 0);
 	assert(nu_strcoll("roles", "rule", nu_utf8_read, nu_utf8_read) < 0);
 	assert(nu_strcoll("role", "rôle", nu_utf8_read, nu_utf8_read) < 0);
-	assert(nu_strcoll("Role", "role", nu_utf8_read, nu_utf8_read) < 0);
-	assert(nu_strcoll("Role", "rôle", nu_utf8_read, nu_utf8_read) < 0);
-	assert(nu_strcoll("Rôle", "rôle", nu_utf8_read, nu_utf8_read) < 0);
+	assert(nu_strcoll("Role", "role", nu_utf8_read, nu_utf8_read) > 0);
+	assert(nu_strcoll("Role", "rôle", nu_utf8_read, nu_utf8_read) > 0);
+	assert(nu_strcoll("Rôle", "rôle", nu_utf8_read, nu_utf8_read) > 0);
 	assert(nu_strcoll("vario", "varî", nu_utf8_read, nu_utf8_read) < 0);
 
 	assert(nu_strcoll("ß", "ß", nu_utf8_read, nu_utf8_read) == 0);
@@ -129,12 +129,15 @@ void test_strcasecoll() {
 	assert(nu_strcasecoll("RÔLE", "rôle", nu_utf8_read, nu_utf8_read) == 0);
 
 	assert(nu_strcasecoll("ß", "ß", nu_utf8_read, nu_utf8_read) == 0);
+	assert(nu_strcasecoll("MASSE", "Maße", nu_utf8_read, nu_utf8_read) == 0);
 }
 
 void test_strcasencoll() {
 	assert(nu_strcasencoll("MASSE", 1, "Maßa", 1, nu_utf8_read, nu_utf8_read) == 0);
 	assert(nu_strcasencoll("MASSE", 2, "Maßa", 2, nu_utf8_read, nu_utf8_read) == 0);
-	assert(nu_strcasencoll("MASSE", 3, "Maßa", 3, nu_utf8_read, nu_utf8_read) < 0);
+	assert(nu_strcasencoll("MASSE", 3, "Maßa", 3, nu_utf8_read, nu_utf8_read) == 0);
+	assert(nu_strcasencoll("MASSE", 4, "Maßa", 3, nu_utf8_read, nu_utf8_read) == 0);
+	assert(nu_strcasencoll("MASSE", 5, "Maßa", 4, nu_utf8_read, nu_utf8_read) > 0);
 }
 
 void test_strstr() {

@@ -1,7 +1,7 @@
 #include "ducet.h"
 #include "udb.h"
 
-#ifndef NU_WITH_DUCET
+#ifdef NU_WITH_DUCET
 
 #include "gen/_ducet.h"
 

@@ -107,8 +107,8 @@
 #endif /* NU_WITH_CASEMAP */
 
 #if (defined NU_WITH_Z_COLLATION) || (defined NU_WITH_N_COLLATION)
-# ifndef NU_WITH_DECOMPOSITION
-#  define NU_WITH_DECOMPOSITION
+# ifndef NU_WITH_DUCET
+#  define NU_WITH_DUCET
 # endif
 #endif
 

@@ -4,11 +4,12 @@
 #include <stdint.h>
 
 #include "config.h"
+#include "defines.h"
 
 #ifdef NU_WITH_DUCET
 
 NU_EXPORT
-unit32_t nu_ducet_value(uint32_t codepoint);
+uint32_t nu_ducet_value(uint32_t codepoint);
 
 NU_EXPORT
 int nu_ducet_codepointcmp(uint32_t u1, uint32_t u2);
