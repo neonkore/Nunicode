@@ -24,3 +24,9 @@ include_directories(${CMAKE_SOURCE_DIR})
 
 link_libraries(units nu)
 add_executable(units ${TESTS_SRC})
+
+add_custom_target(coverage DEPENDS units
+	COMMAND units
+	COMMAND lcov -b ${CMAKE_SOURCE_DIR} -d ${CMAKE_SOURCE_DIR} -c -o coverage.info
+	COMMAND genhtml -o coverage coverage.info
+)
