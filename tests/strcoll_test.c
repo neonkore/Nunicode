@@ -107,6 +107,8 @@ void test_strcoll() {
 	assert(nu_strcoll("vario", "varî", nu_utf8_read, nu_utf8_read) < 0);
 
 	assert(nu_strcoll("ß", "ß", nu_utf8_read, nu_utf8_read) == 0);
+	assert(nu_strcasecoll("s", "ß", nu_utf8_read, nu_utf8_read) < 0);
+	assert(nu_strcasecoll("ß", "s", nu_utf8_read, nu_utf8_read) > 0);
 
 	assert(nu_strcoll("аб", "а", nu_utf8_read, nu_utf8_read) > 0);
 	assert(nu_strcoll("а", "аб", nu_utf8_read, nu_utf8_read) < 0);
@@ -137,9 +139,9 @@ void test_strcasecoll() {
 	assert(nu_strcasecoll("RÔLE", "rôle", nu_utf8_read, nu_utf8_read) == 0);
 
 	assert(nu_strcasecoll("ß", "ß", nu_utf8_read, nu_utf8_read) == 0);
-	assert(nu_strcasecoll("ßs", "sß", nu_utf8_read, nu_utf8_read) == 0);
-	assert(nu_strcasecoll("sß", "ßs", nu_utf8_read, nu_utf8_read) == 0);
-	assert(nu_strcasecoll("sßs", "sßs", nu_utf8_read, nu_utf8_read) == 0);
+	assert(nu_strcasecoll("ßs", "Sß", nu_utf8_read, nu_utf8_read) == 0);
+	assert(nu_strcasecoll("sß", "ßS", nu_utf8_read, nu_utf8_read) == 0);
+	assert(nu_strcasecoll("Sßs", "sßS", nu_utf8_read, nu_utf8_read) == 0);
 
 	assert(nu_strcasecoll("MASSE", "Maße", nu_utf8_read, nu_utf8_read) == 0);
 	assert(nu_strcasecoll("Maße", "MASSE", nu_utf8_read, nu_utf8_read) == 0);
