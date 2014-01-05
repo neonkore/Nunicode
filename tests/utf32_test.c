@@ -11,6 +11,10 @@ void test_utf32_read_bom() {
 	const char *le_bom = "\xFF\xFE\x00\x00";
 	const char *be_bom = "\x00\x00\xFE\xFF";
 
+	/* skip output */
+	assert(nu_utf32_read_bom(le_bom, 0) == le_bom + 4);
+	assert(nu_utf32_read_bom(be_bom, 0) == be_bom + 4);
+
 	assert(nu_utf32_read_bom(le_bom, &bom) == le_bom + 4);
 	assert(bom.write_bom == nu_utf32le_write_bom);
 	assert(bom.read == nu_utf32le_read);
@@ -30,9 +34,21 @@ void test_utf32_read_invalid_bom() { /* defaults to BE */
 	nu_utf32_bom_t bom;
 	memset(&bom, 0, sizeof(bom));
 
-	const char *inval_bom = "\xFF\xFF\x00\x00";
+	const char *inval_bom1 = "\xFF\xFE\x00\x01";
+	const char *inval_bom2 = "\x00\x00\xFE\x00";
 
-	assert(nu_utf32_read_bom(inval_bom, &bom) == inval_bom);
+	/* skip read */
+	assert(nu_utf32_read_bom(inval_bom1, 0) == inval_bom1);
+	assert(nu_utf32_read_bom(inval_bom2, 0) == inval_bom2);
+
+	assert(nu_utf32_read_bom(inval_bom1, &bom) == inval_bom1);
+	assert(bom.write_bom == nu_utf32be_write_bom);
+	assert(bom.read == nu_utf32be_read);
+	assert(bom.write == nu_utf32be_write);
+	assert(bom.revread == nu_utf32be_revread);
+	assert(bom.validread == nu_utf32be_validread);
+
+	assert(nu_utf32_read_bom(inval_bom2, &bom) == inval_bom2);
 	assert(bom.write_bom == nu_utf32be_write_bom);
 	assert(bom.read == nu_utf32be_read);
 	assert(bom.write == nu_utf32be_write);

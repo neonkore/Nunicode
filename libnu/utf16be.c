@@ -15,7 +15,6 @@ const char* nu_utf16be_read(const char *utf16, uint32_t *unicode) {
 			utf16_4b(c0, c1, unicode);
 			break;
 		}
-		default: return 0; /* abort */
 		}
 	}
 
@@ -71,7 +70,6 @@ char* nu_utf16be_write(uint32_t unicode, char *utf16) {
 				nu_htobes(c1, utf16 + 2);
 				break;
 			}
-			default: return 0; /* abort */
 		}
 	}
 

@@ -7,6 +7,10 @@ void test_utf8_decoding() {
 	uint32_t u = 0;
 
 	assert(nu_utf8_read("", &u) && u == 0);
+
+	/* skip output */
+	assert(nu_utf8_read("g", 0) && u == 0);
+
 	assert(nu_utf8_read("g", &u) && u == 0x0067);
 	assert(nu_utf8_read("п", &u) && u == 0x043F);
 	assert(nu_utf8_read("€", &u) && u == 0x20AC);
@@ -27,6 +31,9 @@ void test_utf8_revread() {
 	assert(u == 0x0442);
 	assert(nu_utf8_revread(&u, input + 10) == input + 8);
 	assert(u == 0x0435);
+
+	/* skip output */
+	assert(nu_utf8_revread(0, input + 10) == input + 8);
 
 	/* this is not supported, but should work anyway */
 	const char *long_input = "𠜱";

@@ -18,11 +18,6 @@ const char* nu_utf16he_read(const char *utf16, uint32_t *unicode) {
 		}
 	}
 
-	switch (len) {
-		case 2: case 4: break;
-		default: return 0; /* abort */
-	}
-
 	return utf16 + len;
 }
 
@@ -95,7 +90,6 @@ char* nu_utf16he_write(uint32_t unicode, char *utf16) {
 				*(uint16_t *)(utf16 + 2) = c1;
 				break;
 			}
-			default: return 0; /* abort */
 		}
 	}
 

@@ -11,7 +11,10 @@ void test_utf16he_decoding() {
 
 	uint32_t u = 0;
 
-	assert(nu_utf16he_read(input1, 0));
+	/* skip output */
+	assert(nu_utf16he_read(input1, 0) && u == 0);
+
+	assert(nu_utf16he_read("", &u) && u == 0);
 	assert(nu_utf16he_read(input1, &u) && u == 0x0067);
 	assert(nu_utf16he_read(input2, &u) && u == 0x10400);
 }
@@ -21,7 +24,9 @@ void test_utf16he_revread() {
 	const char *input = (const char *)(t);
 	uint32_t u = 0;
 
+	/* skip output */
 	assert(nu_utf16he_revread(0, input));
+
 	assert(nu_utf16he_revread(&u, input + 6) && u == 0x10400);
 	assert(nu_utf16he_revread(&u, input + 2) && u == 0x0067);
 }
@@ -33,8 +38,9 @@ void test_utf16he_encoding() {
 
 	char p[32] = { 0 };
 
-	assert(nu_utf16he_write(t1, p) && memcmp(&t1, p, 2) == 0);
+	/* skip output */
+	assert(nu_utf16he_write(t1, 0) && memcmp("", p, 1) == 0);
 
-	assert(nu_utf16he_write(t2, p));
-	assert(memcmp(t2_encoded, p, 4) == 0);
+	assert(nu_utf16he_write(t1, p) && memcmp(&t1, p, 2) == 0);
+	assert(nu_utf16he_write(t2, p) && memcmp(t2_encoded, p, 4) == 0);
 }

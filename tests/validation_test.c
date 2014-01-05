@@ -76,12 +76,14 @@ void test_validation_utf16be() {
 	const unsigned char input1[] = { 0xD8, 0x41, }; /* no trail */
 	const unsigned char input2[] = { 0xDC, 0x00, 0xD8, 0x41 }; /* misplaced lead and trail */
 	const unsigned char input3[] = { 0xD8, 0x41, 0xEC, 0x00 }; /* invalid surrogate */
+	const unsigned char input4[] = { 0xD8, 0x41, 0xFF, 0x00 }; /* invalid surrogate */
 
 	assert(nu_validate((const char *)(input0_ok), sizeof(input0_ok), nu_utf16be_validread) == 0);
 	assert(nu_validate((const char *)(input0_ok), 1, nu_utf16be_validread) == (const char *)(input0_ok)); /* short read */
 	assert(nu_validate((const char *)(input1), sizeof(input1), nu_utf16be_validread) == (const char *)(input1));
 	assert(nu_validate((const char *)(input2), sizeof(input2), nu_utf16be_validread) == (const char *)(input2));
 	assert(nu_validate((const char *)(input3), sizeof(input3), nu_utf16be_validread) == (const char *)(input3));
+	assert(nu_validate((const char *)(input4), sizeof(input4), nu_utf16be_validread) == (const char *)(input4));
 }
 
 void test_validation_utf32() {
