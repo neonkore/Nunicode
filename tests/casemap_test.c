@@ -34,8 +34,8 @@ void test_toupper() {
 	casemap_read(map, &u);
 	assert(u == 0x00C6); /* Æ */
 
-	map = nu_toupper(0x00A0, &casemap_read);
-	assert(map == 0);
+	assert(nu_toupper(0x00A0, 0) == 0);
+	assert(nu_toupper(0x0041, 0) == 0);
 }
 
 void test_tolower() {
@@ -63,6 +63,6 @@ void test_tolower() {
 	casemap_read(map, &u);
 	assert(u == 0x00E6); /* æ */
 
-	map = nu_tolower(0x00A0, &casemap_read);
-	assert(map == 0);
+	assert(nu_tolower(0x00A0, 0) == 0);
+	assert(nu_tolower(0x0061, 0) == 0);
 }

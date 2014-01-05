@@ -16,4 +16,5 @@ void test_ducet_known_unknown() {
 
 	/* 0 is compared in codepoint order */
 	assert(nu_ducet_codepointcmp('a', 0) > 0);
+	assert(nu_ducet_codepointcmp(0, 'a') < 0);
 }

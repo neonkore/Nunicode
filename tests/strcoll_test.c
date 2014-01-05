@@ -11,6 +11,7 @@ void test_strchr() {
 	assert(nu_strchr(input1, 'M', nu_utf8_read) == input1);
 	assert(nu_strchr(input1, 's', nu_utf8_read) == input1 + 2);
 
+	assert(nu_strchr(input2, 's', nu_utf8_read) == 0);
 	assert(nu_strchr(input2, 0x00DF, nu_utf8_read) == input2 + 2);
 }
 
@@ -129,6 +130,10 @@ void test_strcasecoll() {
 	assert(nu_strcasecoll("RÔLE", "rôle", nu_utf8_read, nu_utf8_read) == 0);
 
 	assert(nu_strcasecoll("ß", "ß", nu_utf8_read, nu_utf8_read) == 0);
+	assert(nu_strcasecoll("ßs", "sß", nu_utf8_read, nu_utf8_read) == 0);
+	assert(nu_strcasecoll("sß", "ßs", nu_utf8_read, nu_utf8_read) == 0);
+	assert(nu_strcasecoll("sßs", "sßs", nu_utf8_read, nu_utf8_read) == 0);
+
 	assert(nu_strcasecoll("MASSE", "Maße", nu_utf8_read, nu_utf8_read) == 0);
 }
 

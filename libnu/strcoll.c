@@ -133,13 +133,13 @@ static int _nu_encoded_encoded_cmp(const char **lhs, const char *lhs_limit,
 		const char *lhs_decomps = casemap(u1, &decomps_read);
 		const char *rhs_decomps = casemap(u2, &decomps_read);
 
-		if (lhs_decomps == 0 && rhs_decomps == 0) {
+		if (lhs_decomps == 0 && rhs_decomps == 0) { /* no decomps */
 			cmp = compare(u1, u2);
 			if (cmp != 0) {
 				return cmp;
 			}
 		}
-		else if (lhs_decomps == 0) {
+		else if (lhs_decomps == 0) { /* rhs_decomps != 0 */
 			cmp = _nu_uint32_decomposed_cmp(u1, &rhs_decomps, decomps_read,
 				compare, rhs_tail);
 			if (cmp != 0 || *rhs_tail != 0) {
@@ -147,7 +147,7 @@ static int _nu_encoded_encoded_cmp(const char **lhs, const char *lhs_limit,
 				return cmp;
 			}
 		}
-		else if (rhs_decomps == 0) {
+		else if (rhs_decomps == 0) { /* lhs_decomps != 0 */
 			cmp = _nu_uint32_decomposed_cmp(u2, &lhs_decomps, decomps_read,
 				compare, lhs_tail) * -1;
 			if (cmp != 0 || *lhs_tail != 0) {
@@ -155,10 +155,10 @@ static int _nu_encoded_encoded_cmp(const char **lhs, const char *lhs_limit,
 				return cmp;
 			}
 		}
-		else {
+		else { /* both decomps */
 			cmp = _nu_decomposed_decomposed_cmp(&lhs_decomps, &rhs_decomps, decomps_read,
 				compare, lhs_tail, rhs_tail);
-			if (cmp != 0 || *lhs_tail != 0 || *rhs_tail == 0) {
+			if (cmp != 0 || *lhs_tail != 0 || *rhs_tail != 0) {
 				*tail_read = decomps_read;
 				return cmp;
 			}
