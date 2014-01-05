@@ -14,11 +14,15 @@ void test_validation_utf8() {
 	const char input6[] = "при\xF1\x81"; /* start of 4-byte sequence + 1 continuation byte */
 	const char input7[] = "при\xF1\x81\x81"; /* start of 4-byte sequence + 2 continuation bytes */
 	const char input7_ok[] = "при\xF1\x81\x81\x81";
+	const char input8[] = "\xF8\x00\x00\x00\x00"; /* 5-byte sequence */
 
 	assert(nu_validate(input0_ok, sizeof(input0_ok), nu_utf8_validread) == 0);
 	assert(nu_validate(input2_ok, sizeof(input2_ok), nu_utf8_validread) == 0);
 	assert(nu_validate(input4_ok, sizeof(input4_ok), nu_utf8_validread) == 0);
 	assert(nu_validate(input7_ok, sizeof(input7_ok), nu_utf8_validread) == 0);
+
+	/* valid input, but check limit is in the middle of multi-byte sequence */
+	assert(nu_validate(input7_ok, 8, nu_utf8_validread) == input7_ok + 6);
 
 	assert(nu_validate(input1, sizeof(input1), nu_utf8_validread) == input1 + 6);
 	assert(nu_validate(input2, sizeof(input2), nu_utf8_validread) == input2 + 6);
@@ -27,6 +31,7 @@ void test_validation_utf8() {
 	assert(nu_validate(input5, sizeof(input5), nu_utf8_validread) == input5 + 6);
 	assert(nu_validate(input6, sizeof(input6), nu_utf8_validread) == input6 + 6);
 	assert(nu_validate(input7, sizeof(input7), nu_utf8_validread) == input7 + 6);
+	assert(nu_validate(input8, sizeof(input8), nu_utf8_validread) == input8);
 }
 
 void test_validation_cesu8() {
