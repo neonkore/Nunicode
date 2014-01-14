@@ -12,7 +12,9 @@ uint32_t nu_ducet_value(uint32_t codepoint) {
 	return (value != 0 ? value : (uint32_t)(-1));
 }
 
-int nu_ducet_codepointcmp(uint32_t u1, uint32_t u2) {
+int nu_ducet_codepointcmp(uint32_t u1, uint32_t u2, int state) {
+	(void)(state);
+
 	uint32_t u1_weight = nu_ducet_value(u1);
 	uint32_t u2_weight = nu_ducet_value(u2);
 

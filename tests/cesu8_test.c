@@ -55,6 +55,9 @@ void test_cesu8_revread() {
 void test_cesu8_encoding() {
 	char p[32] = { 0 };
 
+	/* skip output */
+	assert(nu_cesu8_write(0x0067, 0) && memcmp(p, "", 1) == 0);
+
 	assert(nu_cesu8_write(0, p) && memcmp(p, "", 1) == 0);
 	assert(nu_cesu8_write(0x0067, p) && memcmp(p, "g", 1) == 0);
 	assert(nu_cesu8_write(0x043F, p) && memcmp(p, "п", 2) == 0);

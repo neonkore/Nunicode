@@ -36,7 +36,7 @@ uint32_t nu_ducet_value(uint32_t codepoint);
  * @see nu_codepointcmp_t
  */
 NU_EXPORT
-int nu_ducet_codepointcmp(uint32_t u1, uint32_t u2);
+int nu_ducet_codepointcmp(uint32_t u1, uint32_t u2, int state);
 
 #endif /* NU_WITH_DUCET */
 
