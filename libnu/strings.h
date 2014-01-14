@@ -28,6 +28,15 @@ extern "C" {
  */
 typedef const char* (*nu_read_iterator_t)(const char *encoded, uint32_t *unicode);
 
+/** Read (decode) iterator with transformation applied inside of it
+ *
+ * @ingroup iterators
+ * @see _nu_collate
+ */
+typedef const char* (*nu_compound_read_t)(
+	const char *encoded, nu_read_iterator_t encoded_read,
+	uint32_t *unicode, const char **tail, nu_read_iterator_t *tail_read);
+
 /** Read (decode) backwards iterator
  *
  * Arguments intentionally reversed to not mix this with nu_read_iterator_t.

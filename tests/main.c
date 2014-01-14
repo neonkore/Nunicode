@@ -158,10 +158,12 @@ testcase cases[] = {
 	test_strrnchr,
 	test_strrcasechr,
 	test_strrcasenchr,
+
 	test_strcoll,
 	test_strncoll,
 	test_strcasecoll,
 	test_strcasencoll,
+
 	test_strstr,
 	test_strnstr,
 	test_strcasestr,

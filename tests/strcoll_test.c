@@ -12,6 +12,7 @@ void test_strchr() {
 	assert(nu_strchr(input1, 's', nu_utf8_read) == input1 + 2);
 	assert(nu_strchr(input1, 0x00DF, nu_utf8_read) == 0);
 
+	assert(nu_strchr(input2, 'e', nu_utf8_read) == input2 + 4);
 	assert(nu_strchr(input2, 's', nu_utf8_read) == 0);
 	assert(nu_strchr(input2, 0x00DF, nu_utf8_read) == input2 + 2);
 }
@@ -30,6 +31,7 @@ void test_strnchr() {
 void test_strcasechr() {
 	const char *input1 = "MASSE";
 	const char *input2 = "Maße";
+	const char *input3 = "MASE";
 
 	assert(nu_strcasechr(input1, 'i', nu_utf8_read) == 0);
 	assert(nu_strcasechr(input1, 'e', nu_utf8_read) == input1 + 4);
@@ -38,6 +40,9 @@ void test_strcasechr() {
 	assert(nu_strcasechr(input2, 0x00DF, nu_utf8_read) == input2 + 2);
 	assert(nu_strcasechr(input2, 's', nu_utf8_read) == input2 + 2);
 	assert(nu_strcasechr(input2, 'S', nu_utf8_read) == input2 + 2);
+	assert(nu_strcasechr(input2, 'e', nu_utf8_read) == input2 + 4);
+
+	assert(nu_strcasechr(input3, 0x00DF, nu_utf8_read) == 0);
 }
 
 void test_strcasenchr() {
