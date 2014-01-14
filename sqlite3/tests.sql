@@ -4,7 +4,7 @@ SELECT 'MASSE' LIKE 'MADE' == 0
 SELECT 'MASSE' LIKE 'Maße' == 1
 SELECT 'Maße' LIKE '%SS%' == 1
 SELECT 'æ' LIKE 'Æ' == 1
-SELECT 'æ' LIKE 'AE' == 1
+SELECT 'ß' LIKE 'SS' == 1
 
 SELECT 'MASSE' LIKE '%ß%' == 1
 SELECT 'MASSE' LIKE '%ßß%' == 0
@@ -47,7 +47,6 @@ SELECT 'ё' < 'я' == 0 /* collation */
 SELECT 'ё' < 'я' COLLATE NUNICODE == 1
 SELECT 'Ё' < 'Я' COLLATE NUNICODE == 1
 SELECT 'ß' == 'ss' == 0
-SELECT 'ß' == 'ss' COLLATE NUNICODE
 SELECT 'æ' == 'Æ' == 0
 SELECT 'æ' == 'Æ' COLLATE NUNICODE == 0
 SELECT 'æ' == 'Æ' COLLATE NOCASE
