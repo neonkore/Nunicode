@@ -79,9 +79,9 @@ void test_strcasenstr();
 void test_crossencoding_strcoll();
 void test_compoundcmp_strcoll();
 void test_compoundcmp_strcoll_outskirts();
+void test_compoundcmp_strncoll();
 
 testcase cases[] = {
-
 	test_utf8_decoding,
 	test_utf8_bom,
 	test_utf8_revread,
@@ -175,6 +175,7 @@ testcase cases[] = {
 
 	test_compoundcmp_strcoll,
 	test_compoundcmp_strcoll_outskirts,
+	test_compoundcmp_strncoll,
 };
 
 int main() {
