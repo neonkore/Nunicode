@@ -45,7 +45,6 @@ doc_zip:
 	(cd ../doc && mv html libnu-$(VERSION) && zip -r ../packaging/$(DOC_ZIP) .)
 
 clean:
-	rm -fr $(WIN32_BUILD) $(WIN32_ZIP)
-	rm -fr $(I386_BUILD) $(I386_BZ)
-	rm -fr $(AMD64_BUILD) $(AMD64_BZ)
+	rm -fr *.zip *.bz2
+	rm -fr $(WIN32_BUILD) $(I386_BUILD) $(AMD64_BUILD)
 	rm -fr ../doc/ $(DOC_ZIP)
