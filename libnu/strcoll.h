@@ -31,7 +31,8 @@ extern "C" {
 /** Read (decode) iterator with transformation applied inside of it
  *
  * @ingroup iterators
- * @see _nu_collate
+ * @see nu_default_compound_read
+ * @see nu_nocase_compound_read
  */
 typedef const char* (*nu_compound_read_t)(
 	const char *encoded, nu_read_iterator_t encoded_read,
@@ -39,10 +40,31 @@ typedef const char* (*nu_compound_read_t)(
 
 #if (defined NU_WITH_Z_COLLATION) || (defined NU_WITH_N_COLLATION)
 
+/** Default compound read, equal to simply calling encoded_read(encoded, &unicode)
+ *
+ * @ingroup collation
+ * @param encoded encoded string
+ * @param encoded_read read (decode) function
+ * @param unicode output unicode codepoint
+ * @param tail output pointer to compound tail, should never be 0
+ * @param tail_read output tail read function, should never be 0
+ * @return pointer to next encoded character
+ */
 NU_EXPORT
 const char* nu_default_compound_read(const char *encoded, nu_read_iterator_t encoded_read,
 	uint32_t *unicode, const char **tail, nu_read_iterator_t *tail_read);
 
+/** Case-ignoring compound read, equal to calling
+ * encoded_read(encoded, &unicode) with nu_toupper() applied internally
+ *
+ * @ingroup collation
+ * @param encoded encoded string
+ * @param encoded_read read (decode) function
+ * @param unicode output unicode codepoint
+ * @param tail output pointer to compound tail, should never be 0
+ * @param tail_read output tail read function, should never be 0
+ * @return pointer to next encoded character
+ */
 NU_EXPORT
 const char* nu_nocase_compound_read(const char *encoded, nu_read_iterator_t encoded_read,
 	uint32_t *unicode, const char **tail, nu_read_iterator_t *tail_read);
