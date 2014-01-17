@@ -6,6 +6,7 @@ set(TESTS_SRC
 	main.c
 	mph_test.c
 	strcoll_test.c
+	strcoll_internal_test.c
 	strings_test.c
 	udb_test.c
 	utf16_test.c

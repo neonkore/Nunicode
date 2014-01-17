@@ -77,6 +77,8 @@ void test_strnstr();
 void test_strcasestr();
 void test_strcasenstr();
 void test_crossencoding_strcoll();
+void test_compoundcmp_strcoll();
+void test_compoundcmp_strcoll_outskirts();
 
 testcase cases[] = {
 
@@ -170,6 +172,9 @@ testcase cases[] = {
 	test_strcasenstr,
 
 	test_crossencoding_strcoll,
+
+	test_compoundcmp_strcoll,
+	test_compoundcmp_strcoll_outskirts,
 };
 
 int main() {

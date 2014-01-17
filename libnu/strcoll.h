@@ -28,7 +28,26 @@
 extern "C" {
 #endif
 
-typedef int (*nu_codepointcmp_t)(uint32_t u1, uint32_t u2, int state);
+/** Read (decode) iterator with transformation applied inside of it
+ *
+ * @ingroup iterators
+ * @see _nu_collate
+ */
+typedef const char* (*nu_compound_read_t)(
+	const char *encoded, nu_read_iterator_t encoded_read,
+	uint32_t *unicode, const char **tail, nu_read_iterator_t *tail_read);
+
+#if (defined NU_WITH_Z_COLLATION) || (defined NU_WITH_N_COLLATION)
+
+NU_EXPORT
+const char* nu_default_compound_read(const char *encoded, nu_read_iterator_t encoded_read,
+	uint32_t *unicode, const char **tail, nu_read_iterator_t *tail_read);
+
+NU_EXPORT
+const char* nu_nocase_compound_read(const char *encoded, nu_read_iterator_t encoded_read,
+	uint32_t *unicode, const char **tail, nu_read_iterator_t *tail_read);
+
+#endif /* NU_WITH_Z_COLLATION || NU_WITH_N_COLLATION */
 
 #ifdef NU_WITH_Z_COLLATION
 

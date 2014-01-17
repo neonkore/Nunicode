@@ -4,17 +4,15 @@
 
 void test_ducet() {
 	/* Latin R */
-	assert(nu_ducet_value('r') < nu_ducet_value('R'));
+	assert(nu_ducet_weight('r', 0) < nu_ducet_weight('R', 0));
 
 	/* Cyrillic Е and Ё */
-	assert(nu_ducet_value(0x0415) < nu_ducet_value(0x0401));
+	assert(nu_ducet_weight(0x0415, 0) < nu_ducet_weight(0x0401, 0));
 }
 
 void test_ducet_known_unknown() {
-	assert(nu_ducet_value('a') != (uint32_t)(-1));
-	assert(nu_ducet_value(0) == (uint32_t)(-1));
+	assert(nu_ducet_weight('a', 0) > 0);
+	assert(nu_ducet_weight(1, 0) == INT32_MAX);
 
-	/* 0 is compared in codepoint order */
-	assert(nu_ducet_codepointcmp('a', 0, 0) > 0);
-	assert(nu_ducet_codepointcmp(0, 'a', 0) < 0);
+	assert(nu_ducet_weight(0, 0) == 0); /* special case */
 }

@@ -24,19 +24,7 @@ extern "C" {
  * @return comparable weight of the codepoint or (uint32_t)(-1)
  */
 NU_EXPORT
-uint32_t nu_ducet_value(uint32_t codepoint);
-
-/** DUCET-aware comparator
- *
- * Puts all known characters in DUCET order, and all unknown characters
- * in codepoint-order. Known characters are all letters and numbers,
- * unknown characters are not-letters and not-numbers: smileys, control
- * characters, etc.
- *
- * @see nu_codepointcmp_t
- */
-NU_EXPORT
-int nu_ducet_codepointcmp(uint32_t u1, uint32_t u2, int state);
+int32_t nu_ducet_weight(uint32_t codepoint, int32_t state);
 
 #endif /* NU_WITH_DUCET */
 
