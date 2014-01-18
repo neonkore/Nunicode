@@ -214,3 +214,8 @@ def GenerateCombined(combined):
 		print '\t%s,' % (', '.join((p.replace('\\', '0') for p in parts)))
 	print '};'
 	print
+
+
+def GenerateIncludes():
+	print '#include <stdint.h>'
+	print
