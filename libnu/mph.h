@@ -32,7 +32,7 @@ static inline uint32_t hash(uint32_t hash, uint32_t codepoint) {
 
 /** Get hash value of Unicode codepoint
  */
-static inline uint32_t mph_hash(nu_fnv_table_t *G, size_t G_SIZE,
+static inline uint32_t mph_hash(const int16_t *G, size_t G_SIZE,
 	uint32_t codepoint) {
 
 	uint32_t h = hash(0, codepoint);

@@ -19,8 +19,6 @@ extern "C" {
 
 #ifdef NU_WITH_UDB
 
-typedef const int16_t nu_fnv_table_t;
-
 /** Lookup data in UDB
  *
  * Returned data is encoded, therefore you need to use p = it(p, &u) to
@@ -38,8 +36,8 @@ typedef const int16_t nu_fnv_table_t;
  */
 NU_EXPORT
 const char* nu_udb_lookup(uint32_t codepoint, nu_read_iterator_t *it,
-	nu_fnv_table_t *G, size_t G_SIZE,
-	const uint32_t *VALUES_C, const uint16_t *VALUES_I,	const uint8_t *COMBINED);
+	const int16_t *G, size_t G_SIZE,
+	const uint32_t *VALUES_C, const uint16_t *VALUES_I, const uint8_t *COMBINED);
 
 /** Lookup value in UDB
  *
@@ -51,7 +49,7 @@ const char* nu_udb_lookup(uint32_t codepoint, nu_read_iterator_t *it,
  */
 NU_EXPORT
 uint32_t nu_udb_lookup_value(uint32_t codepoint,
-	nu_fnv_table_t *G, size_t G_SIZE,
+	const int16_t *G, size_t G_SIZE,
 	const uint32_t *VALUES_C, const uint16_t *VALUES_I);
 
 #endif /* NU_WITH_UDB */
