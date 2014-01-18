@@ -10,6 +10,9 @@ def unidata_strip(s):
 	i = s.find('#')
 	if i > 0:
 		s = s[:i]
+
+	s = s.strip()
+
 	return s
 
 

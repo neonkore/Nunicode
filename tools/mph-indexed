@@ -5,11 +5,11 @@ from mph import *
 dict = {}
 
 for i, line in enumerate(sys.stdin):
-	codepoint, replacement = line.split(' ')
+	codepoint, replacement = filter(bool, line.strip().split(' '))
 
 	if not replacement:
 		continue
-	
+
 	replacement = int(replacement.strip(), base=16)
 	dict[codepoint] = (codepoint, replacement)
 

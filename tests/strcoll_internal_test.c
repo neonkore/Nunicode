@@ -74,6 +74,7 @@ void test_compoundcmp_strcoll() {
 	assert(test_strcoll("a", "abc") < 0);
 	assert(test_strcoll("abc", "a") > 0);
 	assert(test_strcoll("abc", "b") < 0);
+	assert(test_strcoll("abc", "ab") < 0);
 	assert(test_strcoll("b", "abc") > 0);
 
 	/* unrelated */
