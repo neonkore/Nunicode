@@ -150,14 +150,35 @@ def FormatReplacement(r):
 
 # Print values table
 def GenerateValues(G, V):
-	print 'static const nu_udb_t VALUES[] = {'
+	BOUNDARY = 8
+
+	print '/* codepoints */'
+	print 'static const uint32_t VALUES_C[] = {'
 	for i, (codepoint, replacement) in enumerate(V):
 		assert(replacement is not None)
 
-		print VALUE_TEMPLATE % {
-			'codepoint': int(codepoint, base=16),
-			'decomps': replacement,
-		}
+		if i % BOUNDARY == 0:
+			sys.stdout.write('\t')
+		sys.stdout.write('0x%06X, ' % (int(codepoint, base=16),))
+		if (i + 1) % BOUNDARY == 0:
+			sys.stdout.write('\n')
+
+	print '};'
+	print
+
+	BOUNDARY = 12
+
+	print '/* indexes */'
+	print 'static const uint16_t VALUES_I[] = {'
+	for i, (codepoint, replacement) in enumerate(V):
+		assert(replacement is not None)
+
+		if i % BOUNDARY == 0:
+			sys.stdout.write('\t')
+		sys.stdout.write('0x%04X, ' % (replacement,))
+		if (i + 1) % BOUNDARY == 0:
+			sys.stdout.write('\n')
+
 	print '};'
 	print
 
@@ -170,7 +191,7 @@ def GenerateG(G):
 	for i, x in enumerate(G):
 		if i % BOUNDARY == 0:
 			sys.stdout.write('\t')
-		sys.stdout.write(str(x))
+		sys.stdout.write('%d' % (x,))
 		sys.stdout.write(', ')
 		if (i + 1) % BOUNDARY == 0:
 			sys.stdout.write('\n')

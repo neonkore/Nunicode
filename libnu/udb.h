@@ -9,6 +9,8 @@
 #include "strings.h"
 
 /** @defgroup udb Unicode Database (kind of)
+ *
+ * Note: never use it directly, it is subject to change in next releases
  */
 
 #if defined (__cplusplus) || defined (c_plusplus)
@@ -18,19 +20,6 @@ extern "C" {
 #ifdef NU_WITH_UDB
 
 typedef const int16_t nu_fnv_table_t;
-
-/** Unicode database record reference
- *
- * @ingroup udb
- */
-typedef struct {
-	/** Original unicode codepoint
-	 */
-	uint32_t codepoint;
-	/** Offset in COMBINED associated with codepoint
-	 */
-	uint32_t combined_offset;
-} nu_udb_t;
 
 /** Lookup data in UDB
  *
@@ -42,14 +31,15 @@ typedef struct {
  * @param it returned read iterator for looked up data
  * @param G first MPH table
  * @param G_SIZE first table number of elements (original MPH set size)
- * @param VALUES second MPH table
+ * @param VALUES_C codepoints array
+ * @param VALUES_I offsets array
  * @param COMBINED joined values addressed by index stored in VALUES
  * @return looked up data or 0
  */
 NU_EXPORT
 const char* nu_udb_lookup(uint32_t codepoint, nu_read_iterator_t *it,
-	nu_fnv_table_t *G, size_t G_SIZE, const nu_udb_t *VALUES,
-	const uint8_t *COMBINED);
+	nu_fnv_table_t *G, size_t G_SIZE,
+	const uint32_t *VALUES_C, const uint16_t *VALUES_I,	const uint8_t *COMBINED);
 
 /** Lookup value in UDB
  *
@@ -57,11 +47,12 @@ const char* nu_udb_lookup(uint32_t codepoint, nu_read_iterator_t *it,
  *
  * @ingroup udb
  * @see nu_udb_lookup
- * @return raw value from VALUES
+ * @return raw value from VALUES_I
  */
 NU_EXPORT
 uint32_t nu_udb_lookup_value(uint32_t codepoint,
-	nu_fnv_table_t *G, size_t G_SIZE, const nu_udb_t *VALUES);
+	nu_fnv_table_t *G, size_t G_SIZE,
+	const uint32_t *VALUES_C, const uint16_t *VALUES_I);
 
 #endif /* NU_WITH_UDB */
 

@@ -32,7 +32,9 @@ static inline uint32_t hash(uint32_t hash, uint32_t codepoint) {
 
 /** Get hash value of Unicode codepoint
  */
-static inline uint32_t mph_hash(nu_fnv_table_t *G, size_t G_SIZE, uint32_t codepoint) {
+static inline uint32_t mph_hash(nu_fnv_table_t *G, size_t G_SIZE,
+	uint32_t codepoint) {
+
 	uint32_t h = hash(0, codepoint);
 	int16_t offset = G[h % G_SIZE];
 	if (offset < 0) {
@@ -43,15 +45,18 @@ static inline uint32_t mph_hash(nu_fnv_table_t *G, size_t G_SIZE, uint32_t codep
 
 /** Lookup value in MPH
  */
-static inline uint32_t mph_lookup(const nu_udb_t *V, uint32_t codepoint, uint32_t hash) {
-	const nu_udb_t *r = (V + hash);
+static inline uint32_t mph_lookup(const uint32_t *V_C, const uint16_t *V_I,
+	uint32_t codepoint, uint32_t hash) {
+
+	const uint32_t *c = (V_C + hash);
+	const uint16_t *i = (V_I + hash);
 
 	/* due to nature of minimal perfect hash, it will always
 	 * produce collision for codepoints outside of MPH original set.
-	 * thus nu_udb_t contain original codepoint to check if
+	 * thus VALUES_C contain original codepoint to check if
 	 * collision occurred */
 
-	return (r->codepoint != codepoint ? 0 : r->combined_offset);
+	return (*c != codepoint ? 0 : *i);
 }
 
 #endif /* NU_WITH_UDB */
