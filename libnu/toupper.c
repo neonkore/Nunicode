@@ -1,7 +1,8 @@
-#include "casemap_internal.h"
 #include "casemap.h"
 
 #ifdef NU_WITH_TOUPPER
+
+#include "casemap_internal.h"
 
 #include "gen/_toupper.h"
 

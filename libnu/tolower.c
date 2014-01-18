@@ -1,7 +1,8 @@
-#include "casemap_internal.h"
 #include "casemap.h"
 
 #ifdef NU_WITH_TOLOWER
+
+#include "casemap_internal.h"
 
 #include "gen/_tolower.h"
 

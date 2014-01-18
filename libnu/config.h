@@ -101,6 +101,16 @@
 # define NU_WITH_N_COLLATION
 #endif /* NU_WITH_COLLATION */
 
+#ifdef NU_WITH_Z_COLLATION
+# define NU_WITH_Z_STRINGS
+# define NU_WITH_TOUPPER
+#endif
+
+#ifdef NU_WITH_N_COLLATION
+# define NU_WITH_N_STRINGS
+# define NU_WITH_TOUPPER
+#endif
+
 #ifdef NU_WITH_CASEMAP
 # define NU_WITH_TOLOWER
 # define NU_WITH_TOUPPER
@@ -118,6 +128,10 @@
 #  define NU_WITH_UDB
 # endif /* NU_WITH_UDB */
 #endif
+
+#ifdef NU_WITH_DUCET
+#  define NU_WITH_UDB
+#endif /* NU_WITH_DUCET */
 
 #ifdef NU_WITH_UDB
 #  define NU_WITH_UTF8_READER

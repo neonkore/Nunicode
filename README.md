@@ -347,7 +347,8 @@ Strings collation and casemapping
 
     All collation and casemapping functions options imply -DNU_WITH_UTF8_READER
 
-    Collation functions also imply -DNU_WITH_UDB
+    Collation functions also imply -DNU_WITH_UDB, -DNU_WITH_TOUPPER,
+    -DNU_WITH_DUCET and corresponding string functions
 
 * ``-DNU_WITH_TOUPPER`` - enable upper case mapping
 * ``-DNU_WITH_TOLOWER`` - enable lower case mapping
@@ -359,11 +360,7 @@ Strings collation and casemapping
   unterminated strings
 * ``-DNU_WITH_COLLATION`` - implies ``-DNU_WITH_Z_COLLATION``
   and ``-DNU_WITH_N_COLLATION``
-
-Collation misc
-
-* ``-DNU_WITH_UDB`` - enable UDB functions, might be handy if you
-  need to implement your own decomposition or collation
+* ``-DNU_WITH_DUCET`` - enable DUCET functions
 
 Misc
 
