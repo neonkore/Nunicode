@@ -166,7 +166,7 @@ def GenerateValues(G, V):
 	print '};'
 	print
 
-	BOUNDARY = 12
+	BOUNDARY = 10
 
 	print '/* indexes */'
 	print 'static const uint16_t VALUES_I[] = {'
