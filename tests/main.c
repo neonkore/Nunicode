@@ -1,7 +1,5 @@
 #include <stdio.h>
 
-#include <libnu/libnu.h>
-
 typedef void (*testcase)(void);
 
 void test_utf8_decoding();

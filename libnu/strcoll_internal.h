@@ -6,6 +6,10 @@
 #include "defines.h"
 #include "strings.h"
 
+#if defined (__cplusplus) || defined (c_plusplus)
+extern "C" {
+#endif
+
 /** Weight unicode codepoint (or several codepoints)
  *
  * 0 should always be weighted to 0. If your weight function need more
@@ -111,4 +115,9 @@ const char* _nu_strstr(const char *haystack, const char *haystack_limit,
 	nu_casemapping_t casemap, nu_codepoint_weight_t weight);
 
 #endif /* (defined NU_WITH_Z_COLLATION) || (defined NU_WITH_N_COLLATION) */
+
+#if defined (__cplusplus) || defined (c_plusplus)
+}
+#endif
+
 #endif /* NU_STRCOLL_INTERNAL_H */

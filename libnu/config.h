@@ -117,9 +117,10 @@
 # ifndef NU_WITH_UDB
 #  define NU_WITH_UDB
 # endif /* NU_WITH_UDB */
-# ifndef NU_WITH_UTF8_READER
-#  define NU_WITH_UTF8_READER
-# endif
 #endif
+
+#ifdef NU_WITH_UDB
+#  define NU_WITH_UTF8_READER
+#endif /* NU_WITH_UDB */
 
 #endif /* NU_BUILD_CONFIG_H */

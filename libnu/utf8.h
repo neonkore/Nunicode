@@ -10,7 +10,7 @@
 /** @defgroup utf8 UTF-8 support
  *
  * Note: There is no utf8_string[i] equivalent - it will be slow,
- * use nu_utf8_next() instead
+ * use nu_utf8_read() and nu_utf8_revread() instead
  */
 
 #if defined (__cplusplus) || defined (c_plusplus)
