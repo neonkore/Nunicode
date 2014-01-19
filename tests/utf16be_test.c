@@ -6,7 +6,9 @@
 void test_utf16be_decoding() {
 	uint32_t u = 0;
 
+	/* skip read */
 	assert(nu_utf16be_read("\x00\x67" /* g */, 0));
+
 	assert(nu_utf16be_read("\x00\x67" /* g */, &u) && u == 0x0067);
 	assert(nu_utf16be_read("\x02\x05" /* ȅ */, &u) && u == 0x0205);
 	assert(nu_utf16be_read("\x20\xAC" /* € */, &u) && u == 0x20AC);
@@ -29,6 +31,9 @@ void test_utf16be_revread() {
 
 void test_utf16be_encoding() {
 	char p[32] = { 0 };
+
+	/* skip output */
+	assert(nu_utf16be_write(0x0067, 0) && memcmp("", p, 1) == 0);
 
 	assert(nu_utf16be_write(0x0067, p) && memcmp("\x00\x67" /* g */, p, 2) == 0);
 	assert(nu_utf16be_write(0x0205, p) && memcmp("\x02\x05" /* ȅ */, p, 2) == 0);

@@ -17,8 +17,7 @@
 import sys
 import time
 
-FNV_OFFSET_BASIS = 0xffffffff
-FNV_PRIME = 0x01000193
+PRIME = 0x01000193
 INTERNAL_ENCODING = "UTF-8"
 
 
@@ -26,21 +25,19 @@ INTERNAL_ENCODING = "UTF-8"
 # integer d results in a different hash value.
 def hash(d, str):
 	if d == 0:
-		d = FNV_PRIME
+		d = PRIME
 
-	# Use the FNV algorithm from http://isthe.com/chongo/tech/comp/fnv/
 	c = int(str, base=16)
-	c1 = c & 0xFF000000
-	c2 = c & 0x00FF0000
-	c3 = c & 0x0000FF00
-	c4 = c & 0x000000FF
 
-	d = (((d * FNV_PRIME) ^ c1) & FNV_OFFSET_BASIS)
-	d = (((d * FNV_PRIME) ^ c2) & FNV_OFFSET_BASIS)
-	d = (((d * FNV_PRIME) ^ c3) & FNV_OFFSET_BASIS)
-	d = (((d * FNV_PRIME) ^ c4) & FNV_OFFSET_BASIS)
+	# It doesn't matter for MPH if it's FVN or not until G
+	# is correctly filled, therefore simple XOR is enough to produce
+	# required randomness while produced index fits into uint16_t.
+	#
+	# You can consider this as usage of Unicode codepoint as a hash
+	# itself, but it need to depend on d to distibute values between
+	# buckets
 
-	return d
+	return d ^ c
 
 
 # Computes a minimal perfect hash table using the given python dictionary. It
@@ -120,15 +117,13 @@ def PerfectHashLookup(G, key):
 def GenerateInfo(G, combined):
 	print '''/*
 %d
-FNV_OFFSET_BASIS: %08X,
-FNV_PRIME: %08X,
-FNV_SIZE: %d,
-COMBINED LENGTH: %d,
+PRIME: %08X,
+G_SIZE: %d,
+COMBINED_LENGTH: %d,
 ENCODING: %s,
 */
 ''' % (time.time(),
-		FNV_OFFSET_BASIS,
-		FNV_PRIME, len(G),
+		PRIME, len(G),
 		len(combined) / 4,
 		INTERNAL_ENCODING)
 
@@ -155,27 +150,48 @@ def FormatReplacement(r):
 
 # Print values table
 def GenerateValues(G, V):
-	print 'static const nu_udb_t VALUES[] = {'
+	BOUNDARY = 8
+
+	print '/* codepoints */'
+	print 'static const uint32_t VALUES_C[] = {'
 	for i, (codepoint, replacement) in enumerate(V):
 		assert(replacement is not None)
 
-		print VALUE_TEMPLATE % {
-			'codepoint': int(codepoint, base=16),
-			'decomps': replacement,
-		}
+		if i % BOUNDARY == 0:
+			sys.stdout.write('\t')
+		sys.stdout.write('0x%06X, ' % (int(codepoint, base=16),))
+		if (i + 1) % BOUNDARY == 0:
+			sys.stdout.write('\n')
+
+	print '};'
+	print
+
+	BOUNDARY = 10
+
+	print '/* indexes */'
+	print 'static const uint16_t VALUES_I[] = {'
+	for i, (codepoint, replacement) in enumerate(V):
+		assert(replacement is not None)
+
+		if i % BOUNDARY == 0:
+			sys.stdout.write('\t')
+		sys.stdout.write('0x%04X, ' % (replacement,))
+		if (i + 1) % BOUNDARY == 0:
+			sys.stdout.write('\n')
+
 	print '};'
 	print
 
 
 # Print first hash table
-def GenerateFNV(G):
+def GenerateG(G):
 	BOUNDARY = 12
 
 	print 'static const int16_t G[] = {'
 	for i, x in enumerate(G):
 		if i % BOUNDARY == 0:
 			sys.stdout.write('\t')
-		sys.stdout.write(str(x))
+		sys.stdout.write('%d' % (x,))
 		sys.stdout.write(', ')
 		if (i + 1) % BOUNDARY == 0:
 			sys.stdout.write('\n')
@@ -200,33 +216,6 @@ def GenerateCombined(combined):
 	print
 
 
-dict = {}
-list = []
-combined = '\\x00'  # offset 0 is normally impossible, it is used for signaling collision
-
-for i, line in enumerate(sys.stdin):
-	codepoint, replacement = line.split(' ')
-	replacement = FormatReplacement(replacement.strip().split(','))
-
-	if not replacement:
-		continue
-
-	offset = len(combined) / 4  # formatted replacement is always "\xYY", i.e. 4 byte len
-	combined += replacement + '\\x00'
-
-	dict[codepoint] = (codepoint, offset)
-	list.append(codepoint)
-
-(G, V) = CreateMinimalPerfectHash(dict)
-
-assert(len(G) == len(V))
-
-GenerateInfo(G, combined)
-GenerateFNV(G)
-GenerateValues(G, V)
-GenerateCombined(combined)
-
-#print 'len(combined):', len(combined) / 4
-
-#h = PerfectHashLookup(G, '0061')
-#print 'hash:', h, V[h]
+def GenerateIncludes():
+	print '#include <stdint.h>'
+	print

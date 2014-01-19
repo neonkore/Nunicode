@@ -8,6 +8,9 @@
  * functions won't go further than m-th *character* in string, not byte.
  */
 
+/** @defgroup transformations Codepoint transformations
+ */
+
 #include <stdint.h>
 #include <sys/types.h>
 
@@ -38,21 +41,25 @@ typedef const char* (*nu_read_iterator_t)(const char *encoded, uint32_t *unicode
  */
 typedef const char* (*nu_revread_iterator_t)(uint32_t *unicode, const char *encoded);
 
-/** Transform codepoint
- *
- * @ingroup decompose
- * @see nu_decompose
- * @see nu_toupper
- * @see nu_tolower
- */
-typedef const char* (*nu_transformation_t)(uint32_t codepoint, nu_read_iterator_t *it);
-
 /** Write (encode) iterator
  *
  * @ingroup iterators
  * @see nu_utf8_write
  */
 typedef char* (*nu_write_iterator_t)(uint32_t unicode, char *encoded);
+
+/** Transform codepoint
+ *
+ * @ingroup transformations
+ * @see nu_decompose
+ * @see nu_toupper
+ * @see nu_tolower
+ */
+typedef const char* (*nu_transformation_t)(uint32_t codepoint, nu_read_iterator_t *it);
+
+#if (defined NU_WITH_Z_STRINGS) || (defined NU_WITH_N_STRINGS)
+
+#endif /* NU_WITH_Z_STRINGS NU_WITH_N_STRINGS */
 
 #ifdef NU_WITH_Z_STRINGS
 

@@ -13,7 +13,7 @@ int callback(void *context, int argc, char **argv, char **columns) {
 }
 
 int main() {
-	nunicode_sqlite3_init(1);
+	nunicode_sqlite3_static_init(1);
 
 	sqlite3 *db = 0;
 	sqlite3_open(":memory:", &db);

@@ -1,0 +1,5 @@
+#!/bin/sh
+
+SORTABLE=$1
+
+grep -x -f $SORTABLE | awk '{printf "%s %06X\n", $0, NR}'

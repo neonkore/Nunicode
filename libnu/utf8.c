@@ -15,14 +15,6 @@ const char* nu_utf8_read(const char *utf8, uint32_t *unicode) {
 		}
 	}
 
-	switch (len) {
-		case 1:
-		case 2:
-		case 3:
-		case 4: break;
-		default: return 0; /* abort */
-	}
-
 	return utf8 + len;
 }
 
@@ -66,14 +58,6 @@ char* nu_utf8_write(uint32_t unicode, char *utf8) {
 			case 3: b3_utf8(unicode, utf8); break;
 			case 4: b4_utf8(unicode, utf8); break;
 		}
-	}
-
-	switch (codepoint_len) {
-		case 1:
-		case 2:
-		case 3:
-		case 4: break;
-		default: return 0; /* abort */
 	}
 
 	return utf8 + codepoint_len;

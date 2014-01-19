@@ -20,6 +20,10 @@ if(CMAKE_COMPILER_IS_GNUCC)
 	endif(NOT CMAKE_BUILD_TYPE MATCHES RELEASE)
 endif(CMAKE_COMPILER_IS_GNUCC)
 
+if(CMAKE_BUILD_TYPE MATCHES GCOV)
+	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fprofile-arcs -ftest-coverage")
+endif(CMAKE_BUILD_TYPE MATCHES GCOV)
+
 add_subdirectory(libnu)
 add_subdirectory(tests)
 add_subdirectory(samples)

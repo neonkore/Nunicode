@@ -6,21 +6,16 @@ const char* nu_validate(const char *encoded, size_t max_len, nu_validread_iterat
 	const char *p = encoded;
 	while (p < encoded + max_len) {
 		int byte_len = it(p, max_len - (p - encoded));
-		if (byte_len <= 0) {
-			return p;
-		}
 
-		if (p + byte_len > encoded + max_len) {
+		if (byte_len <= 0
+		|| p + byte_len > encoded + max_len) {
 			return p;
 		}
 
 		p += byte_len;
 	}
 
-	/* final check: p + byte_len should match encoded + max_len
-	 * otherwise it's also an error */
-	
-	return (p == encoded + max_len ? 0 : p);
+	return 0;
 }
 
 #endif /* NU_WITH_VALIDATION */

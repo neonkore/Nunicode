@@ -49,6 +49,7 @@ int nu_utf16be_validread(const char *encoded, size_t max_len);
  * @ingroup utf16
  * @see nu_utf16le_write
  */
+NU_EXPORT
 char* nu_utf16be_write(uint32_t unicode, char *utf16);
 
 #endif /* NU_WITH_UTF16BE_WRITER */

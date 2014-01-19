@@ -6,7 +6,10 @@
 void test_utf16le_decoding() {
 	uint32_t u = 0;
 
+	/* skip output */
 	assert(nu_utf16le_read("\x67\x00" /* g */, 0));
+
+	assert(nu_utf16le_read("" /* g */, &u) && u == 0);
 	assert(nu_utf16le_read("\x67\x00" /* g */, &u) && u == 0x0067);
 	assert(nu_utf16le_read("\x05\x02" /* ȅ */, &u) && u == 0x0205);
 	assert(nu_utf16le_read("\xAC\x20" /* € */, &u) && u == 0x20AC);
@@ -29,6 +32,9 @@ void test_utf16le_revread() {
 
 void test_utf16le_encoding() {
 	char p[32] = { 0 };
+
+	/* skip output */
+	assert(nu_utf16le_write(0x0067, 0) && memcmp("", p, 1) == 0);
 
 	assert(nu_utf16le_write(0x0067, p) && memcmp("\x67\x00" /* g */, p, 2) == 0);
 	assert(nu_utf16le_write(0x0205, p) && memcmp("\x05\x02" /* ȅ */, p, 2) == 0);

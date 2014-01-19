@@ -101,14 +101,24 @@
 # define NU_WITH_N_COLLATION
 #endif /* NU_WITH_COLLATION */
 
+#ifdef NU_WITH_Z_COLLATION
+# define NU_WITH_Z_STRINGS
+# define NU_WITH_TOUPPER
+#endif
+
+#ifdef NU_WITH_N_COLLATION
+# define NU_WITH_N_STRINGS
+# define NU_WITH_TOUPPER
+#endif
+
 #ifdef NU_WITH_CASEMAP
 # define NU_WITH_TOLOWER
 # define NU_WITH_TOUPPER
 #endif /* NU_WITH_CASEMAP */
 
 #if (defined NU_WITH_Z_COLLATION) || (defined NU_WITH_N_COLLATION)
-# ifndef NU_WITH_DECOMPOSITION
-#  define NU_WITH_DECOMPOSITION
+# ifndef NU_WITH_DUCET
+#  define NU_WITH_DUCET
 # endif
 #endif
 
@@ -117,9 +127,14 @@
 # ifndef NU_WITH_UDB
 #  define NU_WITH_UDB
 # endif /* NU_WITH_UDB */
-# ifndef NU_WITH_UTF8_READER
-#  define NU_WITH_UTF8_READER
-# endif
 #endif
+
+#ifdef NU_WITH_DUCET
+#  define NU_WITH_UDB
+#endif /* NU_WITH_DUCET */
+
+#ifdef NU_WITH_UDB
+#  define NU_WITH_UTF8_READER
+#endif /* NU_WITH_UDB */
 
 #endif /* NU_BUILD_CONFIG_H */

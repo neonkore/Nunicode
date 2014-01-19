@@ -1,7 +1,5 @@
 #include <stdio.h>
 
-#include <libnu/libnu.h>
-
 typedef void (*testcase)(void);
 
 void test_utf8_decoding();
@@ -54,9 +52,10 @@ void test_validation_utf16be();
 void test_validation_utf16he();
 void test_validation_utf16le();
 void test_validation_utf32();
-void test_fnv_lookup();
+void test_mph_lookup();
 void test_udb_lookup();
 void test_ducet();
+void test_ducet_known_unknown();
 void test_toupper();
 void test_tolower();
 void test_strchr();
@@ -76,9 +75,11 @@ void test_strnstr();
 void test_strcasestr();
 void test_strcasenstr();
 void test_crossencoding_strcoll();
+void test_compoundcmp_strcoll();
+void test_compoundcmp_strcoll_outskirts();
+void test_compoundcmp_strncoll();
 
 testcase cases[] = {
-
 	test_utf8_decoding,
 	test_utf8_bom,
 	test_utf8_revread,
@@ -142,9 +143,10 @@ testcase cases[] = {
 	test_validation_utf16le,
 	test_validation_utf32,
 
-	test_fnv_lookup,
+	test_mph_lookup,
 	test_udb_lookup,
 	test_ducet,
+	test_ducet_known_unknown,
 	test_toupper,
 	test_tolower,
 
@@ -156,16 +158,22 @@ testcase cases[] = {
 	test_strrnchr,
 	test_strrcasechr,
 	test_strrcasenchr,
+
 	test_strcoll,
 	test_strncoll,
 	test_strcasecoll,
 	test_strcasencoll,
+
 	test_strstr,
 	test_strnstr,
 	test_strcasestr,
 	test_strcasenstr,
 
 	test_crossencoding_strcoll,
+
+	test_compoundcmp_strcoll,
+	test_compoundcmp_strcoll_outskirts,
+	test_compoundcmp_strncoll,
 };
 
 int main() {

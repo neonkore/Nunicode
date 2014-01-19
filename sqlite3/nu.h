@@ -11,7 +11,7 @@ extern "C" {
  *
  * @param verbose if not 0 - print libnu and libnusqlite3 versions
  */
-void nunicode_sqlite3_init(int verbose);
+void nunicode_sqlite3_static_init(int verbose);
 
 #endif /* NU_DYNAMIC_EXTENSION */
 

@@ -8,7 +8,8 @@ What it can do:
 
 * Decode UTF strings into Unicode characters
 * Encode Unicode characters into UTF string
-* Collate UTF strings (full unicode collation, "Maße" == "Masse")
+* Collate UTF strings (full unicode collation, 
+  upper("Maße") == upper("Masse"))
 * Correctly casemap Unicode characters ("Maße" -> "MASSE")
 
 Unicode is not only character set, but also specification of different
@@ -178,8 +179,7 @@ the middle of multibyte UTF-8 sequence), but UTF-16 and UTF-32 revread
 will fail badly. In fact, UTF-32 revread is just ``const char *p - 4``.
 
 Pointer passed to revread() is supposed to always come from call to
-``nu_*_read()``. Otherwise prepare to unforeseen consequences. (Actually,
-you can prepare to unforeseen consequences in any case).
+``nu_*_read()``. Otherwise prepare to unforeseen consequences.
 
 As a side note, if you pass 0 as a pointer to decoded character,
 ``revread()``, as you would expect, won't do any redundant decoding,
@@ -193,32 +193,20 @@ but will just iterate over the string.
 
 ## STRINGS COLLATION AND CASE MAPPING
 
-    If your browser cant display characters in this section thats too bad
-
 Case mapping uses complete mapping set extracted from [UCD][] +
 untailored [special casing][].
 
 Note that nunicode **DO NOT** implement [UCA][]. Instead it use limited
-set of [decompositions][] extracted for UCA. It works this way:
+set of the Default Unicode Collation Element Table weights extracted
+from UCA. Set is limited to codepoints having meaning to collation:
+letters and numbers (all variants).
 
-1. Normally cyrillic "ё" (begin of alphabet) > cyrillic "я" (very end
-   of alphabet)
-2. At the same time capital "Ё" < capital "Я"
-3. nunicode decomposes "ё" into "е" + ◌̈ (U+0308)
-4. Capital "Ё", as you would guess, also decomposes into "Е" + ◌̈ (U+0308)
-
-This is called "<sort>" decomposition in UCA. Obviously if you compare
-"е" and "е" + U+0308 binary, you will get correct strings order (for
-cyrillic at least).
-
-nunicode do not only implement <sort> decomposition, but also every other
-decomposition type except compatibility decompositions to avoid
-² -> 2 transformation. Hence you can say it somewhat similar to [NFD][],
-but not to NFKD, and it's also neither of those.
+Note that in most cases tailoring is still required, but DUCET provide
+reasonable defaults for all languages.
 
 Both collation and case mapping use full decomposition of characters
 (as opposed to simple decomposition) and take into account that each
-Unicode character might grow in size during collation or casemapping.
+Unicode character might grow in size during casemapping.
 
 For instance, "ß" transforms into "SS" inside of ``nu_toupper()`` and
 ``nu_strcasecoll("Maße", "MASSE")`` will report equivalence of these
@@ -228,20 +216,15 @@ Note that Unicode also descibes several collation tailorings, but neither
 is implemented by nunicode ATM.
 
 [UCD]: http://www.unicode.org/ucd/
-[UCA]: http://www.unicode.org/reports/tr10/
-[decompositions]: http://unicode.org/Public/UCA/6.3.0/decomps.txt
 [special casing]: http://unicode.org/Public/6.3.0/ucd/SpecialCasing.txt
-[NFD]: http://unicode.org/reports/tr15/#Norm_Forms
+[UCA]: http://www.unicode.org/reports/tr10/
 
 ### performance considerations
 
 Decomposition and case mapping are O(1). Internally both use [minimal
-perfect hash][] table for lookup. Hash is [Fowler–Noll–Vo][] which is
-a little bit of bit-wise operations on 32-bits integer and couple of
-MOD's.
+perfect hash][] table for lookup. Hash is a couple of XORs.
 
 [minimal perfect hash]: http://iswsa.acm.org/mphf/index.html
-[Fowler–Noll–Vo]: http://isthe.com/chongo/tech/comp/fnv/
 
 ## ENCODING VALIDATION
 
@@ -360,12 +343,12 @@ UTF-32
 
 * Very same options as for UTF-16, just replace 16 with 32
 
-Strings collation and case mapping
+Strings collation and casemapping
 
-    All collation and case mapping functions options imply
-    -DNU_WITH_UTF8_READER
+    All collation and casemapping functions options imply -DNU_WITH_UTF8_READER
 
-    Collation functions also imply -DNU_WITH_UDB
+    Collation functions also imply -DNU_WITH_UDB, -DNU_WITH_TOUPPER,
+    -DNU_WITH_DUCET and corresponding string functions
 
 * ``-DNU_WITH_TOUPPER`` - enable upper case mapping
 * ``-DNU_WITH_TOLOWER`` - enable lower case mapping
@@ -377,11 +360,7 @@ Strings collation and case mapping
   unterminated strings
 * ``-DNU_WITH_COLLATION`` - implies ``-DNU_WITH_Z_COLLATION``
   and ``-DNU_WITH_N_COLLATION``
-
-Collation misc
-
-* ``-DNU_WITH_UDB`` - enable UDB functions, might be handy if you
-  need to implement your own decomposition
+* ``-DNU_WITH_DUCET`` - enable DUCET functions
 
 Misc
 

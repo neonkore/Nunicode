@@ -10,6 +10,9 @@ def unidata_strip(s):
 	i = s.find('#')
 	if i > 0:
 		s = s[:i]
+
+	s = s.strip()
+
 	return s
 
 
@@ -19,4 +22,4 @@ def unidata_split(s):
 
 
 def unidata_comment(line):
-	return (not line or not line.strip() or line[0] == '#')
+	return (not line or not line.strip() or line[0] == '#' or line[0] == '@')

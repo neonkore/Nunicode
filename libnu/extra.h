@@ -33,6 +33,7 @@ extern "C" {
  * @see nu_utf8_strlen
  * @see nu_readnstr
  */
+NU_EXPORT
 int nu_readstr(const char *encoded, uint32_t *unicode,
 	nu_read_iterator_t it);
 
@@ -49,6 +50,7 @@ int nu_readstr(const char *encoded, uint32_t *unicode,
  * @see nu_utf8_bytelen
  * @see nu_writenstr
  */
+NU_EXPORT
 int nu_writestr(const uint32_t *unicode, char *encoded,
 	nu_write_iterator_t it);
 
@@ -70,6 +72,7 @@ int nu_writestr(const uint32_t *unicode, char *encoded,
  * @see nu_utf8_write
  * @see nu_transformnstr
  */
+NU_EXPORT
 int nu_transformstr(const char *source, char *dest,
 	nu_read_iterator_t read_it, nu_write_iterator_t write_it);
 

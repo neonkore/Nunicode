@@ -1,0 +1,23 @@
+#!/usr/bin/python
+
+from mph import *
+
+dict = {}
+
+for i, line in enumerate(sys.stdin):
+	codepoint, replacement = filter(bool, line.strip().split(' '))
+
+	if not replacement:
+		continue
+
+	replacement = int(replacement.strip(), base=16)
+	dict[codepoint] = (codepoint, replacement)
+
+(G, V) = CreateMinimalPerfectHash(dict)
+
+assert(len(G) == len(V))
+
+GenerateInfo(G, [])
+GenerateIncludes()
+GenerateG(G)
+GenerateValues(G, V)

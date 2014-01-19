@@ -22,13 +22,45 @@
 #include "config.h"
 #include "casemap.h"
 #include "defines.h"
+#include "strcoll_internal.h"
 #include "strings.h"
 
 #if defined (__cplusplus) || defined (c_plusplus)
 extern "C" {
 #endif
 
-typedef int (*nu_codepointcmp_t)(uint32_t u1, uint32_t u2, nu_casemapping_t casemap);
+#if (defined NU_WITH_Z_COLLATION) || (defined NU_WITH_N_COLLATION)
+
+/** Default compound read, equal to simply calling encoded_read(encoded, &unicode)
+ *
+ * @ingroup collation
+ * @param encoded encoded string
+ * @param encoded_read read (decode) function
+ * @param unicode output unicode codepoint
+ * @param tail output pointer to compound tail, should never be 0
+ * @param tail_read output tail read function, should never be 0
+ * @return pointer to next encoded character
+ */
+NU_EXPORT
+const char* nu_default_compound_read(const char *encoded, nu_read_iterator_t encoded_read,
+	uint32_t *unicode, const char **tail, nu_read_iterator_t *tail_read);
+
+/** Case-ignoring compound read, equal to calling
+ * encoded_read(encoded, &unicode) with nu_toupper() applied internally
+ *
+ * @ingroup collation
+ * @param encoded encoded string
+ * @param encoded_read read (decode) function
+ * @param unicode output unicode codepoint
+ * @param tail output pointer to compound tail, should never be 0
+ * @param tail_read output tail read function, should never be 0
+ * @return pointer to next encoded character
+ */
+NU_EXPORT
+const char* nu_nocase_compound_read(const char *encoded, nu_read_iterator_t encoded_read,
+	uint32_t *unicode, const char **tail, nu_read_iterator_t *tail_read);
+
+#endif /* NU_WITH_Z_COLLATION || NU_WITH_N_COLLATION */
 
 #ifdef NU_WITH_Z_COLLATION
 

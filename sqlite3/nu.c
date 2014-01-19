@@ -190,12 +190,6 @@ static void nunicode_sqlite3_like_utf16he(sqlite3_context *context, int argc, sq
 	_nunicode_sqlite3_like(context, argc, argv, nu_utf16he_read);
 }
 
-/** Strings collation
- *
- * This is full Unicode collation when "Maße" matches "Masse". Also note that
- * while nunicode support different encodings for s1 and s2, same encoding is
- * used in SQLite extension.
- */
 static int _nunicode_collate(const char *s1, size_t s1_max_len,
 	const char *s2, size_t s2_max_len, nu_read_iterator_t it) {
 	return nu_strncoll(s1, s1_max_len, s2, s2_max_len, it, it);
@@ -231,7 +225,7 @@ static int nunicode_sqlite3_collate_utf16he(void *context, int s1_len, const voi
  * while nunicode support different encodings for s1 and s2, same encoding is
  * used in SQLite extension.
  *
- * Internally, folding method is nu_tolower()
+ * Internally, folding method is nu_toupper()
  *
  * @see _nunicode_collate
  * @see nu_tolower
@@ -435,7 +429,6 @@ static void nunicode_sqlite3_lower_utf16he(sqlite3_context *context, int argc, s
 	(nu_wrapper), 0, 0); \
 	if ((rc) != SQLITE_OK) return rc;
 
-/* FIXME: rename to sqlite3_nunicode_init */
 NU_SQLITE3_EXPORT
 int sqlite3_nunicode_init(sqlite3 *db, char **err_msg,  const sqlite3_api_routines *api) {
 	(void)(err_msg);
@@ -476,13 +469,17 @@ int sqlite3_nunicode_init(sqlite3 *db, char **err_msg,  const sqlite3_api_routin
 
 NU_SQLITE3_EXPORT
 int sqlite3_extension_init(sqlite3 *db, char **err_msg,  const sqlite3_api_routines *api) {
+	fprintf(stderr, "WARNING: sqlite3_extension_init() is deprecated and will be"
+	" removed in future releases so you better hurry and replace it with a call"
+	" to sqlite3_nunicode_init(). Why it so is explained on this page:"
+	" http://www.sqlite.org/loadext.html\n");
 	return sqlite3_nunicode_init(db, err_msg, api);
 }
 
 #ifndef NU_DYNAMIC_EXTENSION
 
-void nunicode_sqlite3_init(int verbose) {
-	sqlite3_auto_extension((void (*)(void))(sqlite3_extension_init));
+void nunicode_sqlite3_static_init(int verbose) {
+	sqlite3_auto_extension((void (*)(void))(sqlite3_nunicode_init));
 
 	if (verbose != 0) {
 		fprintf(stderr, "nunicode version: %s\n", NU_VERSION);

@@ -1,0 +1,33 @@
+#!/usr/bin/python
+
+from mph import *
+
+dict = {}
+combined = '\\x00'  # offset 0 is normally impossible, it is used for signaling collision
+
+for i, line in enumerate(sys.stdin):
+	codepoint, replacement = line.split(' ')
+	replacement = FormatReplacement(replacement.strip().split(','))
+
+	if not replacement:
+		continue
+
+	offset = len(combined) / 4  # formatted replacement is always "\xYY", i.e. 4 byte len
+	combined += replacement + '\\x00'
+
+	dict[codepoint] = (codepoint, offset)
+
+(G, V) = CreateMinimalPerfectHash(dict)
+
+assert(len(G) == len(V))
+
+GenerateInfo(G, combined)
+GenerateIncludes()
+GenerateG(G)
+GenerateValues(G, V)
+GenerateCombined(combined)
+
+#print 'len(combined):', len(combined) / 4
+
+#h = PerfectHashLookup(G, '0061')
+#print 'hash:', h, V[h]

@@ -23,7 +23,7 @@ int main() {
 	char *errstr = 0;
 
 	/* load extension */
-	rc = sqlite3_load_extension(db, "./libnusqlite3.so", 0, &errstr);
+	rc = sqlite3_load_extension(db, "./libnusqlite3.so", "sqlite3_nunicode_init", &errstr);
 	if (rc != SQLITE_OK) {
 		printf("!!! error loading extension: %s\n", errstr);
 		return 1;

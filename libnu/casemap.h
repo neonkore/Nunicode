@@ -11,16 +11,19 @@
 extern "C" {
 #endif
 
+/** Casemap codepoint
+ * @ingroup transformations
+ */
 typedef nu_transformation_t nu_casemapping_t;
 
 #ifdef NU_WITH_TOUPPER
 
 /** Return uppercase value of codepoint
  *
- * @ingroup decompose
+ * @ingroup transformations
  * @param codepoint unicode codepoint
  * @param read output upper case read (decode) function
- * @return uppercase codepoint or same if mapping doesn't exist
+ * @return uppercase codepoint or 0 if mapping doesn't exist
  */
 NU_EXPORT
 const char* nu_toupper(uint32_t codepoint, nu_read_iterator_t *read);
@@ -31,10 +34,10 @@ const char* nu_toupper(uint32_t codepoint, nu_read_iterator_t *read);
 
 /** Return lowercase value of codepoint
  *
- * @ingroup decompose
+ * @ingroup transformations
  * @param codepoint unicode codepoint
  * @param read output lower case read (decode) function
- * @return lowercase codepoint or same if mapping doesn't exist
+ * @return lowercase codepoint or 0 if mapping doesn't exist
  */
 NU_EXPORT
 const char* nu_tolower(uint32_t codepoint, nu_read_iterator_t *read);
