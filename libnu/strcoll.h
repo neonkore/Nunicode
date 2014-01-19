@@ -22,21 +22,12 @@
 #include "config.h"
 #include "casemap.h"
 #include "defines.h"
+#include "strcoll_internal.h"
 #include "strings.h"
 
 #if defined (__cplusplus) || defined (c_plusplus)
 extern "C" {
 #endif
-
-/** Read (decode) iterator with transformation applied inside of it
- *
- * @ingroup iterators
- * @see nu_default_compound_read
- * @see nu_nocase_compound_read
- */
-typedef const char* (*nu_compound_read_t)(
-	const char *encoded, nu_read_iterator_t encoded_read,
-	uint32_t *unicode, const char **tail, nu_read_iterator_t *tail_read);
 
 #if (defined NU_WITH_Z_COLLATION) || (defined NU_WITH_N_COLLATION)
 

@@ -25,7 +25,7 @@ extern "C" {
  * @return comparable weight of the codepoint or (uint32_t)(-1)
  */
 NU_EXPORT
-int32_t nu_ducet_weight(uint32_t codepoint, int32_t weight);
+int32_t nu_ducet_weight(uint32_t codepoint, int32_t weight, void *context);
 
 #endif /* NU_WITH_DUCET */
 

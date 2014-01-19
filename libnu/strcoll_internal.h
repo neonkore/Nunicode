@@ -10,6 +10,16 @@
 extern "C" {
 #endif
 
+/** Read (decode) iterator with transformation applied inside of it
+ *
+ * @ingroup iterators
+ * @see nu_default_compound_read
+ * @see nu_nocase_compound_read
+ */
+typedef const char* (*nu_compound_read_t)(
+	const char *encoded, nu_read_iterator_t encoded_read,
+	uint32_t *unicode, const char **tail, nu_read_iterator_t *tail_read);
+
 /** Weight unicode codepoint (or several codepoints)
  *
  * 0 should always be weighted to 0. If your weight function need more
@@ -23,10 +33,11 @@ extern "C" {
  * @ingroup collation
  * @param u unicode codepoint to weight
  * @param weight 0 or negative weight previously returned by this function
+ * @param context pointer passed to _nu_strcoll() or _nu_strstr()
  * @return positive codepoint weight or negative value if function need more
  * codepoints
  */
-typedef int32_t (*nu_codepoint_weight_t)(uint32_t u, int32_t weight);
+typedef int32_t (*nu_codepoint_weight_t)(uint32_t u, int32_t weight, void *context);
 
 #if (defined NU_WITH_Z_COLLATION) || (defined NU_WITH_N_COLLATION)
 
@@ -54,7 +65,7 @@ int _nu_strcoll(const char *lhs, const char *lhs_limit,
 	const char *rhs, const char *rhs_limit,
 	nu_read_iterator_t it1, nu_read_iterator_t it2,
 	nu_compound_read_t com1, nu_compound_read_t com2,
-	nu_codepoint_weight_t weight);
+	nu_codepoint_weight_t weight, void *context);
 
 /** Internal interface for nu_strchr
  *
@@ -112,7 +123,7 @@ const char* _nu_strstr(const char *haystack, const char *haystack_limit,
 	const char *needle, const char *needle_limit,
 	nu_read_iterator_t it1, nu_read_iterator_t it2,
 	nu_compound_read_t com1, nu_compound_read_t com2,
-	nu_casemapping_t casemap, nu_codepoint_weight_t weight);
+	nu_casemapping_t casemap, nu_codepoint_weight_t weight, void *context);
 
 #endif /* (defined NU_WITH_Z_COLLATION) || (defined NU_WITH_N_COLLATION) */
 

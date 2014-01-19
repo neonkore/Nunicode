@@ -11,7 +11,9 @@ static const int32_t weight_ac = 'a' + 2;
 static const int32_t weight_ab = 'a' + 3;
 
 /* a < abc < ac < ab < b */
-static int32_t _test_weight(uint32_t u, int32_t weight) {
+static int32_t _test_weight(uint32_t u, int32_t weight, void *context) {
+	(void)(context);
+
 	switch (weight) {
 	case state_a:
 		switch (u) {
@@ -38,20 +40,20 @@ static int32_t _test_weight(uint32_t u, int32_t weight) {
 static int test_strcoll(const char *lhs, const char *rhs) {
 	return _nu_strcoll(lhs, NU_UNLIMITED, rhs, NU_UNLIMITED,
 		nu_utf8_read, nu_utf8_read,
-		nu_default_compound_read, nu_default_compound_read, _test_weight);
+		nu_default_compound_read, nu_default_compound_read, _test_weight, 0);
 }
 
 static int test_strncoll(const char *lhs, size_t max_lhs,
 	const char *rhs, size_t max_rhs) {
 	return _nu_strcoll(lhs, lhs + max_lhs, rhs, rhs + max_rhs,
 		nu_utf8_read, nu_utf8_read,
-		nu_default_compound_read, nu_default_compound_read, _test_weight);
+		nu_default_compound_read, nu_default_compound_read, _test_weight, 0);
 }
 
 void test_compoundcmp_strcoll() {
 	/* 0 should always be weighted 0 */
-	assert(_test_weight(0, 0) == 0);
-	assert(_test_weight(0, 1) == 0);
+	assert(_test_weight(0, 0, 0) == 0);
+	assert(_test_weight(0, 1, 0) == 0);
 
 	/* borders */
 	assert(test_strcoll("a", "b") < 0);
