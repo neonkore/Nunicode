@@ -6,6 +6,7 @@
 void test_strchr() {
 	const char *input1 = "Mass";
 	const char *input2 = "Maße";
+	const char *input3 = "côté";
 
 	assert(nu_strchr(input1, 'i', nu_utf8_read) == 0);
 	assert(nu_strchr(input1, 'M', nu_utf8_read) == input1);
@@ -15,6 +16,9 @@ void test_strchr() {
 	assert(nu_strchr(input2, 'e', nu_utf8_read) == input2 + 4);
 	assert(nu_strchr(input2, 's', nu_utf8_read) == 0);
 	assert(nu_strchr(input2, 0x00DF, nu_utf8_read) == input2 + 2);
+
+	assert(nu_strchr(input3, 'c', nu_utf8_read) == input3);
+	assert(nu_strchr(input3, 0x00F4, nu_utf8_read) == input3 + 1);
 }
 
 void test_strnchr() {
@@ -32,6 +36,7 @@ void test_strcasechr() {
 	const char *input1 = "MASSE";
 	const char *input2 = "Maße";
 	const char *input3 = "MASE";
+	const char *input4 = "MAS";
 
 	assert(nu_strcasechr(input1, 'i', nu_utf8_read) == 0);
 	assert(nu_strcasechr(input1, 'e', nu_utf8_read) == input1 + 4);
@@ -43,14 +48,21 @@ void test_strcasechr() {
 	assert(nu_strcasechr(input2, 'e', nu_utf8_read) == input2 + 4);
 
 	assert(nu_strcasechr(input3, 0x00DF, nu_utf8_read) == 0);
+
+	assert(nu_strcasechr(input4, 0x00DF, nu_utf8_read) == 0);
 }
 
 void test_strcasenchr() {
 	const char *input1 = "MASSE";
+	const char *input2 = "Maße";
 
 	assert(nu_strcasenchr(input1, 200, 'i', nu_utf8_read) == 0);
 	assert(nu_strcasenchr(input1, 4, 'e', nu_utf8_read) == 0);
 	assert(nu_strcasenchr(input1, 5, 'e', nu_utf8_read) == input1 + 4);
+
+	assert(nu_strcasenchr(input2, 200, 0x00DF, nu_utf8_read) == input2 + 2);
+	assert(nu_strcasenchr(input2, 5, 0x00DF, nu_utf8_read) == input2 + 2);
+	assert(nu_strcasenchr(input2, 4, 0x00DF, nu_utf8_read) == 0);
 }
 
 void test_strrchr() {
@@ -101,6 +113,7 @@ void test_strcoll() {
 	assert(nu_strcoll("Е", "Ё", nu_utf8_read, nu_utf8_read) < 0);
 	assert(nu_strcoll("ё", "я", nu_utf8_read, nu_utf8_read) < 0);
 	assert(nu_strcoll("Ё", "Я", nu_utf8_read, nu_utf8_read) < 0);
+	assert(nu_strcoll("Я", "Ё", nu_utf8_read, nu_utf8_read) > 0);
 
 	assert(nu_strcoll("rôle", "rôle", nu_utf8_read, nu_utf8_read) == 0);
 	assert(nu_strcoll("role", "roles", nu_utf8_read, nu_utf8_read) < 0);
@@ -130,6 +143,7 @@ void test_strncoll() {
 	assert(nu_strncoll("абв", 4, "аб", 4, nu_utf8_read, nu_utf8_read) == 0);
 	assert(nu_strncoll("абв", 6, "аб", 4, nu_utf8_read, nu_utf8_read) > 0);
 	assert(nu_strncoll("аб", 4, "абв", 6, nu_utf8_read, nu_utf8_read) < 0);
+	assert(nu_strncoll("абв", 6, "аб", 4, nu_utf8_read, nu_utf8_read) > 0);
 }
 
 void test_strcasecoll() {
@@ -162,12 +176,15 @@ void test_strcasencoll() {
 
 void test_strstr() {
 	const char *input1 = "Masse";
+	const char *input2 = "côté";
 	const char *input3 = "Massess";
 
 	assert(nu_strstr(input1, "", nu_utf8_read, nu_utf8_read) == input1);
 	assert(nu_strstr(input1, "ee", nu_utf8_read, nu_utf8_read) == 0);
 	assert(nu_strstr(input1, "asd", nu_utf8_read, nu_utf8_read) == 0);
 	assert(nu_strstr(input1, "Ma", nu_utf8_read, nu_utf8_read) == input1);
+
+	assert(nu_strstr(input2, "cô", nu_utf8_read, nu_utf8_read) == input2);
 
 	assert(nu_strstr(input3, "s", nu_utf8_read, nu_utf8_read) == input3 + 2);
 	assert(nu_strstr(input3, "ss", nu_utf8_read, nu_utf8_read) == input3 + 2);
