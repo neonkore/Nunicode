@@ -1,8 +1,9 @@
-.settings
+.settings/
+doc/
+tests/coverage/
 build*
 *.o
 *.a
 *.so
-doc/
 *.pyc
 *.zip
