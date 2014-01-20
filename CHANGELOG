@@ -1,3 +1,19 @@
+1.2
+
+[*] nu's sqlite3_extension_init() is now deprecated in
+    favor of sqlite3_nunicode_init()
+[*] renamed nunicode_sqlite3_init() into
+    nunicode_sqlite3_static_init()
+
+[+] introduced compound read (decode) iterators to reduce internal
+    complexity of collation
+
+[*] fixed several build options handling
+[*] codepoint compare functions replaced with codepoint weighting 
+    functions
+[*] faster MPH lookup
+[*] collation migrated to reduced DUCET
+
 1.1.2
 
 [+] nu_strrchr (collation)

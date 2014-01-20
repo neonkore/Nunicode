@@ -8,9 +8,10 @@ What it can do:
 
 * Decode UTF strings into Unicode characters
 * Encode Unicode characters into UTF string
-* Collate UTF strings (full unicode collation, 
-  upper("Maße") == upper("Masse"))
+* Collate encoded UTF strings (full unicode collation backed by DUCET)
 * Correctly casemap Unicode characters ("Maße" -> "MASSE")
+* Collation tailoring (all contractions, "ｫー" < "ぉゝ",
+  backward accent ordering, etc)
 
 Unicode is not only character set, but also specification of different
 script rules. nunicode is trying to follow the spec with reasonable
@@ -18,25 +19,25 @@ constraints to produce small and fast Unicode implementation.
 
 What it *DOESN'T* do:
 
-* UCA
+* UCA (see notes)
 * Unicode normal forms
-* Collation tailoring (yet)
 
 Encodings supported ATM:
 
 * UTF-8
-* CESU-8/Modified UTF-8
 * UTF-16/UCS-2 (BOM/LE/BE)
 * UTF-32/UCS-4 (BOM/LE/BE)
+* CESU-8/Modified UTF-8
 * UTF-16HE/UTF-32HE (see notes)
 
-All string functions provided by nunicode work on encoded strings (no need
-to decode anything explicitely) and usually come with case-insensitive
-variant.
+All string functions provided by nunicode work on encoded strings: no 
+need to decode anything explicitely and there is no any internal
+representation in nunicode. Collation functions are complemented by
+case-insensitive variant.
 
 ## WHY YOU DO ANOTHER UNICODE LIBRARY
 
-I needed one for [Community Compass][].
+I needed one for [Community compass][].
 
 * I don't like [utf8proc][] (400Kb)
 * I don't like [UTF8-CPP][] (C++)
@@ -45,26 +46,27 @@ I needed one for [Community Compass][].
 * I don't like [apr-iconv][] (dependencies, etc)
 * I don't like [ICU][] (obvious reasons)
 
-(I'm sorry)
+(I'm sorry). See also "WHY ITS GOOD".
 
-See also "WHY ITS GOOD".
+* I like [libutf][] thought
 
-[Community Compass]: https://bitbucket.org/alekseyt/compass
+[Community compass]: https://bitbucket.org/alekseyt/compass
 [utf8proc]: http://www.public-software-group.org/utf8proc
 [UTF8-CPP]: http://utfcpp.sourceforge.net/
 [micro-utf8]: http://puszcza.gnu.org.ua/software/microutf8/
 [iconv]: http://www.gnu.org/software/libiconv/
 [apr-iconv]: http://apr.apache.org/
 [ICU]: http://site.icu-project.org/
+[libutf]: http://swtch.com/plan9port/unix/
 
 ## WHY ITS GOOD
 
 * Small size: UTF-8 encoding/decoding - 1.5Kb, UTF-8 encoding/decoding +
   0-terminated string functions - 3Kb; case mapping - 30Kb, full Unicode
-  collation - 55Kb
+  collation - 140Kb (less in compact flavor)
 * Zero memory footprint
 * Small CPU footprint
-* Endianess-agnostic
+* Endianess- and platform-agnostic
 * Rich build options: you can strip every part you don't need
 * C99 compliant, -pedantic -Wall -Wextra -Werror
 * No dependencies
@@ -144,7 +146,7 @@ Everything said above about UTF-16 also applies to UTF-32.
 
 ### host-endianess
 
-[ISO/IEC 10646][] clearly says that if BOM is not present, encoding
+[ISO/IEC 10646][] (PDF) clearly says that if BOM is not present, encoding
 should be considered BE, however sometimes you can see UTF-16 defined
 simply as "host-endian". This is misinterpretation of UTF-16 definition,
 but for the purpose of decoding and encoding strings in host endianess,
@@ -197,12 +199,9 @@ Case mapping uses complete mapping set extracted from [UCD][] +
 untailored [special casing][].
 
 Note that nunicode **DO NOT** implement [UCA][]. Instead it use limited
-set of the Default Unicode Collation Element Table weights extracted
-from UCA. Set is limited to codepoints having meaning to collation:
-letters and numbers (all variants).
-
-Note that in most cases tailoring is still required, but DUCET provide
-reasonable defaults for all languages.
+set of the Default Unicode Collation Element Table (DUCET) weights
+extracted from UCA. Set is limited to codepoints having meaning to
+collation: letters and numbers (all variants).
 
 Both collation and case mapping use full decomposition of characters
 (as opposed to simple decomposition) and take into account that each
@@ -212,12 +211,55 @@ For instance, "ß" transforms into "SS" inside of ``nu_toupper()`` and
 ``nu_strcasecoll("Maße", "MASSE")`` will report equivalence of these
 strings.
 
-Note that Unicode also descibes several collation tailorings, but neither
-is implemented by nunicode ATM.
-
 [UCD]: http://www.unicode.org/ucd/
 [special casing]: http://unicode.org/Public/6.3.0/ucd/SpecialCasing.txt
 [UCA]: http://www.unicode.org/reports/tr10/
+
+### localization (collation tailoring)
+
+Note that for the most languages tailoring is still required, but 
+DUCET provide reasonable defaults for all languages.
+
+Localization (l10n) is performed by nul10n library which is not
+publicitly available, please email me to get complete feature set, 
+documentation, examples and possibly demo.
+
+nul10n include support for the following languages
+
+Major europian languages (17Kb)
+
+* English: backed by embedded Default Unicode Collation Element
+  Table (DUCET)
+* French: single-pass backward accent ordering
+* Italian: included into DUCET
+* German: standard collation
+* Spanish: standard collation
+* Russian: standard collation
+
+Major asian languages (182Kb)
+
+* Chinese (Traditional): natively supported by Unicode
+* Chinese (Simplified): GB2312 variant, full variant available
+  on demand
+* Japanese: standard collation, with contractions supported 
+  ("ｫー" < "ぉゝ")
+* Korean: standard collation
+* Vietnamese: standard collation
+
+Together with Portuguese (included into DUCET), this set will provide
+coverage for both Americas, Europe, Asia and Australia.
+
+More languages? Available on demand.
+
+All collations correspond to [CLDR][] version 24 as published by 
+Unicode Consortium.
+
+Library is traditionally 100% covered with tests, has O(1) complexity
+under the hood and well documented. Base library will add only 12Kb to
+collations and comes in two flavors: standard and compact, latter will 
+allow to save another 64Kb on underlying nunicode lib.
+
+[CLDR]: http://cldr.unicode.org/
 
 ### performance considerations
 
@@ -240,7 +282,8 @@ UTF-32.
 
 Normally you need validation at I/O boundaries only, actually at I
 boundary only, because if ``nu_validate()`` is failing on product of 
-``nu_*_write()``, then this is bug in nunicode and it need to be fixed.
+``nu_*_write()``, then this is bug in nunicode (unlikely) and it need
+to be fixed.
 
 ## SQLITE3 EXTENSION
 
@@ -379,10 +422,6 @@ Misc
 Everything
 
 * ``-DNU_WITH_EVERYTHING`` - implies everything above
-
-## ROADMAP
-
-* 1.2: Unicode tailoring support
 
 ## QUESTIONS?
 
