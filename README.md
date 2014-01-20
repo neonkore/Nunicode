@@ -10,7 +10,7 @@ What it can do:
 * Encode Unicode characters into UTF string
 * Collate encoded UTF strings (full unicode collation backed by DUCET)
 * Correctly casemap Unicode characters ("Maße" -> "MASSE")
-* Collation tailoring (all contractions, "ｫー" < "ぉゝ",
+* Collation tailoring in nul10n (all contractions, "ｫー" < "ぉゝ",
   backward accent ordering, etc)
 
 Unicode is not only character set, but also specification of different
@@ -48,7 +48,7 @@ I needed one for [Community compass][].
 
 (I'm sorry). See also "WHY ITS GOOD".
 
-* I like [libutf][] thought
+* I like [libutf][] though
 
 [Community compass]: https://bitbucket.org/alekseyt/compass
 [utf8proc]: http://www.public-software-group.org/utf8proc
@@ -64,7 +64,7 @@ I needed one for [Community compass][].
 * Small size: UTF-8 encoding/decoding - 1.5Kb, UTF-8 encoding/decoding +
   0-terminated string functions - 3Kb; case mapping - 30Kb, full Unicode
   collation - 140Kb (less in compact flavor)
-* Zero memory footprint
+* Small memory footprint, zero allocations
 * Small CPU footprint
 * Endianess- and platform-agnostic
 * Rich build options: you can strip every part you don't need
@@ -184,7 +184,7 @@ Pointer passed to revread() is supposed to always come from call to
 ``nu_*_read()``. Otherwise prepare to unforeseen consequences.
 
 As a side note, if you pass 0 as a pointer to decoded character,
-``revread()``, as you would expect, won't do any redundant decoding,
+``revread()``, as you would expect, it won't do any redundant decoding,
 but will just iterate over the string.
 
     :::c
@@ -217,8 +217,8 @@ strings.
 
 ### localization (collation tailoring)
 
-Note that for the most languages tailoring is still required, but 
-DUCET provide reasonable defaults for all languages.
+Note that tailoring is required for the most of the languages, but 
+DUCET provides reasonable defaults for multi-lingual application.
 
 Localization (l10n) is performed by nul10n library which is not
 publicitly available, please email me to get complete feature set, 
@@ -263,7 +263,7 @@ allow to save another 64Kb on underlying nunicode lib.
 
 ### performance considerations
 
-Decomposition and case mapping are O(1). Internally both use [minimal
+Collation and case mapping are O(1). Internally both use [minimal
 perfect hash][] table for lookup. Hash is a couple of XORs.
 
 [minimal perfect hash]: http://iswsa.acm.org/mphf/index.html
