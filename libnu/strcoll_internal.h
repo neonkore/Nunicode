@@ -55,6 +55,7 @@ typedef int32_t (*nu_codepoint_weight_t)(uint32_t u, int32_t weight, void *conte
  * @param com1 lhs compound read function
  * @param com2 rhs compound read function
  * @param weight codepoint weighting function
+ * @param context pointer which will be passed to weight
  * @see nu_strcoll
  * @see nu_default_compound_read
  * @see nu_nocase_compound_read
@@ -111,6 +112,7 @@ const char* _nu_strrchr(const char *encoded, const char *limit, uint32_t c,
  * @param com2 needle compound read function
  * @param casemap casemapping function
  * @param weight codepoint weighting function
+ * @param context pointer which will be passed to weight
  * @see nu_strstr
  * @see nu_default_compound_read
  * @see nu_nocase_compound_read

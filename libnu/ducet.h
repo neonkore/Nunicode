@@ -22,6 +22,7 @@ extern "C" {
  * @ingroup udb
  * @param codepoint codepoint
  * @param weight previous weight for compound weight (not used here)
+ * @param context pointer passed to nu_strcoll()
  * @return comparable weight of the codepoint or (uint32_t)(-1)
  */
 NU_EXPORT
