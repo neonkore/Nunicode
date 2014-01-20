@@ -3,6 +3,7 @@ set(LIBNU_SRC
 	ducet.c
 	extra.c
 	strcoll.c
+	strcoll_internal.c
 	strings.c
 	tolower.c
 	toupper.c
