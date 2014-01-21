@@ -269,8 +269,10 @@ your own weighting function to ``_nu_strcoll()``. Take a look into
 there.
 
 Basically you need to implement state-machine to weight Unicode codepoint
-or several of them.``strcoll_internal_test.c`` and ``_test_weight()``
+or several of them. [strcoll_internal_test.c][] and ``_test_weight()``
 implementation might be good reference.
+
+[strcoll_internal_test.c]: https://bitbucket.org/alekseyt/nunicode/src/master/tests/strcoll_internal_test.c?at=master
 
 ### performance considerations
 
