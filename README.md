@@ -261,6 +261,17 @@ allow to save another 64Kb on underlying nunicode lib.
 
 [CLDR]: http://cldr.unicode.org/
 
+### custom collations
+
+If you're going to implement your own collation, you need to provide
+your own weighting function to ``_nu_strcoll()``. Take a look into
+``nu_codepoint_weight_t`` documentation, function contract is described
+there.
+
+Basically you need to implement state-machine to weight Unicode codepoint
+or several of them.``strcoll_internal_test.c`` and ``_test_weight()``
+implementation might be good reference.
+
 ### performance considerations
 
 Collation and case mapping are O(1). Internally both use [minimal
