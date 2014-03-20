@@ -126,7 +126,7 @@ Unicode defines 3 types of UTF-16 *each* affected by endianess.
 2. UTF-16LE (little endian)
 3. UTF-16BE (big endian)
 
-LE and BE are obviusly little-endian and big-endian, generic one's
+LE and BE are obviously little-endian and big-endian, generic one's
 endianess is defined by the byte order mark (BOM) at the beginning of the
 string or defaults to BE if BOM is absent. Thus generic UTF-16 is always
 BOM + either UTF-16LE or UTF-16BE.
@@ -149,12 +149,12 @@ Everything said above about UTF-16 also applies to UTF-32.
 [ISO/IEC 10646][] (PDF) clearly says that if BOM is not present, encoding
 should be considered BE, however sometimes you can see UTF-16 defined
 simply as "host-endian". This is misinterpretation of UTF-16 definition,
-but for the purpose of decoding and encoding strings in host endianess,
-nunicode implements UTF-16HE and UTF-32HE encodings.
+but for the purpose to be compatible with such implementations, nunicode
+implement non-standard UTF-16HE and UTF-32HE encodings.
 
 Note that ``nu_utf16_read_bom()`` will default encoding to UTF-16BE if
-BOM is not present in string, therefore HE variants are need to be used
-explicitely when required.
+BOM is not present in string, as standard demands. Therefore HE variants
+are need to be used explicitely when required.
 
 [ISO/IEC 10646]: http://www.itscj.ipsj.or.jp/sc2/open/02n4125/FCD10646-Main.pdf
 
@@ -195,7 +195,7 @@ but will just iterate over the string.
 
 ## STRINGS COLLATION AND CASE MAPPING
 
-Case mapping uses complete mapping set extracted from [UCD][] +
+Case mapping use complete mapping set extracted from [UCD][] +
 untailored [special casing][].
 
 Note that nunicode **DO NOT** implement [UCA][]. Instead it use limited
@@ -218,7 +218,8 @@ strings.
 ### localization (collation tailoring)
 
 Note that tailoring is required for the most of the languages, but 
-DUCET provides reasonable defaults for multi-lingual application.
+DUCET embedded into nunicode provide reasonable defaults for
+multi-lingual application.
 
 Localization (l10n) is performed by nul10n library which is not
 publicitly available, please email me to get complete feature set, 
@@ -255,9 +256,10 @@ All collations correspond to [CLDR][] version 24 as published by
 Unicode Consortium.
 
 Library is traditionally 100% covered with tests, has O(1) complexity
-under the hood and well documented. Base library will add only 12Kb to
-collations and comes in two flavors: standard and compact, latter will 
-allow to save another 64Kb on underlying nunicode lib.
+under the hood, and well documented. Base nul10n library will add only 
+12Kb to language-specific collations and comes in two flavors: standard
+and compact, latter will allow to save another 64Kb on underlying nunicode
+lib.
 
 [CLDR]: http://cldr.unicode.org/
 

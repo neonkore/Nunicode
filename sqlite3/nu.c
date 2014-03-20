@@ -14,6 +14,11 @@ SQLITE_EXTENSION_INIT1
  * - X LIKE Y ESCAPE Z
  * - upper(X)
  * - lower(X)
+ * - COLLATE NU630 - Unicode 6.3.0 case-sensitive collation
+ * - COLLATE NU630_NOCASE - Unicode 6.3.0 case-insensitive collation
+ *
+ * Deprecated collations (will be removed in next releases):
+ *
  * - COLLATE NUNICODE - case-sensitive Unicode collation
  * - COLLATE NOCASE
  *
@@ -431,6 +436,10 @@ static void nunicode_sqlite3_lower_utf16he(sqlite3_context *context, int argc, s
 
 NU_SQLITE3_EXPORT
 int sqlite3_nunicode_init(sqlite3 *db, char **err_msg,  const sqlite3_api_routines *api) {
+	fprintf(stderr, "WARNING: COLLATE NUNICODE and COLLATE NOCASE are deprecated and will be"
+	" removed in future releases. Please use COLLATE NU630 and COLLATE NU630_NOCASE instead.\n"
+	);
+
 	(void)(err_msg);
 
 	SQLITE_EXTENSION_INIT2(api);
@@ -454,6 +463,20 @@ int sqlite3_nunicode_init(sqlite3 *db, char **err_msg,  const sqlite3_api_routin
 	REGISTER_COLLATION(rc, db, SQLITE_UTF16BE, "NOCASE", nunicode_sqlite3_collate_nocase_utf16be);
 	REGISTER_COLLATION(rc, db, SQLITE_UTF16, "NOCASE", nunicode_sqlite3_collate_nocase_utf16he);
 
+#if NU_UNICODE_VERSION != 630
+#	error "NU630 collations are intended for Unicode 6.3.0 only"
+#endif
+
+	REGISTER_COLLATION(rc, db, SQLITE_UTF8, "NU630", nunicode_sqlite3_collate_utf8);
+	REGISTER_COLLATION(rc, db, SQLITE_UTF16LE, "NU630", nunicode_sqlite3_collate_utf16le);
+	REGISTER_COLLATION(rc, db, SQLITE_UTF16BE, "NU630", nunicode_sqlite3_collate_utf16be);
+	REGISTER_COLLATION(rc, db, SQLITE_UTF16, "NU630", nunicode_sqlite3_collate_utf16he);
+
+	REGISTER_COLLATION(rc, db, SQLITE_UTF8, "NU630_NOCASE", nunicode_sqlite3_collate_nocase_utf8);
+	REGISTER_COLLATION(rc, db, SQLITE_UTF16LE, "NU630_NOCASE", nunicode_sqlite3_collate_nocase_utf16le);
+	REGISTER_COLLATION(rc, db, SQLITE_UTF16BE, "NU630_NOCASE", nunicode_sqlite3_collate_nocase_utf16be);
+	REGISTER_COLLATION(rc, db, SQLITE_UTF16, "NU630_NOCASE", nunicode_sqlite3_collate_nocase_utf16he);
+
 	REGISTER_UPPER(rc, db, SQLITE_UTF8, nunicode_sqlite3_upper_utf8);
 	REGISTER_UPPER(rc, db, SQLITE_UTF16LE, nunicode_sqlite3_upper_utf16le);
 	REGISTER_UPPER(rc, db, SQLITE_UTF16BE, nunicode_sqlite3_upper_utf16be);
@@ -465,15 +488,6 @@ int sqlite3_nunicode_init(sqlite3 *db, char **err_msg,  const sqlite3_api_routin
 	REGISTER_LOWER(rc, db, SQLITE_UTF16, nunicode_sqlite3_lower_utf16he);
 
 	return SQLITE_OK;
-}
-
-NU_SQLITE3_EXPORT
-int sqlite3_extension_init(sqlite3 *db, char **err_msg,  const sqlite3_api_routines *api) {
-	fprintf(stderr, "WARNING: sqlite3_extension_init() is deprecated and will be"
-	" removed in future releases so you better hurry and replace it with a call"
-	" to sqlite3_nunicode_init(). Why it so is explained on this page:"
-	" http://www.sqlite.org/loadext.html\n");
-	return sqlite3_nunicode_init(db, err_msg, api);
 }
 
 #ifndef NU_DYNAMIC_EXTENSION

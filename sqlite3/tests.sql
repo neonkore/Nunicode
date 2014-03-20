@@ -44,15 +44,17 @@ SELECT 'MASSE' LIKE 'ma\\%se' ESCAPE '\' == 0
 SELECT 'MA_SE' LIKE 'maя_se' ESCAPE 'я' == 1 /* escaping with unicode character */
 
 SELECT 'ё' < 'я' == 0 /* collation */
-SELECT 'ё' < 'я' COLLATE NUNICODE == 1
-SELECT 'Ё' < 'Я' COLLATE NUNICODE == 1
+SELECT 'Ё' < 'Я' == 0
+SELECT 'ё' < 'я' COLLATE NU630 == 1
+SELECT 'Ё' < 'Я' COLLATE NU630 == 1
 SELECT 'ß' == 'ss' == 0
 SELECT 'æ' == 'Æ' == 0
-SELECT 'æ' == 'Æ' COLLATE NUNICODE == 0
-SELECT 'æ' == 'Æ' COLLATE NOCASE
-SELECT 'ß' == 'SS' COLLATE NUNICODE == 0
-SELECT 'ß' == 'SS' COLLATE NOCASE
-SELECT 'ß' == 'ss' COLLATE NOCASE
+SELECT 'æ' == 'Æ' COLLATE NU630 == 0
+SELECT 'æ' == 'Æ' COLLATE NU630_NOCASE
+SELECT 'ß' == 'SS' COLLATE NU630 == 0
+SELECT 'ß' == 'SS' COLLATE NU630_NOCASE
+SELECT 'ß' == 'ss' COLLATE NU630_NOCASE
+SELECT 'ß' == 'ss' COLLATE NU630 == 0
 
 SELECT upper('Maße') == 'MASSE' /* casemapping */
 SELECT lower('Maße') == 'maße'

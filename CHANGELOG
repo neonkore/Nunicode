@@ -1,3 +1,16 @@
+1.2.1
+
+[+] introduced COLLATE NU630 to SQLite extension - Unicode 6.3.0
+    case-sensitive collation
+[+] introduced COLLATE NU630_NOCASE to SQLite extension - Unicode 6.3.0
+    case-insensitive collation
+
+[-] removed deprecated sqlite3_extension_init() in favor
+    of sqlite3_nunicode_init()
+
+[*] COLLATE NUNICODE is now deprecated in favor of COLLATE NU630
+[*] COLLATE NOCASE is now deprecated in favor of COLLATE NU630_NOCASE
+
 1.2
 
 [*] nu's sqlite3_extension_init() is now deprecated in
