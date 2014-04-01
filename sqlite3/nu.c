@@ -17,11 +17,6 @@ SQLITE_EXTENSION_INIT1
  * - COLLATE NU630 - Unicode 6.3.0 case-sensitive collation
  * - COLLATE NU630_NOCASE - Unicode 6.3.0 case-insensitive collation
  *
- * Deprecated collations (will be removed in next releases):
- *
- * - COLLATE NUNICODE - case-sensitive Unicode collation
- * - COLLATE NOCASE
- *
  * Suported encodings:
  *
  * - UTF8
@@ -452,16 +447,6 @@ int sqlite3_nunicode_init(sqlite3 *db, char **err_msg,  const sqlite3_api_routin
 	REGISTER_LIKE(rc, db, SQLITE_UTF16LE, nunicode_sqlite3_like_utf16le);
 	REGISTER_LIKE(rc, db, SQLITE_UTF16BE, nunicode_sqlite3_like_utf16be);
 	REGISTER_LIKE(rc, db, SQLITE_UTF16, nunicode_sqlite3_like_utf16he);
-
-	REGISTER_COLLATION(rc, db, SQLITE_UTF8, "NUNICODE", nunicode_sqlite3_collate_utf8);
-	REGISTER_COLLATION(rc, db, SQLITE_UTF16LE, "NUNICODE", nunicode_sqlite3_collate_utf16le);
-	REGISTER_COLLATION(rc, db, SQLITE_UTF16BE, "NUNICODE", nunicode_sqlite3_collate_utf16be);
-	REGISTER_COLLATION(rc, db, SQLITE_UTF16, "NUNICODE", nunicode_sqlite3_collate_utf16he);
-
-	REGISTER_COLLATION(rc, db, SQLITE_UTF8, "NOCASE", nunicode_sqlite3_collate_nocase_utf8);
-	REGISTER_COLLATION(rc, db, SQLITE_UTF16LE, "NOCASE", nunicode_sqlite3_collate_nocase_utf16le);
-	REGISTER_COLLATION(rc, db, SQLITE_UTF16BE, "NOCASE", nunicode_sqlite3_collate_nocase_utf16be);
-	REGISTER_COLLATION(rc, db, SQLITE_UTF16, "NOCASE", nunicode_sqlite3_collate_nocase_utf16he);
 
 #if NU_UNICODE_VERSION != 630
 #	error "NU630 collations are intended for Unicode 6.3.0 only"

@@ -8,8 +8,8 @@
 [-] removed deprecated sqlite3_extension_init() in favor
     of sqlite3_nunicode_init()
 
-[*] COLLATE NUNICODE is now deprecated in favor of COLLATE NU630
-[*] COLLATE NOCASE is now deprecated in favor of COLLATE NU630_NOCASE
+[*] COLLATE NUNICODE is removed in favor of COLLATE NU630
+[*] COLLATE NOCASE is removed in favor of COLLATE NU630_NOCASE
 
 1.2
 
