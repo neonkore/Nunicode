@@ -114,7 +114,7 @@ According to Unicode specification UTF-8 might contain byte order mark
 nunicode has no embedded means to deal with UTF-8 BOM, neither detect,
 read or write.
 
-If you are facing this crap, just +3 char pointer to skip BOM. (Note
+If you are facing this, just +3 char pointer to skip BOM. (Note
 that UTF-8 BOM is 3 bytes long: EF BB BF). You can also safely
 ``nu_utf8_read()`` BOM, it will produce normal U+FEFF codepoint.
 
