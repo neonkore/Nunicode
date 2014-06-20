@@ -448,19 +448,19 @@ int sqlite3_nunicode_init(sqlite3 *db, char **err_msg,  const sqlite3_api_routin
 	REGISTER_LIKE(rc, db, SQLITE_UTF16BE, nunicode_sqlite3_like_utf16be);
 	REGISTER_LIKE(rc, db, SQLITE_UTF16, nunicode_sqlite3_like_utf16he);
 
-#if NU_UNICODE_VERSION != 630
-#	error "NU630 collations are intended for Unicode 6.3.0 only"
+#if NU_UNICODE_VERSION != 700
+#	error "NU700 collations are intended for Unicode 7.0.0 only"
 #endif
 
-	REGISTER_COLLATION(rc, db, SQLITE_UTF8, "NU630", nunicode_sqlite3_collate_utf8);
-	REGISTER_COLLATION(rc, db, SQLITE_UTF16LE, "NU630", nunicode_sqlite3_collate_utf16le);
-	REGISTER_COLLATION(rc, db, SQLITE_UTF16BE, "NU630", nunicode_sqlite3_collate_utf16be);
-	REGISTER_COLLATION(rc, db, SQLITE_UTF16, "NU630", nunicode_sqlite3_collate_utf16he);
+	REGISTER_COLLATION(rc, db, SQLITE_UTF8, "NU700", nunicode_sqlite3_collate_utf8);
+	REGISTER_COLLATION(rc, db, SQLITE_UTF16LE, "NU700", nunicode_sqlite3_collate_utf16le);
+	REGISTER_COLLATION(rc, db, SQLITE_UTF16BE, "NU700", nunicode_sqlite3_collate_utf16be);
+	REGISTER_COLLATION(rc, db, SQLITE_UTF16, "NU700", nunicode_sqlite3_collate_utf16he);
 
-	REGISTER_COLLATION(rc, db, SQLITE_UTF8, "NU630_NOCASE", nunicode_sqlite3_collate_nocase_utf8);
-	REGISTER_COLLATION(rc, db, SQLITE_UTF16LE, "NU630_NOCASE", nunicode_sqlite3_collate_nocase_utf16le);
-	REGISTER_COLLATION(rc, db, SQLITE_UTF16BE, "NU630_NOCASE", nunicode_sqlite3_collate_nocase_utf16be);
-	REGISTER_COLLATION(rc, db, SQLITE_UTF16, "NU630_NOCASE", nunicode_sqlite3_collate_nocase_utf16he);
+	REGISTER_COLLATION(rc, db, SQLITE_UTF8, "NU700_NOCASE", nunicode_sqlite3_collate_nocase_utf8);
+	REGISTER_COLLATION(rc, db, SQLITE_UTF16LE, "NU700_NOCASE", nunicode_sqlite3_collate_nocase_utf16le);
+	REGISTER_COLLATION(rc, db, SQLITE_UTF16BE, "NU700_NOCASE", nunicode_sqlite3_collate_nocase_utf16be);
+	REGISTER_COLLATION(rc, db, SQLITE_UTF16, "NU700_NOCASE", nunicode_sqlite3_collate_nocase_utf16he);
 
 	REGISTER_UPPER(rc, db, SQLITE_UTF8, nunicode_sqlite3_upper_utf8);
 	REGISTER_UPPER(rc, db, SQLITE_UTF16LE, nunicode_sqlite3_upper_utf16le);

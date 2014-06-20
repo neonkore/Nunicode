@@ -9,7 +9,7 @@
 # endif
 #endif /* NU_EXPORT */
 
-#define NU_UNICODE_VERSION 630
+#define NU_UNICODE_VERSION 700
 #define NU_UNLIMITED ((const void *)(-1))
 
 #endif /* NU_DEFINES_H */
