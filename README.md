@@ -35,30 +35,6 @@ need to decode anything explicitely and there is no any internal
 representation in nunicode. Collation functions are complemented by
 case-insensitive variant.
 
-## WHY YOU DO ANOTHER UNICODE LIBRARY
-
-I needed one for [Community compass][].
-
-* I don't like [utf8proc][] (400Kb)
-* I don't like [UTF8-CPP][] (C++)
-* I don't like [micro-utf8][] (design)
-* I don't like [iconv][] (license)
-* I don't like [apr-iconv][] (dependencies, etc)
-* I don't like [ICU][] (obvious reasons)
-
-(I'm sorry). See also "WHY ITS GOOD".
-
-* I like [libutf][] though
-
-[Community compass]: https://bitbucket.org/alekseyt/compass
-[utf8proc]: http://www.public-software-group.org/utf8proc
-[UTF8-CPP]: http://utfcpp.sourceforge.net/
-[micro-utf8]: http://puszcza.gnu.org.ua/software/microutf8/
-[iconv]: http://www.gnu.org/software/libiconv/
-[apr-iconv]: http://apr.apache.org/
-[ICU]: http://site.icu-project.org/
-[libutf]: http://swtch.com/plan9port/unix/
-
 ## WHY ITS GOOD
 
 * Small size: UTF-8 encoding/decoding - 1.5Kb, UTF-8 encoding/decoding +
@@ -93,7 +69,7 @@ See samples/ directory for complete examples of nunicode usage.
 
     :::c
     const char input[] = "привет мир!";
-    uint32_t u[sizeof(test)] = { 0 }; /* should be enough */
+    uint32_t u[sizeof(input)] = { 0 }; /* should be enough */
 
     nu_readstr(input, u, nu_utf8_read);
 
@@ -279,7 +255,7 @@ implementation might be good reference.
 ### performance considerations
 
 Collation and case mapping are O(1). Internally both use [minimal
-perfect hash][] table for lookup. Hash is a couple of XORs.
+perfect hash][] table for lookup. Hash is a couple of XOR+MODs.
 
 [minimal perfect hash]: http://iswsa.acm.org/mphf/index.html
 
