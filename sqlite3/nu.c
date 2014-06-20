@@ -14,8 +14,8 @@ SQLITE_EXTENSION_INIT1
  * - X LIKE Y ESCAPE Z
  * - upper(X)
  * - lower(X)
- * - COLLATE NU630 - Unicode 6.3.0 case-sensitive collation
- * - COLLATE NU630_NOCASE - Unicode 6.3.0 case-insensitive collation
+ * - COLLATE NU700 - Unicode 7.0.0 case-sensitive collation
+ * - COLLATE NU700_NOCASE - Unicode 7.0.0 case-insensitive collation
  *
  * Suported encodings:
  *
@@ -52,7 +52,7 @@ SQLITE_EXTENSION_INIT1
  * but in this implementation lhs_read is always equal to rhs_read
  *
  * @param lhs left-hand-side of lhs LIKE rhs expression
- * @param rhs right-hand-size of LIKE expression
+ * @param rhs right-hand-size of lhs LIKE rhs expression
  * @param escape escape character
  * @param lhs_read lhs read (decode) function
  * @param rhs_read rhs read (decode) function
@@ -60,79 +60,70 @@ SQLITE_EXTENSION_INIT1
  */
 static int _nunicode_like(const char *lhs, const char *rhs, uint32_t escape,
 	nu_read_iterator_t lhs_read, nu_read_iterator_t rhs_read) {
+	
+	nu_compound_read_t com1 = nu_nocase_compound_read;
+	nu_compound_read_t com2 = com1;
 
-	const char *p1 = lhs;
-	size_t haystack_len = nu_strbytelen(lhs, lhs_read);
+	const char *lp = lhs;
+	const char *rp = rhs;
+	const char *ltailp = 0, *rtailp = 0;
+	nu_read_iterator_t ltail_read = 0, rtail_read = 0;
+	uint32_t lu = (uint32_t)(-1), ru = lu;
 
-	const char *needle = 0;
-	size_t needle_len = 0;
-
-	char skip_many = 0;
 	char prev_escape = 0;
 
-	uint32_t u = (uint32_t)(-1);
-	while (u != 0) {
-		const char *p2 = rhs_read(rhs, &u);
+	while (ru != 0 && lu != 0) {
+		rp = com2(rp, rhs_read, &ru, &rtailp, &rtail_read);
 
-		if ((u == 0 || u == '%' || u == '_') && needle_len > 0) {
-			ssize_t len = (needle_len - prev_escape);
+		if (ru == '%' && prev_escape == 0) {
+			while (ru == '%' || ru == '_') {
+				rp = com2(rp, rhs_read, &ru, &rtailp, &rtail_read);
+				if (ru == '_') {
+					if (lu == 0) {
+						return 0;
+					}
+					lp = com1(lp, lhs_read, &lu, &ltailp, &ltail_read);
+				}
+			}
+	
+			lu = (uint32_t)(-1);
+			while (lu != ru) {
+				if (lu == 0) {
+					return 0;
+				}
+				lp = com1(lp, lhs_read, &lu, &ltailp, &ltail_read);
+			}
 
-			const char *found = nu_strcasenstr(p1, haystack_len,
-				needle, len,
-				lhs_read, rhs_read);
-
-			if (found == 0) {
+			if (ru != lu) {
 				return 0;
 			}
 
-			/* found string should be at the very beginning
-			 * of lhs, or % should be set prior this */
-			if (found != p1 && skip_many == 0) {
+			continue;
+
+		}
+		else if (ru == '_' && prev_escape == 0) {
+			if (lu == 0) {
 				return 0;
 			}
 
-			p1 = found + len;
-
-			needle = 0;
-			needle_len = 0;
-			skip_many = (prev_escape == 0 && u == '%');
+			lp = com1(lp, lhs_read, &lu, &ltailp, &ltail_read);
+			continue;
+		}
+		else if (escape != 0 && ru == escape) {
+			prev_escape = 1;
+			continue;
 		}
 
-		if (prev_escape == 0 && u == '%') {
-			skip_many = 1;
-			goto pass;
+		lp = com1(lp, lhs_read, &lu, &ltailp, &ltail_read);
+
+		if (lu != ru) {
+			return 0;
 		}
-
-		if (prev_escape == 0 && u == '_') {
-			if (p1 >= lhs + haystack_len) { /* don't go over lhs length */
-				return 0;
-			}
-
-			p1 = lhs_read(p1, 0); /* otherwise skip skip one character */
-			goto pass;
-		}
-
-		prev_escape = (u == escape ? (p2 - rhs) : 0);
-
-		/* end of needle should match end of haystack
-		 * if last symbols is not % */
-		if (u == 0) {
-			return (skip_many != 0 || p1 == lhs + haystack_len);
-		}
-
-		if (needle == 0) {
-			needle = rhs;
-		}
-
-		if (needle != 0) {
-			needle_len += (p2 - rhs);
-		}
-
-pass:
-		rhs = p2;
+		
+		prev_escape = 0;
 	}
-
-	return 0;
+		
+	return (lu == ru ? 1 : 0);
 }
 
 /** SQLite-nu bridge
@@ -431,10 +422,6 @@ static void nunicode_sqlite3_lower_utf16he(sqlite3_context *context, int argc, s
 
 NU_SQLITE3_EXPORT
 int sqlite3_nunicode_init(sqlite3 *db, char **err_msg,  const sqlite3_api_routines *api) {
-	fprintf(stderr, "WARNING: COLLATE NUNICODE and COLLATE NOCASE are deprecated and will be"
-	" removed in future releases. Please use COLLATE NU630 and COLLATE NU630_NOCASE instead.\n"
-	);
-
 	(void)(err_msg);
 
 	SQLITE_EXTENSION_INIT2(api);

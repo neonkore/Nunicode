@@ -1,5 +1,8 @@
 SELECT 'MASSE' LIKE 'MASE' == 0 /* like (or favorite) */
 SELECT 'MASSE' LIKE 'MADE' == 0
+SELECT 'Maße' LIKE '%_%' == 1
+SELECT 'Maße' LIKE '%a%' == 1
+SELECT 'Maße' LIKE '%b%' == 0
 
 SELECT 'MASSE' LIKE 'Maße' == 1
 SELECT 'Maße' LIKE '%SS%' == 1
@@ -45,16 +48,16 @@ SELECT 'MA_SE' LIKE 'maя_se' ESCAPE 'я' == 1 /* escaping with unicode characte
 
 SELECT 'ё' < 'я' == 0 /* collation */
 SELECT 'Ё' < 'Я' == 0
-SELECT 'ё' < 'я' COLLATE NU630 == 1
-SELECT 'Ё' < 'Я' COLLATE NU630 == 1
+SELECT 'ё' < 'я' COLLATE NU700 == 1
+SELECT 'Ё' < 'Я' COLLATE NU700 == 1
 SELECT 'ß' == 'ss' == 0
 SELECT 'æ' == 'Æ' == 0
-SELECT 'æ' == 'Æ' COLLATE NU630 == 0
-SELECT 'æ' == 'Æ' COLLATE NU630_NOCASE
-SELECT 'ß' == 'SS' COLLATE NU630 == 0
-SELECT 'ß' == 'SS' COLLATE NU630_NOCASE
-SELECT 'ß' == 'ss' COLLATE NU630_NOCASE
-SELECT 'ß' == 'ss' COLLATE NU630 == 0
+SELECT 'æ' == 'Æ' COLLATE NU700 == 0
+SELECT 'æ' == 'Æ' COLLATE NU700_NOCASE
+SELECT 'ß' == 'SS' COLLATE NU700 == 0
+SELECT 'ß' == 'SS' COLLATE NU700_NOCASE
+SELECT 'ß' == 'ss' COLLATE NU700_NOCASE
+SELECT 'ß' == 'ss' COLLATE NU700 == 0
 
 SELECT upper('Maße') == 'MASSE' /* casemapping */
 SELECT lower('Maße') == 'maße'
