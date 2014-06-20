@@ -4,4 +4,4 @@ add_subdirectory(samples)
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DNU_DYNAMIC_EXTENSION")
 link_libraries(nu)
-add_library(nusqlite3 SHARED nu.c)
+add_library(nunicode SHARED nu.c)
