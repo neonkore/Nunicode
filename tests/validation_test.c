@@ -15,6 +15,7 @@ void test_validation_utf8() {
 	const char input7[] = "при\xF1\x81\x81"; /* start of 4-byte sequence + 2 continuation bytes */
 	const char input7_ok[] = "при\xF1\x81\x81\x81";
 	const char input8[] = "\xF8\x00\x00\x00\x00"; /* 5-byte sequence */
+	const char input9[] = "\xFC\x00\x00\x00\x00\x0"; /* 6-byte sequence */
 
 	assert(nu_validate(input0_ok, sizeof(input0_ok), nu_utf8_validread) == 0);
 	assert(nu_validate(input2_ok, sizeof(input2_ok), nu_utf8_validread) == 0);
@@ -32,10 +33,15 @@ void test_validation_utf8() {
 	assert(nu_validate(input6, sizeof(input6), nu_utf8_validread) == input6 + 6);
 	assert(nu_validate(input7, sizeof(input7), nu_utf8_validread) == input7 + 6);
 	assert(nu_validate(input8, sizeof(input8), nu_utf8_validread) == input8);
+	assert(nu_validate(input9, sizeof(input9), nu_utf8_validread) == input9);
+
+	/* string len is longer than max_len, -2 -> remove \0, remove last char */
+	assert(nu_validate(input0_ok, 1, nu_utf8_validread) != 0);
 }
 
 void test_validation_cesu8() {
 	const unsigned char input0_ok[] = { 0xED, 0xA0, 0x81, 0xED, 0xB0, 0x80 };
+	const unsigned char input0_also_ok[] = "ч";
 	const unsigned char input1[] = { 0xED, 0xA0, 0x81, 0xED, 0xA0 }; /* one byte short */
 	const unsigned char input2[] = { 0xED, 0xA0, 0x81, 0xED }; /* two bytes short */
 	const unsigned char input3[] = { 0xED, 0xA0, 0x81 }; /* no trail */
@@ -43,6 +49,7 @@ void test_validation_cesu8() {
 	const unsigned char input5[] = { 0xED, 0xA0, 0x81, 0xEE, 0xB0, 0x80 }; /* invalid trail */
 
 	assert(nu_validate((const char *)(input0_ok), sizeof(input0_ok), nu_cesu8_validread) == 0);
+	assert(nu_validate((const char *)(input0_also_ok), sizeof(input0_also_ok), nu_cesu8_validread) == 0);
 	assert(nu_validate((const char *)(input1), sizeof(input1), nu_cesu8_validread) == (const char *)(input1));
 	assert(nu_validate((const char *)(input2), sizeof(input2), nu_cesu8_validread) == (const char *)(input2));
 	assert(nu_validate((const char *)(input3), sizeof(input3), nu_cesu8_validread) == (const char *)(input3));
@@ -52,32 +59,22 @@ void test_validation_cesu8() {
 
 void test_validation_utf16le() {
 	const unsigned char input0_ok[] = { 0x41, 0xD8, 0x00, 0xDC };
+	const unsigned char input0_also_ok[] = { 0x7A, 0x00 };
 	const unsigned char input1[] = { 0x41, 0xD8 }; /* no trail */
 	const unsigned char input2[] = { 0x00, 0xDC, 0x41, 0xD8 }; /* misplaced lead and trail */
 	const unsigned char input3[] = { 0x41, 0xD8, 0x00, 0xEC }; /* invalid surrogate */
 
 	assert(nu_validate((const char *)(input0_ok), sizeof(input0_ok), nu_utf16le_validread) == 0);
 	assert(nu_validate((const char *)(input0_ok), 1, nu_utf16le_validread) == (const char *)(input0_ok)); /* short read */
+	assert(nu_validate((const char *)(input0_also_ok), sizeof(input0_also_ok), nu_utf16le_validread) == 0);
 	assert(nu_validate((const char *)(input1), sizeof(input1), nu_utf16le_validread) == (const char *)(input1));
 	assert(nu_validate((const char *)(input2), sizeof(input2), nu_utf16le_validread) == (const char *)(input2));
 	assert(nu_validate((const char *)(input3), sizeof(input3), nu_utf16le_validread) == (const char *)(input3));
 }
 
-void test_validation_utf16he() {
-	const uint16_t input0_ok[] = { 0xD841, 0xDC00 };
-	const uint16_t input1[] = { 0xD841 }; /* no trail */
-	const uint16_t input2[] = { 0xDC00, 0xD841 }; /* misplaced lead and trail */
-	const uint16_t input3[] = { 0xD841, 0xEC00 }; /* invalid surrogate */
-
-	assert(nu_validate((const char *)(input0_ok), sizeof(input0_ok), nu_utf16he_validread) == 0);
-	assert(nu_validate((const char *)(input0_ok), 1, nu_utf16he_validread) == (const char *)(input0_ok)); /* short read */
-	assert(nu_validate((const char *)(input1), sizeof(input1), nu_utf16he_validread) == (const char *)(input1));
-	assert(nu_validate((const char *)(input2), sizeof(input2), nu_utf16he_validread) == (const char *)(input2));
-	assert(nu_validate((const char *)(input3), sizeof(input3), nu_utf16he_validread) == (const char *)(input3));
-}
-
 void test_validation_utf16be() {
 	const unsigned char input0_ok[] = { 0xD8, 0x41, 0xDC, 0x00 };
+	const unsigned char input0_also_ok[] = { 0x00, 0x7A };
 	const unsigned char input1[] = { 0xD8, 0x41, }; /* no trail */
 	const unsigned char input2[] = { 0xDC, 0x00, 0xD8, 0x41 }; /* misplaced lead and trail */
 	const unsigned char input3[] = { 0xD8, 0x41, 0xEC, 0x00 }; /* invalid surrogate */
@@ -85,10 +82,26 @@ void test_validation_utf16be() {
 
 	assert(nu_validate((const char *)(input0_ok), sizeof(input0_ok), nu_utf16be_validread) == 0);
 	assert(nu_validate((const char *)(input0_ok), 1, nu_utf16be_validread) == (const char *)(input0_ok)); /* short read */
+	assert(nu_validate((const char *)(input0_also_ok), sizeof(input0_also_ok), nu_utf16be_validread) == 0);
 	assert(nu_validate((const char *)(input1), sizeof(input1), nu_utf16be_validread) == (const char *)(input1));
 	assert(nu_validate((const char *)(input2), sizeof(input2), nu_utf16be_validread) == (const char *)(input2));
 	assert(nu_validate((const char *)(input3), sizeof(input3), nu_utf16be_validread) == (const char *)(input3));
 	assert(nu_validate((const char *)(input4), sizeof(input4), nu_utf16be_validread) == (const char *)(input4));
+}
+
+void test_validation_utf16he() {
+	const uint16_t input0_ok[] = { 0xD841, 0xDC00 };
+	const unsigned char input0_also_ok[] = { 0x00, 0x00 };
+	const uint16_t input1[] = { 0xD841 }; /* no trail */
+	const uint16_t input2[] = { 0xDC00, 0xD841 }; /* misplaced lead and trail */
+	const uint16_t input3[] = { 0xD841, 0xEC00 }; /* invalid surrogate */
+
+	assert(nu_validate((const char *)(input0_ok), sizeof(input0_ok), nu_utf16he_validread) == 0);
+	assert(nu_validate((const char *)(input0_ok), 1, nu_utf16he_validread) == (const char *)(input0_ok)); /* short read */
+	assert(nu_validate((const char *)(input0_also_ok), sizeof(input0_also_ok), nu_utf16he_validread) == 0);
+	assert(nu_validate((const char *)(input1), sizeof(input1), nu_utf16he_validread) == (const char *)(input1));
+	assert(nu_validate((const char *)(input2), sizeof(input2), nu_utf16he_validread) == (const char *)(input2));
+	assert(nu_validate((const char *)(input3), sizeof(input3), nu_utf16he_validread) == (const char *)(input3));
 }
 
 void test_validation_utf32() {

@@ -68,9 +68,8 @@ static inline unsigned utf8_codepoint_length(uint32_t codepoint) {
 	if (codepoint < 128) return 1;
 	if (codepoint < 0x0800) return 2;
 	if (codepoint < 0x10000) return 3;
-	if (codepoint < 0x200000) return 4;
 
-	return 0; /* undefined */
+	return 4; /* de facto max length in UTF-8 */
 }
 
 static inline void b2_utf8(uint32_t codepoint, char *p) {
@@ -135,19 +134,12 @@ static inline int utf8_validread(const char *p, size_t max_len) {
 
 	unsigned len = utf8_char_length(*p);
 
-	switch (len) {
-		case 1: return 1; /* one byte character */
-		case 2:
-		case 3:
-		case 4: break;
-		default: return 0; /* abort */
-	}
-
 	if (max_len < len) {
 		return 0;
 	}
 
 	switch (len) {
+		case 1: return 1; /* one byte character */
 		case 2: return ((*(up + 1) & 0xC0) == 0x80 ? 2 : 0);
 		case 3: return ((*(up + 1) & 0xC0) == 0x80
 		&& (*(up + 2) & 0xC0) == 0x80 ? 3 : 0);

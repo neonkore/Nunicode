@@ -36,10 +36,20 @@ void test_utf32_read_invalid_bom() { /* defaults to BE */
 
 	const char *inval_bom1 = "\xFF\xFE\x00\x01";
 	const char *inval_bom2 = "\x00\x00\xFE\x00";
+	const char *inval_bom3 = "\xFF\xFF\x00\x00";
+	const char *inval_bom4 = "\xFF\xFE\x01\x00";
+	const char *inval_bom5 = "\x00\x00\xFF\xFF";
+	const char *inval_bom6 = "\x01\x00\xFE\xFF";
+	const char *inval_bom7 = "\x00\x01\xFE\xFF";
 
 	/* skip read */
 	assert(nu_utf32_read_bom(inval_bom1, 0) == inval_bom1);
 	assert(nu_utf32_read_bom(inval_bom2, 0) == inval_bom2);
+	assert(nu_utf32_read_bom(inval_bom3, 0) == inval_bom3);
+	assert(nu_utf32_read_bom(inval_bom4, 0) == inval_bom4);
+	assert(nu_utf32_read_bom(inval_bom5, 0) == inval_bom5);
+	assert(nu_utf32_read_bom(inval_bom6, 0) == inval_bom6);
+	assert(nu_utf32_read_bom(inval_bom7, 0) == inval_bom7);
 
 	assert(nu_utf32_read_bom(inval_bom1, &bom) == inval_bom1);
 	assert(bom.write_bom == nu_utf32be_write_bom);
