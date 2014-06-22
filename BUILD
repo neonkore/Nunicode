@@ -1,5 +1,5 @@
 1. mkdir build && cd build
-2. cmake .. && make nu
+2. cmake .. -DCMAKE_BUILD_TYPE=RELEASE && make nu
 
 This will produce libnu.a for static linking.
 
