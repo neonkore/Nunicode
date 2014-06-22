@@ -84,13 +84,11 @@ tests are checked by Valgrind for a visible memory issues.
 Branches coverage of tests is slightly above 90%, it is not covering some
 things like branching inside conditional expressions. nunicode also has a
 requirement to pass only valid UTF strings, thus it might skip redundant error
-checking.
-
-Nonetheless, each release brings this number higher.
+checking. Nonetheless, each release brings this number higher.
 
 If you wish to inspect the coverage, please proceed as following:
 
-	cmake .. -DCMAKE\_BUILD\_TYPE=GCOV
+	cmake .. -DCMAKE_BUILD_TYPE=GCOV
 	make coverage
 
 It will produce ``tests/coverage`` directory with coverage info in
@@ -272,11 +270,10 @@ and compact (for [BMP][]-only characters), latter will allow to save another
 If you need to implement your own collation, then you need to provide
 your own weighting function to ``_nu_strcoll()``. Take a look into
 ``nu_codepoint_weight_t`` documentation, formal contract is described
-there and it's reasonably simple.
-
-Basically you need to implement a state-machine to weight Unicode codepoint
-or several of them. [strcoll_internal_test.c][] and ``_test_weight()``
-implementation is a good reference.
+there and it's reasonably simple. Basically you need to implement a
+state-machine to weight Unicode codepoint or several of them.
+[strcoll_internal_test.c][] and ``_test_weight()`` implementation is a
+good reference.
 
 [strcoll_internal_test.c]: https://bitbucket.org/alekseyt/nunicode/src/master/tests/strcoll_internal_test.c?at=master
 
