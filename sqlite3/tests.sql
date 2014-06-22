@@ -1,5 +1,7 @@
-SELECT 'MASSE' LIKE 'MASE' == 0 /* like (or favorite) */
+SELECT 'MASSE' LIKE 'MASSE' == 1 /* like (or favorite) */
+SELECT 'MASSE' LIKE 'MASE' == 0
 SELECT 'MASSE' LIKE 'MADE' == 0
+SELECT 'Maße' LIKE 'Maße' == 1
 SELECT 'Maße' LIKE '%_%' == 1
 SELECT 'Maße' LIKE '%a%' == 1
 SELECT 'Maße' LIKE '%b%' == 0
