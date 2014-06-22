@@ -384,73 +384,9 @@ statically. See BUILD for details.
 
 ### library build options
 
-UTF-8
+Please refer to documentation in [config.h][].
 
-* ``-DNU_WITH_UTF8_READER`` - UTF-8 decoding
-* ``-DNU_WITH_UTF8_WRITER`` - UTF-8 encoding
-* ``-DNU_WITH_UTF8`` - implies ``-DNU_WITH_UTF8_READER``
-  and ``-DNU_WITH_UTF8_WRITER``
-
-CESU-8
-
-* ``-DNU_WITH_CESU8_READER`` - CESU-8 decoding
-* ``-DNU_WITH_CESU8_WRITER`` - CESU-8 encoding
-* ``-DNU_WITH_CESU8`` - implies ``-DNU_WITH_CESU8_READER``
-  and ``-DNU_WITH_CESU8_WRITER``
-
-UTF-16
-
-* ``-DNU_WITH_UTF16LE_READER`` - UTF-16LE decoding
-* ``-DNU_WITH_UTF16LE_WRITER`` - UTF-16LE encoding
-* ``-DNU_WITH_UTF16LE`` - implies ``-DNU_WITH_UTF16LE_READER``
-  and ``-DNU_WITH_UTF16LE_WRITER``
-* Same options for ``NU_WITH_UTF16BE_*``
-* Same options for ``NU_WITH_UTF16HE_*``
-* ``-DNU_WITH_UTF16_READER`` - complete UTF-16 decoding
-* ``-DNU_WITH_UTF16_WRITER`` - complete UTF-16 encoding
-* ``-DNU_WITH_UTF16`` - implies ``-DNU_WITH_UTF16_READER``
-  and ``-DNU_WITH_UTF16_WRITER``
-
-UTF-32
-
-* Very same options as for UTF-16, just replace 16 with 32
-
-Strings collation and casemapping
-
-	All collation and casemapping functions options imply -DNU_WITH_UTF8_READER
-
-	Collation functions also imply -DNU_WITH_UDB, -DNU_WITH_TOUPPER,
-	-DNU_WITH_DUCET and corresponding string functions
-
-* ``-DNU_WITH_TOUPPER`` - enable upper case mapping
-* ``-DNU_WITH_TOLOWER`` - enable lower case mapping
-* ``-DNU_WITH_CASEMAP`` - enable case insensitive string functions,
-  implies ``-DNU_WITH_TOUPPER`` and ``-DNU_WITH_TOLOWER``
-* ``-DNU_WITH_Z_COLLATION`` - enable strings collation functions for
-  0-terminated strings
-* ``-DNU_WITH_N_COLLATION`` - enable strings collation functions for
-  unterminated strings
-* ``-DNU_WITH_COLLATION`` - implies ``-DNU_WITH_Z_COLLATION``
-  and ``-DNU_WITH_N_COLLATION``
-* ``-DNU_WITH_DUCET`` - enable DUCET functions
-
-Misc
-
-* ``-DNU_WITH_REVERSE_READ`` - read encoded string in reverse order
-  functions
-* ``-DNU_WITH_VALIDATION`` - string encoding validation functions
-* ``-DNU_WITH_Z_STRINGS`` - supported functions for 0-terminated strings
-* ``-DNU_WITH_N_STRINGS`` - supported functions fo unterminated strings
-* ``-DNU_WITH_STRINGS`` - implies ``-DNU_WITH_Z_STRINGS``
-  and ``-DNU_WITH_N_STRINGS``
-* ``-DNU_WITH_Z_EXTRA`` - extra functions for 0-terminated strings
-* ``-DNU_WITH_N_EXTRA`` - extra functions fo unterminated strings
-* ``-DNU_WITH_EXTRA`` - implies ``-DNU_WITH_Z_EXTRA``
-  and ``-DNU_WITH_N_EXTRA``
-
-Everything
-
-* ``-DNU_WITH_EVERYTHING`` - implies everything above
+[config.h]: https://bitbucket.org/alekseyt/nunicode/src/master/libnu/config.h?at=master
 
 ## QUESTIONS?
 
