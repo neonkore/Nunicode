@@ -10,8 +10,6 @@ implementation.
 
 What it can do:
 
-* Enable internatiolization in your application
-* Provide Unicode-enabled stdlib-like functions for strings
 * UTF encoding and decoding
 * Correct strings collation on encoded UTF strings using default Unicode
   collation (DUCET)
@@ -22,11 +20,24 @@ What it can do:
 What it *DOESN'T* do:
 
 * Unicode Collation Algorithm (not entirely, please see notes
-at [STRINGS COLLATION AND CASE MAPPING][])
+  at [STRINGS COLLATION AND CASE MAPPING][])
 * Unicode [normalization forms][]: NFD, NFC, NFKD, NFKC (but nothing is impossible)
 
 [STRINGS COLLATION AND CASE MAPPING]: #markdown-header-strings-collation-and-case-mapping
 [normalization forms]: http://unicode.org/reports/tr15/#Norm_Forms
+
+What you could do with this library
+
+* UTF encodings provide support for all scripts, DUCET embedded into nunicode
+  will provide "generic" way of strings sorting
+* nunicode supply Unicode-enabled stdlib-like functions (``nu_strchr()``) for
+  operations on encoded strings
+
+Having these you could pretty much enable internationalization in your application.
+Note that nunicode doesn't cover localization, you might refer to [localication][]
+section for details.
+
+[localization]: #markdown-header-localization
 
 Encodings supported:
 
@@ -56,7 +67,6 @@ case-insensitive variants.
 * C99 compliant, -pedantic -Wall -Wextra -Werror
 * No dependencies
 * MIT license
-* It does the job
 
 ## DIFFERENT REVISIONS OF UNICODE
 
@@ -206,15 +216,17 @@ to be fixed.
 ## STRINGS COLLATION AND CASE MAPPING
 
 Case mapping is full Unicode casemapping when string might grow in size,
-e.g. "Maße" uppercase is "MASSE".
+e.g. "Maße" uppercase is "MASSE". Case-insensitive collation is using
+``nu_to_upper()`` internally, as opposed to case-folding described by
+Unicode standard.
 
 While nunicode does not implement [Unicode Collation Algorithm][] entirely,
 it does sort strings using weights from DUCET (Default Unicode Collation
 Element Table). It only does that for characters having a meaning to the
 collation: letters and numbers, this allows nunicode to remain compact.
 
-The rest of Unicode characters are sorted below in the random order. You can
-change this behavior by providing your own weighting function.
+The rest of Unicode code points are sorted below in the random order. You
+can change this behavior by providing your own weighting function.
 
 [Unicode Collation Algorithm]: http://www.unicode.org/reports/tr10/
 
