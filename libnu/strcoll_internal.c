@@ -11,6 +11,9 @@ static int32_t _compound_weight(int32_t w,
 	const char **tail, nu_read_iterator_t *tail_read,
 	nu_codepoint_weight_t weight, void *context) {
 
+	const char *tailp = *tail;
+	nu_read_iterator_t tailp_read = *tail_read;
+
 	const char *p = *encoded;
 	int32_t new_w = w;
 	int32_t consumed = 1; /* one character was consumed at the top */
@@ -18,7 +21,7 @@ static int32_t _compound_weight(int32_t w,
 	while (p < limit) {
 		uint32_t u = 0;
 
-		const char *np = com(p, read, &u, tail, tail_read);
+		const char *np = com(p, read, &u, &tailp, &tailp_read);
 		new_w = weight(u, &w, context);
 
 		/* after this point, w might hold rollback value
@@ -27,16 +30,25 @@ static int32_t _compound_weight(int32_t w,
 		++consumed;
 
 		if (new_w >= 0) {
+			/* if w == 0 or w == 1, then *p or *np is already pointing
+			 * to needed place, otherwise re-read encoded in the forward
+			 * direction preserving correctness of tail pointer */
 			if (w != 0 && w != 1) {
 				assert(consumed + w > 1);
+
 				np = *encoded;
+				tailp = *tail;
+				tailp_read = *tail_read;
+
 				for (int32_t i = 0; i < consumed - w; ++i) {
-					np = com(np, read, 0, tail, tail_read);
+					np = com(np, read, 0, &tailp, &tailp_read);
 				}
 				w = 0;
 			}
 
 			*encoded = (w == 0 ? np : p);
+			*tail = tailp;
+			*tail_read = tailp_read;
 
 			break;
 		}
