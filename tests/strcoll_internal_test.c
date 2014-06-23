@@ -5,12 +5,13 @@
 
 #define state_a (int32_t)(-1)
 #define state_ab (int32_t)(-2)
+#define state_abc (int32_t)(-3)
 
-static const int32_t weight_abc = 'a' + 1;
+static const int32_t weight_abcc = 'a' + 1;
 static const int32_t weight_ac = 'a' + 2;
 static const int32_t weight_ab = 'a' + 3;
 
-/* a < abc < ac < ab < b */
+/* a < abcc < ac < ab < b */
 static int32_t _test_weight(uint32_t u, int32_t *w, void *context) {
 	(void)(context);
 
@@ -30,9 +31,16 @@ static int32_t _test_weight(uint32_t u, int32_t *w, void *context) {
 
 	case state_ab:
 		switch (u) {
-		case 'c': return weight_abc;
+		case 'c': return state_abc;
 		}
 		*w = 1;
+		return weight_ab;
+
+	case state_abc:
+		switch (u) {
+		case 'c': return weight_abcc;
+		}
+		*w = 2;
 		return weight_ab;
 	}}
 
@@ -67,11 +75,11 @@ void test_compoundcmp_strcoll() {
 	assert(test_strcoll("b", "a") > 0);
 
 	/* contract */
-	assert(test_strcoll("a", "abc") < 0);
-	assert(test_strcoll("abc", "a") > 0);
+	assert(test_strcoll("a", "abcc") < 0);
+	assert(test_strcoll("abcc", "a") > 0);
 
-	assert(test_strcoll("abc", "ac") < 0);
-	assert(test_strcoll("ac", "abc") > 0);
+	assert(test_strcoll("abcc", "ac") < 0);
+	assert(test_strcoll("ac", "abcc") > 0);
 
 	assert(test_strcoll("ac", "ab") < 0);
 	assert(test_strcoll("ab", "ac") > 0);
@@ -79,12 +87,17 @@ void test_compoundcmp_strcoll() {
 	assert(test_strcoll("ab", "b") < 0);
 	assert(test_strcoll("b", "ab") > 0);
 
+	/* rollback */
+	assert(test_strcoll("abcb", "abcd") < 0);
+	assert(test_strcoll("abcb", "abcc") > 0);
+	assert(test_strcoll("abcd", "abcc") > 0);
+
 	/* random */
-	assert(test_strcoll("a", "abc") < 0);
-	assert(test_strcoll("abc", "a") > 0);
-	assert(test_strcoll("abc", "b") < 0);
-	assert(test_strcoll("abc", "ab") < 0);
-	assert(test_strcoll("b", "abc") > 0);
+	assert(test_strcoll("a", "abcc") < 0);
+	assert(test_strcoll("abcc", "a") > 0);
+	assert(test_strcoll("abcc", "b") < 0);
+	assert(test_strcoll("abcc", "ab") < 0);
+	assert(test_strcoll("b", "abcc") > 0);
 
 	/* unrelated */
 	assert(test_strcoll("aa", "ab") < 0);
