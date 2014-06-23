@@ -12,28 +12,46 @@ static int32_t _compound_weight(int32_t w,
 	nu_codepoint_weight_t weight, void *context) {
 
 	const char *p = *encoded;
+	int32_t new_w = w;
+	int32_t consumed = 1; /* one character was consumed at the top */
 
 	while (p < limit) {
 		uint32_t u = 0;
 
 		const char *np = com(p, read, &u, tail, tail_read);
-		w = weight(u, w, context);
+		new_w = weight(u, &w, context);
 
-		if (w >= 0) {
-			*encoded = p;
+		/* after this point, w might hold rollback value
+		 * and new_w holds actual weight */
+
+		++consumed;
+
+		if (new_w >= 0) {
+			if (w != 0 && w != 1) {
+				assert(consumed + w > 1);
+				np = *encoded;
+				for (int32_t i = 0; i < consumed - w; ++i) {
+					np = com(np, read, 0, tail, tail_read);
+				}
+				w = 0;
+			}
+
+			*encoded = (w == 0 ? np : p);
+
 			break;
 		}
 
 		p = np;
+		w = new_w;
 	}
 
-	if (w < 0) {
-		w = weight(0, w, context);
+	if (new_w < 0) {
+		new_w = weight(0, &w, context);
 	}
 
-	assert(w >= 0);
+	assert(new_w >= 0);
 
-	return w;
+	return new_w;
 }
 
 static int _nu_collate(const char *lhs, const char *lhs_limit,

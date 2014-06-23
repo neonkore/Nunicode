@@ -37,7 +37,7 @@ typedef const char* (*nu_compound_read_t)(
  * @return positive codepoint weight or negative value if function need more
  * codepoints
  */
-typedef int32_t (*nu_codepoint_weight_t)(uint32_t u, int32_t weight, void *context);
+typedef int32_t (*nu_codepoint_weight_t)(uint32_t u, int32_t *weight, void *context);
 
 #if (defined NU_WITH_Z_COLLATION) || (defined NU_WITH_N_COLLATION)
 

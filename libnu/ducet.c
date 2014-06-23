@@ -7,7 +7,7 @@
 
 static const size_t G_SIZE = sizeof(G) / sizeof(*G);
 
-int32_t nu_ducet_weight(uint32_t codepoint, int32_t weight, void *context) {
+int32_t nu_ducet_weight(uint32_t codepoint, int32_t *weight, void *context) {
 	(void)(weight);
 	(void)(context);
 

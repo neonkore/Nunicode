@@ -11,8 +11,13 @@ static const int32_t weight_ac = 'a' + 2;
 static const int32_t weight_ab = 'a' + 3;
 
 /* a < abc < ac < ab < b */
-static int32_t _test_weight(uint32_t u, int32_t weight, void *context) {
+static int32_t _test_weight(uint32_t u, int32_t *w, void *context) {
 	(void)(context);
+
+	if (w != 0) {
+
+	int32_t weight = *w; /* reset output */
+	*w = 0;
 
 	switch (weight) {
 	case state_a:
@@ -20,21 +25,23 @@ static int32_t _test_weight(uint32_t u, int32_t weight, void *context) {
 		case 'b': return state_ab;
 		case 'c': return weight_ac;
 		}
+		*w = 1; /* how many characters to rollback */
 		return 'a';
 
 	case state_ab:
 		switch (u) {
 		case 'c': return weight_abc;
 		}
+		*w = 1;
 		return weight_ab;
-	}
+	}}
 
 	switch (u) {
 	case 0: return 0; /* special case */
 	case 'a': return state_a;
 	}
 
-	return u + 4; /* codepoint order */
+	return u + 'a' + 4; /* codepoint order */
 }
 
 static int test_strcoll(const char *lhs, const char *rhs) {
@@ -53,7 +60,7 @@ static int test_strncoll(const char *lhs, size_t max_lhs,
 void test_compoundcmp_strcoll() {
 	/* 0 should always be weighted 0 */
 	assert(_test_weight(0, 0, 0) == 0);
-	assert(_test_weight(0, 1, 0) == 0);
+	assert(_test_weight(1, 0, 0) > weight_ab); /* should be shifted to the end */
 
 	/* borders */
 	assert(test_strcoll("a", "b") < 0);
@@ -91,10 +98,10 @@ void test_compoundcmp_strcoll_outskirts() {
 	assert(test_strcoll("b", "d") < 0);
 	assert(test_strcoll("c", "d") < 0);
 
-	assert(test_strcoll("0", "a") < 0);
-	assert(test_strcoll("0", "ab") < 0);
-	assert(test_strcoll("9", "a") < 0);
-	assert(test_strcoll("9", "ab") < 0);
+	assert(test_strcoll("0", "a") > 0);
+	assert(test_strcoll("0", "ab") > 0);
+	assert(test_strcoll("9", "a") > 0);
+	assert(test_strcoll("9", "ab") > 0);
 }
 
 void test_compoundcmp_strncoll() {
