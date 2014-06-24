@@ -3,7 +3,7 @@
 
 This will produce libnu.a for static linking.
 
-3. make nusqlite3
+3. make nunicode
 
 This will produce SQLite3 extenstion. If SQLite3 development
 package is not installed, this target is not available.

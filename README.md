@@ -80,6 +80,9 @@ nunicode version - Unicode revision relationship:
 * since 1.3: 7.0.0
 * until 1.2 (inclusive): 6.3.0
 
+You can always check NU\_UNICODE\_VERSION value for a Unicode revision
+implemented.
+
 ## IMPLEMENTATION QUALITY
 
 nunicode most likely is free of the following errors:
@@ -106,7 +109,7 @@ browesable HTML.
 
 There are some errors still possible, there is no such thing as bug-free
 software, right? But it is rather unlikely that you would encounter
-a bug in nunicode.
+programming error in nunicode.
 
 [Valgrind]: http://valgrind.org/
 
@@ -241,7 +244,7 @@ documentation, examples and possibly demo.
 
 nul10n include support for the following languages
 
-Major europian languages (17Kb)
+Major europian languages (18Kb)
 
 * English: implemented in DUCET, i.e. also available in nunicode
 * French: single-pass backward accent ordering
@@ -250,7 +253,7 @@ Major europian languages (17Kb)
 * Spanish: standard collation
 * Russian: standard collation
 
-Major asian languages (182Kb)
+Major asian languages (270Kb)
 
 * Chinese (Traditional): natively supported by Unicode
 * Chinese (Simplified): GB2312 variant, full variant available
@@ -265,14 +268,14 @@ coverage for both Americas, Europe, Asia and Australia.
 
 If you need more languages they are available on demand.
 
-All collations correspond to [CLDR][] version 24 as published by
+All collations correspond to [CLDR][] version 25 as published by
 Unicode Consortium.
 
-Library is 100% covered with tests (100% lines, 100% branches), has O(1)
-complexity under the hood, and well documented. Base nul10n library will add
-only 12Kb to language-specific collations and comes in two flavors: standard
-and compact (for [BMP][]-only characters), latter will allow to save another
-80Kb on the underlying nunicode library.
+Library is covered with tests, has O(1) to O(log) complexity under the 
+hood, and well documented. Base nul10n library will add only 14Kb to 
+language-specific collations and comes in two flavors: standard
+and compact (for [BMP][]-only characters), latter will allow to 
+save another 80Kb on the underlying nunicode library.
 
 [CLDR]: http://cldr.unicode.org/
 [BMP]: http://en.wikipedia.org/wiki/Plane_(Unicode)#Basic_Multilingual_Plane
@@ -286,6 +289,11 @@ there and it's reasonably simple. Basically you need to implement a
 state-machine to weight Unicode codepoint or several of them.
 [strcoll_internal_test.c][] and ``_test_weight()`` implementation is a
 good reference.
+
+Note though that everything in nunicode starting from underscore is
+quite an internal stuff, thus please expect internal API to change
+from time to time when it need to follow ongoing changes in Unicode
+standard and CLDR.
 
 [strcoll_internal_test.c]: https://bitbucket.org/alekseyt/nunicode/src/master/tests/strcoll_internal_test.c?at=master
 
@@ -332,6 +340,8 @@ See `samples/` directory for complete examples of nunicode usage.
 
 ## DOCUMENTATION
 
+Documentation is maintained in header files in Doxygen format.
+
 Please have a look into [downloads][] section, there should be latest doc
 available for download. You can also build documentation from sources by
 executing
@@ -375,7 +385,10 @@ See [downloads][] section, or take versioned file from "Tags" tab.
 By default nunicode use [CMake][] for building, but you can simply
 compile all required ``*.c`` with needed build options - see below.
 
-``mkdir build && cd build && cmake .. -DCMAKE_BUILD_TYPE=RELEASE && make nu``
+    mkdir build
+    cd build
+    cmake .. -DCMAKE_BUILD_TYPE=RELEASE
+    make nu
 
 It will build static library.
 
@@ -386,9 +399,9 @@ to save 4-8Kb.
 
 ### SQLite3 extension
 
-``make nusqlite3``
+``make nunicode``
 
-It will build shared library libnusqlite3 with nu linked into it
+It will build shared library libnunicode with nu linked into it
 statically. See BUILD for details.
 
 ### library build options
