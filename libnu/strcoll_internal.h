@@ -26,9 +26,17 @@ typedef const char* (*nu_compound_read_t)(
  * than one character - return negative value, which will be passed back to
  * this function along with next character.
  *
+ * When function decided on weight and returned positive result, it has to
+ * fill weight with how many (Unicode) characters nunicode should rollback.
+ * E.g. function consumed "ZZS" and decided weight (in Hungarian collation),
+ * it fills 0 to \*weight because no rollback is needed. Then function
+ * consumed "ZZZ" and no weight available for such contraction - it 
+ * returns weight for "Z" and fills \*weight with 2, to rollback 
+ * redundant "ZZ".
+ *
  * If string suddenly ends before weight function can decide (string limit
- * reached), 0 will be passed additionally to the previous string to signal end
- * of the string.
+ * reached), 0 will be passed additionally to the previous string to signal 
+ * end of the string.
  *
  * @ingroup collation
  * @param u unicode codepoint to weight
