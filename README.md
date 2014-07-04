@@ -419,12 +419,16 @@ LIKE     |         0.145 | 0.255    | 0.485
 
 As you can see, upper() and COLLATE are somewhat faster, but LIKE is
 slower. The explanation to the latter i have to offer is that nunicode
-extension is doing a slightly different thing in LIKE. Please have a look:
+extension is doing a slightly different thing in LIKE.
+
+ICU extension:
 
     :::sql
     .load ./libicu.so
     SELECT 'MASSE' LIKE 'Maße';
     0
+
+nunicode extension:
 
     :::sql
     .load ./libnunicode.so
