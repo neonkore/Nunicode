@@ -1,3 +1,15 @@
+1.3
+
+[+] Unicode 7.0.0 character set support
+[+] new codepoint weighting interface for collations (nu_codepoint_weight_t)
+[+] NU700 and NU700_NOCASE collations in SQLite3 extension
+
+[-] removed NU630 and NU630_NOCASE collations from SQLite3 extension
+
+[*] faster SQL LIKE implementation
+[*] renamed SQLite3 extension binary to load extension w/o explicit
+    entry point
+
 1.2.1
 
 [+] introduced COLLATE NU630 to SQLite extension - Unicode 6.3.0
