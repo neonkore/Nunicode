@@ -391,6 +391,49 @@ for the reference.
 
 [doc]: http://www.sqlite.org/c3ref/load_extension.html
 
+### extension performance
+
+This section is only to give a general idea on nunicode SQLite extension
+performance. In the table below the following SQL queries and tables
+were used:
+
+* Table ('test\_casing') for upper() and LIKE test size: 100000 entries
+* Table ('test\_ordering') for ORDER BY test size: 100000 entries
+* ICU collation for ORDER BY: ``SELECT icu_load_collation('ru_RU', 'RUSSIAN')``
+  with sequential COLLATE RUSSIAN
+* nunicode collation for ORDER BY: embedded NU700 and sequential
+  COLLATE NU700
+* upper() test query: ``SELECT count(upper(x)) FROM test_casing``
+* COLLATE test query: ``SELECT * FROM test_ordering ORDER BY x COLLATE <collation> LIMIT 1``
+* LIKE test query: ``SELECT count(*) FROM test_casing WHERE x LIKE <string>``
+* ICU and nunicode extensions compilation flags: -O3
+* Encoding of database: UTF-8
+
+Numbers are measured by SQLite3 shell's ``.timer on``.
+
+Function | w/o extension | ICU      | nunicode
+---------|---------------|----------|---------
+upper()  |         0.275 | 0.690    | 0.670
+COLLATE  |         0.530 | 0.920    | 0.615
+LIKE     |         0.145 | 0.255    | 0.485
+
+As you can see, upper() and COLLATE are somewhat faster, but LIKE is
+slower. The explanation to the latter i have to offer is that nunicode
+extension is doing a slightly different thing in LIKE. Please have a look:
+
+    :::sql
+    .load ./libicu.so
+    SELECT 'MASSE' LIKE 'Maße';
+    0
+
+    :::sql
+    .load ./libnunicode.so
+    SELECT 'MASSE' LIKE 'Maße';
+    1
+
+The LIKE operation in nunicode extension support cases when strings
+might grow in size during case transformation.
+
 ## DOWNLOADS
 
 See [downloads][] section, or take versioned file from "Tags" tab.
