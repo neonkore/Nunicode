@@ -1,5 +1,5 @@
 GIT_REVISION="$$(expr substr $$(git rev-parse HEAD) 1 8)"
-BUILD="1.2.1"
+BUILD="1.3"
 VERSION="$(BUILD)-$(GIT_REVISION)"
 
 I386_BUILD="build_i386"
@@ -25,20 +25,20 @@ version:
 win32_zip:
 	mkdir -p $(WIN32_BUILD)
 	(cd $(WIN32_BUILD) && cmake ../.. -DCMAKE_TOOLCHAIN_FILE=../$(WIN32_TOOLCHAIN) -DCMAKE_BUILD_TYPE=RELEASE)
-	(cd $(WIN32_BUILD) && make nusqlite3)
-	zip -j $(WIN32_ZIP) $(WIN32_BUILD)/sqlite3/libnusqlite3.dll $(WIN32_BUILD)/sqlite3/libnusqlite3.dll.a
+	(cd $(WIN32_BUILD) && make nunicode)
+	zip -j $(WIN32_ZIP) $(WIN32_BUILD)/sqlite3/libnunicode.dll $(WIN32_BUILD)/sqlite3/libnunicode.dll.a
 
 i386_bz:
 	mkdir -p $(I386_BUILD)
 	(cd $(I386_BUILD) && cmake ../.. -DCMAKE_BUILD_TYPE=RELEASE)
-	(cd $(I386_BUILD) && make nusqlite3)
-	tar -cjf "$(I386_BZ)" --directory=$(I386_BUILD)/sqlite3/ libnusqlite3.so
+	(cd $(I386_BUILD) && make nunicode)
+	tar -cjf "$(I386_BZ)" --directory=$(I386_BUILD)/sqlite3/ libnunicode.so
 
 amd64_bz:
 	mkdir -p $(AMD64_BUILD)
 	(cd $(AMD64_BUILD) && cmake ../.. -DCMAKE_TOOLCHAIN_FILE=../$(AMD64_TOOLCHAIN) -DCMAKE_BUILD_TYPE=RELEASE)
-	(cd $(AMD64_BUILD) && make nusqlite3)
-	tar -cjf "$(AMD64_BZ)" --directory=$(AMD64_BUILD)/sqlite3/ libnusqlite3.so
+	(cd $(AMD64_BUILD) && make nunicode)
+	tar -cjf "$(AMD64_BZ)" --directory=$(AMD64_BUILD)/sqlite3/ libnunicode.so
 
 doc_zip:
 	(cd .. && doxygen)

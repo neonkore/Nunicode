@@ -372,7 +372,7 @@ It gives you ability to uppercase/lowercase strings in SQLite3,
 case-insensitive Unicode-aware LIKE operator and DUCET ordering with
 ORDER BY ... COLLATE NU700.
 
-Extension is only 250Kb in size approximately.
+Extension is only 200Kb in size approximately.
 
 It can be compiled into shared library and loaded with
 ``sqlite3_load_extension()`` ([doc][]) (see
