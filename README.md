@@ -250,7 +250,7 @@ documentation, examples and possibly demo.
 
 nul10n include support for the following languages
 
-Major europian languages (18Kb)
+Major European languages (18Kb)
 
 * English: implemented in DUCET, i.e. also available in nunicode
 * French: single-pass backward accent ordering
@@ -259,7 +259,7 @@ Major europian languages (18Kb)
 * Spanish: standard collation
 * Russian: standard collation
 
-Major asian languages (270Kb)
+Major Asian languages (270Kb)
 
 * Chinese (Traditional): natively supported by Unicode
 * Chinese (Simplified): GB2312 variant, full variant available
