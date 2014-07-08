@@ -19,8 +19,9 @@ What it can do:
 
 What it *DOESN'T* do:
 
-* Unicode Collation Algorithm (not entirely, please see [notes][]
-* Unicode [normalization forms][]: NFD, NFC, NFKD, NFKC (but nothing is impossible)
+* Unicode Collation Algorithm (not entirely, please see [notes][])
+* Unicode [normalization forms][]: NFD, NFC, NFKD, NFKC (but nothing is
+  impossible)
 
 [notes]: #markdown-header-strings-collation-and-case-mapping
 [normalization forms]: http://unicode.org/reports/tr15/#Norm_Forms
@@ -42,7 +43,7 @@ Encodings supported:
 * CESU-8 (for JNI)
 * UTF-16HE/UTF-32HE (please see notes at [host-endianess][])
 
-[host-endianess]: #markdown-header-host-endianess
+[host-endianess]: #markdown-header-host-endianess-of-utf-encodings
 
 All string functions provided by nunicode work on encoded strings: there is no
 need to decode anything explicitely and there is no intermediate representation
@@ -72,8 +73,10 @@ E.g. "unicode.630".
 
 nunicode version - Unicode revision relationship:
 
-* since 1.3: 7.0.0
-* until 1.2 (inclusive): 6.3.0
+nunicode | Unicode
+---------|--------
+1.3      | 7.0.0
+1.0-1.2  | 6.3.0
 
 You can always check NU\_UNICODE\_VERSION value for a Unicode revision
 implemented.
