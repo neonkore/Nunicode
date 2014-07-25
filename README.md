@@ -86,18 +86,18 @@ implemented.
 nunicode most likely is free of the following errors:
 
 * Memory leaks: there are no allocations in library
-* Memory overruns and underruns: this and below are tested with [Valgrind][]
+* Memory overruns and underruns: this and below are tested with 
+  [memory debugged][]
 * Access to invalid memory region
 
-nunicode unittest are covering 100% lines of the library, before each release
-tests are checked by Valgrind for a visible memory issues.
+Each release of nunicode is tested against comprehensive testsuite which
+covers 100% lines of the library.
 
-Branches coverage of tests is slightly above 90%, it is not covering some
-things like branching inside conditional expressions. nunicode also has a
-requirement to pass only valid UTF strings, thus it might skip redundant error
-checking. Nonetheless, each release brings this number higher.
+Branches coverage of library is slightly above 90%, it is not covering some
+things like branching inside conditional expressions. Nonetheless, each
+release brings this number higher.
 
-If you wish to inspect the coverage, please proceed as following:
+If you wish to inspect the coverage, proceed as following:
 
 	cmake .. -DCMAKE_BUILD_TYPE=GCOV
 	make coverage
@@ -105,11 +105,7 @@ If you wish to inspect the coverage, please proceed as following:
 It will produce ``tests/coverage`` directory with coverage info in
 browesable HTML.
 
-There are some errors still possible, there is no such thing as bug-free
-software, right? But it is rather unlikely that you would encounter
-programming error in nunicode.
-
-[Valgrind]: http://valgrind.org/
+[memory debugger]: http://valgrind.org/
 
 ## UTF-8, UTF-16 AND UTF-32 NOTES
 
