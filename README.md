@@ -213,25 +213,56 @@ display or processing software is permissive or fault-tolerant. Either
 way nunicode might be extended with complete verification functions
 on request.
 
-## STRINGS COLLATION AND CASE MAPPING
+## CASE MAPPING AND CASE FOLDING
 
 Case mapping is full Unicode casemapping when string might grow in size,
 e.g. "Maße" uppercase is "MASSE".
 
 Case-insensitive collation is using ``nu_to_upper()`` internally, as
-opposed to case-folding described by Unicode standard, but i consider
-it to be an excellent compromise in regard to library size.
+opposed to case-folding described by Unicode standard. Strict case-folding
+variant is available on demand.
 
-If you want to sacrifize library size, strict case-folding variant might
-also be provided in nul10n.
+## STRINGS COLLATION
 
-While nunicode does not implement [Unicode Collation Algorithm][] entirely,
+nunicode does not implement [Unicode Collation Algorithm][] (UCA),
 it does sort strings using weights from DUCET (Default Unicode Collation
-Element Table). It only does that for characters having a meaning to the
-collation: letters and numbers; which is again a good compromise on
-library size.
+Element Table) instead. It only does that for characters having a meaning
+to the strings collation: letters and numbers; which is a good compromise
+on library size.
 
 [Unicode Collation Algorithm]: http://www.unicode.org/reports/tr10/
+
+### how it's different from UCA
+
+It's simply not UCA, but it basically does the job. This is simple
+comparition of Unicode codepoints weights as defined by DUCET. It
+renders fast, compact and good working implementation of Unicode
+strings ordering.
+
+Below are examples of such ordering in different laguages:
+
+Language    | Alphabet
+------------|---------
+Russian     | аАбБвВгГдДеЕёЁжЖзЗиИйЙкКлЛмМнНоОпПрРсСтТуУфФхХцЦчЧшШщЩъЪыЫьЬэЭюЮяЯ
+English     | aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ
+German      | aAäÄbBcCdDeEfFgGhHiIjJkKlLmMnNoOöÖpPqQrRsSßtTuUüÜvVwWxXyYzZ
+Spanish     | aAáÁbBcCdDeEéÉfFgGhHiIíÍjJkKlLỻỺmMnNñÑoOóÓpPqQrRsStTuUúÚüÜvVwWxXyYzZ
+French      | aAàÀâÂbBcCçÇdDeEéÉèÈëËfFgGhHiIjJkKlLmMnNoOòÒôÔöÖpPqQrRsStTuUùÙvVwWxXyYzZ
+Greek       | αΑἀἄἂἆἁἅἃἇβΒγΓδΔεΕἐἔἒἑἕἓζΖηΗθΘιΙκΚλΛμΜνΝξΞοΟπΠρΡσΣςτΤυΥφΦχΧψΨωΩ
+
+There is no option to switch titlecase/lowercase preference because
+the same result is achievable with sorting on lowercase and native
+case at the same time, e.g.:
+
+	:::sql
+	SELECT name FROM t_table ORDER BY lower(name), name
+
+Example of such sorting:
+
+Language    | Alphabet
+------------|---------
+English     | AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz
+Russian     | АаБбВвГгДдЕеЁёЖжЗзИиЙйКкЛлМмНнОоПпРрСсТтУуФфХхЦцЧчШшЩщЪъЫыЬьЭэЮюЯя
 
 ### localization (collation tailoring)
 
@@ -239,9 +270,8 @@ DUCET tailoring is required for the most of the languages, but DUCET alone
 (embedded into nunicode) provides reasonable defaults for multi-lingual
 application.
 
-Section below explains nul10n library not available publicitly, but which
-implements localization (tailoring) support if nunicode is not covering all
-your needs.
+Section below explains nul10n library not available publicitly, which
+implements localization (tailoring) support. 
 
 nul10n provides string collations (ordering) according to [CLDR][] version 25
 as published by Unicode Consortium. Please email me to get complete feature set,
