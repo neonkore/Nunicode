@@ -1,58 +1,44 @@
 [TOC]
 
-## WHATS THIS
-
 This is i18n library implementing Unicode 7.0.0 (and 6.3.0).
 
 nunicode is trying to carefully follow the Unicode specification with
-reasonable trade-offs to produce small, fast and portable Unicode
-implementation.
+reasonable trade-offs. It doesn't implement the entire standard, but
+it does provide most of the operations on Unicode strings.
 
 What it can do:
 
 * UTF encoding and decoding
-* Correct strings collation on encoded UTF strings using default Unicode
-  collation (DUCET)
-* Correct Unicode casemapping: "Maße" -> "MASSE" (German)
-* Collation tailoring in nul10n, supporting all contractions: "ｫー" sorts before
-  "ぉゝ" (Japanese); backward accent ordering for French, et cetera
+* Strings collation using default Unicode collation table
+* Unicode casemapping: "Maße" -> "MASSE" (German)
+* Collation tailoring is supported, but implementation is a part
+  of another library (nul10n, see [notes][])
+  
+What it doesn't do:
 
-What it *DOESN'T* do:
-
-* Unicode Collation Algorithm (not entirely, please see [notes][])
-* Unicode [normalization forms][]: NFD, NFC, NFKD, NFKC (but nothing is
-  impossible)
+* Unicode Collation Algorithm (see [notes][])
+* Unicode [normalization forms][]: NFD, NFC, NFKD, NFKC
 
 [notes]: #markdown-header-strings-collation-and-case-mapping
 [normalization forms]: http://unicode.org/reports/tr15/#Norm_Forms
-
-What you could do with this library
-
-* UTF encodings provide support for all scripts, DUCET embedded into nunicode
-  will provide "generic" way of strings ordering
-* nunicode supply Unicode-enabled stdlib-like functions (i.e. ``nu_strchr()``)
-  for Unicode-aware operations on encoded strings
-
-[localization]: #markdown-header-localization
 
 Encodings supported:
 
 * UTF-8
 * UTF-16/UCS-2
 * UTF-32/UCS-4
-* CESU-8 (for JNI)
-* UTF-16HE/UTF-32HE (please see notes at [host-endianess][])
+* CESU-8
+* UTF-16HE/UTF-32HE (see notes at [host-endianess][])
 
 [host-endianess]: #markdown-header-host-endianess-of-utf-encodings
 
-All string functions provided by nunicode work on encoded strings: there is no
-need to decode anything explicitely and there is no intermediate representation
-under the hood of nunicode. Collation functions are complemented by
-case-insensitive variants.
+All string functions provided by nunicode work on encoded strings: there is 
+no need to decode anything explicitely and there is no intermediate
+representation under the hood of nunicode. Collation functions are 
+complemented by case-insensitive variants.
 
-## WHY ITS GOOD
+## Properties of the library
 
-* Well, firstly it is beautiful
 * Small size: UTF-8 encoding/decoding - 3Kb, UTF-8 encoding/decoding +
   0-terminated string functions - 5Kb; case mapping - 30Kb, default Unicode
   collation - 145Kb (less in compact flavor)
@@ -60,42 +46,15 @@ case-insensitive variants.
 * Small CPU footprint, O(1) complexity under the hood
 * Endianess- and platform-agnostic
 * Rich build options: you can strip every part you don't need
-* C99 compliant, -pedantic -Wall -Wextra -Werror
+* C99 compliant, compiled with -pedantic -Wall -Wextra -Werror
 * No dependencies
 * Permissive license
 
-## DIFFERENT REVISIONS OF UNICODE
+## Tests coverage
 
-Git master contains implementation of the latest published Unicode revision
-(7.0.0). Implementations of previous Unicode revisions are stored in branches.
-Branch naming is the following: "unicode.XYZ", where "XYZ" is Unicode version.
-E.g. "unicode.630".
-
-nunicode version - Unicode revision relationship:
-
-nunicode | Unicode
----------|--------
-1.3      | 7.0.0
-1.0-1.2  | 6.3.0
-
-You can always check NU\_UNICODE\_VERSION value for a Unicode revision
-implemented.
-
-## IMPLEMENTATION QUALITY
-
-nunicode most likely is free of the following errors:
-
-* Memory leaks: there are no allocations in library
-* Memory overruns and underruns: this and below are tested with 
-  [memory debugged][]
-* Access to invalid memory region
-
-Each release of nunicode is tested against comprehensive testsuite which
-covers 100% lines of the library.
-
-Branches coverage of library is slightly above 90%, it is not covering some
-things like branching inside conditional expressions. Nonetheless, each
-release brings this number higher.
+* 100% lines
+* ~90% branches, it is not covering some things like branching inside 
+  conditional expressions.
 
 If you wish to inspect the coverage, proceed as following:
 
@@ -105,139 +64,93 @@ If you wish to inspect the coverage, proceed as following:
 It will produce ``tests/coverage`` directory with coverage info in
 browesable HTML.
 
-[memory debugger]: http://valgrind.org/
-
-## UTF-8, UTF-16 AND UTF-32 NOTES
+## UTF-8, UTF-16 and UTF-32 notes
 
 According to Unicode specification UTF-8 might contain byte order mark
-(BOM), however it doesn't make any sense to have BOM in UTF-8. Therefore
-nunicode has no embedded means to deal with UTF-8 BOM, neither detect,
-read or write.
+(BOM), however it is unlikely to encouter BOM in endianess-independent
+UTF-8. Therefore nunicode has no embedded means to deal with UTF-8 BOM,
+neither detect, read or write.
 
-If you are facing this, you can safely call ``nu_utf8_read()`` - it
-will produce normal U+FEFF codepoint as expected.
+You can safely call ``nu_utf8_read()`` on string with BOM - it will
+produce normal U+FEFF codepoint as expected.
 
-Reference: [UTF BOM FAQ][]
-
-Unicode defines 3 types of UTF-16 *each* affected by endianess.
+Unicode defines 3 types of UTF-16 each affected by endianess.
 
 1. UTF-16
 2. UTF-16LE (little endian)
 3. UTF-16BE (big endian)
 
-LE and BE are obviously little-endian and big-endian, generic one's
-endianess is defined by the byte order mark (BOM) at the beginning of the
-string or defaults to BE if BOM is absent. Thus generic UTF-16 is always
-BOM + either UTF-16LE or UTF-16BE.
-
 There's no dedicated encoding/decoding functions for each UTF-16 variant
 in nunicode, instead API provides only ``nu_utf16le_*`` and ``nu_utf16be_*`` 
-functions for the encoding and decoding, BOM is handled by ``nu_utf16_*``
-functions.
-
-It's up to you to decide if you need BOM support or just UTF-16LE/BE in your
-application, but either way you'll get complete support in the set
-of nunicode API functions.
+functions for the encoding and decoding, BOM and endianess detection are
+handled by ``nu_utf16_*`` functions.
 
 Note that nunicode will never report string endianess explicitely but will
-provide read, reverse read, write and BOM write functions instead. See
-``samples/utf16.c``.
-
-Everything said above about UTF-16 support also applies to UTF-32 support.
-
-[UTF BOM FAQ]: http://www.unicode.org/faq/utf_bom.html#bom5
+provide read/write functions instead. See ``samples/utf16.c``.
 
 ### host-endianess of UTF encodings
 
-[ISO/IEC 10646][] (PDF) clearly says that if BOM is not present, encoding
-should be considered BE, however sometimes you can see UTF-16 defined
-simply as "host-endian" or "native-endian". For the purpose to be compatible
-with such implementations, nunicode implements extension: UTF-16HE and
-UTF-32HE encodings. HE obviously stands for "Host-Endian".
+Sometimes you can see UTF-16 defined as "host-endian" or "native-endian". 
+For the purpose to be compatible with such implementations, nunicode 
+implements two extensions: UTF-16HE and UTF-32HE encodings - these
+works on host-endian encoded strings.
 
-Note that ``nu_utf16_read_bom()`` will default encoding to UTF-16BE if
-BOM is not present in string, as standard demands. Therefore HE variants
-are need to be used explicitely when required.
+Note that, as standard demands, ``nu_utf16_read_bom()`` will default
+encoding to UTF-16BE if BOM is not present in string. Therefore HE
+variants are need to be used explicitely when required.
 
-[ISO/IEC 10646]: http://www.itscj.ipsj.or.jp/sc2/open/02n4125/FCD10646-Main.pdf
+## Reverse reading
 
-## UCS-2 and UCS-4
+nunicode do not provide str\[i\] (access by index) equivalent. Instead
+you could do ``nu_utf*_revread(&u, encoded)`` to read character
+in backward direction.
 
-UCS-4 is in fact the same as UTF-32.
-
-UCS-2 decoding is a part of UTF-16 decoding, if you need to write UCS-2
-encoded strings, just override ``nu_utf16*_write()`` and don't write characters
-outside of [BMP][] (U+0000..U+FFFF). There is no embedded support of this in
-nunicode since UCS-2 was superseded by UTF-16 more than 15 years ago.
-
-[BMP]: http://en.wikipedia.org/wiki/Plane_(Unicode)#Basic_Multilingual_Plane
-
-## REVERSE READING
-
-nunicode do not provide str\[i\] (access by index) equivalent since it
-will always be slow. Instead you can do ``nu_utf*_revread(&u, encoded)``
-and other encodings variants to read character in backward direction.
-
-It is always a bad idea to pass arbitrary pointer to revread(). UTF-8 and
+It is a bad idea to pass arbitrary pointer to revread(). UTF-8 and
 CESU-8 can possibly recover from programming error (pointer poiting to
 the middle of multibyte UTF-8 sequence), but UTF-16 and UTF-32 revread
-will fail badly. In fact, UTF-32 revread is just ``const char *p - 4``.
+behavior is unpredictabled in that case.
 
 Pointer passed to revread() is supposed to always come from call to
-``nu_*_read()``. Otherwise prepare to unforeseen consequences.
+``nu_*_read()``.
 
-As a side note, if you pass 0 as a pointer to decoded character,
-``revread()``, as you would expect, won't do any redundant decoding,
-but will just iterate over the string.
+## Encoding validation
 
-	:::c
-	/* skip 5 characters backwards */
-	for (int i = 0; i < 5; ++i) {
-		p = nu_utf8_revread(0, p);
-	}
+All decoding functions has very limited-to-no error checking for
+performance reasons. nunicode expects valid UTF strings at input. It
+does provide ``nu_validate()`` to check string encoding before
+processing.
 
-## ENCODING VALIDATION
+This function perform UTF encoding validation, not the validation of
+encoded string. E.g. U+D801 will pass UTF-8 check: it's malformed for
+UTF-32 because range of U+D801 is reserved for UTF-16, it's ivalid
+Unicode string, but it's correctly encoded UTF-8. 
 
-All decoding functions has very limited error checking for performance
-reasons. nunicode expect valid UTF strings at input. It though provide
-``nu_validate()`` to check string before processing.
-
-This function perform UTF encoding validation, do not expect it to
-validate decoded Unicode string, or even decode UTF string completely.
-E.g. U+D801 will pass UTF-32 check: it's malformed for UTF-32 because
-this range is reserved for UTF-16, but it's still correctly **encoded**
-UTF-32.
-
-Normally you might not need to completely validate Unicode strings if
-display or processing software is permissive or fault-tolerant. Either
-way nunicode might be extended with complete verification functions
-on request.
-
-## CASE MAPPING AND CASE FOLDING
+## Case mapping and case folding
 
 Case mapping is full Unicode casemapping when string might grow in size,
-e.g. "Maße" uppercase is "MASSE".
+e.g. "Maße" (German) uppercases to "MASSE".
 
 Case-insensitive collation is using ``nu_to_upper()`` internally, as
-opposed to case-folding described by Unicode standard. Strict case-folding
-variant is available on demand.
+opposed to case-folding described by Unicode standard, to reduce library
+size.
 
-## STRINGS COLLATION
+## Strings collation
 
-nunicode does not implement [Unicode Collation Algorithm][] (UCA),
-it does sort strings using weights from DUCET (Default Unicode Collation
-Element Table) instead. It only does that for characters having a meaning
-to the strings collation: letters and numbers; which is a good compromise
-on library size.
+nunicode implements ISO 14651 collation where strings are sorted according
+to the weights of their characters. Weight used by nunicode are defined
+by DUCET (default Unicode collation table). Character set is reduced
+to contain only letters and number to reduce library size. The rest
+of the characters are sorted at the end of the list.
 
-[Unicode Collation Algorithm]: http://www.unicode.org/reports/tr10/
+Formal conformance to ISO/IEC 14651:
 
-### how it's different from UCA
-
-It's simply not UCA, but it basically does the job. This is simple
-comparition of Unicode codepoints weights as defined by DUCET. It
-renders fast, compact and good working implementation of Unicode
-strings ordering.
+Reference           |                 | Comment
+--------------------|-----------------|--------
+Collation levels    | Any             | nunicode supports any number of collation levels. Actual number of levels implemented is maximum level defined by Unicode specification
+forward,position    | Not supported   |
+backward            | Not supported   |
+Tailoring delta     | -               | Equal to the delta with reduced DUCET
+Preparation process | None            |
 
 Below are examples of such ordering in different laguages:
 
@@ -266,50 +179,36 @@ Russian     | АаБбВвГгДдЕеЁёЖжЗзИиЙйКкЛлМмНнОоП
 
 ### localization (collation tailoring)
 
-DUCET tailoring is required for the most of the languages, but DUCET alone
-(embedded into nunicode) provides reasonable defaults for multi-lingual
-application.
-
 Section below explains nul10n library not available publicitly, which
-implements localization (tailoring) support. 
+implements localization (collation tailoring) support. 
 
-nul10n provides string collations (ordering) according to [CLDR][] version 25
-as published by Unicode Consortium. Please email me to get complete feature set,
-documentation, examples and possibly demo.
+nul10n provides string collations (ordering) according to [CLDR][] version
+25 as published by Unicode Consortium.
 
 nul10n include support for the following languages
 
-Major European languages (18Kb)
+European languages (18Kb)
 
-* English: implemented in DUCET, i.e. also available in nunicode
+* English: implemented in DUCET (avaiable in nunicode)
 * French: single-pass backward accent ordering
 * Italian: implemented in DUCET
 * German: standard collation
 * Spanish: standard collation
 * Russian: standard collation
 
-Major Asian languages (270Kb)
+Asian languages (270Kb)
 
 * Chinese (Traditional): natively supported by Unicode
 * Chinese (Simplified): GB2312 variant, full variant available
   on demand
-* Japanese: standard collation, with all Unicode contractions supported:
+* Japanese: standard collation, all Unicode contractions supported:
   "ｫー" sorts before "ぉゝ"
 * Korean: standard collation
 * Vietnamese: standard collation
 
-Together with Portuguese (included into DUCET), this set will provide
-coverage for both Americas, Europe, Asia and Australia.
-
-If you need more languages they are available on demand, in case of some
-languages it is possible to also reduce library size requirements.
-
-Library is covered with tests, has O(1) to O(log) complexity under the 
-hood, and well documented. Base nul10n library will add only 14Kb,
-plus language-specific collations on top of it. Library comes in two
-flavors: standard (as described above) and compact which includes support
-for [BMP][]characters only to further reduce size. Latter will allow to
-save another 80Kb on the underlying nunicode library.
+More languages are available on demand. It is possible to reduce library
+size by including only characters from base unicode character set
+([BMP][]).
 
 [CLDR]: http://cldr.unicode.org/
 [BMP]: http://en.wikipedia.org/wiki/Plane_(Unicode)#Basic_Multilingual_Plane
@@ -317,17 +216,13 @@ save another 80Kb on the underlying nunicode library.
 ### custom collations
 
 If you need to implement your own collation, then you need to provide
-your own weighting function to ``_nu_strcoll()``. Take a look into
-``nu_codepoint_weight_t`` documentation, formal contract is described
-there and it's reasonably simple. Basically you need to implement a
-state-machine to weight Unicode codepoint or several of them.
-[strcoll_internal_test.c][] and ``_test_weight()`` implementation is a
-good reference.
+your own weighting function to ``_nu_strcoll()``. It is described in
+``nu_codepoint_weight_t`` documentation. [strcoll_internal_test.c][] 
+and ``_test_weight()`` implementation is also a reference.
 
 Note though that everything in nunicode starting from underscore 
-(as in ``_nu_strcoll``) is quite an internal stuff, thus please expect
-internal API to change from time to time when it need to follow ongoing
-changes in Unicode standard and CLDR.
+(as in ``_nu_strcoll``) is internal API and might change when it need to
+follow ongoing changes in Unicode and CLDR.
 
 [strcoll_internal_test.c]: https://bitbucket.org/alekseyt/nunicode/src/master/tests/strcoll_internal_test.c?at=master
 
@@ -338,7 +233,7 @@ perfect hash][] table for lookup. Hash is a quite fast couple of XOR+MOD.
 
 [minimal perfect hash]: http://iswsa.acm.org/mphf/index.html
 
-## EXAMPLES
+## Examples
 
 See `samples/` directory for complete examples of nunicode usage.
 
@@ -372,7 +267,7 @@ See `samples/` directory for complete examples of nunicode usage.
 	nu_transformnstr((const char *)input, sizeof(input), output,
 		nu_cesu8_read, nu_utf8_write);
 
-## DOCUMENTATION
+## Documentation
 
 Documentation is maintained in header files in Doxygen format.
 
@@ -384,7 +279,7 @@ executing
 
 It will produce ``doc/html`` with Doxygen documentation in browesable HTML.
 
-## SQLITE3 EXTENSION
+## SQLite3 extension
 
 Provides functions for following SQL statements:
 
@@ -394,12 +289,7 @@ Provides functions for following SQL statements:
 * COLLATE NU700 - case-sensitive Unicode collation
 * COLLATE NU700\_NOCASE - case-insensitive Unicode collation
 
-Supported encodings: UTF-8, UTF-16, UTF-16LE, UTF-16BE (i.e. all encodings
-supported by SQLite).
-
-It gives you ability to uppercase/lowercase strings in SQLite3,
-case-insensitive Unicode-aware LIKE operator and DUCET ordering with
-ORDER BY ... COLLATE NU700.
+Supported encodings: UTF-8, UTF-16, UTF-16LE, UTF-16BE.
 
 Extension is only 200Kb in size approximately.
 
@@ -414,9 +304,8 @@ extension is the following call:
 	:::c
 	nunicode_sqlite3_init(0);
 
-After this point, every connection you open with ``sqlite3_open()`` will
-have nunicode extension enabled. See *sqlite3/samples/autoextension.c*
-for the reference.
+After this point, every new connection will have nunicode extension
+enabled. See *sqlite3/samples/autoextension.c* for the reference.
 
 [doc]: http://www.sqlite.org/c3ref/load_extension.html
 
@@ -467,16 +356,15 @@ nunicode extension:
 The LIKE operation in nunicode extension support cases when strings
 might grow in size during case transformation.
 
-## DOWNLOADS
+## Downloads
 
 See [downloads][] section, or take versioned file from "Tags" tab.
 
 [downloads]: https://bitbucket.org/alekseyt/nunicode/downloads
 
-## BUILD
+## Build
 
-By default nunicode use [CMake][] for building, but you can simply
-compile all required ``*.c`` with needed build options - see below.
+nunicode uses [CMake][] for building.
 
     mkdir build
     cd build
@@ -485,8 +373,7 @@ compile all required ``*.c`` with needed build options - see below.
 
 It will build static library.
 
-Normally nunicode is compiled with -O3 (gcc), you can change it to -Os
-to save 4-8Kb.
+Normally nunicode is compiled with -O3 (gcc).
 
 [CMake]: http://www.cmake.org/
 
@@ -503,7 +390,7 @@ Please refer to documentation in [config.h][].
 
 [config.h]: https://bitbucket.org/alekseyt/nunicode/src/master/libnu/config.h?at=master
 
-## QUESTIONS?
+## Questions?
 
 [aleksey.tulinov@gmail.com][]
 
