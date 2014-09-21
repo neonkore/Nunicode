@@ -142,16 +142,6 @@ by DUCET (default Unicode collation table). Character set is reduced
 to contain only letters and number to reduce library size. The rest
 of the characters are sorted at the end of the list.
 
-Formal conformance to ISO/IEC 14651:
-
-Reference           |                 | Comment
---------------------|-----------------|--------
-Collation levels    | Any             | nunicode supports any number of collation levels. Actual number of levels implemented is maximum level defined by Unicode specification
-forward,position    | Not supported   |
-backward            | Not supported   |
-Tailoring delta     | -               | Equal to the delta with reduced DUCET
-Preparation process | None            |
-
 Below are examples of such ordering in different laguages:
 
 Language    | Alphabet
@@ -176,6 +166,16 @@ Language    | Alphabet
 ------------|---------
 English     | AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz
 Russian     | АаБбВвГгДдЕеЁёЖжЗзИиЙйКкЛлМмНнОоПпРрСсТтУуФфХхЦцЧчШшЩщЪъЫыЬьЭэЮюЯя
+
+Formal conformance to ISO/IEC 14651:
+
+Reference           |                 | Comment
+--------------------|-----------------|--------
+Collation levels    | Any             | nunicode supports any number of collation levels. Actual number of levels implemented is maximum level defined by Unicode specification
+forward,position    | No              |
+backward            | No              |
+Tailoring delta     | -               | Equal to the delta with reduced DUCET
+Preparation process | None            |
 
 ### localization (collation tailoring)
 
