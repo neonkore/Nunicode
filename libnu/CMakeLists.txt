@@ -5,6 +5,7 @@ set(LIBNU_SRC
 	strcoll.c
 	strcoll_internal.c
 	strings.c
+	tofold.c
 	tolower.c
 	toupper.c
 	udb.c

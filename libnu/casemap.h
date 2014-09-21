@@ -42,6 +42,9 @@ const char* nu_toupper(uint32_t codepoint, nu_read_iterator_t *read);
 NU_EXPORT
 const char* nu_tolower(uint32_t codepoint, nu_read_iterator_t *read);
 
+NU_EXPORT
+const char* nu_tofold(uint32_t codepoint, nu_read_iterator_t *read);
+
 #endif /* NU_WITH_TOLOWER */
 
 #if defined (__cplusplus) || defined (c_plusplus)

@@ -66,3 +66,23 @@ void test_tolower() {
 	assert(nu_tolower(0x00A0, 0) == 0);
 	assert(nu_tolower(0x0061, 0) == 0);
 }
+
+void test_tofold() {
+	nu_read_iterator_t fold_read;
+	uint32_t u;
+	const char *map = 0;
+
+	map = nu_tofold(0x00DF, &fold_read); /* ß */
+	assert(map != 0 && fold_read != 0);
+	map = fold_read(map, &u);
+	assert(u == 0x0073 && map != 0); /* s */
+	map = fold_read(map, &u);
+	assert(u == 0x0073 && map != 0); /* s */
+	fold_read(map, &u);
+	assert(u == 0);
+	
+	map = nu_tofold(0x00C6, &fold_read); /* Æ */
+	assert(map != 0 && fold_read != 0);
+	fold_read(map, &u);
+	assert(u == 0x00E6); /* æ */
+}
