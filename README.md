@@ -1,6 +1,6 @@
 [TOC]
 
-This is i18n library implementing Unicode 7.0.0 (and 6.3.0).
+This is i18n library implementing Unicode 7.0.0.
 
 nunicode is trying to carefully follow the Unicode specification with
 reasonable trade-offs. It doesn't implement the entire standard, but
@@ -129,10 +129,6 @@ Unicode string, but it's correctly encoded UTF-8.
 
 Case mapping is full Unicode casemapping when string might grow in size,
 e.g. "Maße" (German) uppercases to "MASSE".
-
-Case-insensitive collation is using ``nu_to_upper()`` internally, as
-opposed to case-folding described by Unicode standard, to reduce library
-size.
 
 ## Strings collation
 
@@ -291,7 +287,7 @@ Provides functions for following SQL statements:
 
 Supported encodings: UTF-8, UTF-16, UTF-16LE, UTF-16BE.
 
-Extension is only 200Kb in size approximately.
+Extension is only 220Kb in size approximately.
 
 It can be compiled into shared library and loaded with
 ``sqlite3_load_extension()`` ([doc][]) (see

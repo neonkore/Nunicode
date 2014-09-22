@@ -49,16 +49,16 @@ SELECT 'MASSE' LIKE 'ma\\%se' ESCAPE '\' == 0
 SELECT 'MA_SE' LIKE 'maя_se' ESCAPE 'я' == 1 /* escaping with unicode character */
 
 SELECT 'ё' < 'я' == 0 /* collation */
-SELECT 'Ё' < 'Я' == 0
+SELECT 'Ё' < 'Я' == 1
 SELECT 'ё' < 'я' COLLATE NU700 == 1
 SELECT 'Ё' < 'Я' COLLATE NU700 == 1
 SELECT 'ß' == 'ss' == 0
 SELECT 'æ' == 'Æ' == 0
 SELECT 'æ' == 'Æ' COLLATE NU700 == 0
-SELECT 'æ' == 'Æ' COLLATE NU700_NOCASE
+SELECT 'æ' == 'Æ' COLLATE NU700_NOCASE == 1
 SELECT 'ß' == 'SS' COLLATE NU700 == 0
-SELECT 'ß' == 'SS' COLLATE NU700_NOCASE
-SELECT 'ß' == 'ss' COLLATE NU700_NOCASE
+SELECT 'ß' == 'SS' COLLATE NU700_NOCASE == 1
+SELECT 'ß' == 'ss' COLLATE NU700_NOCASE == 1
 SELECT 'ß' == 'ss' COLLATE NU700 == 0
 
 SELECT upper('Maße') == 'MASSE' /* casemapping */
