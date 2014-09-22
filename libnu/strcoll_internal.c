@@ -21,7 +21,7 @@ static int32_t _compound_weight(int32_t w,
 	while (p < limit) {
 		uint32_t u = 0;
 
-		const char *np = com(p, read, &u, &tailp, &tailp_read);
+		const char *np = com(p, limit, read, &u, &tailp, &tailp_read);
 		new_w = weight(u, &w, context);
 
 		/* after this point, w might hold rollback value
@@ -41,7 +41,7 @@ static int32_t _compound_weight(int32_t w,
 				tailp_read = *tail_read;
 
 				for (int32_t i = 0; i < consumed - w; ++i) {
-					np = com(np, read, 0, &tailp, &tailp_read);
+					np = com(np, limit, read, 0, &tailp, &tailp_read);
 				}
 				w = 0;
 			}
@@ -85,8 +85,8 @@ static int _nu_collate(const char *lhs, const char *lhs_limit,
 		|| (ltailp != 0 && rp < rhs_limit)
 		|| (rtailp != 0 && lp < lhs_limit)) {
 
-		lp = com1(lp, it1, &u1, &ltailp, &ltail_read);
-		rp = com2(rp, it2, &u2, &rtailp, &rtail_read);
+		lp = com1(lp, lhs_limit, it1, &u1, &ltailp, &ltail_read);
+		rp = com2(rp, rhs_limit, it2, &u2, &rtailp, &rtail_read);
 
 		int32_t w1 = weight(u1, 0, context);
 		int32_t w2 = weight(u2, 0, context);
@@ -175,7 +175,7 @@ const char* _nu_strchr(const char *lhs, const char *lhs_limit, uint32_t c,
 	}
 
 	while (p < lhs_limit) {
-		const char *np = com(p, read, &u, &tail, &tail_read);
+		const char *np = com(p, lhs_limit, read, &u, &tail, &tail_read);
 
 		if (u == 0) {
 			break;
@@ -202,7 +202,7 @@ const char* _nu_strchr(const char *lhs, const char *lhs_limit, uint32_t c,
 					return 0;
 				}
 
-				np = com(np, read, &u, &tail, &tail_read);
+				np = com(np, lhs_limit, read, &u, &tail, &tail_read);
 
 				if (u == 0) {
 					return 0;

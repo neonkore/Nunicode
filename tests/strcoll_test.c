@@ -199,6 +199,8 @@ void test_strnstr() {
 	assert(nu_strnstr(input1, 100, "ee", 2, nu_utf8_read, nu_utf8_read) == 0);
 	assert(nu_strnstr(input1, 100, "s", 1, nu_utf8_read, nu_utf8_read) == input1 + 2);
 	assert(nu_strnstr(input1, 2, "s", 1, nu_utf8_read, nu_utf8_read) == 0);
+	assert(nu_strnstr(input1, 3, "s", 1, nu_utf8_read, nu_utf8_read) == input1 + 2);
+	assert(nu_strnstr(input1, 3, "ss", 2, nu_utf8_read, nu_utf8_read) == 0);
 	assert(nu_strnstr(input1, 200, "ss", 2, nu_utf8_read, nu_utf8_read) == input1 + 2);
 	assert(nu_strnstr(input1, 3, "sse", 3, nu_utf8_read, nu_utf8_read) == 0);
 	assert(nu_strnstr(input1, 4, "sse", 3, nu_utf8_read, nu_utf8_read) == 0);
@@ -213,6 +215,7 @@ void test_strcasestr() {
 
 void test_strcasenstr() {
 	const char *input1 = "MASSE";
+	const char *input2 = "maße";
 
 	assert(nu_strcasenstr(input1, 100, "asd", 3, nu_utf8_read, nu_utf8_read) == 0);
 
@@ -220,6 +223,10 @@ void test_strcasenstr() {
 	assert(nu_strcasenstr(input1, 3, "sse", 3, nu_utf8_read, nu_utf8_read) == 0);
 	assert(nu_strcasenstr(input1, 4, "sse", 3, nu_utf8_read, nu_utf8_read) == 0);
 	assert(nu_strcasenstr(input1, 5, "sse", 3, nu_utf8_read, nu_utf8_read) == input1 + 2);
+
+	assert(nu_strcasenstr(input2, 3, "sse", 3, nu_utf8_read, nu_utf8_read) == 0);
+	assert(nu_strcasenstr(input2, 4, "sse", 3, nu_utf8_read, nu_utf8_read) == 0);
+	assert(nu_strcasenstr(input2, 5, "sse", 3, nu_utf8_read, nu_utf8_read) == input2 + 2);
 }
 
 void test_crossencoding_strcoll() {

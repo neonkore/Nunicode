@@ -60,7 +60,7 @@ SQLITE_EXTENSION_INIT1
  */
 static int _nunicode_like(const char *lhs, const char *rhs, uint32_t escape,
 	nu_read_iterator_t lhs_read, nu_read_iterator_t rhs_read) {
-	
+
 	nu_compound_read_t com1 = nu_nocase_compound_read;
 	nu_compound_read_t com2 = com1;
 
@@ -73,25 +73,25 @@ static int _nunicode_like(const char *lhs, const char *rhs, uint32_t escape,
 	char prev_escape = 0;
 
 	while (ru != 0 && lu != 0) {
-		rp = com2(rp, rhs_read, &ru, &rtailp, &rtail_read);
+		rp = com2(rp, 0, rhs_read, &ru, &rtailp, &rtail_read);
 
 		if (ru == '%' && prev_escape == 0) {
 			while (ru == '%' || ru == '_') {
-				rp = com2(rp, rhs_read, &ru, &rtailp, &rtail_read);
+				rp = com2(rp, 0, rhs_read, &ru, &rtailp, &rtail_read);
 				if (ru == '_') {
 					if (lu == 0) {
 						return 0;
 					}
-					lp = com1(lp, lhs_read, &lu, &ltailp, &ltail_read);
+					lp = com1(lp, 0, lhs_read, &lu, &ltailp, &ltail_read);
 				}
 			}
-	
+
 			lu = (uint32_t)(-1);
 			while (lu != ru) {
 				if (lu == 0) {
 					return 0;
 				}
-				lp = com1(lp, lhs_read, &lu, &ltailp, &ltail_read);
+				lp = com1(lp, 0, lhs_read, &lu, &ltailp, &ltail_read);
 			}
 
 			if (ru != lu) {
@@ -106,7 +106,7 @@ static int _nunicode_like(const char *lhs, const char *rhs, uint32_t escape,
 				return 0;
 			}
 
-			lp = com1(lp, lhs_read, &lu, &ltailp, &ltail_read);
+			lp = com1(lp, 0, lhs_read, &lu, &ltailp, &ltail_read);
 			continue;
 		}
 		else if (escape != 0 && ru == escape) {
@@ -114,15 +114,15 @@ static int _nunicode_like(const char *lhs, const char *rhs, uint32_t escape,
 			continue;
 		}
 
-		lp = com1(lp, lhs_read, &lu, &ltailp, &ltail_read);
+		lp = com1(lp, 0, lhs_read, &lu, &ltailp, &ltail_read);
 
 		if (lu != ru) {
 			return 0;
 		}
-		
+
 		prev_escape = 0;
 	}
-		
+
 	return (lu == ru ? 1 : 0);
 }
 

@@ -6,15 +6,16 @@
 
 #if (defined NU_WITH_Z_COLLATION) || (defined NU_WITH_N_COLLATION)
 
-static inline const char* _nu_casemap_read(const char *encoded, nu_read_iterator_t encoded_read,
-	uint32_t *unicode, const char **tail, nu_read_iterator_t *tail_read,
+static inline const char* _nu_casemap_read(const char *encoded, const char *encoded_limit,
+	nu_read_iterator_t encoded_read, uint32_t *u,
+	const char **tail, nu_read_iterator_t *tail_read,
 	nu_casemapping_t casemap) {
 
 	/* re-entry with tail != 0 */
 	if (*tail != 0) {
-		*tail = (*tail_read)(*tail, unicode);
+		*tail = (*tail_read)(*tail, u);
 
-		switch (*unicode) {
+		switch (*u) {
 		case 0:
 			*tail = 0;
 			*tail_read = 0;
@@ -25,35 +26,44 @@ static inline const char* _nu_casemap_read(const char *encoded, nu_read_iterator
 		}
 	}
 
-	const char *p = encoded_read(encoded, unicode);
+	if (encoded_limit != 0 && encoded >= encoded_limit) {
+		*u = 0;
+		return encoded;
+	}
 
-	if (*unicode == 0 || casemap == 0) {
+	const char *p = encoded_read(encoded, u);
+
+	if (*u == 0 || casemap == 0) {
 		return p;
 	}
 
-	const char *map = casemap(*unicode, tail_read);
+	const char *map = casemap(*u, tail_read);
 	if (map == 0) {
 		return p;
 	}
 
 	/* map != 0 */
 
-	*tail = (*tail_read)(map, unicode);
+	*tail = (*tail_read)(map, u);
 
 	return p;
 }
 
-const char* nu_default_compound_read(const char *encoded, nu_read_iterator_t encoded_read,
-	uint32_t *unicode, const char **tail, nu_read_iterator_t *tail_read) {
+const char* nu_default_compound_read(const char *encoded, const char *encoded_limit,
+	nu_read_iterator_t encoded_read, uint32_t *unicode,
+	const char **tail, nu_read_iterator_t *tail_read) {
+	(void)(encoded_limit);
 	(void)(tail);
 	(void)(tail_read);
 
 	return encoded_read(encoded, unicode);
 }
 
-const char* nu_nocase_compound_read(const char *encoded, nu_read_iterator_t encoded_read,
-	uint32_t *unicode, const char **tail, nu_read_iterator_t *tail_read) {
-	return _nu_casemap_read(encoded, encoded_read, unicode, tail, tail_read, nu_tofold);
+const char* nu_nocase_compound_read(const char *encoded, const char *encoded_limit,
+	nu_read_iterator_t encoded_read, uint32_t *unicode,
+	const char **tail, nu_read_iterator_t *tail_read) {
+	return _nu_casemap_read(encoded, encoded_limit, encoded_read, unicode,
+		tail, tail_read, nu_tofold);
 }
 
 #endif /* NU_WITH_Z_COLLATION || NU_WITH_N_COLLATION */

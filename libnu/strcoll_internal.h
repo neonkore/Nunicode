@@ -17,7 +17,7 @@ extern "C" {
  * @see nu_nocase_compound_read
  */
 typedef const char* (*nu_compound_read_t)(
-	const char *encoded, nu_read_iterator_t encoded_read,
+	const char *encoded, const char *encoded_limit, nu_read_iterator_t encoded_read,
 	uint32_t *unicode, const char **tail, nu_read_iterator_t *tail_read);
 
 /** Weight unicode codepoint (or several codepoints)
@@ -30,12 +30,12 @@ typedef const char* (*nu_compound_read_t)(
  * fill weight with how many (Unicode) characters nunicode should rollback.
  * E.g. function consumed "ZZS" and decided weight (in Hungarian collation),
  * it fills 0 to \*weight because no rollback is needed. Then function
- * consumed "ZZZ" and no weight available for such contraction - it 
- * returns weight for "Z" and fills \*weight with 2, to rollback 
+ * consumed "ZZZ" and no weight available for such contraction - it
+ * returns weight for "Z" and fills \*weight with 2, to rollback
  * redundant "ZZ".
  *
  * If string suddenly ends before weight function can decide (string limit
- * reached), 0 will be passed additionally to the previous string to signal 
+ * reached), 0 will be passed additionally to the previous string to signal
  * end of the string.
  *
  * @ingroup collation

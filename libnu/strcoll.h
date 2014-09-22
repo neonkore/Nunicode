@@ -42,8 +42,9 @@ extern "C" {
  * @return pointer to next encoded character
  */
 NU_EXPORT
-const char* nu_default_compound_read(const char *encoded, nu_read_iterator_t encoded_read,
-	uint32_t *unicode, const char **tail, nu_read_iterator_t *tail_read);
+const char* nu_default_compound_read(const char *encoded, const char *encoded_limit,
+	nu_read_iterator_t encoded_read, uint32_t *unicode,
+	const char **tail, nu_read_iterator_t *tail_read);
 
 /** Case-ignoring compound read, equal to calling
  * encoded_read(encoded, &unicode) with nu_toupper() applied internally
@@ -57,8 +58,9 @@ const char* nu_default_compound_read(const char *encoded, nu_read_iterator_t enc
  * @return pointer to next encoded character
  */
 NU_EXPORT
-const char* nu_nocase_compound_read(const char *encoded, nu_read_iterator_t encoded_read,
-	uint32_t *unicode, const char **tail, nu_read_iterator_t *tail_read);
+const char* nu_nocase_compound_read(const char *encoded, const char *encoded_limit,
+	nu_read_iterator_t encoded_read, uint32_t *unicode,
+	const char **tail, nu_read_iterator_t *tail_read);
 
 #endif /* NU_WITH_Z_COLLATION || NU_WITH_N_COLLATION */
 
