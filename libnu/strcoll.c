@@ -4,6 +4,12 @@
 #include "strcoll_internal.h"
 #include "casemap.h"
 
+#ifdef NU_WITH_TOFOLD
+# define NU_FOLDING_FUNCTION nu_tofold
+#else
+# define NU_FOLDING_FUNCTION nu_toupper
+#endif /* NU_WITH_TOFOLD */
+
 #if (defined NU_WITH_Z_COLLATION) || (defined NU_WITH_N_COLLATION)
 
 static inline const char* _nu_casemap_read(const char *encoded, const char *encoded_limit,
@@ -63,7 +69,7 @@ const char* nu_nocase_compound_read(const char *encoded, const char *encoded_lim
 	nu_read_iterator_t encoded_read, uint32_t *unicode,
 	const char **tail, nu_read_iterator_t *tail_read) {
 	return _nu_casemap_read(encoded, encoded_limit, encoded_read, unicode,
-		tail, tail_read, nu_tofold);
+		tail, tail_read, NU_FOLDING_FUNCTION);
 }
 
 #endif /* NU_WITH_Z_COLLATION || NU_WITH_N_COLLATION */
@@ -77,7 +83,7 @@ const char* nu_strchr(const char *encoded, uint32_t c, nu_read_iterator_t read) 
 
 const char* nu_strcasechr(const char *encoded, uint32_t c, nu_read_iterator_t read) {
 	return _nu_strchr(encoded, NU_UNLIMITED, c,
-		read, nu_nocase_compound_read, nu_tofold);
+		read, nu_nocase_compound_read, NU_FOLDING_FUNCTION);
 }
 
 const char* nu_strrchr(const char *encoded, uint32_t c, nu_read_iterator_t read) {
@@ -87,7 +93,7 @@ const char* nu_strrchr(const char *encoded, uint32_t c, nu_read_iterator_t read)
 
 const char* nu_strrcasechr(const char *encoded, uint32_t c, nu_read_iterator_t read) {
 	return _nu_strrchr(encoded, NU_UNLIMITED, c,
-		read, nu_nocase_compound_read, nu_tofold);
+		read, nu_nocase_compound_read, NU_FOLDING_FUNCTION);
 }
 
 int nu_strcoll(const char *s1, const char *s2,
@@ -117,7 +123,7 @@ const char* nu_strcasestr(const char *haystack, const char *needle,
 	return _nu_strstr(haystack, NU_UNLIMITED, needle, NU_UNLIMITED,
 		haystack_read, needle_read,
 		nu_nocase_compound_read, nu_nocase_compound_read,
-		nu_tofold, nu_ducet_weight, 0);
+		NU_FOLDING_FUNCTION, nu_ducet_weight, 0);
 }
 
 #endif /* NU_WITH_Z_COLLATION */
@@ -131,7 +137,7 @@ const char* nu_strnchr(const char *encoded, size_t max_len, uint32_t c, nu_read_
 
 const char* nu_strcasenchr(const char *encoded, size_t max_len, uint32_t c, nu_read_iterator_t read) {
 	return _nu_strchr(encoded, encoded + max_len, c,
-		read, nu_nocase_compound_read, nu_tofold);
+		read, nu_nocase_compound_read, NU_FOLDING_FUNCTION);
 }
 
 const char* nu_strrnchr(const char *encoded, size_t max_len, uint32_t c, nu_read_iterator_t read) {
@@ -142,7 +148,7 @@ const char* nu_strrnchr(const char *encoded, size_t max_len, uint32_t c, nu_read
 const char* nu_strrcasenchr(const char *encoded, size_t max_len, uint32_t c,
 	nu_read_iterator_t read) {
 	return _nu_strrchr(encoded, encoded + max_len, c,
-		read, nu_nocase_compound_read, nu_tofold);
+		read, nu_nocase_compound_read, NU_FOLDING_FUNCTION);
 }
 
 int nu_strncoll(const char *s1, size_t s1_max_len,
@@ -178,7 +184,7 @@ const char* nu_strcasenstr(const char *haystack, size_t haystack_max_len,
 		needle, needle + needle_max_len,
 		haystack_read, needle_read,
 		nu_nocase_compound_read, nu_nocase_compound_read,
-		nu_tofold, nu_ducet_weight, 0);
+		NU_FOLDING_FUNCTION, nu_ducet_weight, 0);
 }
 
 #endif /* NU_WITH_N_COLLATION */

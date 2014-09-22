@@ -149,6 +149,7 @@
 #ifdef NU_WITH_CASEMAP
 # define NU_WITH_TOLOWER /* nu_tolower() */
 # define NU_WITH_TOUPPER
+# define NU_WITH_TOFOLD
 #endif /* NU_WITH_CASEMAP */
 
 /* More requirements for collation functions all collation functions depends
@@ -161,7 +162,7 @@
 
 /* All collation and casemapping functions depends on NU_WITH_UDB */
 #if (defined NU_WITH_Z_COLLATION) || (defined NU_WITH_N_COLLATION) \
-|| (defined NU_WITH_TOLOWER) || (defined NU_WITH_TOUPPER)
+|| (defined NU_WITH_TOLOWER) || (defined NU_WITH_TOUPPER) || (defined NU_WITH_TOFOLD)
 # ifndef NU_WITH_UDB
 #  define NU_WITH_UDB /* nu_udb_* functions, pretty much internal stuff */
 # endif /* NU_WITH_UDB */
