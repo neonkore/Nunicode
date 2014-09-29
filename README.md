@@ -1,10 +1,10 @@
 [TOC]
 
-This is i18n library implementing Unicode 7.0.0.
+This is i18n library implementing Unicode 7.0.
 
 nunicode is trying to carefully follow the Unicode specification with
 reasonable trade-offs. It doesn't implement the entire standard, but
-it does provide most of the operations on Unicode strings.
+it does provide most common operations on Unicode strings.
 
 What it can do:
 
@@ -21,6 +21,11 @@ What it doesn't do:
 
 [notes]: #markdown-header-strings-collation-and-case-mapping
 [normalization forms]: http://unicode.org/reports/tr15/#Norm_Forms
+
+Conformance:
+
+* Unicode 7.0
+* ISO/IEC 14651 ([notes][])
 
 Encodings supported:
 
@@ -53,7 +58,7 @@ complemented by case-insensitive variants.
 ## Tests coverage
 
 * 100% lines
-* ~90% branches, it is not covering some things like branching inside 
+* ~95% branches, it is not covering some things like branching inside 
   conditional expressions.
 
 If you wish to inspect the coverage, proceed as following:
@@ -170,7 +175,7 @@ Reference           |                 | Comment
 Collation levels    | Any             | nunicode supports any number of collation levels. Actual number of levels implemented is maximum level defined by Unicode specification
 forward,position    | No              |
 backward            | No              |
-Tailoring delta     | -               | Equal to the delta with reduced DUCET
+Tailoring delta     | -               | Equal to the delta with reduced DUCET (reduced to character categories Ll, Lu, Lt, Lo, Nl, Nd, No)
 Preparation process | None            |
 
 ### localization (collation tailoring)
