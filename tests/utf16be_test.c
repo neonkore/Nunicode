@@ -14,6 +14,8 @@ void test_utf16be_decoding() {
 	assert(nu_utf16be_read("\x20\xAC" /* € */, &u) && u == 0x20AC);
 	assert(nu_utf16be_read("\xD8\x01\xDC\x00" /* 𐐀 */, &u) && u == 0x10400);
 	assert(nu_utf16be_read("\xD8\x41\xDF\x31" /* 𠜱 */, &u) && u == 0x020731);
+
+	assert(nu_utf16be_read("\xDF\x01", &u) && u == 0xDF01);
 }
 
 void test_utf16be_revread() {
@@ -27,6 +29,8 @@ void test_utf16be_revread() {
 	assert(u == 0x10400);
 	assert(nu_utf16be_revread(&u, input + 10) == input + 6);
 	assert(u == 0x020731);
+
+	assert(nu_utf16be_revread(&u, "\xEF\x01" + 2) && u == 0xEF01);
 }
 
 void test_utf16be_encoding() {

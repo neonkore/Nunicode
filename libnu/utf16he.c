@@ -10,7 +10,7 @@ const char* nu_utf16he_read(const char *utf16, uint32_t *unicode) {
 	if (unicode != 0) {
 		switch (len) {
 		case 2: *unicode = c0; break;
-		case 4: {
+		default: { /* len == 4 */
 			uint16_t c1 = *(uint16_t *)(utf16 + 2);
 			utf16_4b(c0, c1, unicode);
 			break;
@@ -83,7 +83,7 @@ char* nu_utf16he_write(uint32_t unicode, char *utf16) {
 	if (utf16 != 0) {
 		switch (codepoint_len) {
 			case 2: *(uint16_t *)(utf16) = (uint16_t)(unicode); break;
-			case 4: {
+			default: { /* len == 4 */
 				uint16_t c0 = 0, c1 = 0;
 				b4_utf16(unicode, &c0, &c1);
 				*(uint16_t *)(utf16) = c0;

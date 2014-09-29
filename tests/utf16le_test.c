@@ -15,6 +15,8 @@ void test_utf16le_decoding() {
 	assert(nu_utf16le_read("\xAC\x20" /* € */, &u) && u == 0x20AC);
 	assert(nu_utf16le_read("\x01\xD8\x00\xDC" /* 𐐀 */, &u) && u == 0x10400);
 	assert(nu_utf16le_read("\x41\xD8\x31\xDF" /* 𠜱 */, &u) && u == 0x020731);
+
+	assert(nu_utf16le_read("\x01\xDF", &u) && u == 0xDF01);
 }
 
 void test_utf16le_revread() {
@@ -28,6 +30,8 @@ void test_utf16le_revread() {
 	assert(u == 0x10400);
 	assert(nu_utf16le_revread(&u, input + 10) == input + 6);
 	assert(u == 0x020731);
+
+	assert(nu_utf16le_revread(&u, "\x01\xEF" + 2) && u == 0xEF01);
 }
 
 void test_utf16le_encoding() {

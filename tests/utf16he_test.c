@@ -3,6 +3,8 @@
 
 #include <libnu/libnu.h>
 
+/* little-endian tests really */
+
 void test_utf16he_decoding() {
 	const uint16_t t1[] = { 0x0067 };
 	const uint16_t t2[] = { 0xD801, 0xDC00 };
@@ -29,6 +31,8 @@ void test_utf16he_revread() {
 
 	assert(nu_utf16he_revread(&u, input + 6) && u == 0x10400);
 	assert(nu_utf16he_revread(&u, input + 2) && u == 0x0067);
+
+	assert(nu_utf16he_revread(&u, "\x01\xEF" + 2) && u == 0xEF01);
 }
 
 void test_utf16he_encoding() {

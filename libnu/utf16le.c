@@ -10,7 +10,7 @@ const char* nu_utf16le_read(const char *utf16, uint32_t *unicode) {
 	if (unicode != 0) {
 		switch (len) {
 		case 2: *unicode = c0; break;
-		case 4: {
+		default: { /* len == 4 */
 			uint16_t c1 = nu_letohs(utf16 + 2);
 			utf16_4b(c0, c1, unicode);
 			break;
@@ -63,7 +63,7 @@ char* nu_utf16le_write(uint32_t unicode, char *utf16) {
 	if (utf16 != 0) {
 		switch (codepoint_len) {
 			case 2: nu_htoles((uint16_t)(unicode), utf16); break;
-			case 4: {
+			default: { /* len == 4 */
 				uint16_t c0 = 0, c1 = 0;
 				b4_utf16(unicode, &c0, &c1);
 				nu_htoles(c0, utf16);
