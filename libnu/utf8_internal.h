@@ -134,6 +134,10 @@ static inline int utf8_validread(const char *p, size_t max_len) {
 
 	unsigned len = utf8_char_length(*p);
 
+	/* codepoints longer than 6 bytes does not currently exist
+	 * and not currently supported 
+	 * TODO: longer UTF-8 sequences support
+	 */
 	if (max_len < len) {
 		return 0;
 	}
