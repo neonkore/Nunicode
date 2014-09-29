@@ -37,6 +37,15 @@ void test_validation_utf8() {
 
 	/* string len is longer than max_len, -2 -> remove \0, remove last char */
 	assert(nu_validate(input0_ok, 1, nu_utf8_validread) != 0);
+
+	/* test invalid following bytes */
+	assert(nu_validate("\xE1\x81\xC1", 3, nu_utf8_validread) != 0);
+	assert(nu_validate("\xE1\xC1\x81", 3, nu_utf8_validread) != 0);
+	assert(nu_validate("\xE1\x81\x81", 3, nu_utf8_validread) == 0);
+	assert(nu_validate("\xF1\xC1\x81\x81", 4, nu_utf8_validread) != 0);
+	assert(nu_validate("\xF1\x81\xC1\x81", 4, nu_utf8_validread) != 0);
+	assert(nu_validate("\xF1\x81\x81\xC1", 4, nu_utf8_validread) != 0);
+	assert(nu_validate("\xF1\x81\x81\x81", 4, nu_utf8_validread) == 0);
 }
 
 void test_validation_cesu8() {
@@ -47,6 +56,8 @@ void test_validation_cesu8() {
 	const unsigned char input3[] = { 0xED, 0xA0, 0x81 }; /* no trail */
 	const unsigned char input4[] = { 0xED, 0xA0 }; /* one byte short lead */
 	const unsigned char input5[] = { 0xED, 0xA0, 0x81, 0xEE, 0xB0, 0x80 }; /* invalid trail */
+	const unsigned char input6[] = { 0xED, 0xA0, 0x81, 0xED, 0xA0, 0x80 }; /* invalid trail */
+	const unsigned char input7_ok[] = { 0xED, 0x80, 0x81 }; /* invalid lead -> valid sequence */
 
 	assert(nu_validate((const char *)(input0_ok), sizeof(input0_ok), nu_cesu8_validread) == 0);
 	assert(nu_validate((const char *)(input0_also_ok), sizeof(input0_also_ok), nu_cesu8_validread) == 0);
@@ -55,6 +66,8 @@ void test_validation_cesu8() {
 	assert(nu_validate((const char *)(input3), sizeof(input3), nu_cesu8_validread) == (const char *)(input3));
 	assert(nu_validate((const char *)(input4), sizeof(input4), nu_cesu8_validread) == (const char *)(input4));
 	assert(nu_validate((const char *)(input5), sizeof(input5), nu_cesu8_validread) == (const char *)(input5));
+	assert(nu_validate((const char *)(input6), sizeof(input6), nu_cesu8_validread) == (const char *)(input6));
+	assert(nu_validate((const char *)(input7_ok), sizeof(input7_ok), nu_cesu8_validread) == 0);
 }
 
 void test_validation_utf16le() {

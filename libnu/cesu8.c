@@ -12,7 +12,7 @@ const char* nu_cesu8_read(const char *cesu8, uint32_t *unicode) {
 		case 1: *unicode = *cesu8; break;
 		case 2: utf8_2b(cesu8, unicode); break;
 		case 3: utf8_3b(cesu8, unicode); break;
-		case 6: cesu8_6b(cesu8, unicode); break;
+		default: cesu8_6b(cesu8, unicode); break; /* len == 6 */
 		}
 	}
 
@@ -88,7 +88,7 @@ char* nu_cesu8_write(uint32_t unicode, char *cesu8) {
 		case 1: *cesu8 = (char)(unicode); break;
 		case 2: b2_utf8(unicode, cesu8); break;
 		case 3: b3_utf8(unicode, cesu8); break;
-		case 6: b6_cesu8(unicode, cesu8); break;
+		default: b6_cesu8(unicode, cesu8); break; /* len == 6 */
 		}
 	}
 
