@@ -29,6 +29,12 @@
 extern "C" {
 #endif
 
+#ifdef NU_WITH_TOFOLD
+# define NU_FOLDING_FUNCTION nu_tofold
+#else
+# define NU_FOLDING_FUNCTION nu_toupper
+#endif /* NU_WITH_TOFOLD */
+
 #if (defined NU_WITH_Z_COLLATION) || (defined NU_WITH_N_COLLATION)
 
 /** Default compound read, equal to simply calling encoded_read(encoded, &unicode)

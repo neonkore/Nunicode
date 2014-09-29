@@ -4,12 +4,6 @@
 #include "strcoll_internal.h"
 #include "casemap.h"
 
-#ifdef NU_WITH_TOFOLD
-# define NU_FOLDING_FUNCTION nu_tofold
-#else
-# define NU_FOLDING_FUNCTION nu_toupper
-#endif /* NU_WITH_TOFOLD */
-
 #if (defined NU_WITH_Z_COLLATION) || (defined NU_WITH_N_COLLATION)
 
 static inline const char* _nu_casemap_read(const char *encoded, const char *encoded_limit,
