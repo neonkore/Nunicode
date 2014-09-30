@@ -25,9 +25,13 @@ if(CMAKE_BUILD_TYPE MATCHES GCOV)
 endif(CMAKE_BUILD_TYPE MATCHES GCOV)
 
 add_subdirectory(libnu)
-add_subdirectory(tests)
+add_subdirectory(tests/icu)
 add_subdirectory(samples)
 add_subdirectory(unicode.org)
+
+if(NOT CMAKE_BUILD_TYPE MATCHES RELEASE)
+	add_subdirectory(tests)
+endif(NOT CMAKE_BUILD_TYPE MATCHES RELEASE)
 
 find_package(Sqlite3)
 if(SQLITE3_FOUND)
