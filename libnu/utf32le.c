@@ -1,16 +1,6 @@
 #include "utf32le.h"
-#include "utf32_internal.h"
 
 #ifdef NU_WITH_UTF32LE_READER
-
-const char* nu_utf32le_read(const char *utf32, uint32_t *unicode) {
-	if (unicode != 0) {
-		*unicode = nu_letohl(utf32);
-	}
-
-	return utf32 + 4;
-}
-
 #ifdef NU_WITH_REVERSE_READ
 
 const char* nu_utf32le_revread(uint32_t *unicode, const char *utf32) {

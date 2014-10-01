@@ -18,7 +18,13 @@ extern "C" {
  * @see nu_utf16le_read
  */
 NU_EXPORT
-const char* nu_utf32he_read(const char *utf32, uint32_t *unicode);
+static inline const char* nu_utf32he_read(const char *utf32, uint32_t *unicode) {
+	if (unicode != 0) {
+		*unicode = *(uint32_t *)(utf32);
+	}
+
+	return utf32 + 4;
+}
 
 #ifdef NU_WITH_REVERSE_READ
 

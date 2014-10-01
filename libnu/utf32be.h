@@ -6,6 +6,7 @@
 
 #include "config.h"
 #include "defines.h"
+#include "utf32_internal.h"
 
 #if defined (__cplusplus) || defined (c_plusplus)
 extern "C" {
@@ -18,7 +19,13 @@ extern "C" {
  * @see nu_utf16be_read
  */
 NU_EXPORT
-const char* nu_utf32be_read(const char *utf32, uint32_t *unicode);
+static inline const char* nu_utf32be_read(const char *utf32, uint32_t *unicode) {
+	if (unicode != 0) {
+		*unicode = nu_betohl(utf32);
+	}
+
+	return utf32 + 4;
+}
 
 #ifdef NU_WITH_REVERSE_READ
 
