@@ -4,18 +4,33 @@
 #ifdef NU_WITH_UTF8_READER
 
 const char* nu_utf8_read(const char *utf8, uint32_t *unicode) {
-	unsigned len = utf8_char_length(*utf8);
+	uint32_t c = *(unsigned char *)(utf8);
 
-	if (unicode != 0) {
-		switch (len) {
-		case 1: *unicode = *utf8; break;
-		case 2: utf8_2b(utf8, unicode); break;
-		case 3: utf8_3b(utf8, unicode); break;
-		default: utf8_4b(utf8, unicode); break; /* len == 4 */
+	if (c >= 0x80) {
+		if (c < 0xE0) {
+			if (unicode != 0) {
+				utf8_2b(utf8, unicode);
+			}
+			return utf8 + 2;
+		}
+		else if (c < 0xF0) {
+			if (unicode != 0) {
+				utf8_3b(utf8, unicode);
+			}
+			return utf8 + 3;
+		}
+		else {
+			if (unicode != 0) {
+				utf8_4b(utf8, unicode);
+			}
+			return utf8 + 4;
 		}
 	}
+	else if (unicode != 0) {
+		*unicode = c;
+	}
 
-	return utf8 + len;
+	return utf8 + 1;
 }
 
 #ifdef NU_WITH_REVERSE_READ

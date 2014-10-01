@@ -5,18 +5,33 @@
 #ifdef NU_WITH_CESU8_READER
 
 const char* nu_cesu8_read(const char *cesu8, uint32_t *unicode) {
-	unsigned len = cesu8_char_length(*cesu8);
+	uint32_t c = *(unsigned char *)(cesu8);
 
-	if (unicode) {
-		switch (len) {
-		case 1: *unicode = *cesu8; break;
-		case 2: utf8_2b(cesu8, unicode); break;
-		case 3: utf8_3b(cesu8, unicode); break;
-		default: cesu8_6b(cesu8, unicode); break; /* len == 6 */
+	if (c == 0xED) { /* 6-bytes sequence */
+		if (unicode != 0) {
+			cesu8_6b(cesu8, unicode);
+		}
+		return cesu8 + 6;
+	}
+	else if (c >= 0x80) {
+		if (c < 0xE0) {
+			if (unicode != 0) {
+				utf8_2b(cesu8, unicode);
+			}
+			return cesu8 + 2;
+		}
+		else if (c < 0xF0) {
+			if (unicode != 0) {
+				utf8_3b(cesu8, unicode);
+			}
+			return cesu8 + 3;
 		}
 	}
+	else if (unicode != 0) {
+		*unicode = c;
+	}
 
-	return cesu8 + len;
+	return cesu8 + 1;
 }
 
 #ifdef NU_WITH_REVERSE_READ
