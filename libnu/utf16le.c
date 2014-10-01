@@ -4,21 +4,19 @@
 #ifdef NU_WITH_UTF16LE_READER
 
 const char* nu_utf16le_read(const char *utf16, uint32_t *unicode) {
-	uint16_t c0 = nu_letohs(utf16);
-	unsigned len = utf16_char_length(c0);
+	uint32_t c = nu_letohs(utf16);
 
-	if (unicode != 0) {
-		switch (len) {
-		case 2: *unicode = c0; break;
-		default: { /* len == 4 */
-			uint16_t c1 = nu_letohs(utf16 + 2);
-			utf16_4b(c0, c1, unicode);
-			break;
+	if (c >= 0xD800 && c <= 0xDBFF) {
+		if (unicode != 0) {
+			*unicode = ((c & 0x03FF) << 10 | (nu_letohs(utf16 + 2) & 0x03FF)) + 0x10000;
 		}
-		}
+		return utf16 + 4;
+	}
+	else if (unicode != 0) {
+		*unicode = c;
 	}
 
-	return utf16 + len;
+	return utf16 + 2;
 }
 
 #ifdef NU_WITH_REVERSE_READ

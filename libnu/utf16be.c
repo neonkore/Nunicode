@@ -4,21 +4,26 @@
 #ifdef NU_WITH_UTF16BE_READER
 
 const char* nu_utf16be_read(const char *utf16, uint32_t *unicode) {
-	uint16_t c0 = nu_betohs(utf16);
-	unsigned len = utf16_char_length(c0);
+	uint32_t c = nu_betohs(utf16);
 
-	if (unicode != 0) {
-		switch (len) {
-		case 2: *unicode = c0; break;
-		default: { /* len == 4 */
-			uint16_t c1 = nu_betohs(utf16 + 2);
-			utf16_4b(c0, c1, unicode);
-			break;
+	if (c >= 0xD800 && c <= 0xDBFF) {
+		if (unicode != 0) {
+			/** UTF-16: 110110xx xxxxxxxx 110111yy yyyyyyyy
+			 *
+			 * 110110xx xxxxxxxx << 10 -> 00000000 0000xxxx xxxxxx00 00000000 |__ lead
+			 *                                         -----------            |
+			 * 110111yy yyyyyyyy       -> 00000000 0000xxxx xxxxxxyy yyyyyyyy |__ trail
+			 *                                                    ----------- |
+			 *                                                                  */
+			*unicode = ((c & 0x03FF) << 10 | (nu_betohs(utf16 + 2) & 0x03FF)) + 0x10000;
 		}
-		}
+		return utf16 + 4;
+	}
+	else if (unicode != 0) {
+		*unicode = c;
 	}
 
-	return utf16 + len;
+	return utf16 + 2;
 }
 
 #ifdef NU_WITH_REVERSE_READ

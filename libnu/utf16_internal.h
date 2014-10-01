@@ -33,17 +33,6 @@ static inline unsigned utf16_char_length(uint16_t c) {
 	return 2;
 }
 
-static inline void utf16_4b(uint16_t lead, uint16_t trail, uint32_t *codepoint) {
-	/** UTF-16: 110110xx xxxxxxxx 110111yy yyyyyyyy
-	 *
-	 * 110110xx xxxxxxxx << 10 -> 00000000 0000xxxx xxxxxx00 00000000 |__ lead
-	 *                                         -----------            |
-	 * 110111yy yyyyyyyy       -> 00000000 0000xxxx xxxxxxyy yyyyyyyy |__ trail
-	 *                                                    ----------- |
-	 *                                                                  */
-	*codepoint = ((lead & 0x03FF) << 10 | (trail & 0x03FF)) + 0x10000;
-}
-
 static inline unsigned utf16_codepoint_length(uint32_t codepoint) {
 	if (codepoint >= 0x10000) {
 		return 4;
