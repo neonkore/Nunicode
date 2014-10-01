@@ -77,13 +77,18 @@ void test_transformnstr() {
 }
 
 void test_strtransformlen() {
-	assert(nu_strtransformlen("Masse", nu_utf8_read, nu_toupper) == 5);
-	assert(nu_strtransformlen("Maße", nu_utf8_read, nu_toupper) == 5);
+	assert(nu_strtransformlen("Masse", nu_utf8_read,
+		nu_toupper, NU_CASEMAP_DECODING_FUNCTION) == 5);
+	assert(nu_strtransformlen("Maße", nu_utf8_read,
+		nu_toupper, NU_CASEMAP_DECODING_FUNCTION) == 5);
 }
 
 void test_strtransformnlen() {
 	/* "Maße" - 5 bytes, "Masse" - 5 characters */
-	assert(nu_strtransformnlen("Maße", 5, nu_utf8_read, nu_toupper) == 5);
-	assert(nu_strtransformnlen("Maße", 2, nu_utf8_read, nu_toupper) == 2);
-	assert(nu_strtransformnlen("Maße", 3, nu_utf8_read, nu_toupper) == 4);
+	assert(nu_strtransformnlen("Maße", 5, nu_utf8_read,
+		nu_toupper, NU_CASEMAP_DECODING_FUNCTION) == 5);
+	assert(nu_strtransformnlen("Maße", 2, nu_utf8_read,
+		nu_toupper, NU_CASEMAP_DECODING_FUNCTION) == 2);
+	assert(nu_strtransformnlen("Maße", 3, nu_utf8_read,
+		nu_toupper, NU_CASEMAP_DECODING_FUNCTION) == 4);
 }

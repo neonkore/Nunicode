@@ -9,7 +9,7 @@
 #include <stdint.h>
 #include <sys/types.h>
 
-#include "udb.h"
+#include "config.h"
 
 #if defined (__cplusplus) || defined (c_plusplus)
 extern "C" {
