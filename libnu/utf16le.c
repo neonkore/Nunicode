@@ -1,24 +1,6 @@
 #include "utf16le.h"
-#include "utf16_internal.h"
 
 #ifdef NU_WITH_UTF16LE_READER
-
-const char* nu_utf16le_read(const char *utf16, uint32_t *unicode) {
-	uint32_t c = nu_letohs(utf16);
-
-	if (c >= 0xD800 && c <= 0xDBFF) {
-		if (unicode != 0) {
-			*unicode = ((c & 0x03FF) << 10 | (nu_letohs(utf16 + 2) & 0x03FF)) + 0x10000;
-		}
-		return utf16 + 4;
-	}
-	else if (unicode != 0) {
-		*unicode = c;
-	}
-
-	return utf16 + 2;
-}
-
 #ifdef NU_WITH_REVERSE_READ
 
 const char* nu_utf16le_revread(uint32_t *unicode, const char *utf16) {

@@ -1,31 +1,6 @@
 #include "utf16be.h"
-#include "utf16_internal.h"
 
 #ifdef NU_WITH_UTF16BE_READER
-
-const char* nu_utf16be_read(const char *utf16, uint32_t *unicode) {
-	uint32_t c = nu_betohs(utf16);
-
-	if (c >= 0xD800 && c <= 0xDBFF) {
-		if (unicode != 0) {
-			/** UTF-16: 110110xx xxxxxxxx 110111yy yyyyyyyy
-			 *
-			 * 110110xx xxxxxxxx << 10 -> 00000000 0000xxxx xxxxxx00 00000000 |__ lead
-			 *                                         -----------            |
-			 * 110111yy yyyyyyyy       -> 00000000 0000xxxx xxxxxxyy yyyyyyyy |__ trail
-			 *                                                    ----------- |
-			 *                                                                  */
-			*unicode = ((c & 0x03FF) << 10 | (nu_betohs(utf16 + 2) & 0x03FF)) + 0x10000;
-		}
-		return utf16 + 4;
-	}
-	else if (unicode != 0) {
-		*unicode = c;
-	}
-
-	return utf16 + 2;
-}
-
 #ifdef NU_WITH_REVERSE_READ
 
 const char* nu_utf16be_revread(uint32_t *unicode, const char *utf16) {
