@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 2.6) 
+cmake_minimum_required (VERSION 2.6)
 project(libnu C)
 
 set(NU_BUILD_OPTIONS "-DNU_WITH_EVERYTHING")
@@ -12,7 +12,7 @@ if(CMAKE_COMPILER_IS_GNUCC)
 	if(NOT DEFINED WIN32)
 		set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC")
 	endif(NOT DEFINED WIN32)
-	
+
 	if(NOT CMAKE_BUILD_TYPE MATCHES RELEASE)
 		set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -ggdb -O0")
 	else(NOT CMAKE_BUILD_TYPE MATCHES RELEASE)

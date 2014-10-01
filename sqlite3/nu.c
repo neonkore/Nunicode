@@ -61,28 +61,24 @@ SQLITE_EXTENSION_INIT1
 static int _nunicode_like(const char *lhs, const char *rhs, uint32_t escape,
 	nu_read_iterator_t lhs_read, nu_read_iterator_t rhs_read) {
 
-	nu_compound_read_t com1 = nu_nocase_compound_read;
-	nu_compound_read_t com2 = com1;
-
 	const char *lp = lhs;
 	const char *rp = rhs;
 	const char *ltailp = 0, *rtailp = 0;
-	nu_read_iterator_t ltail_read = 0, rtail_read = 0;
 	uint32_t lu = (uint32_t)(-1), ru = lu;
 
 	char prev_escape = 0;
 
 	while (ru != 0 && lu != 0) {
-		rp = com2(rp, 0, rhs_read, &ru, &rtailp, &rtail_read);
+		rp = nu_nocase_compound_read(rp, 0, rhs_read, &ru, &rtailp, NU_CASEMAP_DECODING_FUNCTION);
 
 		if (ru == '%' && prev_escape == 0) {
 			while (ru == '%' || ru == '_') {
-				rp = com2(rp, 0, rhs_read, &ru, &rtailp, &rtail_read);
+				rp = nu_nocase_compound_read(rp, 0, rhs_read, &ru, &rtailp, NU_CASEMAP_DECODING_FUNCTION);
 				if (ru == '_') {
 					if (lu == 0) {
 						return 0;
 					}
-					lp = com1(lp, 0, lhs_read, &lu, &ltailp, &ltail_read);
+					lp = nu_nocase_compound_read(lp, 0, lhs_read, &lu, &ltailp, NU_CASEMAP_DECODING_FUNCTION);
 				}
 			}
 
@@ -91,7 +87,7 @@ static int _nunicode_like(const char *lhs, const char *rhs, uint32_t escape,
 				if (lu == 0) {
 					return 0;
 				}
-				lp = com1(lp, 0, lhs_read, &lu, &ltailp, &ltail_read);
+				lp = nu_nocase_compound_read(lp, 0, lhs_read, &lu, &ltailp, NU_CASEMAP_DECODING_FUNCTION);
 			}
 
 			if (ru != lu) {
@@ -106,7 +102,7 @@ static int _nunicode_like(const char *lhs, const char *rhs, uint32_t escape,
 				return 0;
 			}
 
-			lp = com1(lp, 0, lhs_read, &lu, &ltailp, &ltail_read);
+			lp = nu_nocase_compound_read(lp, 0, lhs_read, &lu, &ltailp, NU_CASEMAP_DECODING_FUNCTION);
 			continue;
 		}
 		else if (escape != 0 && ru == escape) {
@@ -114,7 +110,7 @@ static int _nunicode_like(const char *lhs, const char *rhs, uint32_t escape,
 			continue;
 		}
 
-		lp = com1(lp, 0, lhs_read, &lu, &ltailp, &ltail_read);
+		lp = nu_nocase_compound_read(lp, 0, lhs_read, &lu, &ltailp, NU_CASEMAP_DECODING_FUNCTION);
 
 		if (lu != ru) {
 			return 0;
@@ -270,7 +266,8 @@ static char* _nunicode_casing(const char *encoded, nu_casemapping_t casemap,
 	uint32_t fast_buffer[FAST_BUFFER_SIZE];
 	uint32_t *unicode_buffer = fast_buffer;
 
-	ssize_t unicode_len = nu_strtransformlen(encoded, read, casemap);
+	ssize_t unicode_len = nu_strtransformlen(encoded, read,
+		casemap, NU_CASEMAP_DECODING_FUNCTION);
 
 	if (unicode_len >= FAST_BUFFER_SIZE - 1) {
 		unicode_buffer = sqlite3_malloc(sizeof(*unicode_buffer) * (unicode_len + 1));
@@ -281,13 +278,12 @@ static char* _nunicode_casing(const char *encoded, nu_casemapping_t casemap,
 	while (1) {
 		encoded = read(encoded, &u);
 
-		nu_read_iterator_t casemap_read;
-		const char *map = casemap(u, &casemap_read);
+		const char *map = casemap(u);
 
 		if (map != 0) {
 			uint32_t mu;
 			while (1) {
-				map = casemap_read(map, &mu);
+				map = NU_CASEMAP_DECODING_FUNCTION(map, &mu);
 
 				if (mu == 0) {
 					break;

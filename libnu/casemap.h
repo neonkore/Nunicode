@@ -6,10 +6,13 @@
 #include "config.h"
 #include "defines.h"
 #include "strings.h"
+#include "udb.h"
 
 #if defined (__cplusplus) || defined (c_plusplus)
 extern "C" {
 #endif
+
+#define NU_CASEMAP_DECODING_FUNCTION NU_UDB_DECODING_FUNCTION
 
 /** Casemap codepoint
  * @ingroup transformations
@@ -26,7 +29,7 @@ typedef nu_transformation_t nu_casemapping_t;
  * @return uppercase codepoint or 0 if mapping doesn't exist
  */
 NU_EXPORT
-const char* nu_toupper(uint32_t codepoint, nu_read_iterator_t *read);
+const char* nu_toupper(uint32_t codepoint);
 
 #endif /* NU_WITH_TOUPPER */
 
@@ -40,10 +43,10 @@ const char* nu_toupper(uint32_t codepoint, nu_read_iterator_t *read);
  * @return lowercase codepoint or 0 if mapping doesn't exist
  */
 NU_EXPORT
-const char* nu_tolower(uint32_t codepoint, nu_read_iterator_t *read);
+const char* nu_tolower(uint32_t codepoint);
 
 NU_EXPORT
-const char* nu_tofold(uint32_t codepoint, nu_read_iterator_t *read);
+const char* nu_tofold(uint32_t codepoint);
 
 #endif /* NU_WITH_TOLOWER */
 

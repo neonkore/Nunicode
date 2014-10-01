@@ -1,4 +1,5 @@
 #include "defines.h"
+#include "extra.h"
 #include "strings.h"
 
 #if defined (NU_WITH_Z_EXTRA) || defined(NU_WITH_N_EXTRA)
@@ -56,7 +57,7 @@ static int _nu_transformstr(const char *source, const char *limit, char *dest, n
 }
 
 static ssize_t _nu_strtransformnlen(const char *encoded, const char *limit,
-	nu_read_iterator_t read, nu_transformation_t transform) {
+	nu_read_iterator_t read, nu_transformation_t transform, nu_read_iterator_t transform_read) {
 
 	ssize_t unicode_len = 0;
 	const char *p = encoded;
@@ -68,15 +69,14 @@ static ssize_t _nu_strtransformnlen(const char *encoded, const char *limit,
 			break;
 		}
 
-		nu_read_iterator_t transform_read;
-		const char *map = transform(u, &transform_read);
+		const char *map = transform(u);
 
 		if (map == 0) {
 			++unicode_len;
 			continue;
 		}
 
-		uint32_t mu;
+		uint32_t mu = 0;
 		while (1) {
 			map = transform_read(map, &mu);
 
@@ -109,8 +109,9 @@ int nu_transformstr(const char *source, char *dest,
 }
 
 ssize_t nu_strtransformlen(const char *encoded, nu_read_iterator_t read,
-	nu_transformation_t transform) {
-	return _nu_strtransformnlen(encoded, NU_UNLIMITED, read, transform);
+	nu_transformation_t transform, nu_read_iterator_t transform_read) {
+	return _nu_strtransformnlen(encoded, NU_UNLIMITED, read,
+		transform, transform_read);
 }
 
 #endif /* NU_WITH_Z_EXTRA */
@@ -133,8 +134,9 @@ int nu_transformnstr(const char *source, size_t max_len, char *dest,
 }
 
 ssize_t nu_strtransformnlen(const char *encoded, size_t max_len, nu_read_iterator_t read,
-	nu_transformation_t transform) {
-	return _nu_strtransformnlen(encoded, encoded + max_len, read, transform);
+	nu_transformation_t transform, nu_read_iterator_t transform_read) {
+	return _nu_strtransformnlen(encoded, encoded + max_len, read,
+		transform, transform_read);
 }
 
 #endif /* NU_WITH_N_EXTRA */

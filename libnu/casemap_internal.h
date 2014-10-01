@@ -5,16 +5,12 @@
 #include <sys/types.h>
 
 #include "udb.h"
-#include "utf8.h"
 
-static const char* to_something(uint32_t codepoint, nu_read_iterator_t *it,
+static const char* to_something(uint32_t codepoint,
 	const int16_t *G, size_t G_SIZE,
 	const uint32_t *VALUES_C, const uint16_t *VALUES_I, const uint8_t *COMBINED) {
 
-	const char *encoded = nu_udb_lookup(codepoint, it,
-		G, G_SIZE, VALUES_C, VALUES_I, COMBINED);
-
-	return encoded;
+	return nu_udb_lookup(codepoint, G, G_SIZE, VALUES_C, VALUES_I, COMBINED);
 }
 
 #endif /* NU_CASEMAP_INTERNAL_H */

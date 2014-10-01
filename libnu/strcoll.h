@@ -29,6 +29,12 @@
 extern "C" {
 #endif
 
+#ifdef NU_WITH_TOFOLD
+# define NU_FOLDING_FUNCTION nu_tofold
+#else
+# define NU_FOLDING_FUNCTION nu_toupper
+#endif /* NU_WITH_TOFOLD */
+
 #if (defined NU_WITH_Z_COLLATION) || (defined NU_WITH_N_COLLATION)
 
 /** Default compound read, equal to simply calling encoded_read(encoded, &unicode)
@@ -38,13 +44,18 @@ extern "C" {
  * @param encoded_read read (decode) function
  * @param unicode output unicode codepoint
  * @param tail output pointer to compound tail, should never be 0
- * @param tail_read output tail read function, should never be 0
  * @return pointer to next encoded character
  */
 NU_EXPORT
-const char* nu_default_compound_read(const char *encoded, const char *encoded_limit,
+static inline const char* nu_default_compound_read(const char *encoded, const char *encoded_limit,
 	nu_read_iterator_t encoded_read, uint32_t *unicode,
-	const char **tail, nu_read_iterator_t *tail_read);
+	const char **tail, nu_read_iterator_t tail_read) {
+	(void)(encoded_limit);
+	(void)(tail);
+	(void)(tail_read);
+
+	return encoded_read(encoded, unicode);
+}
 
 /** Case-ignoring compound read, equal to calling
  * encoded_read(encoded, &unicode) with nu_toupper() applied internally
@@ -54,13 +65,43 @@ const char* nu_default_compound_read(const char *encoded, const char *encoded_li
  * @param encoded_read read (decode) function
  * @param unicode output unicode codepoint
  * @param tail output pointer to compound tail, should never be 0
- * @param tail_read output tail read function, should never be 0
  * @return pointer to next encoded character
  */
 NU_EXPORT
-const char* nu_nocase_compound_read(const char *encoded, const char *encoded_limit,
+static inline const char* nu_nocase_compound_read(const char *encoded, const char *encoded_limit,
 	nu_read_iterator_t encoded_read, uint32_t *unicode,
-	const char **tail, nu_read_iterator_t *tail_read);
+	const char **tail, nu_read_iterator_t tail_read) {
+	(void)(tail_read);
+
+	/* re-entry with tail != 0 */
+	if (*tail != 0) {
+		*tail = NU_CASEMAP_DECODING_FUNCTION(*tail, unicode);
+
+		if (*unicode != 0) {
+			return encoded;
+		}
+
+		*tail = 0;
+	}
+
+	if (encoded_limit != 0 && encoded >= encoded_limit) {
+		*unicode = 0;
+		return encoded;
+	}
+
+	const char *p = encoded_read(encoded, unicode);
+
+	if (*unicode == 0) {
+		return p;
+	}
+
+	const char *map = NU_FOLDING_FUNCTION(*unicode);
+	if (map != 0) {
+		*tail = NU_CASEMAP_DECODING_FUNCTION(map, unicode);
+	}
+
+	return p;
+}
 
 #endif /* NU_WITH_Z_COLLATION || NU_WITH_N_COLLATION */
 

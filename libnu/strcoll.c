@@ -4,110 +4,53 @@
 #include "strcoll_internal.h"
 #include "casemap.h"
 
-#ifdef NU_WITH_TOFOLD
-# define NU_FOLDING_FUNCTION nu_tofold
-#else
-# define NU_FOLDING_FUNCTION nu_toupper
-#endif /* NU_WITH_TOFOLD */
-
-#if (defined NU_WITH_Z_COLLATION) || (defined NU_WITH_N_COLLATION)
-
-static inline const char* _nu_casemap_read(const char *encoded, const char *encoded_limit,
-	nu_read_iterator_t encoded_read, uint32_t *u,
-	const char **tail, nu_read_iterator_t *tail_read,
-	nu_casemapping_t casemap) {
-
-	/* re-entry with tail != 0 */
-	if (*tail != 0) {
-		*tail = (*tail_read)(*tail, u);
-
-		switch (*u) {
-		case 0:
-			*tail = 0;
-			*tail_read = 0;
-			break;
-
-		default:
-			return encoded;
-		}
-	}
-
-	if (encoded_limit != 0 && encoded >= encoded_limit) {
-		*u = 0;
-		return encoded;
-	}
-
-	const char *p = encoded_read(encoded, u);
-
-	if (*u == 0 || casemap == 0) {
-		return p;
-	}
-
-	const char *map = casemap(*u, tail_read);
-	if (map == 0) {
-		return p;
-	}
-
-	/* map != 0 */
-
-	*tail = (*tail_read)(map, u);
-
-	return p;
-}
-
-const char* nu_default_compound_read(const char *encoded, const char *encoded_limit,
-	nu_read_iterator_t encoded_read, uint32_t *unicode,
-	const char **tail, nu_read_iterator_t *tail_read) {
-	(void)(encoded_limit);
-	(void)(tail);
-	(void)(tail_read);
-
-	return encoded_read(encoded, unicode);
-}
-
-const char* nu_nocase_compound_read(const char *encoded, const char *encoded_limit,
-	nu_read_iterator_t encoded_read, uint32_t *unicode,
-	const char **tail, nu_read_iterator_t *tail_read) {
-	return _nu_casemap_read(encoded, encoded_limit, encoded_read, unicode,
-		tail, tail_read, NU_FOLDING_FUNCTION);
-}
-
-#endif /* NU_WITH_Z_COLLATION || NU_WITH_N_COLLATION */
-
 #ifdef NU_WITH_Z_COLLATION
 
 const char* nu_strchr(const char *encoded, uint32_t c, nu_read_iterator_t read) {
-	return _nu_strchr(encoded, NU_UNLIMITED, c,
-		read, nu_default_compound_read, 0);
+	return _nu_strchr(encoded, NU_UNLIMITED,
+		c, read,
+		nu_default_compound_read, 0,
+		0, 0);
 }
 
 const char* nu_strcasechr(const char *encoded, uint32_t c, nu_read_iterator_t read) {
-	return _nu_strchr(encoded, NU_UNLIMITED, c,
-		read, nu_nocase_compound_read, NU_FOLDING_FUNCTION);
+	return _nu_strchr(encoded, NU_UNLIMITED,
+		c, read,
+		nu_nocase_compound_read, NU_CASEMAP_DECODING_FUNCTION,
+		NU_FOLDING_FUNCTION, NU_CASEMAP_DECODING_FUNCTION);
 }
 
 const char* nu_strrchr(const char *encoded, uint32_t c, nu_read_iterator_t read) {
-	return _nu_strrchr(encoded, NU_UNLIMITED, c,
-		read, nu_default_compound_read, 0);
+	return _nu_strrchr(encoded, NU_UNLIMITED,
+		c, read,
+		nu_default_compound_read, 0,
+		0, 0);
 }
 
 const char* nu_strrcasechr(const char *encoded, uint32_t c, nu_read_iterator_t read) {
-	return _nu_strrchr(encoded, NU_UNLIMITED, c,
-		read, nu_nocase_compound_read, NU_FOLDING_FUNCTION);
+	return _nu_strrchr(encoded, NU_UNLIMITED, c, read,
+		nu_nocase_compound_read, NU_CASEMAP_DECODING_FUNCTION,
+		NU_FOLDING_FUNCTION, NU_CASEMAP_DECODING_FUNCTION);
 }
 
 int nu_strcoll(const char *s1, const char *s2,
 	nu_read_iterator_t s1_read, nu_read_iterator_t s2_read) {
 	return _nu_strcoll(s1, NU_UNLIMITED, s2, NU_UNLIMITED,
-		s1_read, s2_read, nu_default_compound_read, nu_default_compound_read,
-		nu_ducet_weight, 0);
+		s1_read, s2_read,
+		nu_default_compound_read, nu_default_compound_read,
+		0, 0,
+		nu_ducet_weight, 0,
+		0, 0);
 }
 
 int nu_strcasecoll(const char *s1, const char *s2,
 	nu_read_iterator_t s1_read, nu_read_iterator_t s2_read) {
 	return _nu_strcoll(s1, NU_UNLIMITED, s2, NU_UNLIMITED,
-		s1_read, s2_read, nu_nocase_compound_read, nu_nocase_compound_read,
-		nu_ducet_weight, 0);
+		s1_read, s2_read,
+		nu_nocase_compound_read, nu_nocase_compound_read,
+		NU_CASEMAP_DECODING_FUNCTION, NU_CASEMAP_DECODING_FUNCTION,
+		nu_ducet_weight, 0,
+		0, 0);
 }
 
 const char* nu_strstr(const char *haystack, const char *needle,
@@ -115,7 +58,9 @@ const char* nu_strstr(const char *haystack, const char *needle,
 	return _nu_strstr(haystack, NU_UNLIMITED, needle, NU_UNLIMITED,
 		haystack_read, needle_read,
 		nu_default_compound_read, nu_default_compound_read,
-		0, nu_ducet_weight, 0);
+		0, 0,
+		0, 0,
+		nu_ducet_weight, 0);
 }
 
 const char* nu_strcasestr(const char *haystack, const char *needle,
@@ -123,7 +68,9 @@ const char* nu_strcasestr(const char *haystack, const char *needle,
 	return _nu_strstr(haystack, NU_UNLIMITED, needle, NU_UNLIMITED,
 		haystack_read, needle_read,
 		nu_nocase_compound_read, nu_nocase_compound_read,
-		NU_FOLDING_FUNCTION, nu_ducet_weight, 0);
+		NU_CASEMAP_DECODING_FUNCTION, NU_CASEMAP_DECODING_FUNCTION,
+		NU_FOLDING_FUNCTION, NU_CASEMAP_DECODING_FUNCTION,
+		nu_ducet_weight, 0);
 }
 
 #endif /* NU_WITH_Z_COLLATION */
@@ -131,40 +78,54 @@ const char* nu_strcasestr(const char *haystack, const char *needle,
 #ifdef NU_WITH_N_COLLATION
 
 const char* nu_strnchr(const char *encoded, size_t max_len, uint32_t c, nu_read_iterator_t read) {
-	return _nu_strchr(encoded, encoded + max_len, c,
-		read, nu_default_compound_read, 0);
+	return _nu_strchr(encoded, encoded + max_len,
+		c, read,
+		nu_default_compound_read, 0,
+		0, 0);
 }
 
 const char* nu_strcasenchr(const char *encoded, size_t max_len, uint32_t c, nu_read_iterator_t read) {
-	return _nu_strchr(encoded, encoded + max_len, c,
-		read, nu_nocase_compound_read, NU_FOLDING_FUNCTION);
+	return _nu_strchr(encoded, encoded + max_len,
+		c, read,
+		nu_nocase_compound_read, NU_CASEMAP_DECODING_FUNCTION,
+		NU_FOLDING_FUNCTION, NU_CASEMAP_DECODING_FUNCTION);
 }
 
 const char* nu_strrnchr(const char *encoded, size_t max_len, uint32_t c, nu_read_iterator_t read) {
-	return _nu_strrchr(encoded, encoded + max_len, c,
-		read, nu_default_compound_read, 0);
+	return _nu_strrchr(encoded, encoded + max_len,
+		c, read,
+		nu_default_compound_read, 0,
+		0, 0);
 }
 
 const char* nu_strrcasenchr(const char *encoded, size_t max_len, uint32_t c,
 	nu_read_iterator_t read) {
-	return _nu_strrchr(encoded, encoded + max_len, c,
-		read, nu_nocase_compound_read, NU_FOLDING_FUNCTION);
+	return _nu_strrchr(encoded, encoded + max_len,
+		c, read,
+		nu_nocase_compound_read, NU_CASEMAP_DECODING_FUNCTION,
+		NU_FOLDING_FUNCTION, NU_CASEMAP_DECODING_FUNCTION);
 }
 
 int nu_strncoll(const char *s1, size_t s1_max_len,
 	const char *s2, size_t s2_max_len,
 	nu_read_iterator_t s1_read, nu_read_iterator_t s2_read) {
 	return _nu_strcoll(s1, s1 + s1_max_len, s2, s2 + s2_max_len,
-		s1_read, s2_read, nu_default_compound_read, nu_default_compound_read,
-		nu_ducet_weight, 0);
+		s1_read, s2_read,
+		nu_default_compound_read, nu_default_compound_read,
+		0, 0,
+		nu_ducet_weight, 0,
+		0, 0);
 }
 
 int nu_strcasencoll(const char *s1, size_t s1_max_len,
 	const char *s2, size_t s2_max_len,
 	nu_read_iterator_t s1_read, nu_read_iterator_t s2_read) {
 	return _nu_strcoll(s1, s1 + s1_max_len, s2, s2 + s2_max_len,
-		s1_read, s2_read, nu_nocase_compound_read, nu_nocase_compound_read,
-		nu_ducet_weight, 0);
+		s1_read, s2_read,
+		nu_nocase_compound_read, nu_nocase_compound_read,
+		NU_CASEMAP_DECODING_FUNCTION, NU_CASEMAP_DECODING_FUNCTION,
+		nu_ducet_weight, 0,
+		0, 0);
 }
 
 const char* nu_strnstr(const char *haystack, size_t haystack_max_len,
@@ -174,7 +135,9 @@ const char* nu_strnstr(const char *haystack, size_t haystack_max_len,
 		needle, needle + needle_max_len,
 		haystack_read, needle_read,
 		nu_default_compound_read, nu_default_compound_read,
-		0, nu_ducet_weight, 0);
+		0, 0,
+		0, 0,
+		nu_ducet_weight, 0);
 }
 
 const char* nu_strcasenstr(const char *haystack, size_t haystack_max_len,
@@ -184,7 +147,9 @@ const char* nu_strcasenstr(const char *haystack, size_t haystack_max_len,
 		needle, needle + needle_max_len,
 		haystack_read, needle_read,
 		nu_nocase_compound_read, nu_nocase_compound_read,
-		NU_FOLDING_FUNCTION, nu_ducet_weight, 0);
+		NU_CASEMAP_DECODING_FUNCTION, NU_CASEMAP_DECODING_FUNCTION,
+		NU_FOLDING_FUNCTION, NU_CASEMAP_DECODING_FUNCTION,
+		nu_ducet_weight, 0);
 }
 
 #endif /* NU_WITH_N_COLLATION */

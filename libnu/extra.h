@@ -13,10 +13,13 @@
 
 #include "config.h"
 #include "strings.h"
+#include "udb.h"
 
 #if defined (__cplusplus) || defined (c_plusplus)
 extern "C" {
 #endif
+
+#define NU_TRANSFORM_DECODING_FUNCTION NU_UDB_DECODING_FUNCTION
 
 #ifdef NU_WITH_Z_EXTRA
 
@@ -89,7 +92,7 @@ int nu_transformstr(const char *source, char *dest,
  */
 NU_EXPORT
 ssize_t nu_strtransformlen(const char *encoded, nu_read_iterator_t read,
-	nu_transformation_t transform);
+	nu_transformation_t transform, nu_read_iterator_t transform_read);
 
 #endif /* NU_WITH_Z_EXTRA */
 
@@ -124,8 +127,8 @@ int nu_transformnstr(const char *source, size_t max_len, char *dest,
  * @see nu_strtransformlen
  */
 NU_EXPORT
-ssize_t nu_strtransformnlen(const char *encoded, size_t max_len,
-	nu_read_iterator_t read, nu_transformation_t transform);
+ssize_t nu_strtransformnlen(const char *encoded, size_t max_len, nu_read_iterator_t read,
+	nu_transformation_t transform, nu_read_iterator_t transform_read);
 
 #endif /* NU_WITH_N_EXTRA */
 

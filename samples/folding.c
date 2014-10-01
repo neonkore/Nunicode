@@ -26,10 +26,8 @@ int main() {
 		uint32_t in = 0;
 		p = nu_utf8_read(p, &in);
 
-		nu_read_iterator_t casemap_read = 0;
-
-		const char* up = nu_toupper(in, &casemap_read);
-		const char* lo = nu_tolower(in, &casemap_read);
+		const char* up = nu_toupper(in);
+		const char* lo = nu_tolower(in);
 
 		/* note that nu_toupper and nu_tolower might
 		 * return more than one character, but in this
@@ -39,7 +37,7 @@ int main() {
 		if (up != 0) {
 			uint32_t u = 0;
 			do {
-				up = casemap_read(up, &u);
+				up = NU_CASEMAP_DECODING_FUNCTION(up, &u);
 				if (u == 0) break;
 				upper = nu_utf8_write(u, upper);
 			}
@@ -52,7 +50,7 @@ int main() {
 		if (lo != 0) {
 			uint32_t u = 0;
 			do {
-				lo = casemap_read(lo, &u);
+				lo = NU_CASEMAP_DECODING_FUNCTION(lo, &u);
 				if (u == 0) break;
 				lower = nu_utf8_write(u, lower);
 			}
