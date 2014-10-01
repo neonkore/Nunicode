@@ -43,7 +43,22 @@ static inline const char* nu_utf16he_read(const char *utf16, uint32_t *unicode) 
  * @see nu_utf16le_revread
  */
 NU_EXPORT
-const char* nu_utf16he_revread(uint32_t *unicode, const char *utf16);
+static inline const char* nu_utf16he_revread(uint32_t *unicode, const char *utf16) {
+	/* valid UTF-16 sequences are either 2 or 4 bytes long
+	 * trail sequences are between 0xDC00 .. 0xDFFF */
+	const char *p = utf16 - 2;
+	uint16_t ec = *(uint16_t *)(p);
+
+	if (ec >= 0xDC00 && ec <= 0xDFFF) { /* trail surrogate */
+		p -= 2;
+	}
+
+	if (unicode != 0) {
+		nu_utf16he_read(p, unicode);
+	}
+
+	return p;
+}
 
 #endif /* NU_WITH_REVERSE_READ */
 

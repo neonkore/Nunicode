@@ -20,16 +20,16 @@ void test_utf16_read_bom() {
 	assert(nu_utf16_read_bom(le_bom, &bom) == le_bom + 2);
 	assert(bom.write_bom == nu_utf16le_write_bom);
 	assert(bom.write == nu_utf16le_write);
-	assert(bom.revread == nu_utf16le_revread);
 	assert(bom.validread == nu_utf16le_validread);
 	assert(bom.read("\x00\x01", &u1) && nu_utf16le_read("\x00\x01", &u2) && u1 == u2);
+	assert(bom.revread(&u1, "\x00\x01" + 2) && nu_utf16le_revread(&u2, "\x00\x01" + 2) && u1 == u2);
 
 	assert(nu_utf16_read_bom(be_bom, &bom) == be_bom + 2);
 	assert(bom.write_bom == nu_utf16be_write_bom);
 	assert(bom.write == nu_utf16be_write);
-	assert(bom.revread == nu_utf16be_revread);
 	assert(bom.validread == nu_utf16be_validread);
 	assert(bom.read("\x00\x01", &u1) && nu_utf16be_read("\x00\x01", &u2) && u1 == u2);
+	assert(bom.revread(&u1, "\x00\x01" + 2) && nu_utf16be_revread(&u2, "\x00\x01" + 2) && u1 == u2);
 }
 
 void test_utf16_read_invalid_bom() { /* defaults to BE */
@@ -48,16 +48,16 @@ void test_utf16_read_invalid_bom() { /* defaults to BE */
 	assert(nu_utf16_read_bom(inval_bom1, &bom) == inval_bom1);
 	assert(bom.write_bom == nu_utf16be_write_bom);
 	assert(bom.write == nu_utf16be_write);
-	assert(bom.revread == nu_utf16be_revread);
 	assert(bom.validread == nu_utf16be_validread);
 	assert(bom.read("\x00\x01", &u1) && nu_utf16be_read("\x00\x01", &u2) && u1 == u2);
+	assert(bom.revread(&u1, "\x00\x01" + 2) && nu_utf16be_revread(&u2, "\x00\x01" + 2) && u1 == u2);
 
 	assert(nu_utf16_read_bom(inval_bom2, &bom) == inval_bom2);
 	assert(bom.write_bom == nu_utf16be_write_bom);
 	assert(bom.write == nu_utf16be_write);
-	assert(bom.revread == nu_utf16be_revread);
 	assert(bom.validread == nu_utf16be_validread);
 	assert(bom.read("\x00\x01", &u1) && nu_utf16be_read("\x00\x01", &u2) && u1 == u2);
+	assert(bom.revread(&u1, "\x00\x01" + 2) && nu_utf16be_revread(&u2, "\x00\x01" + 2) && u1 == u2);
 }
 
 void test_utf16_write_bom() {
