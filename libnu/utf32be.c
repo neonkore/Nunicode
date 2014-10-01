@@ -1,20 +1,6 @@
 #include "utf32be.h"
 
 #ifdef NU_WITH_UTF32BE_READER
-#ifdef NU_WITH_REVERSE_READ
-
-const char* nu_utf32be_revread(uint32_t *unicode, const char *utf32) {
-	const char *p = utf32 - 4;
-
-	if (unicode != 0) {
-		nu_utf32be_read(p, unicode);
-	}
-
-	return p;
-}
-
-#endif /* NU_WITH_REVERSE_READ */
-
 #ifdef NU_WITH_VALIDATION
 
 int nu_utf32be_validread(const char *p, size_t max_len) {

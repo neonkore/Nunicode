@@ -6,6 +6,7 @@
 
 #include "config.h"
 #include "defines.h"
+#include "utf32_internal.h"
 
 #if defined (__cplusplus) || defined (c_plusplus)
 extern "C" {
@@ -33,7 +34,15 @@ static inline const char* nu_utf32he_read(const char *utf32, uint32_t *unicode) 
  * @see nu_utf16le_revread
  */
 NU_EXPORT
-const char* nu_utf32he_revread(uint32_t *unicode, const char *utf32);
+static inline const char* nu_utf32he_revread(uint32_t *unicode, const char *utf32) {
+	const char *p = utf32 - 4;
+
+	if (unicode != 0) {
+		nu_utf32he_read(p, unicode);
+	}
+
+	return p;
+}
 
 #endif /* NU_WITH_REVERSE_READ */
 
