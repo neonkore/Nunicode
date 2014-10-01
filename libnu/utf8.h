@@ -73,7 +73,20 @@ static inline const char* nu_utf8_read(const char *utf8, uint32_t *unicode) {
  * @return pointer to previous character in UTF-8 string
  */
 NU_EXPORT
-const char* nu_utf8_revread(uint32_t *unicode, const char *utf8);
+static inline const char* nu_utf8_revread(uint32_t *unicode, const char *utf8) {
+	/* valid UTF-8 has either 10xxxxxx (continuation byte)
+	 * or beginning of byte sequence */
+	const char *p = utf8 - 1;
+	while (((unsigned char)(*p) & 0xC0) == 0x80) { /* skip every 0b10000000 */
+		--p;
+	}
+
+	if (unicode != 0) {
+		nu_utf8_read(p, unicode);
+	}
+
+	return p;
+}
 
 #endif /* NU_WITH_REVERSE_READ */
 
