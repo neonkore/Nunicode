@@ -14,10 +14,6 @@ static const char* to_something(uint32_t codepoint, nu_read_iterator_t *it,
 	const char *encoded = nu_udb_lookup(codepoint, it,
 		G, G_SIZE, VALUES_C, VALUES_I, COMBINED);
 
-	if (encoded == 0) {
-		return 0;
-	}
-
 	return encoded;
 }
 
