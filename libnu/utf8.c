@@ -1,38 +1,6 @@
 #include "utf8.h"
-#include "utf8_internal.h"
 
 #ifdef NU_WITH_UTF8_READER
-
-const char* nu_utf8_read(const char *utf8, uint32_t *unicode) {
-	uint32_t c = *(unsigned char *)(utf8);
-
-	if (c >= 0x80) {
-		if (c < 0xE0) {
-			if (unicode != 0) {
-				utf8_2b(utf8, unicode);
-			}
-			return utf8 + 2;
-		}
-		else if (c < 0xF0) {
-			if (unicode != 0) {
-				utf8_3b(utf8, unicode);
-			}
-			return utf8 + 3;
-		}
-		else {
-			if (unicode != 0) {
-				utf8_4b(utf8, unicode);
-			}
-			return utf8 + 4;
-		}
-	}
-	else if (unicode != 0) {
-		*unicode = c;
-	}
-
-	return utf8 + 1;
-}
-
 #ifdef NU_WITH_REVERSE_READ
 
 const char* nu_utf8_revread(uint32_t *unicode, const char *utf8) {
