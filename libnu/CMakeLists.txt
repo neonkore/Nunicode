@@ -8,7 +8,6 @@ set(LIBNU_SRC
 	tofold.c
 	tolower.c
 	toupper.c
-	udb.c
 	utf16.c
 	utf16be.c
 	utf16he.c
