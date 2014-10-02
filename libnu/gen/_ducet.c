@@ -1,14 +1,15 @@
-/*
-1403259179
-PRIME: 01000193,
-G_SIZE: 18046,
-COMBINED_LENGTH: 0,
-ENCODING: UTF-8,
-*/
+/* Automatically generated file (mph.py), 1412251573
+ *
+ * Tag             : NU_DUCET
+ * Prime           : 01000193,
+ * G size          : 18046,
+ * Combined length : 0,
+ * Encoding        : UTF-8 
+ */
 
 #include <stdint.h>
 
-static const int16_t G[] = {
+const int16_t NU_DUCET_G[] = {
 	301, 302, 300, 1032, 336, 1050, 1056, 1121, 1052, 1193, 1216, 1228, 
 	327, 1236, 1238, 1254, 1266, 1266, 1281, 1294, 1288, 1298, 1306, 1306, 
 	1320, 1322, 1329, 1332, 1329, 1343, 1347, 1363, 1360, 1360, 1360, 1377, 
@@ -1514,8 +1515,10 @@ static const int16_t G[] = {
 	5128, 5128, 5120, 5120, 5126, 5136, 5136, 5136, 5140, 5142, 5120, 5120, 
 	5120, 5127, 5121, 5122, 5120, 5170, 5163, 5184, 5184, 5184, };
 
+const size_t NU_DUCET_G_SIZE = sizeof(NU_DUCET_G) / sizeof(*NU_DUCET_G);
+
 /* codepoints */
-static const uint32_t VALUES_C[] = {
+const uint32_t NU_DUCET_VALUES_C[] = {
 	0x00142B, 0x001401, 0x001402, 0x001403, 0x001404, 0x001405, 0x001406, 0x001407, 
 	0x001408, 0x001409, 0x00140A, 0x00140B, 0x00140C, 0x00140D, 0x00140E, 0x00140F, 
 	0x00A31C, 0x001519, 0x00A14A, 0x00A14B, 0x00A145, 0x00A15A, 0x001424, 0x00A15B, 
@@ -3774,7 +3777,7 @@ static const uint32_t VALUES_C[] = {
 	0x01338D, 0x01338E, 0x01338F, 0x013389, 0x01338A, 0x01338B, };
 
 /* indexes */
-static const uint16_t VALUES_I[] = {
+const uint16_t NU_DUCET_VALUES_I[] = {
 	0x2368, 0x233E, 0x233F, 0x2340, 0x2341, 0x2342, 0x2343, 0x2344, 0x2345, 0x2346, 
 	0x2347, 0x2348, 0x2349, 0x234A, 0x234B, 0x234C, 0x3197, 0x2456, 0x2FC5, 0x2FC6, 
 	0x2FC0, 0x2FD5, 0x2361, 0x2FD6, 0x2355, 0x2356, 0x2357, 0x2FD0, 0x2359, 0x235A, 

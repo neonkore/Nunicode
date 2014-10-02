@@ -1,6 +1,17 @@
 #!/usr/bin/python
 
+import sys
+
 from mph import *
+
+def usage():
+	print 'usage: %s <TAG>' % sys.argv[0]
+
+if len(sys.argv) < 2:
+	usage()
+	sys.exit(1)
+
+TAG = sys.argv[1]
 
 dict = {}
 
@@ -17,7 +28,7 @@ for i, line in enumerate(sys.stdin):
 
 assert(len(G) == len(V))
 
-GenerateInfo(G, [])
+GenerateInfo(TAG, G, [])
 GenerateIncludes()
-GenerateG(G)
-GenerateValues(G, V)
+GenerateG(TAG, G)
+GenerateValues(TAG, G, V)

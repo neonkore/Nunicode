@@ -1,6 +1,17 @@
 #!/usr/bin/python
 
+import sys
+
 from mph import *
+
+def usage():
+	print 'usage: %s <TAG>' % sys.argv[0]
+
+if len(sys.argv) < 2:
+	usage()
+	sys.exit(1)
+
+TAG = sys.argv[1]
 
 dict = {}
 combined = '\\x00'  # offset 0 is normally impossible, it is used for signaling collision
@@ -21,11 +32,11 @@ for i, line in enumerate(sys.stdin):
 
 assert(len(G) == len(V))
 
-GenerateInfo(G, combined)
+GenerateInfo(TAG, G, combined)
 GenerateIncludes()
-GenerateG(G)
-GenerateValues(G, V)
-GenerateCombined(combined)
+GenerateG(TAG, G)
+GenerateValues(TAG, G, V)
+GenerateCombined(TAG, combined)
 
 #print 'len(combined):', len(combined) / 4
 

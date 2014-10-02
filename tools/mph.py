@@ -114,18 +114,20 @@ def PerfectHashLookup(G, key):
 
 
 # Print human-readable info regarding this hash-table
-def GenerateInfo(G, combined):
-	print '''/*
-%d
-PRIME: %08X,
-G_SIZE: %d,
-COMBINED_LENGTH: %d,
-ENCODING: %s,
-*/
+def GenerateInfo(tag, G, combined):
+	print '''/* Automatically generated file (mph.py), %d
+ *
+ * Tag             : %s
+ * Prime           : %08X,
+ * G size          : %d,
+ * Combined length : %d,
+ * Encoding        : %s 
+ */
 ''' % (time.time(),
-		PRIME, len(G),
-		len(combined) / 4,
-		INTERNAL_ENCODING)
+	tag,
+	PRIME, len(G),
+	len(combined) / 4,
+	INTERNAL_ENCODING)
 
 
 VALUE_TEMPLATE = '''	{ 0x%(codepoint)05X, %(decomps)s },'''
@@ -149,11 +151,11 @@ def FormatReplacement(r):
 
 
 # Print values table
-def GenerateValues(G, V):
+def GenerateValues(tag, G, V):
 	BOUNDARY = 8
 
 	print '/* codepoints */'
-	print 'static const uint32_t VALUES_C[] = {'
+	print 'const uint32_t %s_VALUES_C[] = {' % (tag,)
 	for i, (codepoint, replacement) in enumerate(V):
 		assert(replacement is not None)
 
@@ -169,7 +171,7 @@ def GenerateValues(G, V):
 	BOUNDARY = 10
 
 	print '/* indexes */'
-	print 'static const uint16_t VALUES_I[] = {'
+	print 'const uint16_t %s_VALUES_I[] = {' % (tag,)
 	for i, (codepoint, replacement) in enumerate(V):
 		assert(replacement is not None)
 
@@ -184,10 +186,10 @@ def GenerateValues(G, V):
 
 
 # Print first hash table
-def GenerateG(G):
+def GenerateG(tag, G):
 	BOUNDARY = 12
 
-	print 'static const int16_t G[] = {'
+	print 'const int16_t %s_G[] = {' % (tag,)
 	for i, x in enumerate(G):
 		if i % BOUNDARY == 0:
 			sys.stdout.write('\t')
@@ -197,17 +199,19 @@ def GenerateG(G):
 			sys.stdout.write('\n')
 	print '};'
 	print
+	print 'const size_t %s_G_SIZE = sizeof(%s_G) / sizeof(*%s_G);' % (tag, tag, tag)
+	print
 
 
 # Print combined encoded string
-def GenerateCombined(combined):
+def GenerateCombined(tag, combined):
 	BOUNDARY = 12 * 4
 
 	def chunks(combined, n):
 		for i in xrange(0, len(combined), n):
 			yield combined[i:i + n]
 
-	print 'static const uint8_t COMBINED[] = {'
+	print 'const uint8_t %s_COMBINED[] = {' % (tag,)
 	for chunk in chunks(combined, BOUNDARY):
 		parts = chunks(chunk, 4)
 		# replace \xYY with 0xYY

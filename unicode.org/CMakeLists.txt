@@ -11,25 +11,25 @@ set(FOLDING ${DATA}/CaseFolding.txt)
 add_custom_target(_ducet
 	COMMAND cat ${UNIDATA} | ${TOOLS}/unidata-tosortable >${SORTABLE}
 	COMMAND cat ${DUCET} | ${TOOLS}/allkeys-tokeys | ${TOOLS}/filter-sortable ${SORTABLE}
-		| ${TOOLS}/mph-indexed >${GEN}/_ducet.h
+		| ${TOOLS}/mph-indexed "NU_DUCET" >${GEN}/_ducet.c
 	COMMAND rm ${SORTABLE}
 )
 
 add_custom_target(_toupper
 	COMMAND echo -n && (cat ${UNIDATA} | ${TOOLS}/unidata-toupper
 		&& cat ${SPECIAL} | ${TOOLS}/special-toupper)
-	| ${TOOLS}/mph-combined >${GEN}/_toupper.h
+	| ${TOOLS}/mph-combined "NU_TOUPPER" >${GEN}/_toupper.c
 )
 
 add_custom_target(_tolower
 	COMMAND echo -n && (cat ${UNIDATA} | ${TOOLS}/unidata-tolower
 		&& cat ${SPECIAL} | ${TOOLS}/special-tolower)
-	| ${TOOLS}/mph-combined >${GEN}/_tolower.h
+	| ${TOOLS}/mph-combined "NU_TOLOWER" >${GEN}/_tolower.c
 )
 
-add_custom_target(_tofolding
+add_custom_target(_tofold
 	COMMAND echo -n && cat ${FOLDING} | ${TOOLS}/casefolding-tofolding
-	| ${TOOLS}/mph-combined >${GEN}/_tofold.h
+	| ${TOOLS}/mph-combined "NU_TOFOLD" >${GEN}/_tofold.c
 )
 
-add_custom_target(gen DEPENDS _toupper _tolower _tofolding _ducet)
+add_custom_target(gen DEPENDS _toupper _tolower _tofold _ducet)
