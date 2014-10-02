@@ -6,10 +6,10 @@
 
 #if (defined NU_WITH_Z_COLLATION) || (defined NU_WITH_N_COLLATION)
 
-static int32_t _compound_weight(int32_t w,
+int32_t _compound_weight(int32_t w,
 	const char **encoded, const char *limit,
 	nu_read_iterator_t read, nu_compound_read_t com,
-	const char **tail, nu_read_iterator_t tail_read,
+	const char **tail,
 	nu_codepoint_weight_t weight, void *context) {
 
 	const char *tailp = *tail;
@@ -21,7 +21,7 @@ static int32_t _compound_weight(int32_t w,
 	while (p < limit) {
 		uint32_t u = 0;
 
-		const char *np = com(p, limit, read, &u, &tailp, 0);
+		const char *np = com(p, limit, read, &u, &tailp);
 		new_w = weight(u, &w, context);
 
 		/* after this point, w might hold rollback value
@@ -40,7 +40,7 @@ static int32_t _compound_weight(int32_t w,
 				tailp = *tail;
 
 				for (int32_t i = 0; i < consumed - w; ++i) {
-					np = com(np, limit, read, 0, &tailp, tail_read);
+					np = com(np, limit, read, 0, &tailp);
 				}
 				w = 0;
 			}
@@ -68,7 +68,6 @@ int _nu_strcoll(const char *lhs, const char *lhs_limit,
 	const char *rhs, const char *rhs_limit,
 	nu_read_iterator_t it1, nu_read_iterator_t it2,
 	nu_compound_read_t com1, nu_compound_read_t com2,
-	nu_read_iterator_t tail1_read, nu_read_iterator_t tail2_read,
 	nu_codepoint_weight_t weight, void *context,
 	ssize_t *collated_left, ssize_t *collated_right) {
 
@@ -83,21 +82,21 @@ int _nu_strcoll(const char *lhs, const char *lhs_limit,
 		|| (ltailp != 0 && rp < rhs_limit)
 		|| (rtailp != 0 && lp < lhs_limit)) {
 
-		lp = com1(lp, lhs_limit, it1, &u1, &ltailp, tail1_read);
-		rp = com2(rp, rhs_limit, it2, &u2, &rtailp, tail2_read);
+		lp = com1(lp, lhs_limit, it1, &u1, &ltailp);
+		rp = com2(rp, rhs_limit, it2, &u2, &rtailp);
 
 		int32_t w1 = weight(u1, 0, context);
 		int32_t w2 = weight(u2, 0, context);
 
 		if (w1 < 0) {
 			w1 = _compound_weight(w1, &lp, lhs_limit,
-				it1, com1, &ltailp, tail1_read,
+				it1, com1, &ltailp,
 				weight, context);
 		}
 
 		if (w2 < 0) {
 			w2 = _compound_weight(w2, &rp, rhs_limit,
-				it2, com2, &rtailp, tail2_read,
+				it2, com2, &rtailp,
 				weight, context);
 		}
 
@@ -146,7 +145,7 @@ int _nu_strcoll(const char *lhs, const char *lhs_limit,
 
 const char* _nu_strchr(const char *lhs, const char *lhs_limit,
 	uint32_t c, nu_read_iterator_t read,
-	nu_compound_read_t com, nu_read_iterator_t tail_read,
+	nu_compound_read_t com,
 	nu_casemapping_t casemap, nu_read_iterator_t casemap_read) {
 
 	const char *p = lhs;
@@ -163,7 +162,7 @@ const char* _nu_strchr(const char *lhs, const char *lhs_limit,
 	}
 
 	while (p < lhs_limit) {
-		const char *np = com(p, lhs_limit, read, &u, &tail, tail_read);
+		const char *np = com(p, lhs_limit, read, &u, &tail);
 
 		if (u == 0) {
 			break;
@@ -190,7 +189,7 @@ const char* _nu_strchr(const char *lhs, const char *lhs_limit,
 					return 0;
 				}
 
-				np = com(np, lhs_limit, read, &u, &tail, tail_read);
+				np = com(np, lhs_limit, read, &u, &tail);
 
 				if (u == 0) {
 					return 0;
@@ -211,7 +210,7 @@ const char* _nu_strchr(const char *lhs, const char *lhs_limit,
 
 const char* _nu_strrchr(const char *encoded, const char *limit,
 	uint32_t c, nu_read_iterator_t read,
-	nu_compound_read_t com, nu_read_iterator_t tail_read,
+	nu_compound_read_t com,
 	nu_casemapping_t casemap, nu_read_iterator_t casemap_read) {
 
 	/* there is probably not much sense in finding string end by decoding it
@@ -224,7 +223,7 @@ const char* _nu_strrchr(const char *encoded, const char *limit,
 	const char *last = 0;
 
 	while (p < limit) {
-		p = _nu_strchr(p, limit, c, read, com, tail_read, casemap, casemap_read);
+		p = _nu_strchr(p, limit, c, read, com, casemap, casemap_read);
 
 		if (p == 0) {
 			return last;
@@ -241,7 +240,6 @@ const char* _nu_strstr(const char *haystack, const char *haystack_limit,
 	const char *needle, const char *needle_limit,
 	nu_read_iterator_t it1, nu_read_iterator_t it2,
 	nu_compound_read_t com1, nu_compound_read_t com2,
-	nu_read_iterator_t tail1_read, nu_read_iterator_t tail2_read,
 	nu_casemapping_t casemap, nu_read_iterator_t casemap_read,
 	nu_codepoint_weight_t weight, void *context) {
 
@@ -262,7 +260,7 @@ const char* _nu_strstr(const char *haystack, const char *haystack_limit,
 	do {
 		h0 = _nu_strchr(h0, haystack_limit,
 			n0, it1,
-			com1, tail1_read,
+			com1,
 			casemap, casemap_read);
 
 		if (h0 == 0) {
@@ -273,7 +271,6 @@ const char* _nu_strstr(const char *haystack, const char *haystack_limit,
 		_nu_strcoll(h0, haystack_limit, needle, needle_limit,
 			it1, it2,
 			com1, com2,
-			tail1_read, tail2_read,
 			weight, context,
 			&collated_left, &collated_right);
 

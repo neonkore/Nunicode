@@ -22,7 +22,6 @@
 #include "config.h"
 #include "casemap.h"
 #include "defines.h"
-#include "strcoll_internal.h"
 #include "strings.h"
 
 #if defined (__cplusplus) || defined (c_plusplus)
@@ -49,10 +48,9 @@ extern "C" {
 NU_EXPORT
 static inline const char* nu_default_compound_read(const char *encoded, const char *encoded_limit,
 	nu_read_iterator_t encoded_read, uint32_t *unicode,
-	const char **tail, nu_read_iterator_t tail_read) {
+	const char **tail) {
 	(void)(encoded_limit);
 	(void)(tail);
-	(void)(tail_read);
 
 	return encoded_read(encoded, unicode);
 }
@@ -70,8 +68,7 @@ static inline const char* nu_default_compound_read(const char *encoded, const ch
 NU_EXPORT
 static inline const char* nu_nocase_compound_read(const char *encoded, const char *encoded_limit,
 	nu_read_iterator_t encoded_read, uint32_t *unicode,
-	const char **tail, nu_read_iterator_t tail_read) {
-	(void)(tail_read);
+	const char **tail) {
 
 	/* re-entry with tail != 0 */
 	if (*tail != 0) {

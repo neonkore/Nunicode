@@ -69,16 +69,16 @@ static int _nunicode_like(const char *lhs, const char *rhs, uint32_t escape,
 	char prev_escape = 0;
 
 	while (ru != 0 && lu != 0) {
-		rp = nu_nocase_compound_read(rp, 0, rhs_read, &ru, &rtailp, NU_CASEMAP_DECODING_FUNCTION);
+		rp = nu_nocase_compound_read(rp, 0, rhs_read, &ru, &rtailp);
 
 		if (ru == '%' && prev_escape == 0) {
 			while (ru == '%' || ru == '_') {
-				rp = nu_nocase_compound_read(rp, 0, rhs_read, &ru, &rtailp, NU_CASEMAP_DECODING_FUNCTION);
+				rp = nu_nocase_compound_read(rp, 0, rhs_read, &ru, &rtailp);
 				if (ru == '_') {
 					if (lu == 0) {
 						return 0;
 					}
-					lp = nu_nocase_compound_read(lp, 0, lhs_read, &lu, &ltailp, NU_CASEMAP_DECODING_FUNCTION);
+					lp = nu_nocase_compound_read(lp, 0, lhs_read, &lu, &ltailp);
 				}
 			}
 
@@ -87,7 +87,7 @@ static int _nunicode_like(const char *lhs, const char *rhs, uint32_t escape,
 				if (lu == 0) {
 					return 0;
 				}
-				lp = nu_nocase_compound_read(lp, 0, lhs_read, &lu, &ltailp, NU_CASEMAP_DECODING_FUNCTION);
+				lp = nu_nocase_compound_read(lp, 0, lhs_read, &lu, &ltailp);
 			}
 
 			if (ru != lu) {
@@ -102,7 +102,7 @@ static int _nunicode_like(const char *lhs, const char *rhs, uint32_t escape,
 				return 0;
 			}
 
-			lp = nu_nocase_compound_read(lp, 0, lhs_read, &lu, &ltailp, NU_CASEMAP_DECODING_FUNCTION);
+			lp = nu_nocase_compound_read(lp, 0, lhs_read, &lu, &ltailp);
 			continue;
 		}
 		else if (escape != 0 && ru == escape) {
@@ -110,7 +110,7 @@ static int _nunicode_like(const char *lhs, const char *rhs, uint32_t escape,
 			continue;
 		}
 
-		lp = nu_nocase_compound_read(lp, 0, lhs_read, &lu, &ltailp, NU_CASEMAP_DECODING_FUNCTION);
+		lp = nu_nocase_compound_read(lp, 0, lhs_read, &lu, &ltailp);
 
 		if (lu != ru) {
 			return 0;
