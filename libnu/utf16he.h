@@ -18,7 +18,6 @@ extern "C" {
  * @ingroup utf16
  * @see nu_utf16le_read
  */
-NU_EXPORT
 static inline const char* nu_utf16he_read(const char *utf16, uint32_t *unicode) {
 	uint32_t c = *(uint16_t *)(utf16);
 
@@ -42,7 +41,6 @@ static inline const char* nu_utf16he_read(const char *utf16, uint32_t *unicode) 
  * @ingroup utf16
  * @see nu_utf16le_revread
  */
-NU_EXPORT
 static inline const char* nu_utf16he_revread(uint32_t *unicode, const char *utf16) {
 	/* valid UTF-16 sequences are either 2 or 4 bytes long
 	 * trail sequences are between 0xDC00 .. 0xDFFF */
