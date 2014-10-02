@@ -56,7 +56,6 @@ static int test_strcoll(const char *lhs, const char *rhs) {
 	return _nu_strcoll(lhs, NU_UNLIMITED, rhs, NU_UNLIMITED,
 		nu_utf8_read, nu_utf8_read,
 		nu_default_compound_read, nu_default_compound_read,
-		0, 0,
 		_test_weight, 0,
 		0, 0);
 }
@@ -66,7 +65,6 @@ static int test_strncoll(const char *lhs, size_t max_lhs,
 	return _nu_strcoll(lhs, lhs + max_lhs, rhs, rhs + max_rhs,
 		nu_utf8_read, nu_utf8_read,
 		nu_default_compound_read, nu_default_compound_read,
-		0, 0,
 		_test_weight, 0,
 		0, 0);
 }
