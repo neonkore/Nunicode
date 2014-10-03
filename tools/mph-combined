@@ -1,44 +1,44 @@
 #!/usr/bin/python
 
-import sys
+# Version of encoding where all values (casemapping text) are combined into
+# a single array and VALUES_I is pointing to a offset in that array, VALUES_C
+# is holding original Unicode codepoints for collision detection
 
-from mph import *
+import sys
+import mph
+
 
 def usage():
 	print 'usage: %s <TAG>' % sys.argv[0]
 
-if len(sys.argv) < 2:
-	usage()
-	sys.exit(1)
+if __name__ == '__main__':
+	if len(sys.argv) < 2:
+		usage()
+		sys.exit(1)
 
-TAG = sys.argv[1]
+	TAG = sys.argv[1]
 
-dict = {}
-combined = '\\x00'  # offset 0 is normally impossible, it is used for signaling collision
+	dict = {}
+	combined = '\\x00'  # offset 0 is normally impossible, it is used for signaling collision
 
-for i, line in enumerate(sys.stdin):
-	codepoint, replacement = line.split(' ')
-	replacement = FormatReplacement(replacement.strip().split(','))
+	for i, line in enumerate(sys.stdin):
+		codepoint, replacement = line.split(' ')
+		replacement = mph.format_replacement(replacement.strip().split(','))
 
-	if not replacement:
-		continue
+		if not replacement:
+			continue
 
-	offset = len(combined) / 4  # formatted replacement is always "\xYY", i.e. 4 byte len
-	combined += replacement + '\\x00'
+		offset = len(combined) / 4  # formatted replacement is always "\xYY", i.e. 4 byte len
+		combined += replacement + '\\x00'
 
-	dict[codepoint] = (codepoint, offset)
+		dict[codepoint] = (codepoint, offset)
 
-(G, V) = CreateMinimalPerfectHash(dict)
+	(G, V) = mph.create_minimal_perfect_hash(dict)
 
-assert(len(G) == len(V))
+	assert(len(G) == len(V))
 
-GenerateInfo(TAG, G, combined)
-GenerateIncludes()
-GenerateG(TAG, G)
-GenerateValues(TAG, G, V)
-GenerateCombined(TAG, combined)
-
-#print 'len(combined):', len(combined) / 4
-
-#h = PerfectHashLookup(G, '0061')
-#print 'hash:', h, V[h]
+	mph.gen_header(TAG, G, combined)
+	mph.gen_includes()
+	mph.gen_G(TAG, G)
+	mph.gen_values(TAG, G, V)
+	mph.gen_combined(TAG, combined)

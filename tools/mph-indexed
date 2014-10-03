@@ -1,34 +1,38 @@
 #!/usr/bin/python
 
-import sys
+# VALUES_I is holding final values (weights), VALUES_C is holding original
+# Unicode codepoints for collision detection
 
-from mph import *
+import sys
+import mph
+
 
 def usage():
 	print 'usage: %s <TAG>' % sys.argv[0]
 
-if len(sys.argv) < 2:
-	usage()
-	sys.exit(1)
+if __name__ == '__main__':
+	if len(sys.argv) < 2:
+		usage()
+		sys.exit(1)
 
-TAG = sys.argv[1]
+	TAG = sys.argv[1]
 
-dict = {}
+	dict = {}
 
-for i, line in enumerate(sys.stdin):
-	codepoint, replacement = filter(bool, line.strip().split(' '))
+	for i, line in enumerate(sys.stdin):
+		codepoint, replacement = filter(bool, line.strip().split(' '))
 
-	if not replacement:
-		continue
+		if not replacement:
+			continue
 
-	replacement = int(replacement.strip(), base=16)
-	dict[codepoint] = (codepoint, replacement)
+		replacement = int(replacement.strip(), base=16)
+		dict[codepoint] = (codepoint, replacement)
 
-(G, V) = CreateMinimalPerfectHash(dict)
+	(G, V) = mph.create_minimal_perfect_hash(dict)
 
-assert(len(G) == len(V))
+	assert(len(G) == len(V))
 
-GenerateInfo(TAG, G, [])
-GenerateIncludes()
-GenerateG(TAG, G)
-GenerateValues(TAG, G, V)
+	mph.gen_header(TAG, G, [])
+	mph.gen_includes()
+	mph.gen_G(TAG, G)
+	mph.gen_values(TAG, G, V)

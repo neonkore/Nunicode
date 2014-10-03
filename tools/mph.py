@@ -1,4 +1,5 @@
 #!/usr/bin/python
+
 # Easy Perfect Minimal Hashing
 #
 # Based on:
@@ -17,19 +18,21 @@
 import sys
 import time
 
-PRIME = 0x01000193
-INTERNAL_ENCODING = "UTF-8"
+
+PRIME = 0x01000193  # no particular reason, because FVN is not currently used
+INTERNAL_ENCODING = "UTF-8"  # internal encoding for COMBINED
 
 
-# Calculates a distinct hash function for a given string. Each value of the
-# integer d results in a different hash value.
 def hash(d, str):
+	'''calculates a distinct hash function for a given string. each value of
+	the integer d results in a different hash value.'''
+
 	if d == 0:
 		d = PRIME
 
 	c = int(str, base=16)
 
-	# It doesn't matter for MPH if it's FVN or not until G
+	# it doesn't matter for MPH if it's FVN or not until G
 	# is correctly filled, therefore simple XOR is enough to produce
 	# required randomness while produced index fits into uint16_t.
 	#
@@ -40,11 +43,12 @@ def hash(d, str):
 	return d ^ c
 
 
-# Computes a minimal perfect hash table using the given python dictionary. It
-# returns a tuple (G, V). G and V are both arrays. G contains the intermediate
-# table of values needed to compute the index of the value in V. V contains the
-# values of the dictionary.
-def CreateMinimalPerfectHash(dict):
+def create_minimal_perfect_hash(dict):
+	'''computes a minimal perfect hash table using the given python dictionary.
+	it returns a tuple (G, V). G and V are both arrays. G contains the
+	intermediate able of values needed to compute the index of the value in V.
+	V contains the values of the dictionary.'''
+
 	size = len(dict)
 
 	# Step 1: Place all of the keys into buckets
@@ -82,8 +86,8 @@ def CreateMinimalPerfectHash(dict):
 		for i in range(len(bucket)):
 			values[slots[i]] = dict[bucket[i]]
 
-	# Only buckets with 1 item remain. Process them more quickly by directly
-	# placing them into a free slot. Use a negative value of d to indicate
+	# only buckets with 1 item remain. process them more quickly by directly
+	# placing them into a free slot. use a negative value of d to indicate
 	# this.
 	freelist = []
 	for i in xrange(size):
@@ -97,7 +101,7 @@ def CreateMinimalPerfectHash(dict):
 			break
 
 		slot = freelist.pop()
-		# We subtract one to ensure it's negative even if the zeroeth slot was
+		# we subtract one to ensure it's negative even if the zeroeth slot was
 		# used.
 		G[hash(0, bucket[0]) % size] = -slot - 1
 		values[slot] = dict[bucket[0]]
@@ -105,53 +109,54 @@ def CreateMinimalPerfectHash(dict):
 	return (G, values)
 
 
-# Look up a value in the hash table, defined by G and V.
-def PerfectHashLookup(G, key):
+def perfect_hash_lookup(G, key):
+	'''look up a value in the hash table, defined by G and V.'''
+
 	d = G[hash(0, key) % len(G)]
 	if d < 0:
 		return -d - 1
 	return hash(d, key) % len(G)
 
 
-# Print human-readable info regarding this hash-table
-def GenerateInfo(tag, G, combined):
+def gen_header(tag, G, combined):
+	'''print human-readable info regarding this hash-table'''
+
 	print '''/* Automatically generated file (mph.py), %d
  *
  * Tag             : %s
  * Prime           : %08X,
  * G size          : %d,
  * Combined length : %d,
- * Encoding        : %s 
- */
-''' % (time.time(),
-	tag,
-	PRIME, len(G),
-	len(combined) / 4,
-	INTERNAL_ENCODING)
+ * Encoding        : %s
+ */''' % (time.time(), tag, PRIME, len(G), len(combined) / 4, INTERNAL_ENCODING,)
+	print
 
 
 VALUE_TEMPLATE = '''	{ 0x%(codepoint)05X, %(decomps)s },'''
 VALUE_REF_TEMPLATE = '''&V%(codepoint)05X'''
 
 
-# Filter out non-characters from private area
-def Pass(c):
+def non_non_character(c):
+	'''filter out non-characters from private area'''
+
 	assert(len(c) > 0)
 	return (ord(c) < 0xE000 or ord(c) > 0xF8FF)
 
 
-# Produce C-source-ready decomposition string
-def FormatReplacement(r):
-	chars = u''.join(
-		filter(Pass, [unichr(int(x, base=16)) for x in r])).encode(INTERNAL_ENCODING)
+def format_replacement(r):
+	'''produce C-source-ready decomposition string'''
+
+	chars = u''.join(filter(non_non_character, [unichr(int(x, base=16)) for x in r])
+					).encode(INTERNAL_ENCODING)
 	if len(chars) == 0:
 		return
 	formatted = '%s' % (''.join(('\\x%02X' % (ord(x)) for x in chars)))
 	return formatted
 
 
-# Print values table
-def GenerateValues(tag, G, V):
+def gen_values(tag, G, V):
+	'''print values table'''
+
 	BOUNDARY = 8
 
 	print '/* codepoints */'
@@ -185,8 +190,9 @@ def GenerateValues(tag, G, V):
 	print
 
 
-# Print first hash table
-def GenerateG(tag, G):
+def gen_G(tag, G):
+	'''print first hash table'''
+
 	BOUNDARY = 12
 
 	print 'const int16_t %s_G[] = {' % (tag,)
@@ -203,8 +209,9 @@ def GenerateG(tag, G):
 	print
 
 
-# Print combined encoded string
-def GenerateCombined(tag, combined):
+def gen_combined(tag, combined):
+	'''print combined encoded string'''
+
 	BOUNDARY = 12 * 4
 
 	def chunks(combined, n):
@@ -220,6 +227,6 @@ def GenerateCombined(tag, combined):
 	print
 
 
-def GenerateIncludes():
+def gen_includes():
 	print '#include <stdint.h>'
 	print
