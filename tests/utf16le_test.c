@@ -8,7 +8,9 @@ void test_utf16le_decoding() {
 
 	/* skip output */
 	assert(nu_utf16le_read("\x67\x00" /* g */, 0));
+	assert(nu_utf16le_read("\x01\xD8\x00\xDC" /* 𐐀 */, 0) && u == 0);
 
+	/* read output */
 	assert(nu_utf16le_read("" /* g */, &u) && u == 0);
 	assert(nu_utf16le_read("\x67\x00" /* g */, &u) && u == 0x0067);
 	assert(nu_utf16le_read("\x05\x02" /* ȅ */, &u) && u == 0x0205);

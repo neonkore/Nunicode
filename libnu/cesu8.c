@@ -20,7 +20,7 @@ const char* nu_cesu8_read(const char *cesu8, uint32_t *unicode) {
 			}
 			return cesu8 + 2;
 		}
-		else if (c < 0xF0) {
+		else {
 			if (unicode != 0) {
 				utf8_3b(cesu8, unicode);
 			}

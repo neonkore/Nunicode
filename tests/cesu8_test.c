@@ -18,7 +18,12 @@ void test_cesu8_decoding() {
 
 	/* skip output */
 	assert(nu_cesu8_read("g", 0) && u == 0);
+	assert(nu_cesu8_read("п", 0) && u == 0);
+	assert(nu_cesu8_read("€", 0) && u == 0);
+	assert(nu_cesu8_read((const char *)CESU8, 0) && u == 0);
+	assert(nu_cesu8_read((const char *)CESU9, 0) && u == 0);
 
+	/* read output */
 	assert(nu_cesu8_read("g", &u) && u == 0x0067);
 	assert(nu_cesu8_read("п", &u) && u == 0x043F);
 	assert(nu_cesu8_read("€", &u) && u == 0x20AC);

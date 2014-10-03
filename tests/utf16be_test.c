@@ -6,9 +6,11 @@
 void test_utf16be_decoding() {
 	uint32_t u = 0;
 
-	/* skip read */
+	/* skip output */
 	assert(nu_utf16be_read("\x00\x67" /* g */, 0));
+	assert(nu_utf16be_read("\xD8\x01\xDC\x00" /* 𐐀 */, 0) && u == 0);
 
+	/* read output */
 	assert(nu_utf16be_read("\x00\x67" /* g */, &u) && u == 0x0067);
 	assert(nu_utf16be_read("\x02\x05" /* ȅ */, &u) && u == 0x0205);
 	assert(nu_utf16be_read("\x20\xAC" /* € */, &u) && u == 0x20AC);

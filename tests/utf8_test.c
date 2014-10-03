@@ -10,7 +10,11 @@ void test_utf8_decoding() {
 
 	/* skip output */
 	assert(nu_utf8_read("g", 0) && u == 0);
+	assert(nu_utf8_read("п", 0) && u == 0);
+	assert(nu_utf8_read("€", 0) && u == 0);
+	assert(nu_utf8_read("𠜱", 0) && u == 0);
 
+	/* read output */
 	assert(nu_utf8_read("g", &u) && u == 0x0067);
 	assert(nu_utf8_read("п", &u) && u == 0x043F);
 	assert(nu_utf8_read("€", &u) && u == 0x20AC);
