@@ -46,7 +46,7 @@ if(NOT CMAKE_BUILD_TYPE OR CMAKE_BUILD_TYPE MATCHES GCOV)
 endif(NOT CMAKE_BUILD_TYPE OR CMAKE_BUILD_TYPE MATCHES GCOV)
 
 if(CMAKE_BUILD_TYPE MATCHES PROF)
-	add_subdirectory(tests/icu)
+	add_subdirectory(tests/prof)
 endif(CMAKE_BUILD_TYPE MATCHES PROF)
 
 find_package(Sqlite3)
