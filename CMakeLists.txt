@@ -13,27 +13,39 @@ if(CMAKE_COMPILER_IS_GNUCC)
 		set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC")
 	endif(NOT DEFINED WIN32)
 
+	if(NOT CMAKE_BUILD_TYPE) # defaults to debug
+		set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0 -g -ggdb")
+	endif(NOT CMAKE_BUILD_TYPE)
+
 	if(CMAKE_BUILD_TYPE MATCHES RELEASE)
 		set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fdata-sections -ffunction-sections")
 		set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--gc-sections")
 		set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--gc-sections")
-	else(CMAKE_BUILD_TYPE MATCHES RELEASE)
-		set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0 -g -ggdb")
 	endif(CMAKE_BUILD_TYPE MATCHES RELEASE)
+
+	if(CMAKE_BUILD_TYPE MATCHES PROF)
+		set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O2 -g -ggdb")
+	endif(CMAKE_BUILD_TYPE MATCHES PROF)
+
+	if(CMAKE_BUILD_TYPE MATCHES GCOV)
+		set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fprofile-arcs -ftest-coverage")
+	endif(CMAKE_BUILD_TYPE MATCHES GCOV)
 endif(CMAKE_COMPILER_IS_GNUCC)
 
-if(CMAKE_BUILD_TYPE MATCHES GCOV)
-	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fprofile-arcs -ftest-coverage")
-endif(CMAKE_BUILD_TYPE MATCHES GCOV)
-
 add_subdirectory(libnu)
-add_subdirectory(tests/icu)
-add_subdirectory(samples)
 add_subdirectory(unicode.org)
+
+if(NOT CMAKE_BUILD_TYPE)
+	add_subdirectory(samples)
+endif(NOT CMAKE_BUILD_TYPE)
 
 if(NOT CMAKE_BUILD_TYPE MATCHES RELEASE)
 	add_subdirectory(tests)
 endif(NOT CMAKE_BUILD_TYPE MATCHES RELEASE)
+
+if(CMAKE_BUILD_TYPE MATCHES PROF)
+	add_subdirectory(tests/icu)
+endif(CMAKE_BUILD_TYPE MATCHES PROF)
 
 find_package(Sqlite3)
 if(SQLITE3_FOUND)
