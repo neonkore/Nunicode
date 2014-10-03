@@ -2,7 +2,7 @@ set(LIBNU_SRC
 	cesu8.c
 	ducet.c
 	extra.c
-	strcoll_internal.c
+	strcoll.c
 	strings.c
 	tofold.c
 	tolower.c
