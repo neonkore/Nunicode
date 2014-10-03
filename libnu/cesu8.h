@@ -27,7 +27,8 @@ extern "C" {
  * @param unicode output unicode codepoint or 0
  * @return pointer to next character in CESU-8 string
  */
-static inline const char* nu_cesu8_read(const char *cesu8, uint32_t *unicode) {
+static inline
+const char* nu_cesu8_read(const char *cesu8, uint32_t *unicode) {
 	uint32_t c = *(unsigned char *)(cesu8);
 
 	if (c == 0xED) { /* 6-bytes sequence */
@@ -71,7 +72,8 @@ static inline const char* nu_cesu8_read(const char *cesu8, uint32_t *unicode) {
  * @param cesu8 pointer to CESU-8 encoded string
  * @return pointer to previous character in CESU-8 string
  */
-static inline const char* nu_cesu8_revread(uint32_t *unicode, const char *cesu8) {
+static inline
+const char* nu_cesu8_revread(uint32_t *unicode, const char *cesu8) {
 	/* valid CESU-8 has either 10xxxxxx (continuation byte)
 	 * or beginning of byte sequence
 	 *

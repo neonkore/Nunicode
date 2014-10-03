@@ -31,7 +31,8 @@ extern "C" {
  * @see nu_udb_lookup
  * @return raw value from VALUES_I
  */
-static inline uint32_t nu_udb_lookup_value(uint32_t codepoint,
+static inline
+uint32_t nu_udb_lookup_value(uint32_t codepoint,
 	const int16_t *G, size_t G_SIZE,
 	const uint32_t *VALUES_C, const uint16_t *VALUES_I) {
 
@@ -56,7 +57,8 @@ static inline uint32_t nu_udb_lookup_value(uint32_t codepoint,
  * @param COMBINED joined values addressed by index stored in VALUES
  * @return looked up data or 0
  */
-static inline const char* nu_udb_lookup(uint32_t codepoint,
+static inline
+const char* nu_udb_lookup(uint32_t codepoint,
 	const int16_t *G, size_t G_SIZE,
 	const uint32_t *VALUES_C, const uint16_t *VALUES_I, const uint8_t *COMBINED) {
 

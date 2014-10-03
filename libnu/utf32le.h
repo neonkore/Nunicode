@@ -18,7 +18,8 @@ extern "C" {
  * @ingroup utf32
  * @see nu_utf16le_read
  */
-static inline const char* nu_utf32le_read(const char *utf32, uint32_t *unicode) {
+static inline
+const char* nu_utf32le_read(const char *utf32, uint32_t *unicode) {
 	if (unicode != 0) {
 		*unicode = nu_letohl(utf32);
 	}
@@ -32,7 +33,8 @@ static inline const char* nu_utf32le_read(const char *utf32, uint32_t *unicode) 
  * @ingroup utf32
  * @see nu_utf16le_revread
  */
-static inline const char* nu_utf32le_revread(uint32_t *unicode, const char *utf32) {
+static inline
+const char* nu_utf32le_revread(uint32_t *unicode, const char *utf32) {
 	const char *p = utf32 - 4;
 
 	if (unicode != 0) {

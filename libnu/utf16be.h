@@ -18,7 +18,8 @@ extern "C" {
  * @ingroup utf16
  * @see nu_utf16le_read
  */
-static inline const char* nu_utf16be_read(const char *utf16, uint32_t *unicode) {
+static inline
+const char* nu_utf16be_read(const char *utf16, uint32_t *unicode) {
 	uint32_t c = nu_betohs(utf16);
 
 	if (c >= 0xD800 && c <= 0xDBFF) {
@@ -40,7 +41,8 @@ static inline const char* nu_utf16be_read(const char *utf16, uint32_t *unicode) 
  * @ingroup utf16
  * @see nu_utf16le_revread
  */
-static inline const char* nu_utf16be_revread(uint32_t *unicode, const char *utf16) {
+static inline
+const char* nu_utf16be_revread(uint32_t *unicode, const char *utf16) {
 	/* valid UTF-16 sequences are either 2 or 4 bytes long
 	 * trail sequences are between 0xDC00 .. 0xDFFF */
 	const char *p = utf16 - 2;

@@ -6,7 +6,8 @@
 
 #include "udb.h"
 
-static inline const char* to_something(uint32_t codepoint,
+static inline
+const char* to_something(uint32_t codepoint,
 	const int16_t *G, size_t G_SIZE,
 	const uint32_t *VALUES_C, const uint16_t *VALUES_I, const uint8_t *COMBINED) {
 

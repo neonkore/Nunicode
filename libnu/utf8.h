@@ -27,7 +27,8 @@ extern "C" {
  * @param unicode output unicode codepoint or 0
  * @return pointer to next character in UTF-8 string
  */
-static inline const char* nu_utf8_read(const char *utf8, uint32_t *unicode) {
+static inline
+const char* nu_utf8_read(const char *utf8, uint32_t *unicode) {
 	uint32_t c = *(unsigned char *)(utf8);
 
 	if (c >= 0x80) {
@@ -71,7 +72,8 @@ static inline const char* nu_utf8_read(const char *utf8, uint32_t *unicode) {
  * @param utf8 pointer to UTF-8 encoded string
  * @return pointer to previous character in UTF-8 string
  */
-static inline const char* nu_utf8_revread(uint32_t *unicode, const char *utf8) {
+static inline
+const char* nu_utf8_revread(uint32_t *unicode, const char *utf8) {
 	/* valid UTF-8 has either 10xxxxxx (continuation byte)
 	 * or beginning of byte sequence */
 	const char *p = utf8 - 1;

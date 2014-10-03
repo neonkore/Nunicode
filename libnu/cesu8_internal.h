@@ -3,7 +3,8 @@
 
 #include "utf8_internal.h"
 
-static inline unsigned cesu8_char_length(const char c) {
+static inline
+unsigned cesu8_char_length(const char c) {
 	if ((unsigned char)(c) == 0xED) {
 		return 6;
 	}
@@ -11,7 +12,8 @@ static inline unsigned cesu8_char_length(const char c) {
 	return utf8_char_length(c);
 }
 
-static inline void cesu8_6b(const char *p, uint32_t *codepoint) {
+static inline
+void cesu8_6b(const char *p, uint32_t *codepoint) {
 	const unsigned char *up = (const unsigned char *)(p);
 
 	/* CESU-8: 11101101 1010xxxx 10xxxxxx 11101101 1011xxxx 10xxxxxx
@@ -31,7 +33,8 @@ static inline void cesu8_6b(const char *p, uint32_t *codepoint) {
 	| ((*(up + 4) & 0x03) << 6 | (*(up + 5) & 0x3F));
 }
 
-static inline unsigned cesu8_codepoint_length(uint32_t codepoint) {
+static inline
+unsigned cesu8_codepoint_length(uint32_t codepoint) {
 	if (codepoint > 0xFFFF) {
 		return 6;
 	}
@@ -39,7 +42,8 @@ static inline unsigned cesu8_codepoint_length(uint32_t codepoint) {
 	return utf8_codepoint_length(codepoint);
 }
 
-static inline void b6_cesu8(uint32_t codepoint, char *p) {
+static inline
+void b6_cesu8(uint32_t codepoint, char *p) {
 	unsigned char *up = (unsigned char *)(p);
 
 	/* UNICODE: 0000xxxx xxxxxxxx xxxxxxxx

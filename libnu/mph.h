@@ -22,7 +22,8 @@ extern "C" {
 
 /** Calculate G offset from codepoint
  */
-static inline uint32_t hash(uint32_t hash, uint32_t codepoint) {
+static inline
+uint32_t hash(uint32_t hash, uint32_t codepoint) {
 	if (hash == 0) {
 		hash = PRIME;
 	}
@@ -32,7 +33,8 @@ static inline uint32_t hash(uint32_t hash, uint32_t codepoint) {
 
 /** Get hash value of Unicode codepoint
  */
-static inline uint32_t mph_hash(const int16_t *G, size_t G_SIZE,
+static inline
+uint32_t mph_hash(const int16_t *G, size_t G_SIZE,
 	uint32_t codepoint) {
 
 	uint32_t h = hash(0, codepoint);
@@ -45,7 +47,8 @@ static inline uint32_t mph_hash(const int16_t *G, size_t G_SIZE,
 
 /** Lookup value in MPH
  */
-static inline uint32_t mph_lookup(const uint32_t *V_C, const uint16_t *V_I,
+static inline
+uint32_t mph_lookup(const uint32_t *V_C, const uint16_t *V_I,
 	uint32_t codepoint, uint32_t hash) {
 
 	const uint32_t *c = (V_C + hash);

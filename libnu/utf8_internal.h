@@ -3,7 +3,8 @@
 
 #include <sys/types.h>
 
-static inline unsigned utf8_char_length(const char c) {
+static inline
+unsigned utf8_char_length(const char c) {
 	const unsigned char uc = c;
 
 	if ((uc & 0x80) == 0) return 1;
@@ -14,7 +15,8 @@ static inline unsigned utf8_char_length(const char c) {
 	return 0; /* undefined */
 }
 
-static inline void utf8_2b(const char *p, uint32_t *codepoint) {
+static inline
+void utf8_2b(const char *p, uint32_t *codepoint) {
 	const unsigned char *up = (const unsigned char *)(p);
 
 	/* UTF-8: 110xxxxx 10xxxxxx
@@ -28,7 +30,8 @@ static inline void utf8_2b(const char *p, uint32_t *codepoint) {
 	| ((*(up) & 0x03) << 6 | (*(up + 1) & 0x3F));
 }
 
-static inline void utf8_3b(const char *p, uint32_t *codepoint) {
+static inline
+void utf8_3b(const char *p, uint32_t *codepoint) {
 	const unsigned char *up = (const unsigned char *)(p);
 
 	/* UTF-8: 1110xxxx 10xxxxxx 10xxxxxx
@@ -44,7 +47,8 @@ static inline void utf8_3b(const char *p, uint32_t *codepoint) {
 	| ((*(up + 1) & 0x03) << 6 | (*(up + 2) & 0x3F));
 }
 
-static inline void utf8_4b(const char *p, uint32_t *codepoint) {
+static inline
+void utf8_4b(const char *p, uint32_t *codepoint) {
 	const unsigned char *up = (const unsigned char *)(p);
 
 	/* UTF-8: 11110xxx 10xxxxxx 10xxxxxx 10xxxxxx
@@ -64,7 +68,8 @@ static inline void utf8_4b(const char *p, uint32_t *codepoint) {
 	| ((*(up + 2) & 0x03) << 6 | (*(up + 3) & 0x3F));
 }
 
-static inline unsigned utf8_codepoint_length(uint32_t codepoint) {
+static inline
+unsigned utf8_codepoint_length(uint32_t codepoint) {
 	if (codepoint < 128) return 1;
 	if (codepoint < 0x0800) return 2;
 	if (codepoint < 0x10000) return 3;
@@ -72,7 +77,8 @@ static inline unsigned utf8_codepoint_length(uint32_t codepoint) {
 	return 4; /* de facto max length in UTF-8 */
 }
 
-static inline void b2_utf8(uint32_t codepoint, char *p) {
+static inline
+void b2_utf8(uint32_t codepoint, char *p) {
 	unsigned char *up = (unsigned char *)(p);
 
 	/* UNICODE: 00000xxx xxxxxxxx
@@ -87,7 +93,8 @@ static inline void b2_utf8(uint32_t codepoint, char *p) {
 	*(up + 1) = (0x80 | (codepoint & 0x3F));
 }
 
-static inline void b3_utf8(uint32_t codepoint, char *p) {
+static inline
+void b3_utf8(uint32_t codepoint, char *p) {
 	unsigned char *up = (unsigned char *)(p);
 
 	/* UNICODE: xxxxxxxx xxxxxxxx
@@ -105,7 +112,8 @@ static inline void b3_utf8(uint32_t codepoint, char *p) {
 	*(up + 2) = (0x80 | (codepoint & 0x3F));
 }
 
-static inline void b4_utf8(uint32_t codepoint, char *p) {
+static inline
+void b4_utf8(uint32_t codepoint, char *p) {
 	unsigned char *up = (unsigned char *)(p);
 
 	/* UNICODE: 000xxxxx xxxxxxxx xxxxxxxx
@@ -126,7 +134,8 @@ static inline void b4_utf8(uint32_t codepoint, char *p) {
 	*(up + 3) = (0x80 | (codepoint & 0x3F));
 }
 
-static inline int utf8_validread(const char *p, size_t max_len) {
+static inline
+int utf8_validread(const char *p, size_t max_len) {
 	const unsigned char *up = (const unsigned char *)(p);
 
 	/* it should be 0xxxxxxx or 110xxxxx or 1110xxxx or 11110xxx
@@ -135,7 +144,7 @@ static inline int utf8_validread(const char *p, size_t max_len) {
 	unsigned len = utf8_char_length(*p);
 
 	/* codepoints longer than 6 bytes does not currently exist
-	 * and not currently supported 
+	 * and not currently supported
 	 * TODO: longer UTF-8 sequences support
 	 */
 	if (max_len < len) {
