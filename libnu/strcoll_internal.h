@@ -64,6 +64,9 @@ typedef int32_t (*nu_codepoint_weight_t)(uint32_t u, int32_t *weight, void *cont
  * @param com2 rhs compound read function
  * @param weight codepoint weighting function
  * @param context pointer which will be passed to weight
+ * @param collated_left (optional) number of characters collated in lhs
+ * @param collated_right (optional) number of characters collated in rhs
+ *
  * @see nu_strcoll
  * @see nu_default_compound_read
  * @see nu_nocase_compound_read
@@ -87,6 +90,8 @@ int _nu_strcoll(const char *lhs, const char *lhs_limit,
  * @param read lhs read (decoding) function
  * @param com lhs compound read function
  * @param casemap casemapping function
+ * @param casemap_read casemapping result decoding function
+ *
  * @see nu_strchr
  * @see nu_default_compound_read
  * @see nu_nocase_compound_read
@@ -124,8 +129,10 @@ const char* _nu_strrchr(const char *encoded, const char *limit,
  * @param com1 haystack compound read function
  * @param com2 needle compound read function
  * @param casemap casemapping function
+ * @param casemap_read casemapping result decoding function
  * @param weight codepoint weighting function
  * @param context pointer which will be passed to weight
+ *
  * @see nu_strstr
  * @see nu_default_compound_read
  * @see nu_nocase_compound_read

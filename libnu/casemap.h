@@ -25,7 +25,6 @@ typedef nu_transformation_t nu_casemapping_t;
  *
  * @ingroup transformations
  * @param codepoint unicode codepoint
- * @param read output upper case read (decode) function
  * @return uppercase codepoint or 0 if mapping doesn't exist
  */
 NU_EXPORT
@@ -39,7 +38,6 @@ const char* nu_toupper(uint32_t codepoint);
  *
  * @ingroup transformations
  * @param codepoint unicode codepoint
- * @param read output lower case read (decode) function
  * @return lowercase codepoint or 0 if mapping doesn't exist
  */
 NU_EXPORT

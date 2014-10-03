@@ -85,6 +85,7 @@ int nu_transformstr(const char *source, char *dest,
  * @param encoded encoded string
  * @param read read (decode) function
  * @param transform transformation to take into account
+ * @param transform_read transformation result decoding function
  *
  * @see nu_decompose
  * @see nu_toupper
