@@ -65,6 +65,7 @@ int32_t _compound_weight(int32_t w,
 	return new_w;
 }
 
+inline
 int _nu_strcoll(const char *lhs, const char *lhs_limit,
 	const char *rhs, const char *rhs_limit,
 	nu_read_iterator_t it1, nu_read_iterator_t it2,
@@ -87,7 +88,7 @@ int _nu_strcoll(const char *lhs, const char *lhs_limit,
 		rp = com2(rp, rhs_limit, it2, &u2, &rtailp);
 
 		int32_t w1 = weight(u1, 0, context);
-		int32_t w2 = weight(u2, 0, context);
+		int32_t w2 = (u2 == u1 && w1 >= 0 ? w1 : weight(u2, 0, context));
 
 		if (w1 < 0) {
 			w1 = _compound_weight(w1, &lp, lhs_limit,
@@ -144,6 +145,7 @@ int _nu_strcoll(const char *lhs, const char *lhs_limit,
 	return cmp;
 }
 
+inline
 const char* _nu_strchr(const char *lhs, const char *lhs_limit,
 	uint32_t c, nu_read_iterator_t read,
 	nu_compound_read_t com,
@@ -209,6 +211,7 @@ const char* _nu_strchr(const char *lhs, const char *lhs_limit,
 	return 0;
 }
 
+inline
 const char* _nu_strrchr(const char *encoded, const char *limit,
 	uint32_t c, nu_read_iterator_t read,
 	nu_compound_read_t com,
@@ -237,6 +240,7 @@ const char* _nu_strrchr(const char *encoded, const char *limit,
 	return last;
 }
 
+inline
 const char* _nu_strstr(const char *haystack, const char *haystack_limit,
 	const char *needle, const char *needle_limit,
 	nu_read_iterator_t it1, nu_read_iterator_t it2,
