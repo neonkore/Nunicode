@@ -66,8 +66,43 @@ If you wish to inspect the coverage, proceed as following:
 	cmake .. -DCMAKE_BUILD_TYPE=GCOV
 	make coverage
 
-It will produce ``tests/coverage`` directory with coverage info in
-browesable HTML.
+This build configuration assumes that you use GCC. It will produce
+``tests/coverage`` directory with coverage info in browesable HTML.
+
+## Performance considerations
+
+Collation and case mapping are O(1). Internally both use [minimal
+perfect hash][] table for lookup. Hash is a quite fast couple of XOR+MOD.
+
+[minimal perfect hash]: http://iswsa.acm.org/mphf/index.html
+
+Numbers below to give a general idea on nunicode performance. Each number
+is linked to corresponding test program and  measured with standard
+``time`` utility, all number in seconds.
+
+Function     | nunicode          | ICU
+-------------|-------------------|-------------------
+iteration    |     0.620 ([1][]) | 0.710 ([2][])
+strcoll      |     0.350 ([3][]) | 1.560 ([4][])
+strcasecoll  |     1.490 ([5][]) | 1.520 ([6][])
+
+Compiler used is GCC 4.8.2, optimization level is O2. To re-measure
+those numbers proceed as following:
+
+    cmake .. -DCMAKE_BUILD_TYPE=PROF
+    make
+
+Test details:
+
+* Number of iterations on strings: 100000
+* Strings encoding: UTF-8
+
+[1]: https://bitbucket.org/alekseyt/nunicode/src/master/tests/prof/iter_nu.c
+[2]: https://bitbucket.org/alekseyt/nunicode/src/master/tests/prof/iter_icu.c
+[3]: https://bitbucket.org/alekseyt/nunicode/src/master/tests/prof/strcoll_nu.c
+[4]: https://bitbucket.org/alekseyt/nunicode/src/master/tests/prof/strcoll_icu.c
+[5]: https://bitbucket.org/alekseyt/nunicode/src/master/tests/prof/strcasecoll_nu.c
+[6]: https://bitbucket.org/alekseyt/nunicode/src/master/tests/prof/strcasecoll_icu.c
 
 ## UTF-8, UTF-16 and UTF-32 notes
 
@@ -225,14 +260,7 @@ Note though that everything in nunicode starting from underscore
 (as in ``_nu_strcoll``) is internal API and might change when it need to
 follow ongoing changes in Unicode and CLDR.
 
-[strcoll_internal_test.c]: https://bitbucket.org/alekseyt/nunicode/src/master/tests/strcoll_internal_test.c?at=master
-
-### performance considerations
-
-Collation and case mapping are O(1). Internally both use [minimal
-perfect hash][] table for lookup. Hash is a quite fast couple of XOR+MOD.
-
-[minimal perfect hash]: http://iswsa.acm.org/mphf/index.html
+[strcoll_internal_test.c]: https://bitbucket.org/alekseyt/nunicode/src/master/tests/strcoll_internal_test.c
 
 ## Examples
 
@@ -316,25 +344,14 @@ This section is only to give a general idea on nunicode SQLite extension
 performance. In the table below the following SQL queries and tables
 were used:
 
-* Table ('test\_casing') for upper() and LIKE test size: 100000 entries
-* Table ('test\_ordering') for ORDER BY test size: 100000 entries
-* ICU collation for ORDER BY: ``SELECT icu_load_collation('ru_RU', 'RUSSIAN')``
-  with sequential COLLATE RUSSIAN
-* nunicode collation for ORDER BY: embedded NU700 and sequential
-  COLLATE NU700
-* upper() test query: ``SELECT count(upper(x)) FROM test_casing``
-* COLLATE test query: ``SELECT * FROM test_ordering ORDER BY x COLLATE <collation> LIMIT 1``
-* LIKE test query: ``SELECT count(*) FROM test_casing WHERE x LIKE <string>``
-* ICU and nunicode extensions compilation flags: -O3
-* Encoding of database: UTF-8
-
-Numbers are measured by SQLite3 shell's ``.timer on``.
+Numbers are measured by SQLite3 shell's ``.timer on``, all numbers in
+seconds.
 
 Function | w/o extension | ICU      | nunicode
 ---------|---------------|----------|---------
-upper()  |         0.275 | 0.690    | 0.670
-COLLATE  |         0.530 | 0.920    | 0.615
-LIKE     |         0.145 | 0.255    | 0.485
+upper()  |         0.290 | 0.700    | 0.540
+COLLATE  |         0.570 | 0.980    | 0.600
+LIKE     |         0.150 | 0.260    | 0.290
 
 As you can see, upper() and COLLATE are somewhat faster, but LIKE is
 slower. The explanation to the latter i have to offer is that nunicode
@@ -356,6 +373,23 @@ nunicode extension:
 
 The LIKE operation in nunicode extension support cases when strings
 might grow in size during case transformation.
+
+Test details:
+
+* Test tables size: 100000 entries
+* ICU collation for ORDER BY: ``SELECT icu_load_collation('ru_RU', 'RUSSIAN')``
+  with sequential COLLATE RUSSIAN
+* nunicode collation for ORDER BY: embedded NU700 and sequential
+  COLLATE NU700
+* ICU and nunicode extensions compilation flags: -O3
+* Encoding of database: UTF-8
+* upper() test query: ``SELECT count(upper(x)) FROM test_casing``
+* COLLATE test query: ``SELECT * FROM test_ordering ORDER BY x COLLATE <collation> LIMIT 1``
+* LIKE test query: ``SELECT count(*) FROM test_casing WHERE x LIKE <string>``
+
+Test script is available in repository: [test_db.sh][]
+
+[test_db.sh]: https://bitbucket.org/alekseyt/nunicode/src/master/sqlite3/test_db.sh
 
 ## Downloads
 
