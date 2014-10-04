@@ -5,6 +5,7 @@
 SQLITE_EXTENSION_INIT1
 
 #include <libnu/libnu.h>
+#include <libnu/strcoll_internal.h>
 
 #include "nu.h"
 #include "version.h"

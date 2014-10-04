@@ -1,6 +1,12 @@
 #ifndef NU_STRCOLL_INTERNAL_H
 #define NU_STRCOLL_INTERNAL_H
 
+/** @defgroup collation_internal Internal collation functions
+ *
+ * Functions in this group are mostly for the internal use. PLease use them
+ * with care.
+ */
+
 #include "config.h"
 #include "casemap.h"
 #include "defines.h"
@@ -12,7 +18,7 @@ extern "C" {
 
 /** Read (decode) iterator with transformation applied inside of it
  *
- * @ingroup iterators
+ * @ingroup collation_internal
  * @see nu_default_compound_read
  * @see nu_nocase_compound_read
  */
@@ -38,7 +44,7 @@ typedef const char* (*nu_compound_read_t)(
  * reached), 0 will be passed additionally to the previous string to signal
  * end of the string.
  *
- * @ingroup collation
+ * @ingroup collation_internal
  * @param u unicode codepoint to weight
  * @param weight 0 or negative weight previously returned by this function
  * @param context pointer passed to _nu_strcoll() or _nu_strstr()
@@ -49,9 +55,73 @@ typedef int32_t (*nu_codepoint_weight_t)(uint32_t u, int32_t *weight, void *cont
 
 #if (defined NU_WITH_Z_COLLATION) || (defined NU_WITH_N_COLLATION)
 
+/** Default compound read, equal to simply calling encoded_read(encoded, &unicode)
+ *
+ * @ingroup collation_internal
+ * @param encoded encoded string
+ * @param encoded_read read (decode) function
+ * @param unicode output unicode codepoint
+ * @param tail output pointer to compound tail, should never be 0
+ * @return pointer to next encoded character
+ */
+static inline
+const char* nu_default_compound_read(const char *encoded, const char *encoded_limit,
+	nu_read_iterator_t encoded_read, uint32_t *unicode,
+	const char **tail) {
+	(void)(encoded_limit);
+	(void)(tail);
+
+	return encoded_read(encoded, unicode);
+}
+
+/** Case-ignoring compound read, equal to calling
+ * encoded_read(encoded, &unicode) with nu_toupper() applied internally
+ *
+ * @ingroup collation_internal
+ * @param encoded encoded string
+ * @param encoded_read read (decode) function
+ * @param unicode output unicode codepoint
+ * @param tail output pointer to compound tail, should never be 0
+ * @return pointer to next encoded character
+ */
+static inline
+const char* nu_nocase_compound_read(const char *encoded, const char *encoded_limit,
+	nu_read_iterator_t encoded_read, uint32_t *unicode,
+	const char **tail) {
+
+	/* re-entry with tail != 0 */
+	if (*tail != 0) {
+		*tail = NU_CASEMAP_DECODING_FUNCTION(*tail, unicode);
+
+		if (*unicode != 0) {
+			return encoded;
+		}
+
+		*tail = 0; // fall thru
+	}
+
+	if (encoded >= encoded_limit) {
+		*unicode = 0;
+		return encoded;
+	}
+
+	const char *p = encoded_read(encoded, unicode);
+
+	if (*unicode == 0) {
+		return p;
+	}
+
+	const char *map = NU_FOLDING_FUNCTION(*unicode);
+	if (map != 0) {
+		*tail = NU_CASEMAP_DECODING_FUNCTION(map, unicode);
+	}
+
+	return p;
+}
+
 /** Internal interface for nu_strcoll
  *
- * @ingroup collation
+ * @ingroup collation_internal
  * @param lhs left-hand side encoded string
  * @param lhs_limit upper limit for lhs, use NU_UNLIMITED for 0-terminated
  * strings
@@ -82,7 +152,7 @@ int _nu_strcoll(const char *lhs, const char *lhs_limit,
 
 /** Internal interface for nu_strchr
  *
- * @ingroup collation
+ * @ingroup collation_internal
  * @param lhs left-hand side encoded string
  * @param lhs_limit upper limit for lhs, use NU_UNLIMITED for 0-terminated
  * strings
@@ -106,7 +176,7 @@ const char* _nu_strchr(const char *lhs, const char *lhs_limit,
 
 /** Internal interface for nu_strchr
  *
- * @ingroup collation
+ * @ingroup collation_internal
  * @see _nu_strchr
  */
 NU_EXPORT
@@ -117,7 +187,7 @@ const char* _nu_strrchr(const char *encoded, const char *limit,
 
 /** Internal interface for nu_strcoll
  *
- * @ingroup collation
+ * @ingroup collation_internal
  * @param haystack encoded haystack
  * @param haystack_limit upper limit for haystack, use NU_UNLIMITED for
  * 0-terminated strings
