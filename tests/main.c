@@ -59,6 +59,7 @@ void test_ducet_known_unknown();
 void test_toupper();
 void test_tolower();
 void test_tofold();
+void test_folding_priority();
 void test_strchr();
 void test_strnchr();
 void test_strcasechr();
@@ -151,6 +152,7 @@ testcase cases[] = {
 	test_toupper,
 	test_tolower,
 	test_tofold,
+	test_folding_priority,
 
 	test_strchr,
 	test_strnchr,

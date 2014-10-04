@@ -83,3 +83,52 @@ void test_tofold() {
 	NU_CASEMAP_DECODING_FUNCTION(map, &u);
 	assert(u == 0x00E6); /* æ */
 }
+
+void test_folding_priority() {
+	/* folding class priority: F, C, S
+	 *
+	 * F: full case folding
+	 * C: common case folding
+	 * S: simple case folding
+	 * T: special case folding
+	 *
+	 * latter is a subject for l10n and should be absent in udb
+	 */
+
+	uint32_t u;
+	const char *map = 0;
+
+	/* İ, full case folding is U+0069 U+0307, there is also special
+	 * case folding available in source */
+	map = nu_tofold(0x0130);
+	assert(map != 0);
+	map = NU_CASEMAP_DECODING_FUNCTION(map, &u);
+	assert(u == 0x0069 && map != 0);
+	map = NU_CASEMAP_DECODING_FUNCTION(map, &u);
+	assert(u == 0x0307 && map != 0);
+	map = NU_CASEMAP_DECODING_FUNCTION(map, &u);
+	assert(u == 0);
+
+	/* ǰ, the only option of case folding is full */
+	map = nu_tofold(0x01F0);
+	assert(map != 0);
+
+	/* ᾇ, full case folding option is U+1F07 U+03B9,
+	 * other case folding option is simple (S) */
+	map = nu_tofold(0x1F8F);
+	assert(map != 0);
+	map = NU_CASEMAP_DECODING_FUNCTION(map, &u);
+	assert(u == 0x1F07 && map != 0);
+	map = NU_CASEMAP_DECODING_FUNCTION(map, &u);
+	assert(u == 0x03B9 && map != 0);
+	map = NU_CASEMAP_DECODING_FUNCTION(map, &u);
+	assert(u == 0);
+
+	/* I, common case folding to U+0069, other option is special case folding */
+	map = nu_tofold(0x0049);
+	assert(map != 0);
+	map = NU_CASEMAP_DECODING_FUNCTION(map, &u);
+	assert(u == 0x0069 && map != 0);
+	map = NU_CASEMAP_DECODING_FUNCTION(map, &u);
+	assert(u == 0);
+}

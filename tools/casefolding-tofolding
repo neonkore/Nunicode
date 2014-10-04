@@ -23,7 +23,9 @@ for line in sys.stdin:
 	existing = d.get(codepoint)
 	if existing is not None:
 		e_folding_type, e_folding = existing
-		if CLASS_PRIORITY.index(e_folding_type) > CLASS_PRIORITY.index(folding_type):
+		current_priority = CLASS_PRIORITY.index(folding_type)
+		existing_priority = CLASS_PRIORITY.index(e_folding_type)
+		if existing_priority < current_priority:
 			continue
 
 	d[codepoint] = (folding_type, unidata_split(folding))
