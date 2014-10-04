@@ -8,6 +8,10 @@ void test_ducet() {
 
 	/* Cyrillic Е and Ё */
 	assert(nu_ducet_weight(0x0415, 0, 0) < nu_ducet_weight(0x0401, 0, 0));
+
+	/* Cyrillic ё and я, lowercase and uppercase */
+	assert(nu_ducet_weight(0x0451, 0, 0) < nu_ducet_weight(0x044F, 0, 0));
+	assert(nu_ducet_weight(0x0401, 0, 0) < nu_ducet_weight(0x042A, 0, 0));
 }
 
 void test_ducet_known_unknown() {
