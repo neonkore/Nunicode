@@ -10,7 +10,7 @@
 #include "strings.h"
 #include "utf8.h"
 
-/** @defgroup udb Unicode Database (kind of)
+/** @defgroup udb Unicode database
  *
  * Note: never use it directly, it is subject to change in next releases
  */

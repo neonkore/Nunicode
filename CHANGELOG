@@ -1,3 +1,34 @@
+1.4
+
+[+] Unicode conformant case folding
+[+] introduced nu_tofold()
+[+] new build option: NU_WITH_TOFOLD
+[+] new build option: NU_BUILD_STATIC
+
+For performance reasons several API changes were made:
+
+[*] nu_toupper(), nu_tolower(), nu_udb_lookup() are no longer
+    accept output argument for output decoding function.
+
+    Instead there are two defines provided:
+      NU_CASEMAP_DECODING_FUNCTION (nu_utf8_read)
+      NU_UDB_DECODING_FUNCTION (nu_utf8_read)
+
+    Those are for use on return values of corresponding unctions
+
+[*] accordingly to previous, nu_transformation_t and nu_casemapping_t
+    types are no longer accept output argument for output decoding
+    function
+[*] nu_strtransformlen() is now accepting extra argument - transformation
+    output decoding function
+
+[*] SQLite3 extension updated to follow new folding method
+[*] documentation updated to outline internal API functions
+[*] faster UTF-8 and UTF-16 decoding
+[*] all UTF decoding functions are marked for inlining
+[*] GCC: visibility defaults to "hidden" for all functions if
+    NU_BUILD_STATIC is defined
+
 1.3
 
 [+] Unicode 7.0.0 character set support

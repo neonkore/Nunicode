@@ -43,6 +43,12 @@ const char* nu_toupper(uint32_t codepoint);
 NU_EXPORT
 const char* nu_tolower(uint32_t codepoint);
 
+/** Return value of codepoint with case differences eliminated
+ *
+ * @ingroup transformations
+ * @param codepoint unicode codepoint
+ * @return casefolded codepoint or 0 if mapping doesn't exist
+ */
 NU_EXPORT
 const char* nu_tofold(uint32_t codepoint);
 
