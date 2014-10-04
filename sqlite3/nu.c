@@ -58,7 +58,7 @@ SQLITE_EXTENSION_INIT1
  * @param rhs_read rhs read (decode) function
  * @return 0 or 1
  */
-static int _nunicode_like(const char *lhs, const char *rhs, uint32_t escape,
+int _nunicode_like(const char *lhs, const char *rhs, uint32_t escape,
 	nu_read_iterator_t lhs_read, nu_read_iterator_t rhs_read) {
 
 	const char *lp = lhs;
@@ -69,16 +69,16 @@ static int _nunicode_like(const char *lhs, const char *rhs, uint32_t escape,
 	char prev_escape = 0;
 
 	while (ru != 0 && lu != 0) {
-		rp = nu_nocase_compound_read(rp, 0, rhs_read, &ru, &rtailp);
+		rp = nu_nocase_compound_read(rp, NU_UNLIMITED, rhs_read, &ru, &rtailp);
 
 		if (ru == '%' && prev_escape == 0) {
 			while (ru == '%' || ru == '_') {
-				rp = nu_nocase_compound_read(rp, 0, rhs_read, &ru, &rtailp);
+				rp = nu_nocase_compound_read(rp, NU_UNLIMITED, rhs_read, &ru, &rtailp);
 				if (ru == '_') {
 					if (lu == 0) {
 						return 0;
 					}
-					lp = nu_nocase_compound_read(lp, 0, lhs_read, &lu, &ltailp);
+					lp = nu_nocase_compound_read(lp, NU_UNLIMITED, lhs_read, &lu, &ltailp);
 				}
 			}
 
@@ -87,7 +87,7 @@ static int _nunicode_like(const char *lhs, const char *rhs, uint32_t escape,
 				if (lu == 0) {
 					return 0;
 				}
-				lp = nu_nocase_compound_read(lp, 0, lhs_read, &lu, &ltailp);
+				lp = nu_nocase_compound_read(lp, NU_UNLIMITED, lhs_read, &lu, &ltailp);
 			}
 
 			if (ru != lu) {
@@ -102,7 +102,7 @@ static int _nunicode_like(const char *lhs, const char *rhs, uint32_t escape,
 				return 0;
 			}
 
-			lp = nu_nocase_compound_read(lp, 0, lhs_read, &lu, &ltailp);
+			lp = nu_nocase_compound_read(lp, NU_UNLIMITED, lhs_read, &lu, &ltailp);
 			continue;
 		}
 		else if (escape != 0 && ru == escape) {
@@ -110,7 +110,7 @@ static int _nunicode_like(const char *lhs, const char *rhs, uint32_t escape,
 			continue;
 		}
 
-		lp = nu_nocase_compound_read(lp, 0, lhs_read, &lu, &ltailp);
+		lp = nu_nocase_compound_read(lp, NU_UNLIMITED, lhs_read, &lu, &ltailp);
 
 		if (lu != ru) {
 			return 0;
@@ -260,8 +260,9 @@ static int nunicode_sqlite3_collate_nocase_utf16he(void *context, int s1_len, co
  * internal buffer will be allocated on stack. You can adjust this value to
  * handle longer strings also on stack.
  */
-static char* _nunicode_casing(const char *encoded, nu_casemapping_t casemap,
-	nu_read_iterator_t read, nu_write_iterator_t write) {
+char* _nunicode_casemapping(const char *encoded, nu_casemapping_t casemap,
+	nu_read_iterator_t read, nu_write_iterator_t write,
+	nu_sqlite3_ext_alloc_t nu_sqlite3_ext_alloc) {
 
 	uint32_t fast_buffer[FAST_BUFFER_SIZE];
 	uint32_t *unicode_buffer = fast_buffer;
@@ -270,7 +271,7 @@ static char* _nunicode_casing(const char *encoded, nu_casemapping_t casemap,
 		casemap, NU_CASEMAP_DECODING_FUNCTION);
 
 	if (unicode_len >= FAST_BUFFER_SIZE - 1) {
-		unicode_buffer = sqlite3_malloc(sizeof(*unicode_buffer) * (unicode_len + 1));
+		unicode_buffer = nu_sqlite3_ext_alloc(sizeof(*unicode_buffer) * (unicode_len + 1));
 	}
 
 	uint32_t u;
@@ -304,7 +305,7 @@ static char* _nunicode_casing(const char *encoded, nu_casemapping_t casemap,
 	}
 
 	ssize_t reencoded_len = nu_bytelen(unicode_buffer, write);
-	char *reencoded = sqlite3_malloc(reencoded_len + 1);
+	char *reencoded = nu_sqlite3_ext_alloc(reencoded_len + 1);
 
 	nu_writestr(unicode_buffer, reencoded, write);
 
@@ -315,85 +316,88 @@ static char* _nunicode_casing(const char *encoded, nu_casemapping_t casemap,
 	return reencoded;
 }
 
-static void nunicode_sqlite3_casing_utf8(sqlite3_context *context, int argc, sqlite3_value **argv,
+static void nunicode_sqlite3_casemapping_utf8(sqlite3_context *context, int argc, sqlite3_value **argv,
 	nu_casemapping_t casemap) {
 	if (argc < 1 || sqlite3_value_type(argv[0]) != SQLITE_TEXT) {
 		sqlite3_result_null(context);
 	}
 
 	const char *lower = (const char *)sqlite3_value_text(argv[0]);
-	char *upper = _nunicode_casing(lower, casemap, nu_utf8_read, nu_utf8_write);
+	char *upper = _nunicode_casemapping(lower, casemap,
+		nu_utf8_read, nu_utf8_write, sqlite3_malloc);
 
 	sqlite3_result_text(context, upper, -1, sqlite3_free);
 }
 
-static void nunicode_sqlite3_casing_utf16le(sqlite3_context *context, int argc, sqlite3_value **argv,
+static void nunicode_sqlite3_casemapping_utf16le(sqlite3_context *context, int argc, sqlite3_value **argv,
 	nu_casemapping_t casemap) {
 	if (argc < 1 || sqlite3_value_type(argv[0]) != SQLITE_TEXT) {
 		sqlite3_result_null(context);
 	}
 
 	const char *lower = (const char *)sqlite3_value_text(argv[0]);
-	char *upper = _nunicode_casing(lower, casemap, nu_utf16le_read, nu_utf16le_write);
+	char *upper = _nunicode_casemapping(lower, casemap,
+		nu_utf16le_read, nu_utf16le_write, sqlite3_malloc);
 
 	sqlite3_result_text16le(context, upper, -1, sqlite3_free);
 }
 
-static void nunicode_sqlite3_casing_utf16be(sqlite3_context *context, int argc, sqlite3_value **argv,
+static void nunicode_sqlite3_casemapping_utf16be(sqlite3_context *context, int argc, sqlite3_value **argv,
 	nu_casemapping_t casemap) {
 	if (argc < 1 || sqlite3_value_type(argv[0]) != SQLITE_TEXT) {
 		sqlite3_result_null(context);
 	}
 
 	const char *lower = (const char *)sqlite3_value_text(argv[0]);
-	char *upper = _nunicode_casing(lower, casemap, nu_utf16be_read, nu_utf16be_write);
+	char *upper = _nunicode_casemapping(lower, casemap,
+		nu_utf16be_read, nu_utf16be_write, sqlite3_malloc);
 
 	sqlite3_result_text16be(context, upper, -1, sqlite3_free);
 }
 
-
-static void nunicode_sqlite3_casing_utf16he(sqlite3_context *context, int argc, sqlite3_value **argv,
+static void nunicode_sqlite3_casemapping_utf16he(sqlite3_context *context, int argc, sqlite3_value **argv,
 	nu_casemapping_t casemap) {
 	if (argc < 1 || sqlite3_value_type(argv[0]) != SQLITE_TEXT) {
 		sqlite3_result_null(context);
 	}
 
 	const char *lower = (const char *)sqlite3_value_text(argv[0]);
-	char *upper = _nunicode_casing(lower, casemap, nu_utf16he_read, nu_utf16he_write);
+	char *upper = _nunicode_casemapping(lower, casemap,
+		nu_utf16he_read, nu_utf16he_write, sqlite3_malloc);
 
 	sqlite3_result_text16(context, upper, -1, sqlite3_free);
 }
 
 static void nunicode_sqlite3_upper_utf8(sqlite3_context *context, int argc, sqlite3_value **argv) {
-	nunicode_sqlite3_casing_utf8(context, argc, argv, nu_toupper);
+	nunicode_sqlite3_casemapping_utf8(context, argc, argv, nu_toupper);
 }
 
 static void nunicode_sqlite3_upper_utf16le(sqlite3_context *context, int argc, sqlite3_value **argv) {
-	nunicode_sqlite3_casing_utf16le(context, argc, argv, nu_toupper);
+	nunicode_sqlite3_casemapping_utf16le(context, argc, argv, nu_toupper);
 }
 
 static void nunicode_sqlite3_upper_utf16be(sqlite3_context *context, int argc, sqlite3_value **argv) {
-	nunicode_sqlite3_casing_utf16be(context, argc, argv, nu_toupper);
+	nunicode_sqlite3_casemapping_utf16be(context, argc, argv, nu_toupper);
 }
 
 static void nunicode_sqlite3_upper_utf16he(sqlite3_context *context, int argc, sqlite3_value **argv) {
-	nunicode_sqlite3_casing_utf16he(context, argc, argv, nu_toupper);
+	nunicode_sqlite3_casemapping_utf16he(context, argc, argv, nu_toupper);
 }
 
 static void nunicode_sqlite3_lower_utf8(sqlite3_context *context, int argc, sqlite3_value **argv) {
-	nunicode_sqlite3_casing_utf8(context, argc, argv, nu_tolower);
+	nunicode_sqlite3_casemapping_utf8(context, argc, argv, nu_tolower);
 }
 
 static void nunicode_sqlite3_lower_utf16le(sqlite3_context *context, int argc, sqlite3_value **argv) {
-	nunicode_sqlite3_casing_utf16le(context, argc, argv, nu_tolower);
+	nunicode_sqlite3_casemapping_utf16le(context, argc, argv, nu_tolower);
 }
 
 static void nunicode_sqlite3_lower_utf16be(sqlite3_context *context, int argc, sqlite3_value **argv) {
-	nunicode_sqlite3_casing_utf16be(context, argc, argv, nu_tolower);
+	nunicode_sqlite3_casemapping_utf16be(context, argc, argv, nu_tolower);
 }
 
 static void nunicode_sqlite3_lower_utf16he(sqlite3_context *context, int argc, sqlite3_value **argv) {
-	nunicode_sqlite3_casing_utf16he(context, argc, argv, nu_tolower);
+	nunicode_sqlite3_casemapping_utf16he(context, argc, argv, nu_tolower);
 }
 
 #define REGISTER_LIKE(rc, db, sqlite_encoding, nu_wrapper) \

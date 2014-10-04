@@ -5,6 +5,10 @@
 extern "C" {
 #endif
 
+/** Definition for internal purposes (profiling)
+ */
+typedef void *(*nu_sqlite3_ext_alloc_t)(int);
+
 #ifndef NU_DYNAMIC_EXTENSION
 
 /** Calling this function will enable nunicode for each new SQLite connection,

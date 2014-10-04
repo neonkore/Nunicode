@@ -45,7 +45,8 @@ extern "C" {
  * @param tail output pointer to compound tail, should never be 0
  * @return pointer to next encoded character
  */
-static inline const char* nu_default_compound_read(const char *encoded, const char *encoded_limit,
+static inline
+const char* nu_default_compound_read(const char *encoded, const char *encoded_limit,
 	nu_read_iterator_t encoded_read, uint32_t *unicode,
 	const char **tail) {
 	(void)(encoded_limit);
@@ -64,7 +65,8 @@ static inline const char* nu_default_compound_read(const char *encoded, const ch
  * @param tail output pointer to compound tail, should never be 0
  * @return pointer to next encoded character
  */
-static inline const char* nu_nocase_compound_read(const char *encoded, const char *encoded_limit,
+static inline
+const char* nu_nocase_compound_read(const char *encoded, const char *encoded_limit,
 	nu_read_iterator_t encoded_read, uint32_t *unicode,
 	const char **tail) {
 
@@ -76,10 +78,10 @@ static inline const char* nu_nocase_compound_read(const char *encoded, const cha
 			return encoded;
 		}
 
-		*tail = 0;
+		*tail = 0; // fall thru
 	}
 
-	if (encoded_limit != 0 && encoded >= encoded_limit) {
+	if (encoded >= encoded_limit) {
 		*unicode = 0;
 		return encoded;
 	}
