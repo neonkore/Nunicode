@@ -14,6 +14,12 @@
  * depends on NU_WITH_UDB and so.
  */
 
+/* NU_BUILD_STATIC is not covered in this file and should be defined
+ * externally. @see defines.h
+ *
+ * This build option will change functions visibility to "hidden" (GCC)
+ */
+
 /* Enable everything, see below for details on a specific option */
 #ifdef NU_WITH_EVERYTHING
 # define NU_WITH_UTF8
