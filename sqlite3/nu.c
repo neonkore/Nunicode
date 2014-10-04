@@ -59,6 +59,9 @@ SQLITE_EXTENSION_INIT1
  * @param rhs_read rhs read (decode) function
  * @return 0 or 1
  */
+#ifdef NU_DYNAMIC_EXTENSION
+static
+#endif
 int _nunicode_like(const char *lhs, const char *rhs, uint32_t escape,
 	nu_read_iterator_t lhs_read, nu_read_iterator_t rhs_read) {
 
@@ -261,6 +264,9 @@ static int nunicode_sqlite3_collate_nocase_utf16he(void *context, int s1_len, co
  * internal buffer will be allocated on stack. You can adjust this value to
  * handle longer strings also on stack.
  */
+#ifdef NU_DYNAMIC_EXTENSION
+static
+#endif
 char* _nunicode_casemapping(const char *encoded, nu_casemapping_t casemap,
 	nu_read_iterator_t read, nu_write_iterator_t write,
 	nu_sqlite3_ext_alloc_t nu_sqlite3_ext_alloc) {
