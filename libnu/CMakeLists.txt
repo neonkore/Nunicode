@@ -19,7 +19,6 @@ set(LIBNU_SRC
 	validate.c
 )
 
-add_definitions(-DNU_BUILD_STATIC)
 add_library(nu STATIC ${LIBNU_SRC})
 
 file(GLOB INCLUDES *.h)

@@ -43,6 +43,7 @@ int32_t _compound_weight(int32_t w,
 				for (int32_t i = 0; i < consumed - w; ++i) {
 					np = com(np, limit, read, 0, &tailp);
 				}
+
 				w = 0;
 			}
 
@@ -87,32 +88,42 @@ int _nu_strcoll(const char *lhs, const char *lhs_limit,
 		lp = com1(lp, lhs_limit, it1, &u1, &ltailp);
 		rp = com2(rp, rhs_limit, it2, &u2, &rtailp);
 
-		int32_t w1 = weight(u1, 0, context);
-		int32_t w2 = (u2 == u1 && w1 >= 0 ? w1 : weight(u2, 0, context));
+#ifdef NU_DISABLE_CONTRACTIONS
+		/* if contractions are disabled, then same codepoints
+		 * will produce same weights and there is no need
+		 * to weight each */
+		if (u1 != u2) {
+#endif
+			int32_t w1 = weight(u1, 0, context);
+			int32_t w2 = weight(u2, 0, context);
 
-		if (w1 < 0) {
-			w1 = _compound_weight(w1, &lp, lhs_limit,
-				it1, com1, &ltailp,
-				weight, context);
-		}
+			if (w1 < 0) {
+				w1 = _compound_weight(w1, &lp, lhs_limit,
+					it1, com1, &ltailp,
+					weight, context);
+			}
 
-		if (w2 < 0) {
-			w2 = _compound_weight(w2, &rp, rhs_limit,
-				it2, com2, &rtailp,
-				weight, context);
-		}
+			if (w2 < 0) {
+				w2 = _compound_weight(w2, &rp, rhs_limit,
+					it2, com2, &rtailp,
+					weight, context);
+			}
 
-		assert(w1 >= 0);
-		assert(w2 >= 0);
+			assert(w1 >= 0);
+			assert(w2 >= 0);
 
-		if (w1 < w2) {
-			cmp = -1;
-			break;
+			if (w1 < w2) {
+				cmp = -1;
+				break;
+			}
+			else if (w1 > w2) {
+				cmp = 1;
+				break;
+			}
+
+#ifdef NU_DISABLE_CONTRACTIONS
 		}
-		else if (w1 > w2) {
-			cmp = 1;
-			break;
-		}
+#endif
 
 		if (u1 == 0 || u2 == 0) {
 			break;

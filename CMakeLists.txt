@@ -2,6 +2,8 @@ cmake_minimum_required (VERSION 2.6)
 project(libnu C)
 
 set(NU_BUILD_OPTIONS "-DNU_WITH_EVERYTHING")
+add_definitions(-DNU_BUILD_STATIC)
+#add_definitions(-DNU_DISABLE_CONTRACTIONS)
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${NU_BUILD_OPTIONS}")

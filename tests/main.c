@@ -177,9 +177,11 @@ testcase cases[] = {
 
 	test_crossencoding_strcoll,
 
+#ifndef NU_DISABLE_CONTRACTIONS
 	test_compoundcmp_strcoll,
 	test_compoundcmp_strcoll_outskirts,
 	test_compoundcmp_strncoll,
+#endif
 };
 
 int main() {

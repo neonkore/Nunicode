@@ -14,10 +14,14 @@
  * depends on NU_WITH_UDB and so.
  */
 
-/* NU_BUILD_STATIC is not covered in this file and should be defined
- * externally. @see defines.h
+/* Definitions not covered in this file which should be defined
+ * externally.
  *
- * This build option will change functions visibility to "hidden" (GCC)
+ * NU_BUILD_STATIC: will change functions visibility to "hidden" (GCC).
+ * @see defines.h
+ *
+ * NU_DISABLE_CONTRACTIONS: disables forward-reading during collation,
+ * only weights of a single codepoints will be compared.
  */
 
 /* Enable everything, see below for details on a specific option */
