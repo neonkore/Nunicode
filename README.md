@@ -25,13 +25,15 @@ What it doesn't do:
 Conformance:
 
 * Unicode 7.0
+* ISO/IEC 14646:2012 plus Amd.1 and Amd.2, plus the ruble sign (as
+  defined by Unicode 7.0)
 * ISO/IEC 14651 ([notes][])
 
 Encodings supported:
 
 * UTF-8
-* UTF-16/UCS-2
-* UTF-32/UCS-4
+* UTF-16/UTF-16LE/UTF-16BE
+* UTF-32/UTF-32LE/UTF-32BE
 * CESU-8
 * UTF-16HE/UTF-32HE (see notes at [host-endianess][])
 
@@ -63,30 +65,30 @@ complemented by case-insensitive variants.
 
 If you wish to inspect the coverage, proceed as following:
 
-	cmake .. -DCMAKE_BUILD_TYPE=GCOV
-	make coverage
+    cmake .. -DCMAKE_BUILD_TYPE=GCOV
+    make coverage
 
 This build configuration assumes that you use GCC. It will produce
 ``tests/coverage`` directory with coverage info in browesable HTML.
 
 ## Performance considerations
 
-Collation and case mapping are O(1). Internally both use [minimal
+Collations and case mappings are O(1). Internally both use [minimal
 perfect hash][] table for lookup. Hash is a quite fast couple of XOR+MOD.
 
 [minimal perfect hash]: http://iswsa.acm.org/mphf/index.html
 
 Numbers below to give a general idea on nunicode performance. Each number
 is linked to corresponding test program and  measured with standard
-``time`` utility, all number in seconds.
+``time`` utility, all numbers in seconds.
 
 Function     | nunicode          | ICU
 -------------|-------------------|-------------------
-iteration    |     0.620 ([1][]) | 0.710 ([2][])
-strcoll      |     0.350 ([3][]) | 1.560 ([4][])
-strcasecoll  |     1.490 ([5][]) | 1.520 ([6][])
+iteration    |     0.070 ([1][]) | 0.080 ([2][])
+strcoll      |     0.200 ([3][]) | 1.560 ([4][])
+strcasecoll  |     1.170 ([5][]) | 1.520 ([6][])
 
-Compiler used is GCC 4.8.2, optimization level is O2. To re-measure
+Compiler used is GCC 4.8.2, optimization level is -O2. To re-measure
 those numbers proceed as following:
 
     cmake .. -DCMAKE_BUILD_TYPE=PROF
@@ -95,6 +97,7 @@ those numbers proceed as following:
 Test details:
 
 * Number of iterations on strings: 100000
+* libnu build options: -DNU\_DISABLE\_CONRACTIONS
 * Strings encoding: UTF-8
 
 [1]: https://bitbucket.org/alekseyt/nunicode/src/master/tests/prof/iter_nu.c
@@ -141,7 +144,7 @@ variants are need to be used explicitely when required.
 
 ## Reverse reading
 
-nunicode do not provide str\[i\] (access by index) equivalent. Instead
+nunicode does not provide str\[i\] (access by index) equivalent. Instead
 you could do ``nu_utf*_revread(&u, encoded)`` to read character
 in backward direction.
 
@@ -160,10 +163,8 @@ performance reasons. nunicode expects valid UTF strings at input. It
 does provide ``nu_validate()`` to check string encoding before
 processing.
 
-This function perform UTF encoding validation, not the validation of
-encoded string. E.g. U+D801 will pass UTF-8 check: it's malformed for
-UTF-32 because range of U+D801 is reserved for UTF-16, it's ivalid
-Unicode string, but it's correctly encoded UTF-8. 
+This function only validates strings encoding, it does not perform
+validation of Unicode strings.
 
 ## Case mapping and case folding
 
@@ -193,8 +194,8 @@ There is no option to switch titlecase/lowercase preference because
 the same result is achievable with sorting on lowercase and native
 case at the same time, e.g.:
 
-	:::sql
-	SELECT name FROM t_table ORDER BY lower(name), name
+    :::sql
+    SELECT name FROM t_table ORDER BY lower(name), name
 
 Example of such sorting:
 
@@ -268,33 +269,33 @@ See `samples/` directory for complete examples of nunicode usage.
 
 ### decoding UTF-8 (stream-like)
 
-	:::c
-	const char input[] = "привет мир!";
+    :::c
+    const char input[] = "привет мир!";
 
-	const char *p = input;
-	while (*p != 0) {
-		uint32_t u = 0;
-		p = nu_utf8_read(p, &u);
-		printf("0x%04X\n", u);
-	}
+    const char *p = input;
+    while (*p != 0) {
+        uint32_t u = 0;
+        p = nu_utf8_read(p, &u);
+        printf("0x%04X\n", u);
+    }
 
 ### decoding UTF-8 to memory buffer
 
-	:::c
-	const char input[] = "привет мир!";
-	uint32_t u[sizeof(input)] = { 0 }; /* should be enough */
+    :::c
+    const char input[] = "привет мир!";
+    uint32_t u[sizeof(input)] = { 0 }; /* should be enough */
 
-	nu_readstr(input, u, nu_utf8_read);
+    nu_readstr(input, u, nu_utf8_read);
 
 ### recoding string from CESU-8 into UTF-8 with memory buffers
 
-	:::c
-	/* 𐐀 in CESU-8 */
-	const unsigned char input[] = { 0xED, 0xA0, 0x81, 0xED, 0xB0, 0x80 };
-	char output[sizeof(input)] = { 0 };
+    :::c
+    /* 𐐀 in CESU-8 */
+    const unsigned char input[] = { 0xED, 0xA0, 0x81, 0xED, 0xB0, 0x80 };
+    char output[sizeof(input)] = { 0 };
 
-	nu_transformnstr((const char *)input, sizeof(input), output,
-		nu_cesu8_read, nu_utf8_write);
+    nu_transformnstr((const char *)input, sizeof(input), output,
+        nu_cesu8_read, nu_utf8_write);
 
 ## Documentation
 
@@ -330,8 +331,8 @@ your application or library and enabled for every new SQLite3 connection.
 Latter is recommended way of using it, all you need to enable this
 extension is the following call:
 
-	:::c
-	nunicode_sqlite3_init(0);
+    :::c
+    nunicode_sqlite3_init(0);
 
 After this point, every new connection will have nunicode extension
 enabled. See *sqlite3/samples/autoextension.c* for the reference.
@@ -350,7 +351,7 @@ seconds.
 Function | w/o extension | ICU      | nunicode
 ---------|---------------|----------|---------
 upper()  |         0.290 | 0.700    | 0.540
-COLLATE  |         0.570 | 0.980    | 0.600
+COLLATE  |         0.570 | 0.980    | 0.580
 LIKE     |         0.150 | 0.260    | 0.290
 
 As you can see, upper() and COLLATE are somewhat faster, but LIKE is
@@ -372,7 +373,8 @@ nunicode extension:
     1
 
 The LIKE operation in nunicode extension support cases when strings
-might grow in size during case transformation.
+might grow in size during case transformation. On demand this extension
+may be modified to be compatible with ICU extension.
 
 Test details:
 
