@@ -1,6 +1,6 @@
 #include "unicode/utf.h"
 
-#define PASSES (1000000)
+#define PASSES (100000)
 #define INPUT ("аАбБвВгГдДеЕёЁжЖзЗиИйЙкКлЛмМнНоОпПрРсСтТуУфФхХцЦчЧшШщЩъЪыЫьЬэЭюЮяЯ")
 
 int main() {
