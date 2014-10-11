@@ -19,15 +19,16 @@ What it doesn't do:
 * Unicode Collation Algorithm (see [notes][])
 * Unicode [normalization forms][]: NFD, NFC, NFKD, NFKC
 
-[notes]: #markdown-header-strings-collation-and-case-mapping
+[notes]: #markdown-header-strings-collation
 [normalization forms]: http://unicode.org/reports/tr15/#Norm_Forms
 
 Conformance:
 
-* Unicode 7.0
-* ISO/IEC 14646:2012 plus Amd.1 and Amd.2, plus the ruble sign (as
-  defined by Unicode 7.0)
-* ISO/IEC 14651 ([notes][])
+Specification   | Notes
+----------------|----------------
+Unicode 7.0     |
+ISO/IEC 14646   | ISO/IEC 14646:2012 plus Amd.1 and Amd.2, plus the ruble sign (as defined by Unicode 7.0)
+ISO/IEC 14651   | [notes][]
 
 Encodings supported:
 
@@ -97,7 +98,8 @@ those numbers proceed as following:
 Test details:
 
 * Number of iterations on strings: 100000
-* libnu build options: -DNU\_DISABLE\_CONRACTIONS
+* libnu build options: -DNU\_DISABLE\_CONRACTIONS (disabling contractions
+  allows nunicode to enable specific optimization)
 * Strings encoding: UTF-8
 
 [1]: https://bitbucket.org/alekseyt/nunicode/src/master/tests/prof/iter_nu.c
