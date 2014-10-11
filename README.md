@@ -179,7 +179,7 @@ nunicode implements ISO 14651 collation where strings are sorted according
 to the weights of their characters. Weight used by nunicode are defined
 by DUCET (default Unicode collation table). Character set is reduced
 to contain only letters and number to reduce library size. The rest
-of the characters are sorted at the end of the list.
+of the characters are sorted at the end of the list in codepoint order.
 
 Below are examples of such ordering in different laguages:
 

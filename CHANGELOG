@@ -4,6 +4,11 @@
 [+] introduced nu_tofold()
 [+] new build option: NU_WITH_TOFOLD
 [+] new build option: NU_BUILD_STATIC
+[+] new build option: NU_DISABLE_CONTRACTIONS
+
+[*] nu_ducet_weight() will sort codepoints with undefined weights
+    in codepoint order, after codepoints with defined weights
+[*] performance improvements
 
 For performance reasons several API changes were made:
 
