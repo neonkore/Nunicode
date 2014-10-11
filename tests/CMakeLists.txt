@@ -1,6 +1,7 @@
 set(TESTS_SRC
 	casemap_test.c
 	cesu8_test.c
+	conformance_test.c
 	ducet_test.c
 	extra_test.c
 	main.c

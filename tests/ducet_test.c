@@ -15,8 +15,8 @@ void test_ducet() {
 }
 
 void test_ducet_known_unknown() {
-	assert(nu_ducet_weight('a', 0, 0) > 0);
-	assert(nu_ducet_weight(1, 0, 0) == INT32_MAX);
+	assert(nu_ducet_weight('a', 0, 0) > 0); /* known */
+	assert(nu_ducet_weight(1, 0, 0) > nu_ducet_weight('a', 0, 0)); /* unknown */
 
 	assert(nu_ducet_weight(0, 0, 0) == 0); /* special case */
 }

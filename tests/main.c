@@ -58,9 +58,7 @@ void test_ducet();
 void test_ducet_known_unknown();
 void test_toupper();
 void test_tolower();
-void test_special_casing();
 void test_tofold();
-void test_folding_priority();
 void test_strchr();
 void test_strnchr();
 void test_strcasechr();
@@ -81,6 +79,9 @@ void test_crossencoding_strcoll();
 void test_compoundcmp_strcoll();
 void test_compoundcmp_strcoll_outskirts();
 void test_compoundcmp_strncoll();
+void test_special_casing();
+void test_folding_priority();
+void test_ducet_max_weight_ordering();
 
 testcase cases[] = {
 	test_utf8_decoding,
@@ -152,9 +153,7 @@ testcase cases[] = {
 	test_ducet_known_unknown,
 	test_toupper,
 	test_tolower,
-	test_special_casing,
 	test_tofold,
-	test_folding_priority,
 
 	test_strchr,
 	test_strnchr,
@@ -182,6 +181,10 @@ testcase cases[] = {
 	test_compoundcmp_strcoll_outskirts,
 	test_compoundcmp_strncoll,
 #endif
+
+	test_special_casing,
+	test_folding_priority,
+	test_ducet_max_weight_ordering,
 };
 
 int main() {
