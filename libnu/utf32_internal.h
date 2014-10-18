@@ -34,12 +34,9 @@ void nu_htobel(uint32_t s, char *p) {
 }
 
 static inline
-int utf32_validread(const char *p, size_t max_len) {
+int utf32_validread_basic(const char *p, size_t max_len) {
 	(void)(p);
 	return (max_len >= 4 ? 4 : 0); /* UTF-32 is ok with any 4-byte sequence */
-
-	/* technically UTF-32 should forbid UTF-16 surrogates,
-	 * but this is encoding verification, not unicode verification */
 }
 
 #endif /* NU_UTF32_INTERNAL_H */

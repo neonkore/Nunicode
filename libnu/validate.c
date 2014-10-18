@@ -4,11 +4,12 @@
 
 const char* nu_validate(const char *encoded, size_t max_len, nu_validread_iterator_t it) {
 	const char *p = encoded;
+
 	while (p < encoded + max_len) {
+		/* max_len should be tested inside of it() call */
 		int byte_len = it(p, max_len - (p - encoded));
 
-		if (byte_len <= 0
-		|| p + byte_len > encoded + max_len) {
+		if (byte_len <= 0) {
 			return p;
 		}
 

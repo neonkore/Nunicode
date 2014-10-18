@@ -4,7 +4,14 @@
 #ifdef NU_WITH_VALIDATION
 
 int nu_utf32be_validread(const char *p, size_t max_len) {
-	return utf32_validread(p, max_len);
+	if (utf32_validread_basic(p, max_len) == 0) {
+		return 0;
+	}
+
+	uint32_t u = 0;
+	nu_utf32be_read(p, &u);
+
+	return (u >= 0xD800 && u <= 0xDFFF ? 0 : 4);
 }
 
 #endif /* NU_WITH_VALIDATION */
