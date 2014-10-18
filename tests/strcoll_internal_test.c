@@ -26,7 +26,7 @@ static int32_t _test_weight(uint32_t u, int32_t *w, void *context) {
 		case 'b': return state_ab;
 		case 'c': return weight_ac;
 		}
-		*w = 1; /* how many characters to rollback */
+		*w = 1; /* how many codepoints to rollback */
 		return 'a';
 
 	case state_ab:

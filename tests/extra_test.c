@@ -84,7 +84,7 @@ void test_strtransformlen() {
 }
 
 void test_strtransformnlen() {
-	/* "Maße" - 5 bytes, "Masse" - 5 characters */
+	/* "Maße" - 5 bytes, "Masse" - 5 codepoints */
 	assert(nu_strtransformnlen("Maße", 5, nu_utf8_read,
 		nu_toupper, NU_CASEMAP_DECODING_FUNCTION) == 5);
 	assert(nu_strtransformnlen("Maße", 2, nu_utf8_read,
