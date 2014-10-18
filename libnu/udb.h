@@ -45,7 +45,7 @@ uint32_t nu_udb_lookup_value(uint32_t codepoint,
 /** Lookup data in UDB
  *
  * Returned data is encoded, therefore you need to use p = it(p, &u) to
- * fetch it. Returned string might contain more than 1 character.
+ * fetch it. Returned string might contain more than 1 codepoint.
  *
  * @ingroup udb
  * @param codepoint unicode codepoint

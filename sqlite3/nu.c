@@ -42,7 +42,7 @@ SQLITE_EXTENSION_INIT1
 #define FAST_BUFFER_SIZE 4096 /* bytes */
 
 /** This LIKE implementation is intended to do proper collation as
- * opposed to doing strcmp() on strings by comparing each character.
+ * opposed to doing strcmp() on strings by comparing each codepoint.
  *
  * _nunicode_like exploits the fact that the same approach is
  * implemented in nu_strcasestr() therefore LIKE is a serie of
@@ -54,7 +54,7 @@ SQLITE_EXTENSION_INIT1
  *
  * @param lhs left-hand-side of lhs LIKE rhs expression
  * @param rhs right-hand-size of lhs LIKE rhs expression
- * @param escape escape character
+ * @param escape escape codepoint
  * @param lhs_read lhs read (decode) function
  * @param rhs_read rhs read (decode) function
  * @return 0 or 1

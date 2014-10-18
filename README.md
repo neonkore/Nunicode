@@ -147,7 +147,7 @@ variants are need to be used explicitely when required.
 ## Reverse reading
 
 nunicode does not provide str\[i\] (access by index) equivalent. Instead
-you could do ``nu_utf*_revread(&u, encoded)`` to read character
+you could do ``nu_utf*_revread(&u, encoded)`` to read codepoint
 in backward direction.
 
 It is a bad idea to pass arbitrary pointer to revread(). UTF-8 and
@@ -176,10 +176,10 @@ e.g. "Maße" (German) uppercases to "MASSE".
 ## Strings collation
 
 nunicode implements ISO 14651 collation where strings are sorted according
-to the weights of their characters. Weight used by nunicode are defined
+to the weights of their codepoints. Weight used by nunicode are defined
 by DUCET (default Unicode collation table). Character set is reduced
 to contain only letters and number to reduce library size. The rest
-of the characters are sorted at the end of the list in codepoint order.
+of the codepoints are sorted at the end of the list in codepoint order.
 
 Below are examples of such ordering in different laguages:
 

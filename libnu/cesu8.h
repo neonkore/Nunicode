@@ -20,12 +20,12 @@ extern "C" {
 
 #ifdef NU_WITH_CESU8_READER
 
-/** Read character from UTF-8 string
+/** Read codepoint from UTF-8 string
  *
  * @ingroup cesu8
  * @param cesu8 pointer to CESU-8 encoded string
  * @param unicode output unicode codepoint or 0
- * @return pointer to next character in CESU-8 string
+ * @return pointer to next codepoint in CESU-8 string
  */
 static inline
 const char* nu_cesu8_read(const char *cesu8, uint32_t *unicode) {
@@ -60,7 +60,7 @@ const char* nu_cesu8_read(const char *cesu8, uint32_t *unicode) {
 
 #ifdef NU_WITH_REVERSE_READ
 
-/** Read character from CESU-8 string in backward direction
+/** Read codepoint from CESU-8 string in backward direction
  *
  * Note that it is your responsibility to check that this call
  * is not going under beginning of encoded string. Normally you
@@ -70,7 +70,7 @@ const char* nu_cesu8_read(const char *cesu8, uint32_t *unicode) {
  * @ingroup cesu8
  * @param unicode output unicode codepoint or 0
  * @param cesu8 pointer to CESU-8 encoded string
- * @return pointer to previous character in CESU-8 string
+ * @return pointer to previous codepoint in CESU-8 string
  */
 static inline
 const char* nu_cesu8_revread(uint32_t *unicode, const char *cesu8) {
@@ -101,12 +101,12 @@ const char* nu_cesu8_revread(uint32_t *unicode, const char *cesu8) {
 
 #ifdef NU_WITH_VALIDATION
 
-/** Validate character in string
+/** Validate codepoint in string
  *
  * @ingroup utf8
  * @param encoded buffer with encoded string
  * @param max_len buffer length
- * @return character length or 0 on error
+ * @return codepoint length or 0 on error
  */
 NU_EXPORT
 int nu_cesu8_validread(const char *encoded, size_t max_len);

@@ -5,7 +5,7 @@
  *
  * Note on "n" functions variant: those are not for memory overrun control.
  * They are just for strings not having terminating 0 byte and those
- * functions won't go further than m-th *character* in string, not byte.
+ * functions won't go further than m-th *codepoint* in string, not byte.
  */
 
 /** @defgroup transformations Codepoint transformations
@@ -63,7 +63,7 @@ typedef const char* (*nu_transformation_t)(uint32_t codepoint);
 
 #ifdef NU_WITH_Z_STRINGS
 
-/** Get decoded string characters length
+/** Get decoded string codepoints length
  *
  * @ingroup strings
  * @param encoded encoded string

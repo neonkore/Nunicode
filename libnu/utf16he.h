@@ -13,7 +13,7 @@ extern "C" {
 
 #ifdef NU_WITH_UTF16HE_READER
 
-/** Read character from UTF-16 string
+/** Read codepoint from UTF-16 string
  *
  * @ingroup utf16
  * @see nu_utf16le_read
@@ -37,7 +37,7 @@ const char* nu_utf16he_read(const char *utf16, uint32_t *unicode) {
 
 #ifdef NU_WITH_REVERSE_READ
 
-/** Read character from UTF-16 string in backward direction
+/** Read codepoint from UTF-16 string in backward direction
  *
  * @ingroup utf16
  * @see nu_utf16le_revread
@@ -64,7 +64,7 @@ const char* nu_utf16he_revread(uint32_t *unicode, const char *utf16) {
 
 #ifdef NU_WITH_VALIDATION
 
-/** Validate character in string
+/** Validate codepoint in string
  *
  * @ingroup utf16
  * @see nu_utf16le_validread

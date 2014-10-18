@@ -17,7 +17,7 @@ int32_t _compound_weight(int32_t w,
 
 	const char *p = *encoded;
 	int32_t new_w = w;
-	int32_t consumed = 1; /* one character was consumed at the top */
+	int32_t consumed = 1; /* one codepoint was consumed at the top */
 
 	while (p < limit) {
 		uint32_t u = 0;
@@ -229,7 +229,7 @@ const char* _nu_strrchr(const char *encoded, const char *limit,
 	nu_casemapping_t casemap, nu_read_iterator_t casemap_read) {
 
 	/* there is probably not much sense in finding string end by decoding it
-	 * and then reverse read string again to find last character, therefore
+	 * and then reverse read string again to find last codepoint, therefore
 	 * this is a sequence of _nu_strchr() in forward direction
 	 *
 	 * please let me know if i'm wrong */
@@ -245,7 +245,7 @@ const char* _nu_strrchr(const char *encoded, const char *limit,
 		}
 
 		last = p;
-		p = read(p, 0); /* skip one character and continue */
+		p = read(p, 0); /* skip one codepoint and continue */
 	}
 
 	return last;
@@ -296,7 +296,7 @@ const char* _nu_strstr(const char *haystack, const char *haystack_limit,
 			return h0;
 		}
 
-		/* skip one character in haystack */
+		/* skip one codepoint in haystack */
 		if (h0 < haystack_limit) {
 			h0 = it1(h0, 0);
 		}

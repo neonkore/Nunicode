@@ -152,7 +152,7 @@ int utf8_validread(const char *p, size_t max_len) {
 	}
 
 	switch (len) {
-		case 1: return 1; /* one byte character */
+		case 1: return 1; /* one byte codepoint */
 		case 2: return ((*(up + 1) & 0xC0) == 0x80 ? 2 : 0);
 		case 3: return ((*(up + 1) & 0xC0) == 0x80
 		&& (*(up + 2) & 0xC0) == 0x80 ? 3 : 0);

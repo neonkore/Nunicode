@@ -15,7 +15,7 @@ extern "C" {
 /** Get DUCET value of codepoint
  *
  * By default this function will return (uint32_t)(-1) for unknown codepoints,
- * hence putting all unknown characters (not letters and not numbers) to the 
+ * hence putting all unknown codepoints (not letters and not numbers) to the
  * end of the list.
  *
  * @ingroup udb

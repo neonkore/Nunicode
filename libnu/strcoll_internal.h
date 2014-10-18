@@ -29,11 +29,11 @@ typedef const char* (*nu_compound_read_t)(
 /** Weight unicode codepoint (or several codepoints)
  *
  * 0 should always be weighted to 0. If your weight function need more
- * than one character - return negative value, which will be passed back to
- * this function along with next character.
+ * than one codepoint - return negative value, which will be passed back to
+ * this function along with next codepoint.
  *
  * When function decided on weight and returned positive result, it has to
- * fill weight with how many (Unicode) characters nunicode should rollback.
+ * fill weight with how many (Unicode) codepoints nunicode should rollback.
  * E.g. function consumed "ZZS" and decided weight (in Hungarian collation),
  * it fills 0 to \*weight because no rollback is needed. Then function
  * consumed "ZZZ" and no weight available for such contraction - it
@@ -62,7 +62,7 @@ typedef int32_t (*nu_codepoint_weight_t)(uint32_t u, int32_t *weight, void *cont
  * @param encoded_read read (decode) function
  * @param unicode output unicode codepoint
  * @param tail output pointer to compound tail, should never be 0
- * @return pointer to next encoded character
+ * @return pointer to next encoded codepoint
  */
 static inline
 const char* nu_default_compound_read(const char *encoded, const char *encoded_limit,
@@ -82,7 +82,7 @@ const char* nu_default_compound_read(const char *encoded, const char *encoded_li
  * @param encoded_read read (decode) function
  * @param unicode output unicode codepoint
  * @param tail output pointer to compound tail, should never be 0
- * @return pointer to next encoded character
+ * @return pointer to next encoded codepoint
  */
 static inline
 const char* nu_nocase_compound_read(const char *encoded, const char *encoded_limit,
@@ -134,8 +134,8 @@ const char* nu_nocase_compound_read(const char *encoded, const char *encoded_lim
  * @param com2 rhs compound read function
  * @param weight codepoint weighting function
  * @param context pointer which will be passed to weight
- * @param collated_left (optional) number of characters collated in lhs
- * @param collated_right (optional) number of characters collated in rhs
+ * @param collated_left (optional) number of codepoints collated in lhs
+ * @param collated_right (optional) number of codepoints collated in rhs
  *
  * @see nu_strcoll
  * @see nu_default_compound_read

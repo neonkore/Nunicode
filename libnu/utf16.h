@@ -20,7 +20,7 @@ extern "C" {
 static const uint16_t NU_UTF16_BOM = 0;
 #endif
 
-/** Endianess-specific function to write BOM 
+/** Endianess-specific function to write BOM
  *
  * @ingroup utf16
  * @see nu_utf16le_write_bom
@@ -60,7 +60,7 @@ typedef struct {
  * @param bom optional, this struct will be filled with read, write, etc
  * function for detected BOM. Note revread, validread and write might be 0
  * if not enabled in build options
- * @return pointer to next character in UTF-16 string or encoded if BOM is
+ * @return pointer to next codepoint in UTF-16 string or encoded if BOM is
  * not found
  */
 NU_EXPORT

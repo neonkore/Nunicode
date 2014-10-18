@@ -30,9 +30,9 @@ int main() {
 		const char* lo = nu_tolower(in);
 
 		/* note that nu_toupper and nu_tolower might
-		 * return more than one character, but in this
-		 * example every lowercase/uppercase character
-		 * maps to only one another character */
+		 * return more than one codepoint, but in this
+		 * example every lowercase/uppercase codepoint
+		 * maps to only one another codepoint */
 
 		if (up != 0) {
 			uint32_t u = 0;

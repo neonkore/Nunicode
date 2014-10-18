@@ -5,7 +5,7 @@
  *
  * Note on "n" functions variant: those are not for memory overrun control.
  * They are just for strings not having terminating 0 byte and those
- * functions won't go further than m-th *character* in string, not byte.
+ * functions won't go further than m-th *codepoint* in string, not byte.
  */
 
 #include <stdint.h>
@@ -79,7 +79,7 @@ NU_EXPORT
 int nu_transformstr(const char *source, char *dest,
 	nu_read_iterator_t read_it, nu_write_iterator_t write_it);
 
-/** Get decoded string character length taking into account transformation
+/** Get decoded string codepoint length taking into account transformation
  *
  * @ingroup extra
  * @param encoded encoded string

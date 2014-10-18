@@ -14,7 +14,7 @@
  *
  * Note on "n" functions variant: those are not for memory overrun control.
  * They are just for strings not having terminating 0 byte and those
- * functions won't go further than m-th *character* in string, not byte.
+ * functions won't go further than m-th *codepoint* in string, not byte.
  */
 
 #include <sys/types.h>
@@ -36,18 +36,18 @@ extern "C" {
 
 #ifdef NU_WITH_Z_COLLATION
 
-/** Locate character in string
+/** Locate codepoint in string
  *
  * @ingroup collation
  * @param encoded encoded string
  * @param c charater  to locate
  * @param read read (decode) function for encoded string
- * @return pointer to character in string or 0
+ * @return pointer to codepoint in string or 0
  */
 NU_EXPORT
 const char* nu_strchr(const char *encoded, uint32_t c, nu_read_iterator_t read);
 
-/** Locate character in string ignoring case
+/** Locate codepoint in string ignoring case
  *
  * @ingroup collation
  * @see nu_strchr
@@ -55,18 +55,18 @@ const char* nu_strchr(const char *encoded, uint32_t c, nu_read_iterator_t read);
 NU_EXPORT
 const char* nu_strcasechr(const char *encoded, uint32_t c, nu_read_iterator_t read);
 
-/** Locate character in string in reverse direction
+/** Locate codepoint in string in reverse direction
  *
  * @ingroup collation
  * @param encoded encoded string
  * @param c charater  to locate
  * @param read read (decode) function for encoded string
- * @return pointer to character in string or 0
+ * @return pointer to codepoint in string or 0
  */
 NU_EXPORT
 const char* nu_strrchr(const char *encoded, uint32_t c, nu_read_iterator_t read);
 
-/** Locate character in string in reverse direction, case-insensitive
+/** Locate codepoint in string in reverse direction, case-insensitive
  *
  * @ingroup collation
  * @see nu_strrchr
@@ -74,8 +74,7 @@ const char* nu_strrchr(const char *encoded, uint32_t c, nu_read_iterator_t read)
 NU_EXPORT
 const char* nu_strrcasechr(const char *encoded, uint32_t c, nu_read_iterator_t read);
 
-/** Compare characters in case ignoring case. It will also apply character
- * decomposition.
+/** Compare strings in case-sensitive manner.
  *
  * @ingroup collation
  * @param s1 first encoded strings
@@ -88,8 +87,7 @@ NU_EXPORT
 int nu_strcoll(const char *s1, const char *s2,
 	nu_read_iterator_t s1_read, nu_read_iterator_t s2_read);
 
-/** Compare characters in case ignoring case. It will also apply character
- * decomposition.
+/** Compare strings in case-insensitive manner.
  *
  * @ingroup collation
  * @see nu_strcoll
@@ -112,7 +110,7 @@ NU_EXPORT
 const char* nu_strstr(const char *haystack, const char *needle,
 	nu_read_iterator_t haystack_read, nu_read_iterator_t needle_read);
 
-/** Find needle in haystack (case-insensitive
+/** Find needle in haystack (case-insensitive)
  *
  * @ingroup collation
  * @see nu_strstr

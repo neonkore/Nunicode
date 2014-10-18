@@ -20,12 +20,12 @@ extern "C" {
 
 #ifdef NU_WITH_UTF8_READER
 
-/** Read character from UTF-8 string
+/** Read codepoint from UTF-8 string
  *
  * @ingroup utf8
  * @param utf8 pointer to UTF-8 encoded string
  * @param unicode output unicode codepoint or 0
- * @return pointer to next character in UTF-8 string
+ * @return pointer to next codepoint in UTF-8 string
  */
 static inline
 const char* nu_utf8_read(const char *utf8, uint32_t *unicode) {
@@ -60,7 +60,7 @@ const char* nu_utf8_read(const char *utf8, uint32_t *unicode) {
 
 #ifdef NU_WITH_REVERSE_READ
 
-/** Read character from UTF-8 string in backward direction
+/** Read codepoint from UTF-8 string in backward direction
  *
  * Note that it is your responsibility to check that this call
  * is not going under beginning of encoded string. Normally you
@@ -70,7 +70,7 @@ const char* nu_utf8_read(const char *utf8, uint32_t *unicode) {
  * @ingroup utf8
  * @param unicode output unicode codepoint or 0
  * @param utf8 pointer to UTF-8 encoded string
- * @return pointer to previous character in UTF-8 string
+ * @return pointer to previous codepoint in UTF-8 string
  */
 static inline
 const char* nu_utf8_revread(uint32_t *unicode, const char *utf8) {
@@ -92,12 +92,12 @@ const char* nu_utf8_revread(uint32_t *unicode, const char *utf8) {
 
 #ifdef NU_WITH_VALIDATION
 
-/** Validate character in string
+/** Validate codepoint in string
  *
  * @ingroup utf8
  * @param encoded buffer with encoded string
  * @param max_len buffer length
- * @return character length or 0 on error
+ * @return codepoint length or 0 on error
  */
 NU_EXPORT
 int nu_utf8_validread(const char *encoded, size_t max_len);
