@@ -11,15 +11,15 @@ What it can do:
 * UTF encoding and decoding
 * Strings collation using default Unicode collation table
 * Unicode casemapping: "Maße" -> "MASSE" (German)
-* Collation tailoring is supported, but implementation is a part
-  of another library (nul10n, see [notes][])
+* Collation tailoring is supported, but not implemented in nunicode,
+  see [notes][]
   
 What it doesn't do:
 
 * Unicode Collation Algorithm (see [notes][])
 * Unicode [normalization forms][]: NFD, NFC, NFKD, NFKC
 
-[notes]: #markdown-header-strings-collation
+[notes]: #markdown-header-localization-collation-tailoring
 [normalization forms]: http://unicode.org/reports/tr15/#Norm_Forms
 
 Conformance:
@@ -218,39 +218,23 @@ Preparation process | None            |
 
 ### localization (collation tailoring)
 
-Section below explains nul10n library not available publicitly, which
-implements localization (collation tailoring) support. 
+nunicode supports both custom collations and conractions. Custom collation
+is a function returning weights different from defaults. Contraction is a
+sequence of Unicode codepoints with assigned weight. DUCET simply defines
+that weight(ë) == weight(e) + weight(COMBINING DIAERESIS), therefore if
+such collation is implemented, it can prove equivalence of those strings.
 
-nul10n provides string collations (ordering) according to [CLDR][] version
-25 as published by Unicode Consortium.
+Better example is Hungarian letter "Dz". Simply put, collation is defined
+as "D" < "Dz" < "E", all three strings are graphemes. If such collation
+is used and and nunicode encounters "D", it will look-ahead to test if
+it's "D" or "Dz". Weight will be determined by the result of this test.
+This also implies "BDE" < "BDzE".
 
-nul10n include support for the following languages
-
-European languages (18Kb)
-
-* English: implemented in DUCET (avaiable in nunicode)
-* French: single-pass backward accent ordering
-* Italian: implemented in DUCET
-* German: standard collation
-* Spanish: standard collation
-* Russian: standard collation
-
-Asian languages (270Kb)
-
-* Chinese (Traditional): natively supported by Unicode
-* Chinese (Simplified): GB2312 variant, full variant available
-  on demand
-* Japanese: standard collation, all Unicode contractions supported:
-  "ｫー" sorts before "ぉゝ"
-* Korean: standard collation
-* Vietnamese: standard collation
-
-More languages are available on demand. It is possible to reduce library
-size by including only characters from base unicode character set
-([BMP][]).
-
-[CLDR]: http://cldr.unicode.org/
-[BMP]: http://en.wikipedia.org/wiki/Plane_(Unicode)#Basic_Multilingual_Plane
+The same approach can be used to traverse a string and determine
+graphemes: by performing sequential collation. This will allow to
+correctly split, trim, reverse and perform another string modification
+operations. nunicode though does not provide any API for string
+modifications yet.
 
 ### custom collations
 
