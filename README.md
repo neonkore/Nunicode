@@ -160,13 +160,13 @@ Pointer passed to revread() is supposed to always come from call to
 
 ## Encoding validation
 
-All decoding functions has very limited-to-no error checking for
-performance reasons. nunicode expects valid UTF strings at input. It
-does provide ``nu_validate()`` to check string encoding before
-processing.
+All decoding functions has no error checking for performance reasons.
+nunicode expects valid UTF strings at input. It does provide 
+``nu_validate()`` to check string encoding before processing.
 
-This function only validates strings encoding, it does not perform
-validation of Unicode strings.
+If this check fails on some string then none of the nunicode functions
+is applicable to it. Calling any function on such string will lead to
+undefined behavior.
 
 ## Case mapping and case folding
 
