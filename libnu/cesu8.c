@@ -26,7 +26,7 @@ int nu_cesu8_validread(const char *encoded, size_t max_len) {
 		return 6;
 	}
 
-	return utf8_validread(encoded, max_len);
+	return utf8_validread_basic(encoded, max_len);
 }
 
 #endif /* NU_WITH_VALIDATION */

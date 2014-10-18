@@ -135,7 +135,7 @@ void b4_utf8(uint32_t codepoint, char *p) {
 }
 
 static inline
-int utf8_validread(const char *p, size_t max_len) {
+int utf8_validread_basic(const char *p, size_t max_len) {
 	const unsigned char *up = (const unsigned char *)(p);
 
 	/* it should be 0xxxxxxx or 110xxxxx or 1110xxxx or 11110xxx
@@ -163,6 +163,99 @@ int utf8_validread(const char *p, size_t max_len) {
 	}
 
 	return 0;
+}
+
+static inline
+int utf8_validread(const char *p, size_t max_len) {
+	int len = utf8_validread_basic(p, max_len);
+
+	/* Unicode core spec,
+	 * D92, Table 3-7 */
+
+	switch (len) {
+	case 1: {
+		uint8_t p1 = *(const unsigned char *)(p);
+
+		if (p1 > 0x7F) {
+			return 0;
+		}
+
+		break;
+	}
+
+	case 2: {
+		uint8_t p1 = *(const unsigned char *)(p);
+		uint8_t p2 = *(const unsigned char *)(p + 1);
+
+		if (p1 < 0xC2 || p1 > 0xDF || p2 < 0x80 || p2 > 0xBF) {
+			return 0;
+		}
+
+		break;
+	}
+
+	case 3: {
+		uint8_t p1 = *(const unsigned char *)(p);
+		uint8_t p2 = *(const unsigned char *)(p + 1);
+		uint8_t p3 = *(const unsigned char *)(p + 2);
+
+		if (p1 != 0xE0 && (p1 < 0xE1 && p1 > 0xEC)
+		&& p1 != 0xED && (p1 < 0xEE || p1 > 0xEF)) {
+			return 0;
+		}
+
+		if ((p1 == 0xE0) && (p2 < 0xA0 || p2 > 0xBF)) {
+			return 0;
+		}
+		else if ((p1 >= 0xE1 && p2 <= 0xEC) && (p2 < 0x80 || p2 > 0xBF)) {
+			return 0;
+		}
+		else if ((p1 == 0xED) && (p2 < 0x80 || p2 > 0x9F)) {
+			return 0;
+		}
+		else if ((p1 >= 0xEE && p2 <= 0xEF) && (p2 < 0x80 || p2 > 0xBF)) {
+			return 0;
+		}
+
+		if (p3 < 0x80 && p3 > 0xBF) {
+			return 0;
+		}
+
+		break;
+	}
+
+	case 4: {
+		uint8_t p1 = *(const unsigned char *)(p);
+		uint8_t p2 = *(const unsigned char *)(p + 1);
+		uint8_t p3 = *(const unsigned char *)(p + 2);
+		uint8_t p4 = *(const unsigned char *)(p + 3);
+
+		if (p1 != 0xF0 && (p1 < 0xF1 && p1 > 0xF3) && p1 != 0xF4) {
+			return 0;
+		}
+
+		if ((p1 == 0xF0) && (p2 < 0x90 && p2 > 0xBF)) {
+			return 0;
+		}
+		else if ((p1 >= 0xF1 && p1 <= 0xF3) && (p2 < 0x80 && p2 > 0xBF)) {
+			return 0;
+		}
+		else if ((p1 == 0xF4) && (p2 < 0x80 && p2 > 0x8F)) {
+			return 0;
+		}
+
+		if ((p3 < 0x80 && p3 > 0xBF) || (p4 < 0x80 && p4 > 0xBF)) {
+			return 0;
+		}
+
+		break;
+	}
+
+	default: return 0;
+
+	} /* switch */
+
+	return len;
 }
 
 #endif /* NU_UTF8_INTERNAL_H */

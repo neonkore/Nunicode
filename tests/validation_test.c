@@ -5,8 +5,8 @@
 void test_validation_utf8() {
 	const char input0_ok[] = "при";
 	const char input1[] = "при\xA0\xC2"; /* misplaced lead and trail */
-	const char input2[] = "при\xC1"; /* start of 2-byte sequence */
-	const char input2_ok[] = "при\xC1\x81";
+	const char input2[] = "при\xC2"; /* start of 2-byte sequence */
+	const char input2_ok[] = "при\xC2\x81";
 	const char input3[] = "при\xE1"; /* start of 3-byte sequence */
 	const char input4[] = "при\xE1\x81"; /* start of 3-byte sequence + 1 continuation byte */
 	const char input4_ok[] = "при\xE1\x81\x81";
@@ -46,6 +46,16 @@ void test_validation_utf8() {
 	assert(nu_validate("\xF1\x81\xC1\x81", 4, nu_utf8_validread) != 0);
 	assert(nu_validate("\xF1\x81\x81\xC1", 4, nu_utf8_validread) != 0);
 	assert(nu_validate("\xF1\x81\x81\x81", 4, nu_utf8_validread) == 0);
+}
+
+void test_validation_utf8_core_spec() {
+	const char input1[] = "\xC0\xAF";
+	const char input2[] = "\xE0\x9F\x80";
+	const char input3_ok[] = "\xF4\x80\x83\x92";
+
+	assert(nu_validate(input1, sizeof(input1), nu_utf8_validread) != 0);
+	assert(nu_validate(input2, sizeof(input2), nu_utf8_validread) != 0);
+	assert(nu_validate(input3_ok, sizeof(input3_ok), nu_utf8_validread) == 0);
 }
 
 void test_validation_cesu8() {
