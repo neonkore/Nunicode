@@ -26,7 +26,7 @@ Conformance:
 
 Specification   | Notes
 ----------------|----------------
-Unicode 7.0     |
+Unicode 7.0     | Conformant on character set and Unicode transformation forms (UTF)
 ISO/IEC 14646   | ISO/IEC 14646:2012 plus Amd.1 and Amd.2, plus the ruble sign (as defined by Unicode 7.0)
 ISO/IEC 14651   | [notes][]
 
@@ -181,6 +181,8 @@ by DUCET (default Unicode collation table). Character set is reduced
 to contain only letters and number to reduce library size. The rest
 of the codepoints are sorted at the end of the list in codepoint order.
 
+Works best on precomposed characters (NFC).
+
 Below are examples of such ordering in different laguages:
 
 Language    | Alphabet
@@ -213,7 +215,7 @@ Reference           |                 | Comment
 Collation levels    | Any             | nunicode supports any number of collation levels. Actual number of levels implemented is maximum level defined by Unicode specification
 forward,position    | No              |
 backward            | No              |
-Tailoring delta     | -               | Equal to the delta with reduced DUCET (reduced to character categories Ll, Lu, Lt, Lo, Nl, Nd, No)
+Tailoring delta     | -               | Equal to the delta with reduced DUCET. DUCET is reduced to character categories Ll, Lu, Lt, Lo, Nl, Nd, No. Only weights of single codepoints are used in collation.
 Preparation process | None            |
 
 ### localization (collation tailoring)
