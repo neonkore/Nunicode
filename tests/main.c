@@ -54,6 +54,7 @@ void test_validation_utf16he();
 void test_validation_utf16le();
 void test_validation_utf32();
 void test_validation_utf32_corespec();
+void test_validation_utf32_corespec_10ffff();
 void test_mph_lookup();
 void test_udb_lookup();
 void test_ducet();
@@ -150,6 +151,7 @@ testcase cases[] = {
 	test_validation_utf16le,
 	test_validation_utf32,
 	test_validation_utf32_corespec,
+	test_validation_utf32_corespec_10ffff,
 
 	test_mph_lookup,
 	test_udb_lookup,

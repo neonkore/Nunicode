@@ -183,3 +183,22 @@ void test_validation_utf32_corespec() {
 	assert(nu_validate((const char *)(input4_be), sizeof(input4_be), nu_utf32be_validread) == (const char *)(input4_be));
 	assert(nu_validate((const char *)(input4_he), sizeof(input4_he), nu_utf32he_validread) == (const char *)(input4_he));
 }
+
+void test_validation_utf32_corespec_10ffff() {
+	const unsigned char input1_le_ok[] = { 0xFF, 0xFF, 0x10, 0x00 };
+	const unsigned char input1_be_ok[] = { 0x00, 0x10, 0xFF, 0xFF };
+	const unsigned char input1_he_ok[] = { 0xFF, 0xFF, 0x10, 0x00 };
+	const unsigned char input2_le[] = { 0x00, 0x00, 0x11, 0x00 };
+	const unsigned char input2_be[] = { 0x00, 0x11, 0x00, 0x00 };
+	const unsigned char input2_he[] = { 0x00, 0x00, 0x11, 0x00 };
+
+	/* U+10FFFF */
+	assert(nu_validate((const char *)(input1_le_ok), sizeof(input1_le_ok), nu_utf32le_validread) == 0);
+	assert(nu_validate((const char *)(input1_be_ok), sizeof(input1_be_ok), nu_utf32be_validread) == 0);
+	assert(nu_validate((const char *)(input1_he_ok), sizeof(input1_he_ok), nu_utf32he_validread) == 0);
+
+	/* U+110000 */
+	assert(nu_validate((const char *)(input2_le), sizeof(input2_le), nu_utf32le_validread) == (const char *)(input2_le));
+	assert(nu_validate((const char *)(input2_be), sizeof(input2_be), nu_utf32be_validread) == (const char *)(input2_be));
+	assert(nu_validate((const char *)(input2_he), sizeof(input2_he), nu_utf32he_validread) == (const char *)(input2_he));
+}

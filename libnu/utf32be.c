@@ -11,6 +11,10 @@ int nu_utf32be_validread(const char *p, size_t max_len) {
 	uint32_t u = 0;
 	nu_utf32be_read(p, &u);
 
+	if (u > NU_UTF32_MAX_CODEPOINT) {
+		return 0;
+	}
+
 	return (u >= 0xD800 && u <= 0xDFFF ? 0 : 4);
 }
 

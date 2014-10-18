@@ -3,6 +3,8 @@
 
 #include <sys/types.h>
 
+#define NU_UTF32_MAX_CODEPOINT (0x0010FFFF)
+
 static inline
 uint32_t nu_letohl(const char *p) {
 	const unsigned char *up = (const unsigned char *)(p);
