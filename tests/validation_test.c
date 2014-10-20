@@ -60,6 +60,121 @@ void test_validation_utf8_core_spec() {
 	assert(nu_validate(input3_ok, sizeof(input3_ok), nu_utf8_validread) == 0);
 }
 
+void test_validation_utf8_core_spec_3_7() {
+
+	/* single byte */
+
+	{
+		const char valid_1[] = "\x00\x00";
+		const char valid_2[] = "\x00\x7F";
+
+		const char invalid_1[] = "\x00\x80";
+
+		assert(nu_validate(valid_1, sizeof(valid_1), nu_utf8_validread) == 0);
+		assert(nu_validate(valid_2, sizeof(valid_2), nu_utf8_validread) == 0);
+
+		assert(nu_validate(invalid_1, sizeof(invalid_1), nu_utf8_validread) == invalid_1 + 1);
+	}
+
+	/* two byte sequences */
+
+	{
+		const char valid_1[] = "\x00\xC2\x80";
+		const char valid_2[] = "\x00\xDF\xBF";
+
+		const char invalid_1[] = "\x00\xC2\x7F";
+		const char invalid_2[] = "\x00\xC2\xC0";
+		const char invalid_3[] = "\x00\xDF\xC0";
+		const char invalid_4[] = "\x00\xDF\x7F";
+		const char invalid_5[] = "\x00\xC1\x80";
+		const char invalid_6[] = "\x00\xE0\x80";
+
+		assert(nu_validate(valid_1, sizeof(valid_1), nu_utf8_validread) == 0);
+		assert(nu_validate(valid_2, sizeof(valid_2), nu_utf8_validread) == 0);
+
+		assert(nu_validate(invalid_1, sizeof(invalid_1), nu_utf8_validread) == invalid_1 + 1);
+		assert(nu_validate(invalid_2, sizeof(invalid_2), nu_utf8_validread) == invalid_2 + 1);
+		assert(nu_validate(invalid_3, sizeof(invalid_3), nu_utf8_validread) == invalid_3 + 1);
+		assert(nu_validate(invalid_4, sizeof(invalid_4), nu_utf8_validread) == invalid_4 + 1);
+		assert(nu_validate(invalid_5, sizeof(invalid_5), nu_utf8_validread) == invalid_5 + 1);
+		assert(nu_validate(invalid_6, sizeof(invalid_6), nu_utf8_validread) == invalid_6 + 1);
+	}
+
+	/* three byte sequences */
+
+	{
+		const char valid_1[] = "\x00\xE0\xA0\x80";
+		const char valid_2[] = "\x00\xE0\xBF\xBF";
+		const char valid_3[] = "\x00\xE1\x80\x80";
+		const char valid_4[] = "\x00\xEC\xBF\xBF";
+		const char valid_5[] = "\x00\xED\x80\x80";
+		const char valid_6[] = "\x00\xED\x9F\xBF";
+		const char valid_7[] = "\x00\xEE\x80\x80";
+		const char valid_8[] = "\x00\xEF\xBF\xBF";
+
+		const char invalid_1[] = "\x00\xE0\x8F\x80";
+		const char invalid_2[] = "\x00\xED\xA0\x80";
+		const char invalid_3[] = "\x00\xE0\x7F\x80";
+		const char invalid_4[] = "\x00\xE0\x80\x7F";
+		const char invalid_5[] = "\x00\xEF\x80\xC0";
+		const char invalid_6[] = "\x00\xEF\xC0\x80";
+
+		assert(nu_validate(valid_1, sizeof(valid_1), nu_utf8_validread) == 0);
+		assert(nu_validate(valid_2, sizeof(valid_2), nu_utf8_validread) == 0);
+		assert(nu_validate(valid_3, sizeof(valid_3), nu_utf8_validread) == 0);
+		assert(nu_validate(valid_4, sizeof(valid_4), nu_utf8_validread) == 0);
+		assert(nu_validate(valid_5, sizeof(valid_5), nu_utf8_validread) == 0);
+		assert(nu_validate(valid_6, sizeof(valid_6), nu_utf8_validread) == 0);
+		assert(nu_validate(valid_7, sizeof(valid_7), nu_utf8_validread) == 0);
+		assert(nu_validate(valid_8, sizeof(valid_8), nu_utf8_validread) == 0);
+
+		assert(nu_validate(invalid_1, sizeof(invalid_1), nu_utf8_validread) == invalid_1 + 1);
+		assert(nu_validate(invalid_2, sizeof(invalid_2), nu_utf8_validread) == invalid_2 + 1);
+		assert(nu_validate(invalid_3, sizeof(invalid_3), nu_utf8_validread) == invalid_3 + 1);
+		assert(nu_validate(invalid_4, sizeof(invalid_4), nu_utf8_validread) == invalid_4 + 1);
+		assert(nu_validate(invalid_5, sizeof(invalid_5), nu_utf8_validread) == invalid_5 + 1);
+		assert(nu_validate(invalid_6, sizeof(invalid_6), nu_utf8_validread) == invalid_6 + 1);
+	}
+
+	/* four byte sequences */
+	{
+		const char valid_1[] = "\x00\xF0\x90\x80\x80";
+		const char valid_2[] = "\x00\xF0\xBF\xBF\xBF";
+		const char valid_3[] = "\x00\xF1\x80\x80\x80";
+		const char valid_4[] = "\x00\xF3\xBF\xBF\xBF";
+		const char valid_5[] = "\x00\xF4\x80\x80\x80";
+		const char valid_6[] = "\x00\xF4\x8F\xBF\xBF";
+
+		const char invalid_2[] = "\x00\xF5\x90\x80\x80";
+		const char invalid_3[] = "\x00\xF0\x8F\x80\x80";
+		const char invalid_4[] = "\x00\xF0\xC0\x80\x80";
+		const char invalid_5[] = "\x00\xF1\x7F\x80\x80";
+		const char invalid_6[] = "\x00\xF1\xC0\x80\x80";
+		const char invalid_7[] = "\x00\xF1\x90\x7F\x80";
+		const char invalid_8[] = "\x00\xF1\x90\xC0\x80";
+		const char invalid_9[] = "\x00\xF1\x90\x80\x7F";
+		const char invalid_0[] = "\x00\xF1\x90\x80\xC0";
+
+		assert(nu_validate(valid_1, sizeof(valid_1), nu_utf8_validread) == 0);
+		assert(nu_validate(valid_2, sizeof(valid_2), nu_utf8_validread) == 0);
+		assert(nu_validate(valid_3, sizeof(valid_3), nu_utf8_validread) == 0);
+		assert(nu_validate(valid_4, sizeof(valid_4), nu_utf8_validread) == 0);
+		assert(nu_validate(valid_5, sizeof(valid_5), nu_utf8_validread) == 0);
+		assert(nu_validate(valid_6, sizeof(valid_6), nu_utf8_validread) == 0);
+
+		//assert(nu_validate(invalid_1, sizeof(invalid_1), nu_utf8_validread) == invalid_1 + 1);
+		assert(nu_validate(invalid_2, sizeof(invalid_2), nu_utf8_validread) == invalid_2 + 1);
+		assert(nu_validate(invalid_3, sizeof(invalid_3), nu_utf8_validread) == invalid_3 + 1);
+		assert(nu_validate(invalid_4, sizeof(invalid_4), nu_utf8_validread) == invalid_4 + 1);
+		assert(nu_validate(invalid_5, sizeof(invalid_5), nu_utf8_validread) == invalid_5 + 1);
+		assert(nu_validate(invalid_6, sizeof(invalid_6), nu_utf8_validread) == invalid_6 + 1);
+		assert(nu_validate(invalid_7, sizeof(invalid_7), nu_utf8_validread) == invalid_7 + 1);
+		assert(nu_validate(invalid_8, sizeof(invalid_8), nu_utf8_validread) == invalid_8 + 1);
+		assert(nu_validate(invalid_9, sizeof(invalid_9), nu_utf8_validread) == invalid_9 + 1);
+		assert(nu_validate(invalid_0, sizeof(invalid_0), nu_utf8_validread) == invalid_0 + 1);
+	}
+}
+
 void test_validation_cesu8() {
 	const unsigned char input0_ok[] = { 0xED, 0xA0, 0x81, 0xED, 0xB0, 0x80 };
 	const unsigned char input0_also_ok[] = "ч";

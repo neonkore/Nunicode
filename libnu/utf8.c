@@ -14,85 +14,60 @@ int nu_utf8_validread(const char *encoded, size_t max_len) {
 	 */
 
 	switch (len) {
-	case 1: {
-		uint8_t p1 = *(const unsigned char *)(encoded);
-
-		if (p1 > 0x7F) {
-			return 0;
-		}
-
-		break;
-	}
+	/* case 1: single byte sequence can't be > 0x7F and produce len == 1
+	 */
 
 	case 2: {
 		uint8_t p1 = *(const unsigned char *)(encoded);
-		uint8_t p2 = *(const unsigned char *)(encoded + 1);
 
-		if (p1 < 0xC2 || p1 > 0xDF || p2 < 0x80 || p2 > 0xBF) {
+		if (p1 < 0xC2) { /* 2-byte sequences with p1 > 0xDF are 3-byte sequences */
 			return 0;
 		}
+
+		/* the rest will be handled by utf8_validread_basic() */
 
 		break;
 	}
 
 	case 3: {
 		uint8_t p1 = *(const unsigned char *)(encoded);
+
+		/* 3-byte sequences with p1 < 0xE0 are 2-byte sequences,
+		 * 3-byte sequences with p1 > 0xEF are 4-byte sequences */
+
 		uint8_t p2 = *(const unsigned char *)(encoded + 1);
-		uint8_t p3 = *(const unsigned char *)(encoded + 2);
 
-		if (p1 != 0xE0 && (p1 < 0xE1 && p1 > 0xEC)
-		&& p1 != 0xED && (p1 < 0xEE || p1 > 0xEF)) {
+		if (p1 == 0xE0 && p2 < 0xA0) {
 			return 0;
 		}
-
-		if ((p1 == 0xE0) && (p2 < 0xA0 || p2 > 0xBF)) {
-			return 0;
-		}
-		else if ((p1 >= 0xE1 && p2 <= 0xEC) && (p2 < 0x80 || p2 > 0xBF)) {
-			return 0;
-		}
-		else if ((p1 == 0xED) && (p2 < 0x80 || p2 > 0x9F)) {
-			return 0;
-		}
-		else if ((p1 >= 0xEE && p2 <= 0xEF) && (p2 < 0x80 || p2 > 0xBF)) {
+		else if (p1 == 0xED && p2 > 0x9F) {
 			return 0;
 		}
 
-		if (p3 < 0x80 && p3 > 0xBF) {
-			return 0;
-		}
+		/* (p2 < 0x80 || p2 > 0xBF) and p3 will be covered
+		 * by utf8_validread_basic() */
 
 		break;
 	}
 
 	case 4: {
 		uint8_t p1 = *(const unsigned char *)(encoded);
+
+		if (p1 > 0xF4) { /* 4-byte sequence with p1 < 0xF0 are 3-byte sequences */
+			return 0;
+		}
+
 		uint8_t p2 = *(const unsigned char *)(encoded + 1);
-		uint8_t p3 = *(const unsigned char *)(encoded + 2);
-		uint8_t p4 = *(const unsigned char *)(encoded + 3);
 
-		if (p1 != 0xF0 && (p1 < 0xF1 && p1 > 0xF3) && p1 != 0xF4) {
+		if (p1 == 0xF0 && p2 < 0x90) {
 			return 0;
 		}
 
-		if ((p1 == 0xF0) && (p2 < 0x90 && p2 > 0xBF)) {
-			return 0;
-		}
-		else if ((p1 >= 0xF1 && p1 <= 0xF3) && (p2 < 0x80 && p2 > 0xBF)) {
-			return 0;
-		}
-		else if ((p1 == 0xF4) && (p2 < 0x80 && p2 > 0x8F)) {
-			return 0;
-		}
-
-		if ((p3 < 0x80 && p3 > 0xBF) || (p4 < 0x80 && p4 > 0xBF)) {
-			return 0;
-		}
+		/* (p2 < 0x80 || p2 > 0xBF) and the rest (p3, p4)
+		 * will be covered by utf8_validread_basic() */
 
 		break;
 	}
-
-	default: return 0;
 
 	} /* switch */
 
