@@ -59,6 +59,8 @@ typedef int32_t (*nu_codepoint_weight_t)(uint32_t u, int32_t *weight, void *cont
  *
  * @ingroup collation_internal
  * @param encoded encoded string
+ * @param encoded_limit upper limit for encoded. NU_UNLIMITED for 0-terminated
+ * strings
  * @param encoded_read read (decode) function
  * @param unicode output unicode codepoint
  * @param tail output pointer to compound tail, should never be 0
@@ -79,6 +81,8 @@ const char* nu_default_compound_read(const char *encoded, const char *encoded_li
  *
  * @ingroup collation_internal
  * @param encoded encoded string
+ * @param encoded_limit upper limit for encoded. NU_UNLIMITED for 0-terminated
+ * strings
  * @param encoded_read read (decode) function
  * @param unicode output unicode codepoint
  * @param tail output pointer to compound tail, should never be 0

@@ -103,7 +103,7 @@ const char* nu_cesu8_revread(uint32_t *unicode, const char *cesu8) {
 
 /** Validate codepoint in string
  *
- * @ingroup utf8
+ * @ingroup cesu8
  * @param encoded buffer with encoded string
  * @param max_len buffer length
  * @return codepoint length or 0 on error

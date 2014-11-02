@@ -49,7 +49,6 @@ uint32_t nu_udb_lookup_value(uint32_t codepoint,
  *
  * @ingroup udb
  * @param codepoint unicode codepoint
- * @param it returned read iterator for looked up data
  * @param G first MPH table
  * @param G_SIZE first table number of elements (original MPH set size)
  * @param VALUES_C codepoints array
