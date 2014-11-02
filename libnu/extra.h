@@ -33,7 +33,6 @@ extern "C" {
  * @return 0 in success or negative error
  *
  * @see nu_utf8_read
- * @see nu_utf8_strlen
  * @see nu_readnstr
  */
 NU_EXPORT
@@ -49,8 +48,8 @@ int nu_readstr(const char *encoded, uint32_t *unicode,
  * @param it write (encode) function
  * @return 0 on success or negative error
  *
+ * @see nu_bytenlen
  * @see nu_utf8_write
- * @see nu_utf8_bytelen
  * @see nu_writenstr
  */
 NU_EXPORT
@@ -70,7 +69,7 @@ int nu_writestr(const uint32_t *unicode, char *encoded,
  * @return 0 on success or negative error on decoding (source) error,
  * double negative on error encoding (dest) error
  *
- * @see nu_utf8_bytelen
+ * @see nu_bytenlen
  * @see nu_utf8_read
  * @see nu_utf8_write
  * @see nu_transformnstr
@@ -87,7 +86,6 @@ int nu_transformstr(const char *source, char *dest,
  * @param transform transformation to take into account
  * @param transform_read transformation result decoding function
  *
- * @see nu_decompose
  * @see nu_toupper
  * @see nu_tolower
  */

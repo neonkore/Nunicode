@@ -51,7 +51,6 @@ typedef char* (*nu_write_iterator_t)(uint32_t unicode, char *encoded);
 /** Transform codepoint
  *
  * @ingroup transformations
- * @see nu_decompose
  * @see nu_toupper
  * @see nu_tolower
  */
