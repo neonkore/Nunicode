@@ -41,10 +41,11 @@ amd64_bz:
 	tar -cjf "$(AMD64_BZ)" --directory=$(AMD64_BUILD)/sqlite3/ libnunicode.so
 
 doc_zip:
+	rm -fr "../doc/libnu-${VERSION}" "$(DOC_ZIP)"
 	(cd .. && doxygen)
-	(cd ../doc && mv html libnu-$(VERSION) && zip -r ../packaging/$(DOC_ZIP) .)
+	(cd ../doc && mv html libnu-$(VERSION) && zip -r "../packaging/$(DOC_ZIP)" "libnu-${VERSION}")
 
 clean:
 	rm -fr *.zip *.bz2
 	rm -fr $(WIN32_BUILD) $(I386_BUILD) $(AMD64_BUILD)
-	rm -fr ../doc/ $(DOC_ZIP)
+	rm -fr ../doc/html/ "../doc/libnu-${VERSION}" "$(DOC_ZIP)"
