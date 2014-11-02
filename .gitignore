@@ -1,5 +1,5 @@
 .settings/
-doc/
+doc/html/
 tests/coverage/
 build*
 *.o
