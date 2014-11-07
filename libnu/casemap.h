@@ -15,13 +15,14 @@ extern "C" {
 #define NU_CASEMAP_DECODING_FUNCTION NU_UDB_DECODING_FUNCTION
 
 /** Casemap codepoint
+ *
  * @ingroup transformations
  */
 typedef nu_transformation_t nu_casemapping_t;
 
 #ifdef NU_WITH_TOUPPER
 
-/** Return uppercase value of codepoint
+/** Return uppercase value of codepoint. Uncoditional casemapping.
  *
  * @ingroup transformations
  * @param codepoint unicode codepoint
@@ -34,7 +35,7 @@ const char* nu_toupper(uint32_t codepoint);
 
 #ifdef NU_WITH_TOLOWER
 
-/** Return lowercase value of codepoint
+/** Return lowercase value of codepoint. Unconditional casemapping.
  *
  * @ingroup transformations
  * @param codepoint unicode codepoint

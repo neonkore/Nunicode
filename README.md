@@ -131,7 +131,9 @@ functions for the encoding and decoding, BOM and endianess detection are
 handled by ``nu_utf16_*`` functions.
 
 Note that nunicode will never report string endianess explicitely but will
-provide read/write functions instead. See ``samples/utf16.c``.
+provide read/write functions instead. See [samples/utf16.c][].
+
+[samples/utf16.c]: https://bitbucket.org/alekseyt/nunicode/src/master/samples/utf16.c
 
 ### host-endianess of UTF encodings
 
@@ -165,13 +167,16 @@ nunicode expects valid UTF strings at input. It does provide
 ``nu_validate()`` to check string encoding before processing.
 
 If this check fails on some string then none of the nunicode functions
-is applicable to it. Calling any function on such string will lead to
+is applicable to it. Calling any function on such string might lead to
 undefined behavior.
 
 ## Case mapping and case folding
 
 Case mapping is full Unicode casemapping when string might grow in size,
 e.g. "Maße" (German) uppercases to "MASSE".
+
+nunicode implements unconditional casemapping when any codepoint might be
+casemapped in a sigle way only (e.g. 'Σ' always casemaps into 'σ').
 
 ## Strings collation
 
@@ -194,7 +199,7 @@ Spanish     | aAáÁbBcCdDeEéÉfFgGhHiIíÍjJkKlLỻỺmMnNñÑoOóÓpPqQrRsStT
 French      | aAàÀâÂbBcCçÇdDeEéÉèÈëËfFgGhHiIjJkKlLmMnNoOòÒôÔöÖpPqQrRsStTuUùÙvVwWxXyYzZ
 Greek       | αΑἀἄἂἆἁἅἃἇβΒγΓδΔεΕἐἔἒἑἕἓζΖηΗθΘιΙκΚλΛμΜνΝξΞοΟπΠρΡσΣςτΤυΥφΦχΧψΨωΩ
 
-There is no option to switch titlecase/lowercase preference because
+There is no option to switch uppercase/lowercase preference because
 the same result is achievable with sorting on lowercase and native
 case at the same time, e.g.:
 
@@ -228,7 +233,7 @@ such collation is implemented, it can prove equivalence of those strings.
 
 Better example is Hungarian letter "Dz". Simply put, collation is defined
 as "D" < "Dz" < "E", all three strings are graphemes. If such collation
-is used and and nunicode encounters "D", it will look-ahead to test if
+is used and nunicode encounters "D", it will look-ahead to test if
 it's "D" or "Dz". Weight will be determined by the result of this test.
 This also implies "BDE" < "BDzE" < "BEE".
 

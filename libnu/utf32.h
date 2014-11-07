@@ -16,7 +16,10 @@ extern "C" {
 #endif
 
 #if (defined NU_WITH_UTF32_READER) || (defined NU_WITH_UTF32_WRITER)
-/** For sizeof() only */
+/** For sizeof() only
+ *
+ * @ingroup utf32
+ */
 static const uint32_t NU_UTF32_BOM = 0;
 #endif
 

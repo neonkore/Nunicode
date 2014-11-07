@@ -1,6 +1,12 @@
 #ifndef NU_DEFINES_H
 #define NU_DEFINES_H
 
+/** @file
+ */
+
+/** @defgroup defines Defines
+ */
+
 #ifndef NU_EXPORT
 
 # ifdef _WIN32
@@ -19,6 +25,10 @@
 
 #endif /* NU_EXPORT */
 
+/** Integer version of Unicode specification implemented. 700 == 7.0.0
+ *
+ * @ingroup defines
+ */
 #define NU_UNICODE_VERSION 700
 #define NU_UNLIMITED ((const void *)(-1))
 
