@@ -63,6 +63,8 @@ void test_ducet_known_unknown();
 void test_toupper();
 void test_tolower();
 void test_tofold();
+void test__toupper__tofold();
+void test__tolower();
 void test_strchr();
 void test_strnchr();
 void test_strcasechr();
@@ -162,6 +164,8 @@ testcase cases[] = {
 	test_toupper,
 	test_tolower,
 	test_tofold,
+	test__toupper__tofold,
+	test__tolower,
 
 	test_strchr,
 	test_strnchr,

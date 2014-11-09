@@ -31,6 +31,9 @@ typedef nu_transformation_t nu_casemapping_t;
 NU_EXPORT
 const char* nu_toupper(uint32_t codepoint);
 
+NU_EXPORT
+const char* _nu_toupper(const char *encoded, const char *limit, nu_read_iterator_t read, void *context);
+
 #endif /* NU_WITH_TOUPPER */
 
 #ifdef NU_WITH_TOLOWER
@@ -44,6 +47,13 @@ const char* nu_toupper(uint32_t codepoint);
 NU_EXPORT
 const char* nu_tolower(uint32_t codepoint);
 
+NU_EXPORT
+const char* _nu_tolower(const char *encoded, const char *limit, nu_read_iterator_t read, void *context);
+
+#endif /* NU_WITH_TOLOWER */
+
+#ifdef NU_WITH_TOFOLD
+
 /** Return value of codepoint with case differences eliminated
  *
  * @ingroup transformations
@@ -53,7 +63,10 @@ const char* nu_tolower(uint32_t codepoint);
 NU_EXPORT
 const char* nu_tofold(uint32_t codepoint);
 
-#endif /* NU_WITH_TOLOWER */
+NU_EXPORT
+const char* _nu_tofold(const char *encoded, const char *limit, nu_read_iterator_t read, void *context);
+
+#endif /* NU_WITH_TOFOLD */
 
 #if defined (__cplusplus) || defined (c_plusplus)
 }
