@@ -6,8 +6,12 @@
 
 #include "udb.h"
 
+/** Casemap codepoint
+ *
+ * @ingroup transformations
+ */
 static inline
-const char* to_something(uint32_t codepoint,
+const char* _nu_to_something(uint32_t codepoint,
 	const int16_t *G, size_t G_SIZE,
 	const uint32_t *VALUES_C, const uint16_t *VALUES_I, const uint8_t *COMBINED) {
 
