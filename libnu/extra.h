@@ -5,7 +5,7 @@
  *
  * Note on "n" functions variant: those are not for memory overrun control.
  * They are just for strings not having terminating 0 byte and those
- * functions won't go further than m-th *codepoint* in string, not byte.
+ * functions won't go further than n-th *codepoint* in string, not byte.
  */
 
 #include <stdint.h>

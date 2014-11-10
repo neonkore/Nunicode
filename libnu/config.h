@@ -11,7 +11,7 @@
  * at the environment.
  *
  * This file will also enable several dependencies for you: case-mapping
- * depends on NU_WITH_UDB and so.
+ * depends on NU_WITH_UDB, NU_UTF8_READER and so.
  */
 
 /* Definitions not covered in this file which should be defined
