@@ -31,6 +31,18 @@ typedef nu_transformation_t nu_casemapping_t;
 NU_EXPORT
 const char* nu_toupper(uint32_t codepoint);
 
+/** Return uppercase value of codepoint. Context-sensitivity is not
+ * implemented internally, returned result is equal to calling nu_toupper()
+ * on corresponding codepoint.
+ *
+ * @ingroup transformations_internal
+ * @param encoded pointer to encoded string
+ * @param limit memory limit of encoded string or NU_UNLIMITED
+ * @param read read (decoding) function
+ * @param transform output value of codepoint transformed into uppercase or 0
+ * if mapping doesn't exist
+ * @param context not used
+ */
 NU_EXPORT
 const char* _nu_toupper(const char *encoded, const char *limit,
 	nu_read_iterator_t read, const char **transform,
@@ -49,6 +61,18 @@ const char* _nu_toupper(const char *encoded, const char *limit,
 NU_EXPORT
 const char* nu_tolower(uint32_t codepoint);
 
+/** Return lowercase value of codepoint. Will transform uppercase Signa ('Σ')
+ * into final sigma ('ς') if it occurs at string boundary or
+ * followed by U+0000.
+ *
+ * @ingroup transformations_internal
+ * @param encoded pointer to encoded string
+ * @param limit memory limit of encoded string or NU_UNLIMITED
+ * @param read read (decoding) function
+ * @param transform output value of codepoint transformed into lowercase or 0
+ * if mapping doesn't exist
+ * @param context not used
+ */
 NU_EXPORT
 const char* _nu_tolower(const char *encoded, const char *limit,
 	nu_read_iterator_t read, const char **transform,
@@ -67,6 +91,18 @@ const char* _nu_tolower(const char *encoded, const char *limit,
 NU_EXPORT
 const char* nu_tofold(uint32_t codepoint);
 
+/** Return value of codepoint with case differences eliminated.
+ * Context-sensitivity is not implemented internally, returned result is equal
+ * to calling nu_tofold() on corresponding codepoint.
+ *
+ * @ingroup transformations_internal
+ * @param encoded pointer to encoded string
+ * @param limit memory limit of encoded string or NU_UNLIMITED
+ * @param read read (decoding) function
+ * @param transform output value of casefolded codepoint or 0 if mapping
+ * doesn't exist
+ * @param context not used
+ */
 NU_EXPORT
 const char* _nu_tofold(const char *encoded, const char *limit,
 	nu_read_iterator_t read, const char **transform,

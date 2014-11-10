@@ -82,6 +82,9 @@ void test_tofold() {
 	assert(map != 0);
 	NU_CASEMAP_DECODING_FUNCTION(map, &u);
 	assert(u == 0x00E6); /* æ */
+
+	map = nu_tofold(0x000A); /* \n */
+	assert(map == 0);
 }
 
 /* simple test of internal versions of toupper() and tofold() */
@@ -90,7 +93,7 @@ void test__toupper__tofold() {
 	const char *transform = 0;
 
 	/* toupper() */
-	_nu_toupper("ﬂ", NU_UNLIMITED, nu_utf8_read, &transform, 0);
+	assert(_nu_toupper("ﬂ", NU_UNLIMITED, nu_utf8_read, &transform, 0) != 0);
 	assert(transform != 0);
 	transform = NU_CASEMAP_DECODING_FUNCTION(transform, &u);
 	assert(u == 0x0046); /* F */
@@ -100,7 +103,7 @@ void test__toupper__tofold() {
 	assert(u == 0);
 
 	/* tofold() */
-	_nu_tofold("ß", NU_UNLIMITED, nu_utf8_read, &transform, 0);
+	assert(_nu_tofold("ß", NU_UNLIMITED, nu_utf8_read, &transform, 0) != 0);
 	assert(transform != 0);
 	transform = NU_CASEMAP_DECODING_FUNCTION(transform, &u);
 	assert(u == 0x0073 && transform != 0); /* s */
@@ -108,6 +111,13 @@ void test__toupper__tofold() {
 	assert(u == 0x0073 && transform != 0); /* s */
 	NU_CASEMAP_DECODING_FUNCTION(transform, &u);
 	assert(u == 0);
+
+	/* no mapping */
+	assert(_nu_toupper("A", NU_UNLIMITED, nu_utf8_read, &transform, 0) != 0);
+	assert(transform == 0);
+
+	assert(_nu_tofold("\n", NU_UNLIMITED, nu_utf8_read, &transform, 0) != 0);
+	assert(transform == 0);
 }
 
 /* simple test + internal tolower() includes Sigma casemapping */
@@ -116,7 +126,7 @@ void test__tolower() {
 	const char *transform = 0;
 
 	/* simple */
-	_nu_tolower("Æ", NU_UNLIMITED, nu_utf8_read, &transform, 0);
+	assert(_nu_tolower("Æ", NU_UNLIMITED, nu_utf8_read, &transform, 0) != 0);
 	assert(transform != 0);
 	transform = NU_CASEMAP_DECODING_FUNCTION(transform, &u);
 	assert(u == 0x00E6 && transform != 0); /* æ */
@@ -124,14 +134,14 @@ void test__tolower() {
 	assert(u == 0);
 
 	/* Sigma */
-	_nu_tolower("Σ", NU_UNLIMITED, nu_utf8_read, &transform, 0);
+	assert(_nu_tolower("Σ", NU_UNLIMITED, nu_utf8_read, &transform, 0) != 0);
 	assert(transform != 0);
 	transform = NU_CASEMAP_DECODING_FUNCTION(transform, &u);
 	assert(u == 0x03C2 && transform != 0); /* ς */
 	NU_CASEMAP_DECODING_FUNCTION(transform, &u);
 	assert(u == 0);
 
-	_nu_tolower("ΣΣ", NU_UNLIMITED, nu_utf8_read, &transform, 0);
+	assert(_nu_tolower("ΣΣ", NU_UNLIMITED, nu_utf8_read, &transform, 0) != 0);
 	assert(transform != 0);
 	transform = NU_CASEMAP_DECODING_FUNCTION(transform, &u);
 	assert(u == 0x03C3 && transform != 0); /* σ */
@@ -141,13 +151,20 @@ void test__tolower() {
 	/* limit handling */
 	const char input[] = "ΣΣ";
 
-	_nu_tolower(input, input + 2, nu_utf8_read, &transform, 0);
+	assert(_nu_tolower(input, input + 2, nu_utf8_read, &transform, 0) == input + 2);
 	assert(transform != 0);
-	transform = NU_CASEMAP_DECODING_FUNCTION(transform, &u);
+	NU_CASEMAP_DECODING_FUNCTION(transform, &u);
 	assert(u == 0x03C2); /* ς */
 
-	_nu_tolower(input, input + 4, nu_utf8_read, &transform, 0);
+	assert(_nu_tolower(input, input + 4, nu_utf8_read, &transform, 0) == input + 2);
 	assert(transform != 0);
-	transform = NU_CASEMAP_DECODING_FUNCTION(transform, &u);
+	NU_CASEMAP_DECODING_FUNCTION(transform, &u);
 	assert(u == 0x03C3); /* σ */
+
+	/* no mapping */
+	assert(_nu_tolower("\n", NU_UNLIMITED, nu_utf8_read, &transform, 0) != 0);
+	assert(transform == 0);
+
+	assert(_nu_tolower("a", NU_UNLIMITED, nu_utf8_read, &transform, 0) != 0);
+	assert(transform == 0);
 }
