@@ -32,7 +32,9 @@ NU_EXPORT
 const char* nu_toupper(uint32_t codepoint);
 
 NU_EXPORT
-const char* _nu_toupper(const char *encoded, const char *limit, nu_read_iterator_t read, void *context);
+const char* _nu_toupper(const char *encoded, const char *limit,
+	nu_read_iterator_t read, const char **transform,
+	void *context);
 
 #endif /* NU_WITH_TOUPPER */
 
@@ -48,7 +50,9 @@ NU_EXPORT
 const char* nu_tolower(uint32_t codepoint);
 
 NU_EXPORT
-const char* _nu_tolower(const char *encoded, const char *limit, nu_read_iterator_t read, void *context);
+const char* _nu_tolower(const char *encoded, const char *limit,
+	nu_read_iterator_t read, const char **transform,
+	void *context);
 
 #endif /* NU_WITH_TOLOWER */
 
@@ -64,7 +68,9 @@ NU_EXPORT
 const char* nu_tofold(uint32_t codepoint);
 
 NU_EXPORT
-const char* _nu_tofold(const char *encoded, const char *limit, nu_read_iterator_t read, void *context);
+const char* _nu_tofold(const char *encoded, const char *limit,
+	nu_read_iterator_t read, const char **transform,
+	void *context);
 
 #endif /* NU_WITH_TOFOLD */
 

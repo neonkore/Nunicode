@@ -15,13 +15,16 @@ const char* nu_tolower(uint32_t codepoint) {
 		NU_TOLOWER_VALUES_C, NU_TOLOWER_VALUES_I, NU_TOLOWER_COMBINED);
 }
 
-const char* _nu_tolower(const char *encoded, const char *limit, nu_read_iterator_t read, void *context) {
+const char* _nu_tolower(const char *encoded, const char *limit,
+	nu_read_iterator_t read, const char **transform,
+	void *context) {
+
 	(void)(context);
 
 	uint32_t u = 0;
 	const char *np = read(encoded, &u);
 
-	/* handling of 0x03A3 == 'Σ',
+	/* handling of 0x03A3 ('Σ')
 	 *
 	 * this is the only language-independent exception described in
 	 * SpecialCasing.txt (Unicode 7.0) */
@@ -30,18 +33,22 @@ const char* _nu_tolower(const char *encoded, const char *limit, nu_read_iterator
 
 	if (u == 0x03A3) {
 		if (np >= limit) {
-			return __nu_final_sigma;
+			*transform = __nu_final_sigma;
+			return np;
 		}
 
 		uint32_t nu = 0;
 		read(np, &nu);
 
 		if (nu == 0) {
-			return __nu_final_sigma;
+			*transform = __nu_final_sigma;
+			return np;
 		}
 	}
 
-	return nu_tolower(u);
+	*transform = nu_tolower(u);
+
+	return np;
 }
 
 #endif /* NU_WITH_TOLOWER */

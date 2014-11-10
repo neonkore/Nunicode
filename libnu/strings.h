@@ -11,6 +11,9 @@
 /** @defgroup transformations Codepoint transformations
  */
 
+/** @defgroup transformations_internal Codepoint transformations (internal)
+ */
+
 #include <stdint.h>
 #include <sys/types.h>
 
@@ -55,6 +58,18 @@ typedef char* (*nu_write_iterator_t)(uint32_t unicode, char *encoded);
  * @see nu_tolower
  */
 typedef const char* (*nu_transformation_t)(uint32_t codepoint);
+
+/** Transform codepoint (used internally). This kind of transformation
+ * delegates iteration on string to transformation implementation.
+ *
+ * @ingroup transformations_internal
+ * @see _nu_toupper
+ * @see _nu_tolower
+ */
+typedef const char* (*nu_transform_read_t)(
+	const char *encoded, const char *encoded_limit,
+	nu_read_iterator_t read, const char **transformed,
+	void *context);
 
 #if (defined NU_WITH_Z_STRINGS) || (defined NU_WITH_N_STRINGS)
 

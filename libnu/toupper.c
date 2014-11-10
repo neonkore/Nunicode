@@ -10,14 +10,19 @@ const char* nu_toupper(uint32_t codepoint) {
 		NU_TOUPPER_VALUES_C, NU_TOUPPER_VALUES_I, NU_TOUPPER_COMBINED);
 }
 
-const char* _nu_toupper(const char *encoded, const char *limit, nu_read_iterator_t read, void *context) {
+const char* _nu_toupper(const char *encoded, const char *limit,
+	nu_read_iterator_t read, const char **transform,
+	void *context) {
+
 	(void)(limit);
 	(void)(context);
 
 	uint32_t u = 0;
-	read(encoded, &u);
+	const char *np = read(encoded, &u);
 
-	return nu_toupper(u);
+	*transform = nu_toupper(u);
+
+	return np;
 }
 
 #endif /* NU_WITH_TOUPPER */
