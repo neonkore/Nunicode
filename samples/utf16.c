@@ -4,6 +4,9 @@
 
 #include <libnu/libnu.h>
 
+/* Example of BOM detection in UTF-16
+ */
+
 int main() {
 	const char input[] = /* "привет мир!", UTF-16LE + BOM */
 		"\xFF\xFE\x3F\x04\x40\x04\x38\x04"

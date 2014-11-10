@@ -2,6 +2,9 @@
 
 #include <libnu/libnu.h>
 
+/* Example of string reversal using revread
+ */
+
 int main() {
 	const char input[] = "диско";
 	printf(">>> input: %s\n", input);

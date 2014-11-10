@@ -4,6 +4,10 @@
 
 #include <libnu/libnu.h>
 
+/* Example of using nunicode functions on UTF-8 for decoding
+ * and re-encoding string
+ */
+
 int main() {
 	const char *input = "𠜱";
 	printf(">>> input: %s\n", input);

@@ -2,6 +2,9 @@
 
 #include <libnu/libnu.h>
 
+/* Example of different case mappings and case-insensitive collations
+ */
+
 int main() {
 	const char *MASSE = "MASSE";
 	const char *Masse = "Maße";
