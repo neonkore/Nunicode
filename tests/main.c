@@ -46,6 +46,9 @@ void test_transformstr();
 void test_transformnstr();
 void test_strtransformlen();
 void test_strtransformnlen();
+void test__strtransformlen();
+void test__strtransformnlen();
+void test__strtransformlen_internal_external();
 void test_validation_utf8();
 void test_validation_utf8_core_spec();
 void test_validation_utf8_core_spec_3_7();
@@ -145,6 +148,9 @@ testcase cases[] = {
 	test_writenstr,
 	test_transformnstr,
 	test_strtransformnlen,
+	test__strtransformlen,
+	test__strtransformnlen,
+	test__strtransformlen_internal_external,
 
 	test_validation_utf8,
 	test_validation_utf8_core_spec,

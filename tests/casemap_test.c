@@ -122,6 +122,13 @@ void test__toupper__tofold() {
 	assert(_nu_tofold("\n", NU_UNLIMITED, nu_utf8_read, &u, &transform, 0) != 0);
 	assert(transform == 0);
 	assert(u == 0x000A);
+
+	/* check optional pointer to transformed codepoint */
+	u = 0xFFFF;
+	assert(_nu_tofold("ß", NU_UNLIMITED, nu_utf8_read, 0, &transform, 0) != 0);
+	assert(u == 0xFFFF);
+	assert(_nu_toupper("ﬂ", NU_UNLIMITED, nu_utf8_read, 0, &transform, 0) != 0);
+	assert(u == 0xFFFF);
 }
 
 /* simple test + internal tolower() includes Sigma casemapping */
@@ -178,4 +185,9 @@ void test__tolower() {
 	assert(_nu_tolower("a", NU_UNLIMITED, nu_utf8_read, &u, &transform, 0) != 0);
 	assert(transform == 0);
 	assert(u == 0x0061);
+
+	/* check optional pointer to transformed codepoint */
+	u = 0xFFFF;
+	assert(_nu_tolower("Σ", NU_UNLIMITED, nu_utf8_read, 0, &transform, 0) != 0);
+	assert(u == 0xFFFF);
 }

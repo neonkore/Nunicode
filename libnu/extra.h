@@ -93,6 +93,11 @@ NU_EXPORT
 ssize_t nu_strtransformlen(const char *encoded, nu_read_iterator_t read,
 	nu_transformation_t transform, nu_read_iterator_t transform_read);
 
+NU_EXPORT
+ssize_t _nu_strtransformlen(const char *encoded, nu_read_iterator_t read,
+	nu_transform_read_t transform, nu_read_iterator_t transform_read,
+	void *context);
+
 #endif /* NU_WITH_Z_EXTRA */
 
 #ifdef NU_WITH_N_EXTRA
@@ -128,6 +133,11 @@ int nu_transformnstr(const char *source, size_t max_len, char *dest,
 NU_EXPORT
 ssize_t nu_strtransformnlen(const char *encoded, size_t max_len, nu_read_iterator_t read,
 	nu_transformation_t transform, nu_read_iterator_t transform_read);
+
+NU_EXPORT
+ssize_t _nu_strtransformnlen(const char *encoded, size_t max_len, nu_read_iterator_t read,
+	nu_transform_read_t transform, nu_read_iterator_t transform_read,
+	void *context);
 
 #endif /* NU_WITH_N_EXTRA */
 

@@ -56,11 +56,12 @@ static int _nu_transformstr(const char *source, const char *limit, char *dest, n
 	return 0;
 }
 
-static ssize_t _nu_strtransformnlen(const char *encoded, const char *limit,
+static ssize_t _nu_strtransformnlen_unconditional(const char *encoded, const char *limit,
 	nu_read_iterator_t read, nu_transformation_t transform, nu_read_iterator_t transform_read) {
 
 	ssize_t unicode_len = 0;
 	const char *p = encoded;
+
 	while (p < limit) {
 		uint32_t u;
 		p = read(p, &u);
@@ -70,6 +71,43 @@ static ssize_t _nu_strtransformnlen(const char *encoded, const char *limit,
 		}
 
 		const char *map = transform(u);
+
+		if (map == 0) {
+			++unicode_len;
+			continue;
+		}
+
+		uint32_t mu = 0;
+		while (1) {
+			map = transform_read(map, &mu);
+
+			if (mu == 0) {
+				break;
+			}
+
+			++unicode_len;
+		}
+	}
+
+	return unicode_len;
+}
+
+static ssize_t _nu_strtransformnlen_internal(const char *encoded, const char *limit,
+	nu_read_iterator_t read, nu_transform_read_t it, nu_read_iterator_t transform_read,
+	void *context) {
+
+	ssize_t unicode_len = 0;
+	const char *p = encoded;
+
+	while (p < limit) {
+		const char *map = 0;
+		uint32_t u = 0;
+
+		p = it(p, limit, read, &u, &map, context);
+
+		if (u == 0) {
+			break;
+		}
 
 		if (map == 0) {
 			++unicode_len;
@@ -110,8 +148,15 @@ int nu_transformstr(const char *source, char *dest,
 
 ssize_t nu_strtransformlen(const char *encoded, nu_read_iterator_t read,
 	nu_transformation_t transform, nu_read_iterator_t transform_read) {
-	return _nu_strtransformnlen(encoded, NU_UNLIMITED, read,
-		transform, transform_read);
+	return _nu_strtransformnlen_unconditional(encoded, NU_UNLIMITED,
+		read, transform, transform_read);
+}
+
+ssize_t _nu_strtransformlen(const char *encoded, nu_read_iterator_t read,
+	nu_transform_read_t transform, nu_read_iterator_t transform_read,
+	void *context) {
+	return _nu_strtransformnlen_internal(encoded, NU_UNLIMITED, read,
+		transform, transform_read, context);
 }
 
 #endif /* NU_WITH_Z_EXTRA */
@@ -135,8 +180,15 @@ int nu_transformnstr(const char *source, size_t max_len, char *dest,
 
 ssize_t nu_strtransformnlen(const char *encoded, size_t max_len, nu_read_iterator_t read,
 	nu_transformation_t transform, nu_read_iterator_t transform_read) {
-	return _nu_strtransformnlen(encoded, encoded + max_len, read,
+	return _nu_strtransformnlen_unconditional(encoded, encoded + max_len, read,
 		transform, transform_read);
+}
+
+ssize_t _nu_strtransformnlen(const char *encoded, size_t max_len, nu_read_iterator_t read,
+	nu_transform_read_t transform, nu_read_iterator_t transform_read,
+	void *context) {
+	return _nu_strtransformnlen_internal(encoded, encoded + max_len, read,
+		transform, transform_read, context);
 }
 
 #endif /* NU_WITH_N_EXTRA */

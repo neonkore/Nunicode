@@ -92,3 +92,36 @@ void test_strtransformnlen() {
 	assert(nu_strtransformnlen("Maße", 3, nu_utf8_read,
 		nu_toupper, NU_CASEMAP_DECODING_FUNCTION) == 4);
 }
+
+void test__strtransformlen() { /* test to check basic functions and valgrind output */
+	/* "ΔΙΆΛΕΚΤΟΣ" - 18 bytes, "διάλεκτος" - 9 codepoints */
+
+	assert(_nu_strtransformlen("ΔΙΆΛΕΚΤΟΣ", nu_utf8_read,
+		_nu_tolower, NU_CASEMAP_DECODING_FUNCTION, 0) == 9);
+	assert(_nu_strtransformlen("ΔΙΆΛΕΚΤΟΣ ", nu_utf8_read,
+		_nu_tolower, NU_CASEMAP_DECODING_FUNCTION, 0) == 10);
+}
+
+void test__strtransformnlen() {
+	/* test to check boundaries and valgrind output
+	 * "ΔΙΆΛΕΚΤΟΣ" - 18 bytes, "διάλεκτος" - 9 codepoints */
+
+	assert(_nu_strtransformnlen("ΔΙΆΛΕΚΤΟΣ", 18, nu_utf8_read,
+		_nu_tolower, NU_CASEMAP_DECODING_FUNCTION, 0) == 9);
+	assert(_nu_strtransformnlen("ΔΙΆΛΕΚΤΟΣ ", 20, nu_utf8_read,
+		_nu_tolower, NU_CASEMAP_DECODING_FUNCTION, 0) == 10);
+	assert(_nu_strtransformnlen("ΔΙΆΛΕΚΤΟΣ ", 18, nu_utf8_read,
+		_nu_tolower, NU_CASEMAP_DECODING_FUNCTION, 0) == 9);
+}
+
+void test__strtransformlen_internal_external() { /* test to compare _nu_toupper() to nu_toupper() */
+	assert(_nu_strtransformlen("Maße", nu_utf8_read,
+		_nu_toupper, NU_CASEMAP_DECODING_FUNCTION, 0)
+	== nu_strtransformlen("Maße", nu_utf8_read,
+		nu_toupper, NU_CASEMAP_DECODING_FUNCTION));
+
+	assert(_nu_strtransformnlen("Maße", 5, nu_utf8_read,
+		_nu_toupper, NU_CASEMAP_DECODING_FUNCTION, 0)
+	== nu_strtransformnlen("Maße", 5, nu_utf8_read,
+		nu_toupper, NU_CASEMAP_DECODING_FUNCTION));
+}
