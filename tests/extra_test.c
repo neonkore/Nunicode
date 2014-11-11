@@ -71,9 +71,10 @@ void test_transformnstr() {
 	assert(output[3] != 0);
 	assert(output[4] != 0);
 
-	assert(nu_transformnstr((const char *)input, 2, output, nu_cesu8_read, nu_utf8_write) == 0);
+	assert(nu_transformnstr((const char *)input, sizeof(input), output, nu_cesu8_read, nu_utf8_write) == 0);
 	assert(output[3] != 0);
-	assert(output[4] != 0); /* transform stopped on trailing 0 */
+	assert(output[4] == 0);
+	assert(output[5] != 0); /* transform stopped on trailing 0 */
 }
 
 void test_strtransformlen() {

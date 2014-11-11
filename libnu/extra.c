@@ -48,7 +48,7 @@ static int _nu_transformstr(const char *source, const char *limit, char *dest, n
 		p = read_it(p, &u);
 		d = write_it(u, d);
 
-		if (*p == 0) {
+		if (u == 0) {
 			break;
 		}
 	}
