@@ -10,17 +10,21 @@ const char* nu_tofold(uint32_t codepoint) {
 		NU_TOFOLD_VALUES_C, NU_TOFOLD_VALUES_I, NU_TOFOLD_COMBINED);
 }
 
-const char* _nu_tofold(const char *encoded, const char *limit,
-	nu_read_iterator_t read, const char **transform,
+const char* _nu_tofold(const char *encoded, const char *limit, nu_read_iterator_t read,
+	uint32_t *u, const char **transform,
 	void *context) {
 
 	(void)(limit);
 	(void)(context);
 
-	uint32_t u = 0;
-	const char *np = read(encoded, &u);
+	uint32_t _u = 0;
+	const char *np = read(encoded, &_u);
 
-	*transform = nu_tofold(u);
+	*transform = nu_tofold(_u);
+
+	if (u != 0) {
+		*u = _u;
+	}
 
 	return np;
 }

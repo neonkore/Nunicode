@@ -67,8 +67,8 @@ typedef const char* (*nu_transformation_t)(uint32_t codepoint);
  * @see _nu_tolower
  */
 typedef const char* (*nu_transform_read_t)(
-	const char *encoded, const char *encoded_limit,
-	nu_read_iterator_t read, const char **transformed,
+	const char *encoded, const char *limit, nu_read_iterator_t read,
+	uint32_t *u, const char **transformed,
 	void *context);
 
 #if (defined NU_WITH_Z_STRINGS) || (defined NU_WITH_N_STRINGS)

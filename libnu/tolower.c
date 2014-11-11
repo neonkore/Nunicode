@@ -15,14 +15,18 @@ const char* nu_tolower(uint32_t codepoint) {
 		NU_TOLOWER_VALUES_C, NU_TOLOWER_VALUES_I, NU_TOLOWER_COMBINED);
 }
 
-const char* _nu_tolower(const char *encoded, const char *limit,
-	nu_read_iterator_t read, const char **transform,
+const char* _nu_tolower(const char *encoded, const char *limit, nu_read_iterator_t read,
+	uint32_t *u, const char **transform,
 	void *context) {
 
 	(void)(context);
 
-	uint32_t u = 0;
-	const char *np = read(encoded, &u);
+	uint32_t _u = 0;
+	const char *np = read(encoded, &_u);
+
+	if (u != 0) {
+		*u = _u;
+	}
 
 	/* handling of 0x03A3 ('Σ')
 	 *
@@ -31,7 +35,7 @@ const char* _nu_tolower(const char *encoded, const char *limit,
 
 	assert(NU_CASEMAP_DECODING_FUNCTION == nu_utf8_read);
 
-	if (u == 0x03A3) {
+	if (_u == 0x03A3) {
 		if (np >= limit) {
 			*transform = __nu_final_sigma;
 			return np;
@@ -46,7 +50,7 @@ const char* _nu_tolower(const char *encoded, const char *limit,
 		}
 	}
 
-	*transform = nu_tolower(u);
+	*transform = nu_tolower(_u);
 
 	return np;
 }

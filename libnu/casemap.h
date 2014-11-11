@@ -13,7 +13,7 @@ extern "C" {
 #endif
 
 /** Read (decoding) function for use with transformation results of
- * casemapping functions. E.g. 
+ * casemapping functions. E.g.
  * NU_CASEMAP_DECODING_FUNCTION(nu_tolower(0x0041));
  * will read first codepoint of 'A' transformed to lower case.
  */
@@ -44,13 +44,14 @@ const char* nu_toupper(uint32_t codepoint);
  * @param encoded pointer to encoded string
  * @param limit memory limit of encoded string or NU_UNLIMITED
  * @param read read (decoding) function
+ * @param u (optional) codepoint which was (or wasn't) transformed
  * @param transform output value of codepoint transformed into uppercase or 0
  * if mapping doesn't exist. Can't be NULL.
  * @param context not used
  */
 NU_EXPORT
-const char* _nu_toupper(const char *encoded, const char *limit,
-	nu_read_iterator_t read, const char **transform,
+const char* _nu_toupper(const char *encoded, const char *limit, nu_read_iterator_t read,
+	uint32_t *u, const char **transform,
 	void *context);
 
 #endif /* NU_WITH_TOUPPER */
@@ -74,13 +75,14 @@ const char* nu_tolower(uint32_t codepoint);
  * @param encoded pointer to encoded string
  * @param limit memory limit of encoded string or NU_UNLIMITED
  * @param read read (decoding) function
+ * @param u (optional) codepoint which was (or wasn't) transformed
  * @param transform output value of codepoint transformed into lowercase or 0
  * if mapping doesn't exist. Can't be NULL.
  * @param context not used
  */
 NU_EXPORT
-const char* _nu_tolower(const char *encoded, const char *limit,
-	nu_read_iterator_t read, const char **transform,
+const char* _nu_tolower(const char *encoded, const char *limit, nu_read_iterator_t read,
+	uint32_t *u, const char **transform,
 	void *context);
 
 #endif /* NU_WITH_TOLOWER */
@@ -104,13 +106,14 @@ const char* nu_tofold(uint32_t codepoint);
  * @param encoded pointer to encoded string
  * @param limit memory limit of encoded string or NU_UNLIMITED
  * @param read read (decoding) function
+ * @param u (optional) codepoint which was (or wasn't) transformed
  * @param transform output value of casefolded codepoint or 0 if mapping
  * doesn't exist. Can't be NULL.
  * @param context not used
  */
 NU_EXPORT
-const char* _nu_tofold(const char *encoded, const char *limit,
-	nu_read_iterator_t read, const char **transform,
+const char* _nu_tofold(const char *encoded, const char *limit, nu_read_iterator_t read,
+	uint32_t *u, const char **transform,
 	void *context);
 
 #endif /* NU_WITH_TOFOLD */
