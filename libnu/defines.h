@@ -30,6 +30,10 @@
  * @ingroup defines
  */
 #define NU_UNICODE_VERSION 700
+/** Special limit value to unset limit on string. Used internally by nunicode.
+ *
+ * @ingroup defines
+ */
 #define NU_UNLIMITED ((const void *)(-1))
 
 #endif /* NU_DEFINES_H */
