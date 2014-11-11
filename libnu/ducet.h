@@ -23,7 +23,7 @@ extern "C" {
  * @param codepoint codepoint
  * @param weight previous weight for compound weight (not used here)
  * @param context pointer passed to nu_strcoll()
- * @return comparable weight of the codepoint or (uint32_t)(-1)
+ * @return comparable weight of the codepoint
  */
 NU_EXPORT
 int32_t nu_ducet_weight(uint32_t codepoint, int32_t *weight, void *context);

@@ -12,6 +12,11 @@
 extern "C" {
 #endif
 
+/** Read (decoding) function for use with transformation results of
+ * casemapping functions. E.g. 
+ * NU_CASEMAP_DECODING_FUNCTION(nu_tolower(0x0041));
+ * will read first codepoint of 'A' transformed to lower case.
+ */
 #define NU_CASEMAP_DECODING_FUNCTION NU_UDB_DECODING_FUNCTION
 
 /** Casemap codepoint
@@ -40,7 +45,7 @@ const char* nu_toupper(uint32_t codepoint);
  * @param limit memory limit of encoded string or NU_UNLIMITED
  * @param read read (decoding) function
  * @param transform output value of codepoint transformed into uppercase or 0
- * if mapping doesn't exist
+ * if mapping doesn't exist. Can't be NULL.
  * @param context not used
  */
 NU_EXPORT
@@ -70,7 +75,7 @@ const char* nu_tolower(uint32_t codepoint);
  * @param limit memory limit of encoded string or NU_UNLIMITED
  * @param read read (decoding) function
  * @param transform output value of codepoint transformed into lowercase or 0
- * if mapping doesn't exist
+ * if mapping doesn't exist. Can't be NULL.
  * @param context not used
  */
 NU_EXPORT
@@ -100,7 +105,7 @@ const char* nu_tofold(uint32_t codepoint);
  * @param limit memory limit of encoded string or NU_UNLIMITED
  * @param read read (decoding) function
  * @param transform output value of casefolded codepoint or 0 if mapping
- * doesn't exist
+ * doesn't exist. Can't be NULL.
  * @param context not used
  */
 NU_EXPORT
