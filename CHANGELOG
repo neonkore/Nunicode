@@ -1,3 +1,7 @@
+1.6
+
+[*] fixed bug when nu_transformstr() might have went over trailing U+0000
+
 1.5
 
 [+] conformant UTF-8, UTF-16, UTF-32 validation
