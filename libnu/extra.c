@@ -11,7 +11,7 @@ static int _nu_readstr(const char *encoded, const char *limit, uint32_t *unicode
 	while (p < limit) {
 		p = it(p, unicode + i);
 
-		if (*p == 0) {
+		if (*(unicode + i) == 0) {
 			break;
 		}
 

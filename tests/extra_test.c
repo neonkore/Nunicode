@@ -4,12 +4,15 @@
 #include <libnu/libnu.h>
 
 void test_readstr() {
-	const char input[] = "привет";
+	const char input[] = "\x04\x3F\x04\x40\x04\x38\x04\x32"
+		"\x04\x35\x04\x42\x00\x20\x04\x3C"
+		"\x04\x38\x04\x40"; /* "привет мир" in UTF-16BE, no BOM */
 	uint32_t u[sizeof(input)] = { 0 };
 
-	assert(nu_readstr(input, u, nu_utf8_read) == 0);
-	assert(u[5] != 0);
-	assert(u[6] == 0);
+	assert(nu_readstr(input, u, nu_utf16be_read) == 0);
+
+	assert(u[9] != 0);
+	assert(u[10] == 0);
 }
 
 void test_writestr() {
