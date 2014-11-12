@@ -93,6 +93,19 @@ NU_EXPORT
 ssize_t nu_strtransformlen(const char *encoded, nu_read_iterator_t read,
 	nu_transformation_t transform, nu_read_iterator_t transform_read);
 
+/** Get decoded string codepoint length taking into account transformation
+ * (internal version)
+ *
+ * @ingroup extra
+ * @param encoded encoded string
+ * @param read read (decode) function
+ * @param transform transformation to take into account
+ * @param transform_read transformation result decoding function
+ * @param context pointer passed to each call of transformation
+ *
+ * @see _nu_tolower
+ * @see _nu_toupper
+ */
 NU_EXPORT
 ssize_t _nu_strtransformlen(const char *encoded, nu_read_iterator_t read,
 	nu_transform_read_t transform, nu_read_iterator_t transform_read,
@@ -134,6 +147,10 @@ NU_EXPORT
 ssize_t nu_strtransformnlen(const char *encoded, size_t max_len, nu_read_iterator_t read,
 	nu_transformation_t transform, nu_read_iterator_t transform_read);
 
+/**
+ * @ingroup extra
+ * @see _nu_strtransformlen
+ */
 NU_EXPORT
 ssize_t _nu_strtransformnlen(const char *encoded, size_t max_len, nu_read_iterator_t read,
 	nu_transform_read_t transform, nu_read_iterator_t transform_read,
