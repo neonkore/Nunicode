@@ -24,7 +24,9 @@ int nu_utf32be_validread(const char *p, size_t max_len) {
 #ifdef NU_WITH_UTF32BE_WRITER
 
 char* nu_utf32be_write(uint32_t unicode, char *utf32) {
-	nu_htobel(unicode, utf32);
+	if (utf32 != 0) {
+		nu_htobel(unicode, utf32);
+	}
 
 	return utf32 + 4;
 }
