@@ -30,6 +30,9 @@ void test_utf32be_revread() {
 void test_utf32be_encoding() {
 	char p[32] = { 0 };
 
+	/* skip output */
+	assert(nu_utf32be_write(0x0067, 0) && memcmp("", p, 1) == 0);
+
 	assert(nu_utf32be_write(0x0067, p) && memcmp("\x0\x00\x00\x67" /* g */, p, 4) == 0);
 	assert(nu_utf32be_write(0x0205, p) && memcmp("\x00\x00\x02\x05" /* ȅ */, p, 4) == 0);
 	assert(nu_utf32be_write(0x20AC, p) && memcmp("\x00\x00\x20\xAC" /* € */, p, 4) == 0);

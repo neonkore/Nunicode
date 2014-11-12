@@ -15,21 +15,25 @@ int main() {
 
 	printf(">>> input: %u bytes\n", (unsigned)sizeof(input));
 
-	nu_utf16_bom_t bom = { 0 };
+	nu_utf16_bom_t bom;
+	memset(&bom, 0, sizeof(bom));
+
 	const char *encoded = nu_utf16_read_bom(input, &bom);
 
 	ssize_t u_len = nu_strnlen(input, sizeof(input), bom.read);
-	printf("--- decoded utf16 length: %d\n", (int)u_len);
+	printf("--- decoded utf16 length (bytes): %d\n", (int)u_len);
 
 	ssize_t u8_len = u_len * 4;
-	printf("--- encoded utf8 max length: %d\n", (int)u8_len);
+	printf("--- encoded utf8 max length (bytes): %d\n", (int)u8_len);
 
 	char *utf8 = malloc(u8_len + 1);
 	memset(utf8, 0, u8_len + 1);
 
-	nu_transformnstr(encoded, sizeof(input) - sizeof(NU_UTF16_BOM),
+	nu_transformnstr(encoded, sizeof(input) - 1 - sizeof(NU_UTF16_BOM),
 		utf8, bom.read, nu_utf8_write);
 	printf("<<< encoded utf8: %s\n", utf8);
+
+	free(utf8);
 
 	return 0;
 }

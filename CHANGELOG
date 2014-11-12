@@ -1,3 +1,11 @@
+1.6
+
+[*] fixed bug when trailing U+0000 might not have been detected correctly,
+    affected functions: (extra) nu_transformstr(), nu_transformnstr(),
+    nu_readstr(), nu_readnstr(); (strings) nu_strlen(), nu_strnlen()
+[*] nu_utf32be_write() and nu_utf32le_write() will skip actual writting
+    if pointer to output is 0 (NULL)
+
 1.5
 
 [+] conformant UTF-8, UTF-16, UTF-32 validation
