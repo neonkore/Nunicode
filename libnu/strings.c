@@ -8,11 +8,12 @@ static ssize_t _nu_strlen(const char *encoded, const char *limit, nu_read_iterat
 
 	const char *p = encoded;
 	while (p < limit) {
-		if (*p == 0) {
+		uint32_t u = 0;
+		p = it(p, &u);
+
+		if (u == 0) {
 			break;
 		}
-
-		p = it(p, 0);
 
 		++len;
 	}
@@ -29,6 +30,8 @@ static ssize_t _nu_bytelen(const uint32_t *unicode, const uint32_t *limit, nu_wr
 			break;
 		}
 
+		/* nu_write_iterator_t will return offset relative to 0
+		 * which is effectively bytes length of codepoint */
 		size_t byte_len = (size_t)it(*p, 0);
 		len += byte_len;
 
