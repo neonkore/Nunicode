@@ -1,10 +1,12 @@
 1.6
 
-[*] fixed bug when trailing U+0000 might not have been detected correctly,
-    affected functions: (extra) nu_transformstr(), nu_transformnstr(),
-    nu_readstr(), nu_readnstr(); (strings) nu_strlen(), nu_strnlen()
-[*] nu_utf32be_write() and nu_utf32le_write() will skip actual writting
-    if pointer to output is 0 (NULL)
+[*] fixed bug when trailing U+0000 might not have been detected correctly
+    in big-endian encodings, affected functions: (extra) nu_transformstr(),
+    nu_transformnstr(), nu_readstr(), nu_readnstr(); (strings) nu_strlen(),
+    nu_strnlen()
+[*] nu_utf32be_write() and nu_utf32le_write() will skip actual writing
+    to memory if pointer to output is 0/NULL (in confrormance to all other
+    encoding functions)
 
 1.5
 
