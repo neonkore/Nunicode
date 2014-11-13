@@ -20,6 +20,7 @@ set(TESTS_SRC
 	utf32le_test.c
 	utf8_test.c
 	validation_test.c
+	version_test.c
 )
 
 include_directories(${CMAKE_SOURCE_DIR})

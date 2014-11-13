@@ -17,6 +17,7 @@ set(LIBNU_SRC
 	utf32le.c
 	utf8.c
 	validate.c
+	version.c
 )
 
 add_library(nu STATIC ${LIBNU_SRC})
