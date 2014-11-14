@@ -6,6 +6,10 @@
 /** @defgroup other Other
  */
 
+#if defined (__cplusplus) || defined (c_plusplus)
+extern "C" {
+#endif
+
 /** This define holds human-readable version of nunicode
  *
  * @ingroup defines
@@ -19,5 +23,9 @@
  */
 NU_EXPORT
 const char* nu_version(void);
+
+#if defined (__cplusplus) || defined (c_plusplus)
+}
+#endif
 
 #endif /* NU_VERSION_H */
