@@ -427,5 +427,5 @@ Please refer to documentation in [config.h][].
 * [aleksey.tulinov@gmail.com][]
 
 [aleksey.tulinov@gmail.com]: mailto:aleksey.tulinov@gmail.com
-[nunicode-users@groups.google.com]: mailto: https://groups.google.com/forum/#!forum/nunicode-users
+[nunicode-users@groups.google.com]: mailto:nunicode-users@groups.google.com
 [nunicode-users]: https://groups.google.com/forum/#!forum/nunicode-users
