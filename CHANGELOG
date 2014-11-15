@@ -1,5 +1,8 @@
 1.6
 
+[+] introduced nu_version() fuction complementary to NU_VERSION define
+    in headers
+
 [*] fixed bug when trailing U+0000 might not have been detected correctly
     in big-endian encodings, affected functions: (extra) nu_transformstr(),
     nu_transformnstr(), nu_readstr(), nu_readnstr(); (strings) nu_strlen(),

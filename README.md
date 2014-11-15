@@ -19,7 +19,7 @@ What it doesn't do:
 * Unicode Collation Algorithm (see [notes][])
 * Unicode [normalization forms][]: NFD, NFC, NFKD, NFKC
 
-[notes]: #markdown-header-localization-collation-tailoring
+[notes]: #markdown-header-strings-collation
 [normalization forms]: http://unicode.org/reports/tr15/#Norm_Forms
 
 Conformance:
@@ -317,8 +317,7 @@ Supported encodings: UTF-8, UTF-16, UTF-16LE, UTF-16BE.
 Extension is only 220Kb in size approximately.
 
 It can be compiled into shared library and loaded with
-``sqlite3_load_extension()`` ([doc][]) (see
-*sqlite3/samples/loadextension.c*) or it can be linked statically into
+``sqlite3_load_extension()`` ([doc][]) (see [samples/loadextension.c][]) or it can be linked statically into
 your application or library and enabled for every new SQLite3 connection.
 
 Latter is recommended way of using it, all you need to enable this
@@ -328,9 +327,11 @@ extension is the following call:
     nunicode_sqlite3_init(0);
 
 After this point, every new connection will have nunicode extension
-enabled. See *sqlite3/samples/autoextension.c* for the reference.
+enabled. See [samples/autoextension.c][] for the reference.
 
 [doc]: http://www.sqlite.org/c3ref/load_extension.html
+[samples/loadextension.c]: https://bitbucket.org/alekseyt/nunicode/src/master/sqlite3/samples/loadextension.c
+[samples/autoextension.c]: https://bitbucket.org/alekseyt/nunicode/src/master/sqlite3/samples/autoextension.c
 
 ### extension performance
 
@@ -422,6 +423,9 @@ Please refer to documentation in [config.h][].
 
 ## Questions?
 
-[aleksey.tulinov@gmail.com][]
+* [nunicode-users@groups.google.com][] ([nunicode-users][])
+* [aleksey.tulinov@gmail.com][]
 
 [aleksey.tulinov@gmail.com]: mailto:aleksey.tulinov@gmail.com
+[nunicode-users@groups.google.com]: mailto: https://groups.google.com/forum/#!forum/nunicode-users
+[nunicode-users]: https://groups.google.com/forum/#!forum/nunicode-users
