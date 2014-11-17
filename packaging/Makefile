@@ -19,8 +19,8 @@ default: all
 all: clean version doc_zip win32_zip i386_bz amd64_bz
 
 version:
-	echo "#define NU_VERSION \"$(VERSION)\"" >../libnu/version.h
-	echo "#define NU_SQLITE3_EXT_VERSION \"$(VERSION)\"" >../sqlite3/version.h
+	cat ../libnu/version.h | sed -r -e "s|\"custom\"|\"$(VERSION)\"|" >../libnu/version.h
+	cat ../sqlite3/version.h | sed -r -e "s|\"custom\"|\"$(VERSION)\"|" > ../sqlite3/version.h
 
 win32_zip:
 	mkdir -p $(WIN32_BUILD)

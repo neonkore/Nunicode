@@ -91,6 +91,7 @@ void test_compoundcmp_strncoll();
 void test_special_casing();
 void test_folding_priority();
 void test_ducet_max_weight_ordering();
+void test_version_check();
 
 testcase cases[] = {
 	test_utf8_decoding,
@@ -203,6 +204,8 @@ testcase cases[] = {
 	test_special_casing,
 	test_folding_priority,
 	test_ducet_max_weight_ordering,
+
+	test_version_check,
 };
 
 int main() {
