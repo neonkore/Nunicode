@@ -1,7 +1,12 @@
-1.6
+1.5.1
 
 [+] introduced nu_version() fuction complementary to NU_VERSION define
     in headers
+[+] introduced _nu_tolower(), _nu_toupper(), _nu_tofold() for conditional
+    case mapping and folding
+[+] introduced _nu_transform_read_t for simultaneous string decoding
+    and transformation
+[+] introduced _nu_strtransformlen() complementary to _nu_transform_read_t
 
 [*] fixed bug when trailing U+0000 might not have been detected correctly
     in big-endian encodings, affected functions: (extra) nu_transformstr(),
@@ -10,6 +15,7 @@
 [*] nu_utf32be_write() and nu_utf32le_write() will skip actual writing
     to memory if pointer to output is 0/NULL (in confrormance to all other
     encoding functions)
+[*] documentation updates
 
 1.5
 
