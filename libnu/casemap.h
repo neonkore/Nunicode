@@ -46,8 +46,10 @@ const char* nu_toupper(uint32_t codepoint);
  * @param read read (decoding) function
  * @param u (optional) codepoint which was (or wasn't) transformed
  * @param transform output value of codepoint transformed into uppercase or 0
- * if mapping doesn't exist. Can't be NULL.
+ * if mapping doesn't exist. Can't be NULL, supposed to be decoded with
+ * NU_CASEMAP_DECODING_FUNCTION
  * @param context not used
+ * @return pointer to the next codepoint in string
  */
 NU_EXPORT
 const char* _nu_toupper(const char *encoded, const char *limit, nu_read_iterator_t read,
@@ -67,9 +69,10 @@ const char* _nu_toupper(const char *encoded, const char *limit, nu_read_iterator
 NU_EXPORT
 const char* nu_tolower(uint32_t codepoint);
 
-/** Return lowercase value of codepoint. Will transform uppercase Signa ('Σ')
- * into final sigma ('ς') if it occurs at string boundary or
- * followed by U+0000.
+/** Return lowercase value of codepoint. Will transform uppercase
+ * Sigma ('Σ') into final sigma ('ς') if it occurs at string boundary or
+ * followed by U+0000. Might require single read-ahead when
+ * encountering Sigma.
  *
  * @ingroup transformations_internal
  * @param encoded pointer to encoded string
@@ -77,8 +80,10 @@ const char* nu_tolower(uint32_t codepoint);
  * @param read read (decoding) function
  * @param u (optional) codepoint which was (or wasn't) transformed
  * @param transform output value of codepoint transformed into lowercase or 0
- * if mapping doesn't exist. Can't be NULL.
+ * if mapping doesn't exist. Can't be NULL, supposed to be decoded with
+ * NU_CASEMAP_DECODING_FUNCTION
  * @param context not used
+ * @return pointer to the next codepoint in string
  */
 NU_EXPORT
 const char* _nu_tolower(const char *encoded, const char *limit, nu_read_iterator_t read,
@@ -107,9 +112,11 @@ const char* nu_tofold(uint32_t codepoint);
  * @param limit memory limit of encoded string or NU_UNLIMITED
  * @param read read (decoding) function
  * @param u (optional) codepoint which was (or wasn't) transformed
- * @param transform output value of casefolded codepoint or 0 if mapping
- * doesn't exist. Can't be NULL.
+ * @param transform output value of casefolded codepoint or 0
+ * if mapping doesn't exist. Can't be NULL, supposed to be decoded with
+ * NU_CASEMAP_DECODING_FUNCTION
  * @param context not used
+ * @return pointer to the next codepoint in string
  */
 NU_EXPORT
 const char* _nu_tofold(const char *encoded, const char *limit, nu_read_iterator_t read,
