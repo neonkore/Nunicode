@@ -71,10 +71,6 @@ typedef const char* (*nu_transform_read_t)(
 	uint32_t *u, const char **transformed,
 	void *context);
 
-#if (defined NU_WITH_Z_STRINGS) || (defined NU_WITH_N_STRINGS)
-
-#endif /* NU_WITH_Z_STRINGS NU_WITH_N_STRINGS */
-
 #ifdef NU_WITH_Z_STRINGS
 
 /** Get decoded string codepoints length
@@ -110,6 +106,11 @@ ssize_t nu_bytelen(const uint32_t *unicode, nu_write_iterator_t it);
  */
 NU_EXPORT
 ssize_t nu_strbytelen(const char *encoded, nu_read_iterator_t it);
+
+NU_EXPORT
+ssize_t nu_sprint(const char *encoded, nu_read_iterator_t read_it,
+	char *dest, size_t size, nu_write_iterator_t write_it,
+	nu_transformation_t transform, nu_read_iterator_t transform_read);
 
 #endif /* NU_WITH_Z_STRINGS */
 

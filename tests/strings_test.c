@@ -42,3 +42,36 @@ void test_strbytelen() {
 	assert(nu_strbytelen("привет", nu_utf8_read) == 12);
 	assert(nu_strbytelen("\x04\x30\x00\x20\x04\x38\x00\x20\x04\x31\x00\x00", nu_utf16be_read) == 5 * 2); /* "а и б" in UTF-16BE, no BOM */
 }
+
+void test_sprint() {
+	const char i[] = "привет"; /* 2-byte Unicode codepoints */
+	char o[sizeof(i)] = { 0 };
+
+	/* order matters, each function overwrites output buffer
+	 */
+
+	ssize_t done = nu_sprint(i, nu_utf8_read,
+		o, sizeof(i), nu_utf8_write,
+		nu_toupper, NU_CASEMAP_DECODING_FUNCTION);
+	assert(done == sizeof(i)); /* same number of bytes written */
+	assert(memcmp(o, "ПРИВЕТ", done) == 0);
+
+	/* w/o transform */
+	done = nu_sprint(i, nu_utf8_read,
+		o, sizeof(i), nu_utf8_write, 0, 0);
+	assert(done == sizeof(i));
+	assert(memcmp(o, i, done) == 0);
+
+	/* test limit */
+	done = nu_sprint(i, nu_utf8_read,
+		o, 3 * 2, nu_utf8_write,
+		nu_toupper, NU_CASEMAP_DECODING_FUNCTION);
+	assert(done == sizeof(i)); /* number larger than limit indicates that string was truncated */
+	assert(memcmp(o, "ПРИВЕТ", 3 * 2) == 0);
+
+	/* test limit w/o transform */
+	done = nu_sprint(i, nu_utf8_read,
+		o, 3 * 2, nu_utf8_write, 0, 0);
+	assert(done == sizeof(i));
+	assert(memcmp(o, i, 3 * 2) == 0);
+}
