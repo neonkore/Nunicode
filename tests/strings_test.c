@@ -102,3 +102,20 @@ void test_sprint_estimates() {
 	assert(memcmp(o, "MASSE", done) == 0);
 	free(o);
 }
+
+void test_snprint() {
+	const char i[] = "привет"; /* 2-byte Unicode codepoints */
+	char o[sizeof(i)] = { 0 };
+
+	ssize_t done = nu_snprint(i, 3 * 2, nu_utf8_read,
+		o, sizeof(i), nu_utf8_write,
+		nu_toupper, NU_CASEMAP_DECODING_FUNCTION);
+	assert(done == 3 * 2);
+	assert(memcmp(o, "ПРИВЕТ", 3 * 2) == 0);
+
+	done = nu_snprint(i, 1024, nu_utf8_read,
+		o, sizeof(i), nu_utf8_write,
+		nu_toupper, NU_CASEMAP_DECODING_FUNCTION);
+	assert(done == sizeof(i)); /* max number of bytes written */
+	assert(memcmp(o, "ПРИВЕТ", sizeof(i)) == 0);
+}

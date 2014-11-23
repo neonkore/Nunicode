@@ -131,6 +131,10 @@ NU_EXPORT
 ssize_t nu_bytenlen(const uint32_t *unicode, size_t max_len,
 	nu_write_iterator_t it);
 
+ssize_t nu_snprint(const char *encoded, size_t max_len, nu_read_iterator_t read_it,
+	char *dest, size_t size, nu_write_iterator_t write_it,
+	nu_transformation_t transform, nu_read_iterator_t transform_read);
+
 #endif /* NU_WITH_N_STRINGS */
 
 #if defined (__cplusplus) || defined (c_plusplus)
