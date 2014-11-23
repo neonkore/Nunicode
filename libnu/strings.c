@@ -107,18 +107,13 @@ static ssize_t _nu_sprint(const char *source, const char *limit, nu_read_iterato
 				d = write_it(u, d);
 			}
 
-			if (u != 0) {
-				done += len;
-			}
+			done += len;
 		}
 
 		if (u == 0) {
 			break;
 		}
 	}
-
-	/* append length of terminating 0 */
-	done += (size_t)write_it(0, 0);
 
 	return done;
 }
