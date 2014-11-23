@@ -50,6 +50,7 @@ void test__strtransformlen();
 void test__strtransformnlen();
 void test__strtransformlen_internal_external();
 void test_sprint();
+void test_sprint_estimates();
 void test_validation_utf8();
 void test_validation_utf8_core_spec();
 void test_validation_utf8_core_spec_3_7();
@@ -154,6 +155,7 @@ testcase cases[] = {
 	test__strtransformnlen,
 	test__strtransformlen_internal_external,
 	test_sprint,
+	test_sprint_estimates,
 
 	test_validation_utf8,
 	test_validation_utf8_core_spec,

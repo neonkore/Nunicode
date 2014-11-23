@@ -1,4 +1,5 @@
 #include <assert.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include <libnu/libnu.h>
@@ -74,4 +75,30 @@ void test_sprint() {
 		o, 3 * 2, nu_utf8_write, 0, 0);
 	assert(done == sizeof(i));
 	assert(memcmp(o, i, 3 * 2) == 0);
+}
+
+void test_sprint_estimates() {
+	const char i[] = "Maße";
+
+	ssize_t need = nu_sprint(i, nu_utf8_read, 0, 0, nu_utf8_write, 0, 0);
+	assert(need == sizeof(i)); /* same number of bytes required */
+
+	char *o = malloc(need);
+	ssize_t done = nu_sprint(i, nu_utf8_read, o, need, nu_utf8_write, 0, 0);
+	assert(done == need);
+	assert(memcmp(i, o, done) == 0);
+	free(o);
+
+	/* w/ transform */
+	need = nu_sprint(i, nu_utf8_read, 0, 0, nu_utf8_write,
+		nu_toupper, NU_CASEMAP_DECODING_FUNCTION);
+	assert(need == sizeof(i));
+	assert(need == sizeof("MASSE")); /* different codepoints, same number of bytes */
+
+	o = malloc(need);
+	done = nu_sprint(i, nu_utf8_read, o, need, nu_utf8_write,
+		nu_toupper, NU_CASEMAP_DECODING_FUNCTION);
+	assert(done == need);
+	assert(memcmp(o, "MASSE", done) == 0);
+	free(o);
 }
