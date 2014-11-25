@@ -78,7 +78,7 @@ void test_sprint() {
 }
 
 void test_sprint_estimates() {
-	const char i[] = "Maße";
+	const char i[] = "maße";
 
 	ssize_t need = nu_sprint(i, nu_utf8_read, 0, 0, nu_utf8_write, 0, 0);
 	assert(need == sizeof(i)); /* same number of bytes required */
@@ -96,6 +96,7 @@ void test_sprint_estimates() {
 	assert(need == sizeof("MASSE")); /* different codepoints, same number of bytes */
 
 	o = malloc(need);
+	memset(o, 0, need);
 	done = nu_sprint(i, nu_utf8_read, o, need, nu_utf8_write,
 		nu_toupper, NU_CASEMAP_DECODING_FUNCTION);
 	assert(done == need);
@@ -118,4 +119,59 @@ void test_snprint() {
 		nu_toupper, NU_CASEMAP_DECODING_FUNCTION);
 	assert(done == sizeof(i)); /* max number of bytes written */
 	assert(memcmp(o, "ПРИВЕТ", sizeof(i)) == 0);
+}
+
+void test__sprint() {
+	const char i[] = "ПРИВЕТ"; /* 2-byte Unicode codepoints */
+	char o[sizeof(i)] = { 0 };
+
+	ssize_t done = _nu_sprint(i, nu_utf8_read,
+		o, sizeof(i), nu_utf8_write,
+		_nu_tolower, NU_CASEMAP_DECODING_FUNCTION, 0);
+	assert(done == sizeof(i)); /* same number of bytes written */
+	assert(memcmp(o, "привет", done) == 0);
+
+	memset(o, 0, sizeof(o));
+
+	/* test limit */
+	done = _nu_sprint(i, nu_utf8_read,
+		o, 3 * 2, nu_utf8_write,
+		_nu_tolower, NU_CASEMAP_DECODING_FUNCTION, 0);
+	assert(done == sizeof(i)); /* number larger than limit indicates that string was truncated */
+	assert(memcmp(o, "привет", 3 * 2) == 0);
+}
+
+void test__sprint_estimates() {
+	const char i[] = "MASSE";
+
+	/* always w/ transform */
+	ssize_t need = _nu_sprint(i, nu_utf8_read, 0, 0, nu_utf8_write,
+		_nu_tolower, NU_CASEMAP_DECODING_FUNCTION, 0);
+	assert(need == sizeof(i));
+	assert(need == sizeof("masse")); /* different codepoints, same number of bytes */
+
+	char *o = malloc(need);
+	memset(o, 0, need);
+	ssize_t done = _nu_sprint(i, nu_utf8_read, o, need, nu_utf8_write,
+		_nu_tolower, NU_CASEMAP_DECODING_FUNCTION, 0);
+	assert(done == need);
+	assert(memcmp(o, "masse", done) == 0);
+	free(o);
+}
+
+void test__snprint() {
+	const char i[] = "ПРИВЕТ"; /* 2-byte Unicode codepoints */
+	char o[sizeof(i)] = { 0 };
+
+	ssize_t done = _nu_snprint(i, 4 * 2, nu_utf8_read,
+		o, sizeof(i), nu_utf8_write,
+		_nu_tolower, NU_CASEMAP_DECODING_FUNCTION, 0);
+	assert(done == 4 * 2);
+	assert(memcmp(o, "привет", 4 * 2) == 0);
+
+	done = _nu_snprint(i, 1024, nu_utf8_read,
+		o, sizeof(i), nu_utf8_write,
+		_nu_tolower, NU_CASEMAP_DECODING_FUNCTION, 0);
+	assert(done == sizeof(i)); /* max number of bytes written */
+	assert(memcmp(o, "привет", sizeof(i)) == 0);
 }

@@ -60,7 +60,7 @@ static ssize_t _nu_strbytelen(const char *encoded, const char *limit, nu_read_it
 	return 0;
 }
 
-static ssize_t _nu_sprint(const char *source, const char *limit, nu_read_iterator_t read_it,
+static ssize_t __nu_sprint(const char *source, const char *limit, nu_read_iterator_t read_it,
 	char *dest, size_t size, nu_write_iterator_t write_it,
 	nu_transformation_t transform, nu_read_iterator_t transform_read) {
 
@@ -118,6 +118,61 @@ static ssize_t _nu_sprint(const char *source, const char *limit, nu_read_iterato
 	return done;
 }
 
+static ssize_t __nu_sprint_internal(const char *source, const char *limit, nu_read_iterator_t read_it,
+	char *dest, size_t size, nu_write_iterator_t write_it,
+	nu_transform_read_t transform, nu_read_iterator_t transform_read,
+	void *context) {
+
+	assert(transform_read != 0);
+
+	const char *p = source;
+	char *d = dest;
+
+	ssize_t done = 0;
+
+	while (p < limit) {
+		uint32_t u = 0;
+		const char *mapping = 0;
+
+		p = transform(p, limit, read_it, &u, &mapping, context);
+
+		if (mapping != 0) {
+			uint32_t nu = 0;
+
+			do {
+				mapping = transform_read(mapping, &nu);
+				if (nu == 0) {
+					break;
+				}
+
+				size_t len = (size_t)write_it(nu, 0);
+
+				if (done + len <= size) {
+					d = write_it(nu, d);
+				}
+
+				done += len;
+			}
+			while (nu != 0);
+		}
+		else {
+			size_t len = (size_t)write_it(u, 0);
+
+			if (done + len <= size) {
+				d = write_it(u, d);
+			}
+
+			done += len;
+		}
+
+		if (u == 0) {
+			break;
+		}
+	}
+
+	return done;
+}
+
 #endif /* NU_WITH_N_STRINGS || NU_WITH_Z_STRINGS */
 
 #ifdef NU_WITH_Z_STRINGS
@@ -137,8 +192,16 @@ ssize_t nu_strbytelen(const char *encoded, nu_read_iterator_t it) {
 ssize_t nu_sprint(const char *encoded, nu_read_iterator_t read_it,
 	char *dest, size_t size, nu_write_iterator_t write_it,
 	nu_transformation_t transform, nu_read_iterator_t transform_read) {
-	return _nu_sprint(encoded, NU_UNLIMITED, read_it,
+	return __nu_sprint(encoded, NU_UNLIMITED, read_it,
 		dest, size, write_it, transform, transform_read);
+}
+
+ssize_t _nu_sprint(const char *encoded, nu_read_iterator_t read_it,
+	char *dest, size_t size, nu_write_iterator_t write_it,
+	nu_transform_read_t transform, nu_read_iterator_t transform_read,
+	void *context) {
+	return __nu_sprint_internal(encoded, NU_UNLIMITED, read_it,
+		dest, size, write_it, transform, transform_read, context);
 }
 
 #endif /* NU_WITH_Z_STRINGS */
@@ -156,8 +219,16 @@ ssize_t nu_bytenlen(const uint32_t *unicode, size_t max_len, nu_write_iterator_t
 ssize_t nu_snprint(const char *encoded, size_t max_len, nu_read_iterator_t read_it,
 	char *dest, size_t size, nu_write_iterator_t write_it,
 	nu_transformation_t transform, nu_read_iterator_t transform_read) {
-	return _nu_sprint(encoded, encoded + max_len, read_it,
+	return __nu_sprint(encoded, encoded + max_len, read_it,
 		dest, size, write_it, transform, transform_read);
+}
+
+ssize_t _nu_snprint(const char *encoded, size_t max_len, nu_read_iterator_t read_it,
+	char *dest, size_t size, nu_write_iterator_t write_it,
+	nu_transform_read_t transform, nu_read_iterator_t transform_read,
+	void *context) {
+	return __nu_sprint_internal(encoded, encoded + max_len, read_it,
+		dest, size, write_it, transform, transform_read, context);
 }
 
 #endif /* NU_WITH_N_STRINGS */

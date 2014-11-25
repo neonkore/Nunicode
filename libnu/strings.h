@@ -1,11 +1,17 @@
 #ifndef NU_STRINGS_H
 #define NU_STRINGS_H
 
+/** @defgroup iterators Iterators
+ */
+
 /** @defgroup strings String functions
  *
  * Note on "n" functions variant: those are not for memory overrun control.
  * They are just for strings not having terminating 0 byte and those
  * functions won't go further than m-th *codepoint* in string, not byte.
+ */
+
+/** @defgroup strings_internal String functions (internal version)
  */
 
 /** @defgroup transformations Codepoint transformations
@@ -23,9 +29,6 @@
 #if defined (__cplusplus) || defined (c_plusplus)
 extern "C" {
 #endif
-
-/** @defgroup iterators Iterators
- */
 
 /** Read (decode) iterator
  *
@@ -112,6 +115,12 @@ ssize_t nu_sprint(const char *encoded, nu_read_iterator_t read_it,
 	char *dest, size_t size, nu_write_iterator_t write_it,
 	nu_transformation_t transform, nu_read_iterator_t transform_read);
 
+NU_EXPORT
+ssize_t _nu_sprint(const char *encoded, nu_read_iterator_t read_it,
+	char *dest, size_t size, nu_write_iterator_t write_it,
+	nu_transform_read_t transform, nu_read_iterator_t transform_read,
+	void *context);
+
 #endif /* NU_WITH_Z_STRINGS */
 
 #ifdef NU_WITH_N_STRINGS
@@ -131,9 +140,16 @@ NU_EXPORT
 ssize_t nu_bytenlen(const uint32_t *unicode, size_t max_len,
 	nu_write_iterator_t it);
 
+NU_EXPORT
 ssize_t nu_snprint(const char *encoded, size_t max_len, nu_read_iterator_t read_it,
 	char *dest, size_t size, nu_write_iterator_t write_it,
 	nu_transformation_t transform, nu_read_iterator_t transform_read);
+
+NU_EXPORT
+ssize_t _nu_snprint(const char *encoded, size_t max_len, nu_read_iterator_t read_it,
+	char *dest, size_t size, nu_write_iterator_t write_it,
+	nu_transform_read_t transform, nu_read_iterator_t transform_read,
+	void *context);
 
 #endif /* NU_WITH_N_STRINGS */
 
