@@ -110,11 +110,48 @@ ssize_t nu_bytelen(const uint32_t *unicode, nu_write_iterator_t it);
 NU_EXPORT
 ssize_t nu_strbytelen(const char *encoded, nu_read_iterator_t it);
 
+/** Transform string and write to buffer. Note that this function will perform
+ * complete string decoding on each call.
+ *
+ * You can pass 0 as size to obtain number of bytes required to
+ * encode final string.
+ *
+ * @ingroup strings
+ * @param encoded encoded string
+ * @param read_it decoding function
+ * @param dest destination buffer
+ * @param size dest buffer write limit in bytes
+ * @param write_it encoding function
+ * @param transform transformation to apply
+ * @param transform_read transformation result decoding function
+ * @return number of bytes written, if the output was truncated due to limit,
+ * then the return value is the number of bytes which would have been written
+ * to the final string if enough space had been available
+ */
 NU_EXPORT
 ssize_t nu_sprint(const char *encoded, nu_read_iterator_t read_it,
 	char *dest, size_t size, nu_write_iterator_t write_it,
 	nu_transformation_t transform, nu_read_iterator_t transform_read);
 
+/** Transform string and write to buffer (internal version). Note that this
+ * function will perform complete string decoding on each call.
+ *
+ * You can pass 0 as size to obtain number of bytes required to
+ * encode final string.
+ *
+ * @ingroup strings
+ * @param encoded encoded string
+ * @param read_it decoding function
+ * @param dest destination buffer
+ * @param size dest buffer write limit in bytes
+ * @param write_it encoding function
+ * @param transform transformation to apply
+ * @param transform_read transformation result decoding function
+ * @param context will be passed to transform at each call
+ * @return number of bytes written, if the output was truncated due to limit,
+ * then the return value is the number of bytes which would have been written
+ * to the final string if enough space had been available
+ */
 NU_EXPORT
 ssize_t _nu_sprint(const char *encoded, nu_read_iterator_t read_it,
 	char *dest, size_t size, nu_write_iterator_t write_it,
@@ -140,11 +177,19 @@ NU_EXPORT
 ssize_t nu_bytenlen(const uint32_t *unicode, size_t max_len,
 	nu_write_iterator_t it);
 
+/**
+ * @ingroup strings
+ * @see nu_sprint
+ */
 NU_EXPORT
 ssize_t nu_snprint(const char *encoded, size_t max_len, nu_read_iterator_t read_it,
 	char *dest, size_t size, nu_write_iterator_t write_it,
 	nu_transformation_t transform, nu_read_iterator_t transform_read);
 
+/**
+ * @ingroup strings_internal
+ * @see _nu_sprint
+ */
 NU_EXPORT
 ssize_t _nu_snprint(const char *encoded, size_t max_len, nu_read_iterator_t read_it,
 	char *dest, size_t size, nu_write_iterator_t write_it,
