@@ -30,7 +30,7 @@ extern "C" {
  * @param unicode destination buffer, should be large enough to hold
  * decoded string
  * @param it read (decode) function
- * @return 0 in success or negative error
+ * @return 0
  *
  * @see nu_utf8_read
  * @see nu_readnstr
@@ -46,7 +46,7 @@ int nu_readstr(const char *encoded, uint32_t *unicode,
  * @param encoded destination buffer, should be large enough to hold
  * encoded string
  * @param it write (encode) function
- * @return 0 on success or negative error
+ * @return 0
  *
  * @see nu_bytenlen
  * @see nu_utf8_write
@@ -56,9 +56,6 @@ NU_EXPORT
 int nu_writestr(const uint32_t *unicode, char *encoded,
 	nu_write_iterator_t it);
 
-/* FIXME: it's somewhat misleading to have both nu_transformstr()
- * and nu_strtransformlen() */
-
 /** Recode string
  *
  * @ingroup extra
@@ -66,8 +63,7 @@ int nu_writestr(const uint32_t *unicode, char *encoded,
  * @param dest dest encoded string, should be large enough
  * @param read_it decoding function
  * @param write_it encoding function
- * @return 0 on success or negative error on decoding (source) error,
- * double negative on error encoding (dest) error
+ * @return 0
  *
  * @see nu_bytenlen
  * @see nu_utf8_read
@@ -85,6 +81,7 @@ int nu_transformstr(const char *source, char *dest,
  * @param read read (decode) function
  * @param transform transformation to take into account
  * @param transform_read transformation result decoding function
+ * @return number of codepoints in transformed string
  *
  * @see nu_toupper
  * @see nu_tolower
@@ -102,6 +99,7 @@ ssize_t nu_strtransformlen(const char *encoded, nu_read_iterator_t read,
  * @param transform transformation to take into account
  * @param transform_read transformation result decoding function
  * @param context pointer passed to each call of transformation
+ * @return number of codepoints in transformed string
  *
  * @see _nu_tolower
  * @see _nu_toupper
