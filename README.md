@@ -423,9 +423,9 @@ Please refer to documentation in [config.h][].
 
 ## Questions?
 
-* [nunicode-users@groups.google.com][] ([nunicode-users][])
+* [nunicode-users@googlegroups.com][] ([nunicode-users][])
 * [aleksey.tulinov@gmail.com][]
 
 [aleksey.tulinov@gmail.com]: mailto:aleksey.tulinov@gmail.com
-[nunicode-users@groups.google.com]: mailto:nunicode-users@groups.google.com
+[nunicode-users@googlegroups.com]: mailto:nunicode-users@googlegroups.com
 [nunicode-users]: https://groups.google.com/forum/#!forum/nunicode-users
