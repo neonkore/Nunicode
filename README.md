@@ -232,16 +232,9 @@ that weight(ë) == weight(e) + weight(COMBINING DIAERESIS), therefore if
 such collation is implemented, it can prove equivalence of those strings.
 
 Better example is Hungarian letter "Dz". Simply put, collation is defined
-as "D" < "Dz" < "E", all three strings are graphemes. If such collation
-is used and nunicode encounters "D", it will look-ahead to test if
-it's "D" or "Dz". Weight will be determined by the result of this test.
-This also implies "BDE" < "BDzE" < "BEE".
-
-The same approach can be used to traverse a string and determine
-graphemes: by performing sequential collation. This will allow to
-correctly split, trim, reverse and perform another string modification
-operations. nunicode though does not provide any API for string
-modifications yet.
+as "D" < "Dz" < "E". If such collation is used and nunicode encounters "D",
+it will look-ahead to test if it's "D" or "Dz". Weight will be determined
+by the result of this test. This also implies "BDE" < "BDzE" < "BEE".
 
 ### custom collations
 
