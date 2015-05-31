@@ -223,6 +223,11 @@ backward            | No              |
 Tailoring delta     | -               | Equal to the delta with reduced DUCET. DUCET is reduced to character categories Ll, Lu, Lt, Lo, Nl, Nd, No. Only weights of single codepoints are used in collation.
 Preparation process | None            |
 
+Complete list of contractions not covered by nunicode is available in
+[ducet_excluded.txt][]
+
+[ducet_excluded.txt]: https://bitbucket.org/alekseyt/nunicode/src/master/libnu/gen/ducet_excluded.txt
+
 ### localization (collation tailoring)
 
 nunicode supports both custom collations and conractions. Custom collation
@@ -365,6 +370,7 @@ may be modified to be compatible with ICU extension.
 
 Test details:
 
+* SQLite version: 3.8.2
 * Test tables size: 100000 entries
 * ICU collation for ORDER BY: ``SELECT icu_load_collation('ru_RU', 'RUSSIAN')``
   with sequential COLLATE RUSSIAN
