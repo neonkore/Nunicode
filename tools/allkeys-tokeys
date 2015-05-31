@@ -16,6 +16,7 @@ for line in sys.stdin:
 	codepoint = tokens[0].strip()
 
 	if not pass_code(codepoint):
+		print >>sys.stderr, line.strip()
 		continue
 
 	print codepoint

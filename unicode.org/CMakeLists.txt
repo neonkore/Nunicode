@@ -10,7 +10,7 @@ set(FOLDING ${DATA}/CaseFolding.txt)
 
 add_custom_target(_ducet
 	COMMAND cat ${UNIDATA} | ${TOOLS}/unidata-tosortable >${SORTABLE}
-	COMMAND cat ${DUCET} | ${TOOLS}/allkeys-tokeys | ${TOOLS}/filter-sortable ${SORTABLE}
+	COMMAND cat ${DUCET} | ${TOOLS}/allkeys-tokeys 2>${GEN}/ducet_excluded.txt | ${TOOLS}/filter-sortable ${SORTABLE}
 		| ${TOOLS}/mph-indexed "NU_DUCET" >${GEN}/_ducet.c
 	COMMAND rm ${SORTABLE}
 )
