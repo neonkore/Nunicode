@@ -4,15 +4,20 @@ set(GEN ${CMAKE_SOURCE_DIR}/libnu/gen)
 
 set(DUCET ${DATA}/allkeys.txt)
 set(SORTABLE ${DATA}/sortable.tmp)
+set(FILTERED ${DATA}/filtered.tmp)
+set(FILTERED_CONTRACTIONS ${DATA}/filtered_contractions.tmp)
 set(UNIDATA ${DATA}/UnicodeData.txt)
 set(SPECIAL ${DATA}/SpecialCasing.txt)
 set(FOLDING ${DATA}/CaseFolding.txt)
 
 add_custom_target(_ducet
 	COMMAND cat ${UNIDATA} | ${TOOLS}/unidata-tosortable >${SORTABLE}
-	COMMAND cat ${DUCET} | ${TOOLS}/allkeys-tokeys 2>${GEN}/ducet_excluded.txt | ${TOOLS}/filter-sortable ${SORTABLE}
-		| ${TOOLS}/mph-indexed "NU_DUCET" >${GEN}/_ducet.c
-	COMMAND rm ${SORTABLE}
+	COMMAND cat ${DUCET} | ${TOOLS}/allkeys-tokeys
+		| ${TOOLS}/filter-sortable ${SORTABLE} >${FILTERED} 2>${FILTERED_CONTRACTIONS}
+	COMMAND cat ${FILTERED} | ${TOOLS}/mph-indexed "NU_DUCET" >${GEN}/_ducet.c
+	COMMAND rm -f "${SORTABLE}"
+	COMMAND rm -f "${FILTERED}"
+	COMMAND rm -f "${FILTERED_CONTRACTIONS}"
 )
 
 add_custom_target(_toupper

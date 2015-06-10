@@ -3,20 +3,11 @@
 import sys
 from unidata import *
 
-def pass_code(codepoint):
-	return codepoint.find(' ') < 0
-
-d = dict()
-
 for line in sys.stdin:
 	if unidata_comment(line):
 		continue
 
 	tokens = line.split(';')
 	codepoint = tokens[0].strip()
-
-	if not pass_code(codepoint):
-		print >>sys.stderr, line.strip()
-		continue
 
 	print codepoint
