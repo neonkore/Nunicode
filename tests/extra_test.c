@@ -6,7 +6,8 @@
 void test_readstr() {
 	const char input[] = "\x04\x3F\x04\x40\x04\x38\x04\x32"
 		"\x04\x35\x04\x42\x00\x20\x04\x3C"
-		"\x04\x38\x04\x40"; /* "привет мир" in UTF-16BE, no BOM */
+		"\x04\x38\x04\x40\x00"; /* "привет мир" in UTF-16BE, no BOM */
+	assert(((const uint16_t*)input)[10] == 0);
 	uint32_t u[sizeof(input)] = { 0 };
 
 	assert(nu_readstr(input, u, nu_utf16be_read) == 0);

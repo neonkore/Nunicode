@@ -1,3 +1,11 @@
+[*] changes to make nunicode build with MSVC (by Tamas Kenez)
+[*] fixed test: test_readstr, which contained a UTF-16BE string literal
+    with a single byte zero-terminator (by Tamas Kenez)
+[*] fixed assertions in tests: test_utf32_read_bom,
+    test_utf32_read_invalid_bom, which tested value at memory preceding
+    the actual test string (by Tamas Kenez)
+[*] fixed CMake 3.3 warnings during build (by Tamas Kenez)
+
 1.5.1
 
 [+] introduced nu_version() fuction complementary to NU_VERSION define

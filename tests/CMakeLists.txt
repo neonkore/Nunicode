@@ -25,7 +25,7 @@ set(TESTS_SRC
 
 include_directories(${CMAKE_SOURCE_DIR})
 
-link_libraries(units nu)
+link_libraries(nu)
 add_executable(units ${TESTS_SRC})
 
 add_custom_target(coverage DEPENDS units

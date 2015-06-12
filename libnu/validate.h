@@ -5,6 +5,7 @@
  */
 
 #include <sys/types.h>
+#include <stddef.h>
 
 #include "config.h"
 #include "defines.h"

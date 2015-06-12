@@ -22,13 +22,13 @@ void test_utf32_read_bom() {
 	assert(bom.write == nu_utf32le_write);
 	assert(bom.validread == nu_utf32le_validread);
 	assert(bom.read("\x00\x01\x02\x03", &u1) && nu_utf32le_read("\x00\x01\x02\x03", &u2) && u1 == u2);
-	assert(bom.revread(&u1, "\x00\x01\x02\x03") && nu_utf32le_revread(&u2, "\x00\x01\x02\x03") && u1 == u2);
+	assert(bom.revread(&u1, "\x00\x01\x02\x03" + 4) && nu_utf32le_revread(&u2, "\x00\x01\x02\x03" + 4) && u1 == u2);
 
 	assert(nu_utf32_read_bom(be_bom, &bom) == be_bom + 4);
 	assert(bom.write_bom == nu_utf32be_write_bom);
 	assert(bom.write == nu_utf32be_write);
 	assert(bom.validread == nu_utf32be_validread);
-	assert(bom.revread(&u1, "\x00\x01\x02\x03") && nu_utf32be_revread(&u2, "\x00\x01\x02\x03") && u1 == u2);
+	assert(bom.revread(&u1, "\x00\x01\x02\x03" + 4) && nu_utf32be_revread(&u2, "\x00\x01\x02\x03" + 4) && u1 == u2);
 }
 
 void test_utf32_read_invalid_bom() { /* defaults to BE */
@@ -59,14 +59,14 @@ void test_utf32_read_invalid_bom() { /* defaults to BE */
 	assert(bom.write == nu_utf32be_write);
 	assert(bom.validread == nu_utf32be_validread);
 	assert(bom.read("\x00\x01\x02\x03", &u1) && nu_utf32be_read("\x00\x01\x02\x03", &u2) && u1 == u2);
-	assert(bom.revread(&u1, "\x00\x01\x02\x03") && nu_utf32be_revread(&u2, "\x00\x01\x02\x03") && u1 == u2);
+	assert(bom.revread(&u1, "\x00\x01\x02\x03" + 4) && nu_utf32be_revread(&u2, "\x00\x01\x02\x03" + 4) && u1 == u2);
 
 	assert(nu_utf32_read_bom(inval_bom2, &bom) == inval_bom2);
 	assert(bom.write_bom == nu_utf32be_write_bom);
 	assert(bom.write == nu_utf32be_write);
 	assert(bom.validread == nu_utf32be_validread);
 	assert(bom.read("\x00\x01\x02\x03", &u1) && nu_utf32be_read("\x00\x01\x02\x03", &u2) && u1 == u2);
-	assert(bom.revread(&u1, "\x00\x01\x02\x03") && nu_utf32be_revread(&u2, "\x00\x01\x02\x03") && u1 == u2);
+	assert(bom.revread(&u1, "\x00\x01\x02\x03" + 4) && nu_utf32be_revread(&u2, "\x00\x01\x02\x03" + 4) && u1 == u2);
 }
 
 void test_utf32_write_bom() {
