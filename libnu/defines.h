@@ -36,4 +36,8 @@
  */
 #define NU_UNLIMITED ((const void *)(-1))
 
+#ifdef _MSC_VER
+#define ssize_t ptrdiff_t
+#endif
+
 #endif /* NU_DEFINES_H */
