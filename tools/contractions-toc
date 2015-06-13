@@ -13,7 +13,8 @@ def tab(s, tabs=1):
 
 
 def points2points(points):
-	'''0000 to 000000 i.e. any-byte codepoints to 6-byte codepoints'''
+	'''0000 to 000000 i.e. any-byte codepoints to 6-byte codepoints
+	this will make codepoints string representation usable w/o %06X formatting'''
 	return ['%06X' % (int(point, base=16)) for point in points]
 
 
@@ -65,6 +66,7 @@ def find_parent(state, states):
 def final_state(state, contractions):
 	return not find_children(state, contractions)
 
+
 def root_state(state):
 	return len(state) == 1
 
@@ -82,66 +84,82 @@ def collect_states(contractions, codepoints):
 
 		max_level = max(len(points), max_level)
 
-	s = [ (state, -(i + 1)) for i, state in enumerate(sorted(states)) ]
-
-	for i, state_tuple in enumerate(s):
-		state = str2state(state_tuple[0])
-		if not final_state(state, contractions):
-			continue
-
-		state_weight = find_weight(state, contractions)
-		assert(state_weight is not None)
-		s[i] = (state_tuple[0], state_weight)
-
-	return s, max_level
+	s = [ (state, -(i + 1)) for i, state in enumerate(states) ]
+	return sorted(s, key=itemgetter(1)), max_level
 
 
-def expand_root_state(state):
-	print tab('if (u == 0x%06X) { return %s; }' % (int(state[0], base=16), state2str(state)))
+def split_roots(roots):
+	middle = roots[len(roots) / 2]
+	left = roots[:len(roots) / 2]
+	right = roots[len(roots) / 2 + 1:]
+	return middle, left, right
 
 
-def expand_root_states(states, max_level):
+def expand_root_states(states):
+	def root_states(states):
+		return [ state for state, _ in states if root_state(str2state(state)) ]
+
+	def expand_root_state(state, left, right, level=1):
+		check_codepoint = int(state[0], base=16)
+		print tab('if (u == 0x%06X) { return %s; }' % (check_codepoint, state2str(state)), level)
+
+		if left:
+			print tab('else if (u < 0x%06X) { ' % (check_codepoint), level)
+			lmiddle, lleft, lright = split_roots(left)
+			expand_root_state(str2state(lmiddle), lleft, lright, level=level+1)
+			print tab('}', level)
+
+		if right:
+			print tab('else if (u > 0x%06X) { ' % (check_codepoint), level)
+			rmiddle, rleft, rright = split_roots(right)
+			expand_root_state(str2state(rmiddle), rleft, rright, level=level+1)
+			print tab('}', level)
+
+
+	assert(states == sorted(states, key=itemgetter(1)))
+
+	roots = root_states(states)
+	middle, left, right = split_roots(roots)
+
 	print 'if (*w == 0) { /* root states */'
 
-	for state_str, weight in states:
-		state = str2state(state_str)
-		if len(state) > 1:
-			continue
-
-		expand_root_state(state)
+	expand_root_state(str2state(middle), left, right)
 
 	print '}'
 	print
 
 
-def find_closest_parent(state, states):
+def find_closest_parent(state, states, contractions, codepoints):
+	'''closest parent with assigned weight'''
 	closest_parent = []
 	for s, w in states:
 		s = str2state(s)
-		if len(s) < len(state) and state[:len(s)] == s:
+		if len(s) <= len(state) and state[:len(s)] == s:
+			if not find_weight(s, contractions) and not find_weight(s, codepoints):
+				continue
+
 			closest_parent = len(s) > len(closest_parent) and s or closest_parent
 
 	return closest_parent or None  # return None instead of empty list
 
 
-def fallback(state, states, contractions, codepoints):
-	parent = root_state(state) and state or find_closest_parent(state, states)
-	assert(parent is not None)
-	weight = find_weight(parent, contractions) or find_weight(parent, codepoints)
-	assert(weight is not None)
-	distance = len(state) - len(parent) + 1
-	assert(distance >= 1)
+def expand_children(state, states, contractions, codepoints, level=1):
+	def fallback(state, states, contractions, codepoints):
+		parent = find_closest_parent(state, states, contractions, codepoints)
+		assert(parent is not None)
+		weight = find_weight(parent, contractions) or find_weight(parent, codepoints)
+		assert(weight is not None)
+		distance = len(state) - len(parent) + 1
+		assert(distance >= 1)
 
-	print tab('*w = %d; /* fallback */' % (distance), 2)
-	print tab('return %d;' % (weight), 2)
+		print tab('*w = %d; /* fallback */' % (distance), level)
+		print tab('return %d;' % (weight), level)
 
-
-def expand_children(state, states, contractions, codepoints):
 	children = set([tuple(child[:len(state) + 1]) for child, _ in find_children(state, contractions)])
 	children = list(list(child) for child in children)
 	assert(children)
 
-	print tab('switch (u) {', 2)
+	print tab('switch (u) {', level)
 
 	for i, next_state in enumerate(children):
 		assert(len(next_state) > len(state))
@@ -149,37 +167,59 @@ def expand_children(state, states, contractions, codepoints):
 		check_codepoint = next_state[-1]
 		weight = final_state(next_state, contractions) and str(find_weight(next_state, contractions)) or state2str(next_state)
 
-		print tab('case 0x%06X: return %s; ' % (int(check_codepoint, base=16), weight), 2)
+		print tab('case 0x%06X: return %s; ' % (int(check_codepoint, base=16), weight), level)
 
-	print tab('}', 2)
+	print tab('}', level)
 	print
 
 	fallback(state, states, contractions, codepoints)
 
 
-def expand_non_root_state((state, weight), states, contractions, codepoints):
-	# final states will be expanded inside intermediate states
-	if final_state(state, contractions):
-		return
+def expand_intermediate_states(states, contractions, codepoints):
+	def intermediate_states(states, contractions):
+		return [ state for state, _ in states if not final_state(str2state(state), contractions) ]
 
-	state_str = state2str(state)
+	def expand_intermediate_state(state, left, right, states, contractions, codepoints, level=1):
+		state_str = state2str(state)
 
-	print tab('if (weight == %s) {' % (state_str))
-	expand_children(state, states, contractions, codepoints)
-	print tab('}')
+		print tab('if (weight == %s) {' % (state_str), level)
+		expand_children(state, states, contractions, codepoints, level=level+1)
+		print tab('}', level)
 
+		if left:
+			print tab('else if (weight < %s) {' % (state_str), level)
+			lmiddle, lleft, lright = split_roots(left)
+			expand_intermediate_state(str2state(lmiddle), lleft, lright, states, contractions, codepoints, level=level+1)
+			print tab('}', level)
 
-def expand_non_root_states(states, max_level, contractions, codepoints):
-	print 'if (*w != 0) {'
+		if right:
+			print tab('else if (weight > %s) {' % (state_str), level)
+			rmiddle, rleft, rright = split_roots(right)
+			expand_intermediate_state(str2state(rmiddle), rleft, rright, states, contractions, codepoints, level=level+1)
+			print tab('}', level)
+
+	assert(states == sorted(states, key=itemgetter(1)))
+
+	roots = intermediate_states(states, contractions)
+	middle, left, right = split_roots(roots)
+
+	print 'if (*w != 0) { /* intermediate states */'
 	print tab('int32_t weight = *w;')
 	print tab('*w = 0');
 	print
 
-	for state_str, weight in states:
-		state = str2state(state_str)
-		expand_non_root_state((state, weight), states, contractions, codepoints)
+	expand_intermediate_state(str2state(middle), left, right, states, contractions, codepoints)
 
 	print '}'
+	print
+
+
+def gen_states(states, contractions):
+	for state_str, weight in states:
+		state = str2state(state_str)
+		# don't print final states - they will be embedded as numbers
+		if not final_state(state, contractions):
+			print '#define %s %d' % (state_str, weight)
 	print
 
 
@@ -197,6 +237,8 @@ if __name__ == '__main__':
 
 	codepoints_file, contractions_file = sys.argv[1], sys.argv[2]
 	codepoints, contractions = collect_contractions(codepoints_file, contractions_file)
-	states, max_level = collect_states(contractions, codepoints)
-	expand_root_states(states, max_level)
-	expand_non_root_states(states, max_level, contractions, codepoints)
+	states, _ = collect_states(contractions, codepoints)
+
+	gen_states(states, contractions)
+	expand_root_states(states)
+	expand_intermediate_states(states, contractions, codepoints)
