@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <sqlite3.h>
 
+static const char *SHARED = "./libnunicode.so";
+static const char *ENTRY = "sqlite3_nunicode_init";
+
 int callback(void *context, int argc, char **argv, char **columns) {
 	(void)(context);
 	(void)(argc);
@@ -23,7 +26,7 @@ int main() {
 	char *errstr = 0;
 
 	/* load extension */
-	rc = sqlite3_load_extension(db, "./libnunicode.so", "sqlite3_nunicode_init", &errstr);
+	rc = sqlite3_load_extension(db, SHARED, ENTRY, &errstr);
 	if (rc != SQLITE_OK) {
 		printf("!!! error loading extension: %s\n", errstr);
 		return 1;
