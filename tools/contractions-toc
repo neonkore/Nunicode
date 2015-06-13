@@ -19,6 +19,8 @@ def points2points(points):
 
 
 def collect_contractions(codepoints_file, contractions_file):
+	'''collect codepoints and contractions from file (title is misleading
+	in form of ([ "0001", "0002"], weight)'''
 	codepoints = []
 	contractions = []
 	for line in open(codepoints_file, 'rt'):
@@ -35,20 +37,25 @@ def collect_contractions(codepoints_file, contractions_file):
 
 
 def state2str(codepoints):
+	'''transforms state [ "0001", "0002"] into string "state_0001_0002"'''
 	return 'state_' + '_'.join('%06X' % int(codepoint, base=16) for codepoint in codepoints)
 
 
 def str2state(state):
+	'''transforms string "state_0001_0002" into state [ "0001", "0002"]'''
 	return state[len('state_'):].split('_')
 
 
 def find_weight(codepoints, collection):
+	'''lookup weight in list of (codepoints, weight)
+	works on both: contractions and codepoints'''
 	for points, weight in collection:
 		if points == codepoints:
 			return weight
 
 
 def find_children(state, contractions):
+	'''return list of child states, lookup is done on contractions'''
 	children = []
 	for s, w in contractions:
 		if len(s) > len(state) and s[:len(state)] == state:
@@ -57,6 +64,7 @@ def find_children(state, contractions):
 
 
 def find_parent(state, states):
+	'''return parent state, parent might be intermediate or root'''
 	for s, w in states:
 		s = str2state(s)
 		if len(s) == len(state) - 1 and state[:-1] == s:
@@ -64,14 +72,17 @@ def find_parent(state, states):
 
 
 def final_state(state, contractions):
+	'''test if state is final - no child states'''
 	return not find_children(state, contractions)
 
 
 def root_state(state):
+	'''test if state is root - no parent states'''
 	return len(state) == 1
 
 
 def collect_states(contractions, codepoints):
+	'''collect entire list of states: root, intermediate and final'''
 	states = set()
 	max_level = 0
 	for points, _ in contractions:
@@ -89,6 +100,8 @@ def collect_states(contractions, codepoints):
 
 
 def split_roots(roots):
+	'''kind of binary split of list into left side, right side
+	and state at the middle. list is need to be ordered'''
 	middle = roots[len(roots) / 2]
 	left = roots[:len(roots) / 2]
 	right = roots[len(roots) / 2 + 1:]
@@ -96,10 +109,15 @@ def split_roots(roots):
 
 
 def expand_root_states(states):
+	'''produce c code for root states'''
+
 	def root_states(states):
+		'''filter root states from complete states list'''
 		return [ state for state, _ in states if root_state(str2state(state)) ]
 
 	def expand_root_state(state, left, right, level=2):
+		'''produce c code for single state recursively going down
+		through the left and right tails'''
 		check_codepoint = int(state[0], base=16)
 		print tab('if (u == 0x%06X) { return %s; }' % (check_codepoint, state2str(state)), level)
 
@@ -116,6 +134,7 @@ def expand_root_states(states):
 			print tab('}', level)
 
 
+	# list is need to be ordered for binary search to work
 	assert(states == sorted(states, key=itemgetter(1)))
 
 	roots = root_states(states)
@@ -130,7 +149,7 @@ def expand_root_states(states):
 
 
 def find_closest_parent(state, states, contractions, codepoints):
-	'''closest parent with assigned weight'''
+	'''return closest parent *with assigned weight*'''
 	closest_parent = []
 	for s, w in states:
 		s = str2state(s)
@@ -144,7 +163,12 @@ def find_closest_parent(state, states, contractions, codepoints):
 
 
 def expand_children(state, states, contractions, codepoints, level=1):
+	'''produce switch for child states'''
+
 	def fallback(state, states, contractions, codepoints):
+		'''produce fallback code when neither of child states
+		doesn't fit next codepoint and state is need to be reverted back up
+		to closest parent with assigned weight'''
 		parent = find_closest_parent(state, states, contractions, codepoints)
 		assert(parent is not None)
 		weight = find_weight(parent, contractions) or find_weight(parent, codepoints)
@@ -176,10 +200,14 @@ def expand_children(state, states, contractions, codepoints, level=1):
 
 
 def expand_intermediate_states(states, contractions, codepoints):
+	'''produce c code for intermediate states'''
+
 	def intermediate_states(states, contractions):
+		'''filter intermediate states from complete list of states'''
 		return [ state for state, _ in states if not final_state(str2state(state), contractions) ]
 
 	def expand_intermediate_state(state, left, right, states, contractions, codepoints, level=2):
+		'''produce code for a single state recursively'''
 		state_str = state2str(state)
 
 		print tab('if (weight == %s) {' % (state_str), level)
@@ -198,6 +226,7 @@ def expand_intermediate_states(states, contractions, codepoints):
 			expand_intermediate_state(str2state(rmiddle), rleft, rright, states, contractions, codepoints, level=level+1)
 			print tab('}', level)
 
+	# list is need to be ordered for binary search to work
 	assert(states == sorted(states, key=itemgetter(1)))
 
 	roots = intermediate_states(states, contractions)
@@ -215,6 +244,7 @@ def expand_intermediate_states(states, contractions, codepoints):
 
 
 def gen_header(tag, contractions):
+	'''produce info header'''
 	print '''/* Automatically generated file (contractions-toc), %d
  *
  * Tag          : %s
@@ -224,11 +254,14 @@ def gen_header(tag, contractions):
 
 
 def gen_includes():
+	'''produce all required includes to compile generated code'''
 	print '#include <stdint.h>'
 	print
 
 
 def gen_switch(prefix, states, contractions, codepoints):
+	'''produce switch entry point'''
+	print "/* binary search on balanced tree */"
 	print 'int32_t %s_weight_switch(uint32_t u, int32_t *w, void *context) {' % (prefix)
 	print tab('(void)(context);')
 	print
@@ -236,15 +269,22 @@ def gen_switch(prefix, states, contractions, codepoints):
 	expand_root_states(states)
 	expand_intermediate_states(states, contractions, codepoints)
 
+	# impossible weight because this special case is need
+	# to be handled before entering switch
+	# thus indicates that switch didn't find a weight
 	print tab('return 0;')
 	print '}'
 
 
 def gen_states(states, contractions):
+	'''produce defines with state weights. normally all states
+	produced would have negative weight (intermediate and root states).
+	final states are resolved directly into weight w/o extra switch'''
 	for state_str, weight in states:
 		state = str2state(state_str)
 		# don't print final states - they will be embedded as numbers
 		if not final_state(state, contractions):
+			assert(int(weight) < 0)
 			print '#define %s %d' % (state_str, weight)
 	print
 
