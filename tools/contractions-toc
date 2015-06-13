@@ -259,6 +259,12 @@ def gen_includes():
 	print
 
 
+def gen_consts(tag, contractions, codepoints):
+	print 'const size_t %s_CONTRACTIONS = %d;' % (tag.upper(), len(contractions))
+	print 'const size_t %s_CODEPOINTS = %d;' % (tag.upper(), len(codepoints))
+	print
+
+
 def gen_switch(prefix, states, contractions, codepoints):
 	'''produce switch entry point'''
 	print "/* binary search on balanced tree */"
@@ -310,5 +316,6 @@ if __name__ == '__main__':
 
 	gen_header(tag, contractions)
 	gen_includes()
+	gen_consts(tag, contractions, codepoints)
 	gen_states(states, contractions)
 	gen_switch(tag, states, contractions, codepoints)
