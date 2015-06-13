@@ -21,7 +21,7 @@
  * @see defines.h
  *
  * NU_DISABLE_CONTRACTIONS: disables forward-reading during collation,
- * only weights of a single codepoints will be compared.
+ * only weights of a single codepoints will be compared (enabled in release build)
  */
 
 /* Enable everything, see below for details on a specific option */
