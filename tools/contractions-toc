@@ -99,7 +99,7 @@ def expand_root_states(states):
 	def root_states(states):
 		return [ state for state, _ in states if root_state(str2state(state)) ]
 
-	def expand_root_state(state, left, right, level=1):
+	def expand_root_state(state, left, right, level=2):
 		check_codepoint = int(state[0], base=16)
 		print tab('if (u == 0x%06X) { return %s; }' % (check_codepoint, state2str(state)), level)
 
@@ -121,11 +121,11 @@ def expand_root_states(states):
 	roots = root_states(states)
 	middle, left, right = split_roots(roots)
 
-	print 'if (*w == 0) { /* root states */'
+	print tab('if (*w == 0) { /* root states */')
 
 	expand_root_state(str2state(middle), left, right)
 
-	print '}'
+	print tab('}')
 	print
 
 
@@ -179,7 +179,7 @@ def expand_intermediate_states(states, contractions, codepoints):
 	def intermediate_states(states, contractions):
 		return [ state for state, _ in states if not final_state(str2state(state), contractions) ]
 
-	def expand_intermediate_state(state, left, right, states, contractions, codepoints, level=1):
+	def expand_intermediate_state(state, left, right, states, contractions, codepoints, level=2):
 		state_str = state2str(state)
 
 		print tab('if (weight == %s) {' % (state_str), level)
@@ -203,15 +203,41 @@ def expand_intermediate_states(states, contractions, codepoints):
 	roots = intermediate_states(states, contractions)
 	middle, left, right = split_roots(roots)
 
-	print 'if (*w != 0) { /* intermediate states */'
-	print tab('int32_t weight = *w;')
-	print tab('*w = 0');
+	print tab('if (*w != 0) { /* intermediate states */')
+	print tab('int32_t weight = *w;', 2)
+	print tab('*w = 0;', 2);
 	print
 
 	expand_intermediate_state(str2state(middle), left, right, states, contractions, codepoints)
 
-	print '}'
+	print tab('}')
 	print
+
+
+def gen_header(tag, contractions):
+	print '''/* Automatically generated file (contractions-toc), %d
+ *
+ * Tag          : %s
+ * Contractions : %d
+ */''' % (time.time(), tag, len(contractions))
+	print
+
+
+def gen_includes():
+	print '#include <stdint.h>'
+	print
+
+
+def gen_switch(prefix, states, contractions, codepoints):
+	print 'int32_t %s_weight_switch(uint32_t u, int32_t *w, void *context) {' % (prefix)
+	print tab('(void)(context);')
+	print
+
+	expand_root_states(states)
+	expand_intermediate_states(states, contractions, codepoints)
+
+	print tab('return 0;')
+	print '}'
 
 
 def gen_states(states, contractions):
@@ -224,21 +250,25 @@ def gen_states(states, contractions):
 
 
 def usage():
-	print 'usage: ' + sys.argv[0] + ' [CODEPOINTS] [CONTRACTIONS]'
+	print 'usage: ' + sys.argv[0] + ' [CODEPOINTS] [CONTRACTIONS] [TAG]'
 	print
 	print '[CODEPOINTS]   - filename with list of codepoints'
 	print '[CONTRACTIONS] - filename with list of contractions from the same collation'
+	print '[TAG]          - prefix to weighting switch'
 
 
 if __name__ == '__main__':
-	if len(sys.argv) < 3:
+	if len(sys.argv) < 4:
 		usage()
 		sys.exit(1)
+
+	tag = sys.argv[3]
 
 	codepoints_file, contractions_file = sys.argv[1], sys.argv[2]
 	codepoints, contractions = collect_contractions(codepoints_file, contractions_file)
 	states, _ = collect_states(contractions, codepoints)
 
+	gen_header(tag, contractions)
+	gen_includes()
 	gen_states(states, contractions)
-	expand_root_states(states)
-	expand_intermediate_states(states, contractions, codepoints)
+	gen_switch(tag, states, contractions, codepoints)
