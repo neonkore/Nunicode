@@ -62,9 +62,5 @@ void test_ducet_contractions() {
 	assert(bw < cw);
 
 	const uint32_t unknown = 0x0411;
-	int32_t w = 0;
-
-	/* it's important to pass not-NULL weight to enable contractions
-	 * inside nu_ducet_weight */
-	assert(nu_ducet_weight(unknown, &w, 0) > 0);
+	assert(nu_ducet_weight(unknown, 0, 0) > 0);
 }

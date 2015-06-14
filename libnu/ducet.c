@@ -21,26 +21,26 @@ int32_t nu_ducet_weight(uint32_t codepoint, int32_t *weight, void *context) {
 	(void)(weight);
 	(void)(context);
 
-	if (codepoint == 0) {
-		return 0;
-	}
-
 	assert(_nu_ducet_weights_count() < 0x7FFFFFFF - 0x10FFFF);
 
 #ifndef NU_DISABLE_CONTRACTIONS
 	assert(NU_DUCET_G_SIZE == _NU_DUCET_CODEPOINTS); /* just extra check */
 
-	if (weight != 0) {
-		int32_t switch_value = _nu_ducet_weight_switch(codepoint, weight, context);
-		/* weight switch should return weight (if any) and fill value of *weight
-		 * with fallback (if needed). returned value of 0 is impossible result - this
-		 * special case is already handled above, this return value indicates that switch
-		 * couldn't find weight for a codepoint */
-		if (switch_value != 0) {
-			return switch_value;
-		}
+	int32_t switch_value = _nu_ducet_weight_switch(codepoint, weight, context);
+	/* weight switch should return weight (if any) and fill value of *weight
+	 * with fallback (if needed). returned value of 0 is impossible result - this
+	 * special case is already handled above, this return value indicates that switch
+	 * couldn't find weight for a codepoint */
+	if (switch_value != 0) {
+		return switch_value;
 	}
 #endif
+
+	/* special case switch after contractions switch
+	 * to let state-machine figure out its state on abort */
+	if (codepoint == 0) {
+		return 0;
+	}
 
 	uint32_t mph_value = nu_udb_lookup_value(codepoint, NU_DUCET_G, NU_DUCET_G_SIZE,
 		NU_DUCET_VALUES_C, NU_DUCET_VALUES_I);

@@ -117,7 +117,7 @@ def expand_root_states(states):
 	roots = root_states(states)
 	middle, left, right = split_roots(roots)
 
-	print tab('if (*w == 0) { /* root states */')
+	print tab('if (w == 0) { /* first entry, root states */')
 
 	expand_root_state(middle, left, right)
 
@@ -209,7 +209,7 @@ def expand_intermediate_states(states, contractions, codepoints):
 	roots = intermediate_states(states, contractions)
 	middle, left, right = split_roots(roots)
 
-	print tab('if (*w != 0) { /* intermediate states */')
+	print tab('if (w != 0) { /* re-entry, intermediate states */')
 	print tab('int32_t weight = *w;', 2)
 	print tab('*w = 0;', 2);
 	print
