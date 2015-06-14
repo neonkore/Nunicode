@@ -17,6 +17,9 @@ int32_t _nu_test_contraction_weight(nu_codepoint_weight_t weight, const uint32_t
 		}
 	}
 
-	*rollback = w;
+	if (rollback != 0) {
+		*rollback = w;
+	}
+
 	return ret;
 }
