@@ -35,3 +35,11 @@ def points2points(points):
 	'''0000 to 000000 i.e. any-byte codepoints to 6-byte codepoints
 	this will make codepoints string representation usable w/o %06X formatting'''
 	return ['%06X' % (int(point, base=16)) for point in points]
+
+
+def find_weight(codepoints, collection):
+	'''lookup weight in list of (codepoints, weight)
+	works on both: contractions and codepoints'''
+	for points, weight in collection:
+		if points == codepoints:
+			return weight

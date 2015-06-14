@@ -21,14 +21,6 @@ def str2state(state):
 	return state[len('state_'):].split('_')
 
 
-def find_weight(codepoints, collection):
-	'''lookup weight in list of (codepoints, weight)
-	works on both: contractions and codepoints'''
-	for points, weight in collection:
-		if points == codepoints:
-			return weight
-
-
 def find_children(state, contractions):
 	'''return list of child states, lookup is done on contractions'''
 	children = []
@@ -113,7 +105,7 @@ def expand_root_states(states):
 			print tab('}', level)
 
 		if right:
-			print tab('else if (u > 0x%06X) { ' % (check_codepoint), level)
+			print tab('else { /* u > 0x%06X */ ' % (check_codepoint), level)
 			rmiddle, rleft, rright = split_roots(right)
 			expand_root_state(rmiddle, rleft, rright, level=level+1)
 			print tab('}', level)
@@ -206,7 +198,7 @@ def expand_intermediate_states(states, contractions, codepoints):
 			print tab('}', level)
 
 		if right:
-			print tab('else if (weight > %s) {' % (state_str), level)
+			print tab('else { /* weight > %s */' % (state_str), level)
 			rmiddle, rleft, rright = split_roots(right)
 			expand_intermediate_state(str2state(rmiddle), rleft, rright, states, contractions, codepoints, level=level+1)
 			print tab('}', level)
