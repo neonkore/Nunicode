@@ -1,6 +1,7 @@
 set(DATA ${CMAKE_SOURCE_DIR}/unicode.org)
 set(TOOLS ${CMAKE_SOURCE_DIR}/tools)
 set(GEN ${CMAKE_SOURCE_DIR}/libnu/gen)
+set(TGEN ${CMAKE_SOURCE_DIR}/tests/gen)
 
 set(DUCET ${DATA}/allkeys.txt)
 set(SORTABLE ${DATA}/sortable.tmp)
@@ -14,6 +15,8 @@ add_custom_target(_ducet
 	COMMAND cat ${UNIDATA} | ${TOOLS}/unidata-tosortable >${SORTABLE}
 	COMMAND cat ${DUCET} | ${TOOLS}/allkeys-tokeys
 		| ${TOOLS}/filter-sortable ${SORTABLE} >${FILTERED} 2>${FILTERED_CONTRACTIONS}
+	COMMAND ${TOOLS}/contractions-totests "${FILTERED}" "${FILTERED_CONTRACTIONS}" "_nu_ducet" >${TGEN}/_ducet_switch_test.c
+	COMMAND ${TOOLS}/contractions-toc "${FILTERED}" "${FILTERED_CONTRACTIONS}" "_nu_ducet" >${GEN}/_ducet_switch.c
 	COMMAND cat ${FILTERED} | ${TOOLS}/mph-indexed "NU_DUCET" >${GEN}/_ducet.c
 	COMMAND rm -f "${SORTABLE}"
 	COMMAND rm -f "${FILTERED}"
