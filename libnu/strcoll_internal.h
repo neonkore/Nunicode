@@ -46,7 +46,8 @@ typedef const char* (*nu_compound_read_t)(
  *
  * @ingroup collation_internal
  * @param u unicode codepoint to weight
- * @param weight 0 or negative weight previously returned by this function
+ * @param weight 0 at first call or (on sequential calls) pointer to negative
+ * weight previously returned by this function
  * @param context pointer passed to _nu_strcoll() or _nu_strstr()
  * @return positive codepoint weight or negative value if function need more
  * codepoints
