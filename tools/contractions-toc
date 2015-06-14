@@ -111,9 +111,19 @@ def split_roots(roots):
 def expand_root_states(states):
 	'''produce c code for root states'''
 
+	def state2bin(state):
+		'''convert string values of codepoints into binary (int) representation'''
+		return [ int(x, base=16) for x in state ]
+
+	def bin2state(bin):
+		'''convert binary (int) values of codepoints into string representation'''
+		return [ '%06X' % x for x in bin ]
+
 	def root_states(states):
 		'''filter root states from complete states list'''
-		return [ state for state, _ in states if root_state(str2state(state)) ]
+		roots = [ state2bin(str2state(state)) for state, _ in states if root_state(str2state(state)) ]
+		# sort roots in order of first codepoint
+		return [ bin2state(state) for state in sorted(roots) ]
 
 	def expand_root_state(state, left, right, level=2):
 		'''produce c code for single state recursively going down
@@ -124,13 +134,13 @@ def expand_root_states(states):
 		if left:
 			print tab('else if (u < 0x%06X) { ' % (check_codepoint), level)
 			lmiddle, lleft, lright = split_roots(left)
-			expand_root_state(str2state(lmiddle), lleft, lright, level=level+1)
+			expand_root_state(lmiddle, lleft, lright, level=level+1)
 			print tab('}', level)
 
 		if right:
 			print tab('else if (u > 0x%06X) { ' % (check_codepoint), level)
 			rmiddle, rleft, rright = split_roots(right)
-			expand_root_state(str2state(rmiddle), rleft, rright, level=level+1)
+			expand_root_state(rmiddle, rleft, rright, level=level+1)
 			print tab('}', level)
 
 
@@ -142,7 +152,7 @@ def expand_root_states(states):
 
 	print tab('if (*w == 0) { /* root states */')
 
-	expand_root_state(str2state(middle), left, right)
+	expand_root_state(middle, left, right)
 
 	print tab('}')
 	print
@@ -176,7 +186,7 @@ def expand_children(state, states, contractions, codepoints, level=1):
 		distance = len(state) - len(parent) + 1
 		assert(distance >= 1)
 
-		print tab('*w = %d; /* fallback */' % (distance), level)
+		print tab('*w = %d;' % (distance), level)
 		print tab('return %d;' % (weight), level)
 
 	children = set([tuple(child[:len(state) + 1]) for child, _ in find_children(state, contractions)])
@@ -260,8 +270,8 @@ def gen_includes():
 
 
 def gen_consts(tag, contractions, codepoints):
-	print 'const size_t %s_CONTRACTIONS = %d;' % (tag.upper(), len(contractions))
-	print 'const size_t %s_CODEPOINTS = %d;' % (tag.upper(), len(codepoints))
+	print 'const size_t %s_CONTRACTIONS = %d; /* contractions included in switch */' % (tag.upper(), len(contractions))
+	print 'const size_t %s_CODEPOINTS = %d; /* complementary codepoints number */' % (tag.upper(), len(codepoints))
 	print
 
 
