@@ -1,4 +1,4 @@
-/* Automatically generated file (contractions-toc), 1434288115
+/* Automatically generated file (contractions-toc), 1434381925
  *
  * Tag          : _nu_ducet
  * Contractions : 686
@@ -10,45 +10,46 @@ const size_t _NU_DUCET_CONTRACTIONS = 686; /* contractions included in switch */
 const size_t _NU_DUCET_CODEPOINTS = 18046; /* complementary codepoints number */
 
 #define state_00AAB9 -731
-#define state_000430 -714
-#define state_000433 -713
-#define state_000435 -712
-#define state_000436 -711
-#define state_000437 -710
-#define state_00043A -702
-#define state_00043E -699
-#define state_000438 -656
-#define state_00006C -621
-#define state_0004D9 -607
-#define state_0004D8 -606
-#define state_00064A -605
-#define state_000648 -594
-#define state_00042B -591
-#define state_00042D -590
-#define state_00AABB -587
-#define state_000456 -566
-#define state_000423 -546
-#define state_000427 -545
-#define state_00041A -440
-#define state_00041E -438
-#define state_000413 -437
-#define state_000410 -436
-#define state_000416 -435
-#define state_000417 -434
-#define state_000415 -433
-#define state_000418 -432
-#define state_001025 -399
-#define state_00AABC -343
-#define state_000627 -340
-#define state_000B92 -330
-#define state_000443 -329
-#define state_000447 -328
-#define state_00004C -293
-#define state_00044B -287
-#define state_00044D -286
-#define state_001B05 -243
-#define state_001B07 -241
-#define state_001B09 -235
+#define state_000430 -713
+#define state_000433 -712
+#define state_000435 -711
+#define state_000436 -710
+#define state_000437 -709
+#define state_00043A -701
+#define state_00043E -698
+#define state_001B07 -656
+#define state_000438 -655
+#define state_001B09 -636
+#define state_00006C -620
+#define state_0004D9 -608
+#define state_0004D8 -607
+#define state_00064A -606
+#define state_000648 -595
+#define state_00042B -592
+#define state_00042D -591
+#define state_00AABB -588
+#define state_000456 -567
+#define state_000423 -547
+#define state_000427 -546
+#define state_00041A -441
+#define state_00041E -439
+#define state_000413 -438
+#define state_000410 -437
+#define state_000416 -436
+#define state_000417 -435
+#define state_000415 -434
+#define state_000418 -433
+#define state_001B05 -387
+#define state_00AABC -344
+#define state_000627 -341
+#define state_000B92 -331
+#define state_000443 -330
+#define state_000447 -329
+#define state_00004C -294
+#define state_00044B -288
+#define state_00044D -287
+#define state_001B0D -221
+#define state_001025 -188
 #define state_000406 -187
 #define state_000E40 -167
 #define state_000E41 -166
@@ -57,7 +58,6 @@ const size_t _NU_DUCET_CODEPOINTS = 18046; /* complementary codepoints number */
 #define state_000E44 -163
 #define state_00AAB5 -141
 #define state_00AAB6 -132
-#define state_001B0D -119
 #define state_000EC1 -93
 #define state_000EC0 -92
 #define state_000EC3 -91
@@ -65,16 +65,16 @@ const size_t _NU_DUCET_CODEPOINTS = 18046; /* complementary codepoints number */
 #define state_000EC4 -89
 #define state_000474 -87
 #define state_000475 -86
-#define state_001B0B -52
-#define state_0004E8 -47
-#define state_0004E9 -46
-#define state_001B11 -22
+#define state_001B0B -53
+#define state_0004E8 -48
+#define state_0004E9 -47
+#define state_001B11 -23
 
 /* binary search on balanced tree */
 int32_t _nu_ducet_weight_switch(uint32_t u, int32_t *w, void *context) {
 	(void)(context);
 
-	if (*w == 0) { /* root states */
+	if (w == 0) { /* first entry, root states */
 		if (u == 0x0004D8) { return state_0004D8; }
 		else if (u < 0x0004D8) { 
 			if (u == 0x000430) { return state_000430; }
@@ -255,1168 +255,1168 @@ int32_t _nu_ducet_weight_switch(uint32_t u, int32_t *w, void *context) {
 		}
 	}
 
-	if (*w != 0) { /* intermediate states */
+	if (w != 0) { /* re-entry, intermediate states */
 		int32_t weight = *w;
 		*w = 0;
 
-		if (weight == state_000627) {
+		if (weight == state_001B05) {
 			switch (u) {
-			case 0x000653: return 4819; 
-			case 0x000655: return 4835; 
-			case 0x000654: return 4823; 
+			case 0x001B35: return 0x001D2E; 
 			}
 
 			*w = 1;
-			return 4886;
+			return 0x001D2D;
 		}
-		else if (weight < state_000627) {
-			if (weight == state_00042D) {
+		else if (weight < state_001B05) {
+			if (weight == state_000648) {
 				switch (u) {
-				case 0x000308: return 4306; 
+				case 0x000654: return 0x000C01; 
 				}
 
 				*w = 1;
-				return 4302;
+				return 0x000F4B;
 			}
-			else if (weight < state_00042D) {
+			else if (weight < state_000648) {
 				if (weight == state_00043E) {
 					switch (u) {
-					case 0x000308: return 4144; 
+					case 0x000308: return 0x00096A; 
 					}
 
 					*w = 1;
-					return 4130;
+					return 0x000966;
 				}
 				else if (weight < state_00043E) {
 					if (weight == state_000435) {
 						switch (u) {
-						case 0x000306: return 3998; 
+						case 0x000306: return 0x0008ED; 
 						}
 
 						*w = 1;
-						return 3991;
+						return 0x0008E7;
 					}
 					else if (weight < state_000435) {
 						if (weight == state_000430) {
 							switch (u) {
-							case 0x000306: return 3940; 
-							case 0x000308: return 3944; 
+							case 0x000306: return 0x0008BD; 
+							case 0x000308: return 0x0008BF; 
 							}
 
 							*w = 1;
-							return 3937;
+							return 0x0008BB;
 						}
 						else if (weight < state_000430) {
 							if (weight == state_00AAB9) {
 								switch (u) {
-								case 0x00AA92: return 8415; 
-								case 0x00AAA5: return 8529; 
-								case 0x00AAAC: return 8571; 
-								case 0x00AA8F: return 8397; 
-								case 0x00AA82: return 8319; 
-								case 0x00AA9C: return 8475; 
-								case 0x00AAA1: return 8505; 
-								case 0x00AA97: return 8445; 
-								case 0x00AAAD: return 8577; 
-								case 0x00AA86: return 8343; 
-								case 0x00AA93: return 8421; 
-								case 0x00AA9D: return 8481; 
-								case 0x00AA8A: return 8367; 
-								case 0x00AAA6: return 8535; 
-								case 0x00AA94: return 8427; 
-								case 0x00AA8E: return 8391; 
-								case 0x00AAAE: return 8583; 
-								case 0x00AA81: return 8313; 
-								case 0x00AAA2: return 8511; 
-								case 0x00AA90: return 8403; 
-								case 0x00AA9E: return 8487; 
-								case 0x00AAAA: return 8559; 
-								case 0x00AA85: return 8337; 
-								case 0x00AA9A: return 8463; 
-								case 0x00AAA7: return 8541; 
-								case 0x00AA95: return 8433; 
-								case 0x00AA89: return 8361; 
-								case 0x00AA8D: return 8385; 
-								case 0x00AA80: return 8307; 
-								case 0x00AA98: return 8451; 
-								case 0x00AAA3: return 8517; 
-								case 0x00AA91: return 8409; 
-								case 0x00AAA8: return 8547; 
-								case 0x00AAAF: return 8589; 
-								case 0x00AA84: return 8331; 
-								case 0x00AA8C: return 8379; 
-								case 0x00AA9F: return 8493; 
-								case 0x00AAA4: return 8523; 
-								case 0x00AAAB: return 8565; 
-								case 0x00AA88: return 8355; 
-								case 0x00AA83: return 8325; 
-								case 0x00AA99: return 8457; 
-								case 0x00AA9B: return 8469; 
-								case 0x00AAA0: return 8499; 
-								case 0x00AA96: return 8439; 
-								case 0x00AAA9: return 8553; 
-								case 0x00AA87: return 8349; 
-								case 0x00AA8B: return 8373; 
+								case 0x00AA92: return 0x001984; 
+								case 0x00AAA5: return 0x0019F6; 
+								case 0x00AAAC: return 0x001A20; 
+								case 0x00AA8F: return 0x001972; 
+								case 0x00AA82: return 0x001924; 
+								case 0x00AA9C: return 0x0019C0; 
+								case 0x00AAA1: return 0x0019DE; 
+								case 0x00AA97: return 0x0019A2; 
+								case 0x00AAAD: return 0x001A26; 
+								case 0x00AA86: return 0x00193C; 
+								case 0x00AA93: return 0x00198A; 
+								case 0x00AA9D: return 0x0019C6; 
+								case 0x00AA8A: return 0x001954; 
+								case 0x00AAA6: return 0x0019FC; 
+								case 0x00AA94: return 0x001990; 
+								case 0x00AA8E: return 0x00196C; 
+								case 0x00AAAE: return 0x001A2C; 
+								case 0x00AA81: return 0x00191E; 
+								case 0x00AAA2: return 0x0019E4; 
+								case 0x00AA90: return 0x001978; 
+								case 0x00AA9E: return 0x0019CC; 
+								case 0x00AAAA: return 0x001A14; 
+								case 0x00AA85: return 0x001936; 
+								case 0x00AA9A: return 0x0019B4; 
+								case 0x00AAA7: return 0x001A02; 
+								case 0x00AA95: return 0x001996; 
+								case 0x00AA89: return 0x00194E; 
+								case 0x00AA8D: return 0x001966; 
+								case 0x00AA80: return 0x001918; 
+								case 0x00AA98: return 0x0019A8; 
+								case 0x00AAA3: return 0x0019EA; 
+								case 0x00AA91: return 0x00197E; 
+								case 0x00AAA8: return 0x001A08; 
+								case 0x00AAAF: return 0x001A32; 
+								case 0x00AA84: return 0x001930; 
+								case 0x00AA8C: return 0x001960; 
+								case 0x00AA9F: return 0x0019D2; 
+								case 0x00AAA4: return 0x0019F0; 
+								case 0x00AAAB: return 0x001A1A; 
+								case 0x00AA88: return 0x001948; 
+								case 0x00AA83: return 0x00192A; 
+								case 0x00AA99: return 0x0019AE; 
+								case 0x00AA9B: return 0x0019BA; 
+								case 0x00AAA0: return 0x0019D8; 
+								case 0x00AA96: return 0x00199C; 
+								case 0x00AAA9: return 0x001A0E; 
+								case 0x00AA87: return 0x001942; 
+								case 0x00AA8B: return 0x00195A; 
 								}
 
 								*w = 1;
-								return 8595;
+								return 0x001A38;
 							}
 						}
 						else { /* weight > state_000430 */
 							if (weight == state_000433) {
 								switch (u) {
-								case 0x000341: return 3985; 
-								case 0x000301: return 3984; 
+								case 0x000341: return 0x0008E3; 
+								case 0x000301: return 0x0008E3; 
 								}
 
 								*w = 1;
-								return 3959;
+								return 0x0008CB;
 							}
 						}
 					}
 					else { /* weight > state_000435 */
 						if (weight == state_000437) {
 							switch (u) {
-							case 0x000308: return 4026; 
+							case 0x000308: return 0x000905; 
 							}
 
 							*w = 1;
-							return 4017;
+							return 0x0008FD;
 						}
 						else if (weight < state_000437) {
 							if (weight == state_000436) {
 								switch (u) {
-								case 0x000308: return 4012; 
+								case 0x000308: return 0x0008F9; 
 								}
 
 								*w = 1;
-								return 4003;
+								return 0x0008F1;
 							}
 						}
 						else { /* weight > state_000437 */
 							if (weight == state_00043A) {
 								switch (u) {
-								case 0x000341: return 4187; 
-								case 0x000301: return 4186; 
+								case 0x000341: return 0x000990; 
+								case 0x000301: return 0x000990; 
 								}
 
 								*w = 1;
-								return 4071;
+								return 0x00092B;
 							}
 						}
 					}
 				}
 				else { /* weight > state_00043E */
-					if (weight == state_0004D8) {
+					if (weight == state_00006C) {
 						switch (u) {
-						case 0x000308: return 3952; 
+						case 0x0000B7: return 0x0003ED; 
+						case 0x000387: return 0x0003ED; 
 						}
 
 						*w = 1;
-						return 3948;
+						return 0x0003E4;
 					}
-					else if (weight < state_0004D8) {
-						if (weight == state_00006C) {
+					else if (weight < state_00006C) {
+						if (weight == state_000438) {
 							switch (u) {
-							case 0x0000B7: return 2127; 
-							case 0x000387: return 2128; 
+							case 0x000306: return 0x000925; 
+							case 0x000308: return 0x00091D; 
 							}
 
 							*w = 1;
-							return 2077;
+							return 0x000915;
 						}
-						else if (weight < state_00006C) {
-							if (weight == state_000438) {
+						else if (weight < state_000438) {
+							if (weight == state_001B07) {
 								switch (u) {
-								case 0x000306: return 4064; 
-								case 0x000308: return 4052; 
+								case 0x001B35: return 0x001D30; 
 								}
 
 								*w = 1;
-								return 4043;
+								return 0x001D2F;
 							}
 						}
-						else { /* weight > state_00006C */
+						else { /* weight > state_000438 */
+							if (weight == state_001B09) {
+								switch (u) {
+								case 0x001B35: return 0x001D32; 
+								}
+
+								*w = 1;
+								return 0x001D31;
+							}
+						}
+					}
+					else { /* weight > state_00006C */
+						if (weight == state_0004D8) {
+							switch (u) {
+							case 0x000308: return 0x0008C4; 
+							}
+
+							*w = 1;
+							return 0x0008C2;
+						}
+						else if (weight < state_0004D8) {
 							if (weight == state_0004D9) {
 								switch (u) {
-								case 0x000308: return 3950; 
+								case 0x000308: return 0x0008C3; 
 								}
 
 								*w = 1;
-								return 3947;
+								return 0x0008C1;
 							}
 						}
-					}
-					else { /* weight > state_0004D8 */
-						if (weight == state_000648) {
-							switch (u) {
-							case 0x000654: return 4831; 
-							}
-
-							*w = 1;
-							return 5779;
-						}
-						else if (weight < state_000648) {
+						else { /* weight > state_0004D8 */
 							if (weight == state_00064A) {
 								switch (u) {
-								case 0x000654: return 4842; 
+								case 0x000654: return 0x000C0A; 
 								}
 
 								*w = 1;
-								return 5821;
-							}
-						}
-						else { /* weight > state_000648 */
-							if (weight == state_00042B) {
-								switch (u) {
-								case 0x000308: return 4292; 
-								}
-
-								*w = 1;
-								return 4288;
+								return 0x000F73;
 							}
 						}
 					}
 				}
 			}
-			else { /* weight > state_00042D */
-				if (weight == state_000410) {
+			else { /* weight > state_000648 */
+				if (weight == state_00041E) {
 					switch (u) {
-					case 0x000308: return 3946; 
-					case 0x000306: return 3942; 
+					case 0x000308: return 0x00096B; 
 					}
 
 					*w = 1;
-					return 3938;
+					return 0x000968;
 				}
-				else if (weight < state_000410) {
-					if (weight == state_000427) {
+				else if (weight < state_00041E) {
+					if (weight == state_000456) {
 						switch (u) {
-						case 0x000308: return 4260; 
+						case 0x000308: return 0x000923; 
 						}
 
 						*w = 1;
-						return 4252;
+						return 0x00091F;
 					}
-					else if (weight < state_000427) {
-						if (weight == state_000456) {
+					else if (weight < state_000456) {
+						if (weight == state_00042D) {
 							switch (u) {
-							case 0x000308: return 4060; 
+							case 0x000308: return 0x0009F9; 
 							}
 
 							*w = 1;
-							return 4055;
+							return 0x0009F7;
 						}
-						else if (weight < state_000456) {
+						else if (weight < state_00042D) {
+							if (weight == state_00042B) {
+								switch (u) {
+								case 0x000308: return 0x0009ED; 
+								}
+
+								*w = 1;
+								return 0x0009EB;
+							}
+						}
+						else { /* weight > state_00042D */
 							if (weight == state_00AABB) {
 								switch (u) {
-								case 0x00AAA0: return 8500; 
-								case 0x00AA8D: return 8386; 
-								case 0x00AA81: return 8314; 
-								case 0x00AA99: return 8458; 
-								case 0x00AA90: return 8404; 
-								case 0x00AAAF: return 8590; 
-								case 0x00AA9D: return 8482; 
-								case 0x00AA85: return 8338; 
-								case 0x00AA8A: return 8368; 
-								case 0x00AAAB: return 8566; 
-								case 0x00AA89: return 8362; 
-								case 0x00AAA7: return 8542; 
-								case 0x00AA8E: return 8392; 
-								case 0x00AA82: return 8320; 
-								case 0x00AA98: return 8452; 
-								case 0x00AA97: return 8446; 
-								case 0x00AAAE: return 8584; 
-								case 0x00AAA3: return 8518; 
-								case 0x00AA86: return 8344; 
-								case 0x00AA8B: return 8374; 
-								case 0x00AA93: return 8422; 
-								case 0x00AAAA: return 8560; 
-								case 0x00AAA6: return 8536; 
-								case 0x00AA8F: return 8398; 
-								case 0x00AA83: return 8326; 
-								case 0x00AA9C: return 8476; 
-								case 0x00AA96: return 8440; 
-								case 0x00AAAD: return 8578; 
-								case 0x00AAA2: return 8512; 
-								case 0x00AA87: return 8350; 
-								case 0x00AAA9: return 8554; 
-								case 0x00AA8C: return 8380; 
-								case 0x00AA92: return 8416; 
-								case 0x00AA9F: return 8494; 
-								case 0x00AAA5: return 8530; 
-								case 0x00AA9B: return 8470; 
-								case 0x00AA95: return 8434; 
-								case 0x00AAA1: return 8506; 
-								case 0x00AA80: return 8308; 
-								case 0x00AAA8: return 8548; 
-								case 0x00AA91: return 8410; 
-								case 0x00AA9E: return 8488; 
-								case 0x00AA84: return 8332; 
-								case 0x00AAA4: return 8524; 
-								case 0x00AAAC: return 8572; 
-								case 0x00AA9A: return 8464; 
-								case 0x00AA94: return 8428; 
-								case 0x00AA88: return 8356; 
+								case 0x00AAA0: return 0x0019D9; 
+								case 0x00AA8D: return 0x001967; 
+								case 0x00AA81: return 0x00191F; 
+								case 0x00AA99: return 0x0019AF; 
+								case 0x00AA90: return 0x001979; 
+								case 0x00AAAF: return 0x001A33; 
+								case 0x00AA9D: return 0x0019C7; 
+								case 0x00AA85: return 0x001937; 
+								case 0x00AA8A: return 0x001955; 
+								case 0x00AAAB: return 0x001A1B; 
+								case 0x00AA89: return 0x00194F; 
+								case 0x00AAA7: return 0x001A03; 
+								case 0x00AA8E: return 0x00196D; 
+								case 0x00AA82: return 0x001925; 
+								case 0x00AA98: return 0x0019A9; 
+								case 0x00AA97: return 0x0019A3; 
+								case 0x00AAAE: return 0x001A2D; 
+								case 0x00AAA3: return 0x0019EB; 
+								case 0x00AA86: return 0x00193D; 
+								case 0x00AA8B: return 0x00195B; 
+								case 0x00AA93: return 0x00198B; 
+								case 0x00AAAA: return 0x001A15; 
+								case 0x00AAA6: return 0x0019FD; 
+								case 0x00AA8F: return 0x001973; 
+								case 0x00AA83: return 0x00192B; 
+								case 0x00AA9C: return 0x0019C1; 
+								case 0x00AA96: return 0x00199D; 
+								case 0x00AAAD: return 0x001A27; 
+								case 0x00AAA2: return 0x0019E5; 
+								case 0x00AA87: return 0x001943; 
+								case 0x00AAA9: return 0x001A0F; 
+								case 0x00AA8C: return 0x001961; 
+								case 0x00AA92: return 0x001985; 
+								case 0x00AA9F: return 0x0019D3; 
+								case 0x00AAA5: return 0x0019F7; 
+								case 0x00AA9B: return 0x0019BB; 
+								case 0x00AA95: return 0x001997; 
+								case 0x00AAA1: return 0x0019DF; 
+								case 0x00AA80: return 0x001919; 
+								case 0x00AAA8: return 0x001A09; 
+								case 0x00AA91: return 0x00197F; 
+								case 0x00AA9E: return 0x0019CD; 
+								case 0x00AA84: return 0x001931; 
+								case 0x00AAA4: return 0x0019F1; 
+								case 0x00AAAC: return 0x001A21; 
+								case 0x00AA9A: return 0x0019B5; 
+								case 0x00AA94: return 0x001991; 
+								case 0x00AA88: return 0x001949; 
 								}
 
 								*w = 1;
-								return 8597;
-							}
-						}
-						else { /* weight > state_000456 */
-							if (weight == state_000423) {
-								switch (u) {
-								case 0x000306: return 4198; 
-								case 0x000308: return 4202; 
-								case 0x00030B: return 4206; 
-								}
-
-								*w = 1;
-								return 4192;
+								return 0x001A3A;
 							}
 						}
 					}
-					else { /* weight > state_000427 */
-						if (weight == state_00041E) {
+					else { /* weight > state_000456 */
+						if (weight == state_000427) {
 							switch (u) {
-							case 0x000308: return 4146; 
+							case 0x000308: return 0x0009CF; 
 							}
 
 							*w = 1;
-							return 4137;
+							return 0x0009C9;
 						}
-						else if (weight < state_00041E) {
-							if (weight == state_00041A) {
+						else if (weight < state_000427) {
+							if (weight == state_000423) {
 								switch (u) {
-								case 0x000341: return 4190; 
-								case 0x000301: return 4189; 
+								case 0x000306: return 0x000997; 
+								case 0x000308: return 0x000999; 
+								case 0x00030B: return 0x00099B; 
 								}
 
 								*w = 1;
-								return 4072;
+								return 0x000994;
 							}
 						}
-						else { /* weight > state_00041E */
-							if (weight == state_000413) {
+						else { /* weight > state_000427 */
+							if (weight == state_00041A) {
 								switch (u) {
-								case 0x000341: return 3988; 
-								case 0x000301: return 3987; 
+								case 0x000341: return 0x000991; 
+								case 0x000301: return 0x000991; 
 								}
 
 								*w = 1;
-								return 3960;
+								return 0x00092C;
 							}
 						}
 					}
 				}
-				else { /* weight > state_000410 */
-					if (weight == state_000418) {
+				else { /* weight > state_00041E */
+					if (weight == state_000417) {
 						switch (u) {
-						case 0x000308: return 4054; 
-						case 0x000306: return 4066; 
+						case 0x000308: return 0x000906; 
 						}
 
 						*w = 1;
-						return 4044;
+						return 0x0008FE;
 					}
-					else if (weight < state_000418) {
-						if (weight == state_000417) {
+					else if (weight < state_000417) {
+						if (weight == state_000410) {
 							switch (u) {
-							case 0x000308: return 4028; 
+							case 0x000308: return 0x0008C0; 
+							case 0x000306: return 0x0008BE; 
 							}
 
 							*w = 1;
-							return 4018;
+							return 0x0008BC;
 						}
-						else if (weight < state_000417) {
+						else if (weight < state_000410) {
+							if (weight == state_000413) {
+								switch (u) {
+								case 0x000341: return 0x0008E4; 
+								case 0x000301: return 0x0008E4; 
+								}
+
+								*w = 1;
+								return 0x0008CD;
+							}
+						}
+						else { /* weight > state_000410 */
 							if (weight == state_000416) {
 								switch (u) {
-								case 0x000308: return 4014; 
+								case 0x000308: return 0x0008FA; 
 								}
 
 								*w = 1;
-								return 4004;
-							}
-						}
-						else { /* weight > state_000417 */
-							if (weight == state_000415) {
-								switch (u) {
-								case 0x000306: return 4000; 
-								}
-
-								*w = 1;
-								return 3992;
+								return 0x0008F3;
 							}
 						}
 					}
-					else { /* weight > state_000418 */
-						if (weight == state_00AABC) {
+					else { /* weight > state_000417 */
+						if (weight == state_000418) {
 							switch (u) {
-							case 0x00AA95: return 8435; 
-							case 0x00AAA1: return 8507; 
-							case 0x00AA84: return 8333; 
-							case 0x00AA98: return 8453; 
-							case 0x00AA91: return 8411; 
-							case 0x00AAAC: return 8573; 
-							case 0x00AA9E: return 8489; 
-							case 0x00AA88: return 8357; 
-							case 0x00AAA6: return 8537; 
-							case 0x00AA8D: return 8387; 
-							case 0x00AA9A: return 8465; 
-							case 0x00AA96: return 8441; 
-							case 0x00AAA2: return 8513; 
-							case 0x00AA83: return 8327; 
-							case 0x00AA99: return 8459; 
-							case 0x00AA92: return 8417; 
-							case 0x00AAAD: return 8579; 
-							case 0x00AA9F: return 8495; 
-							case 0x00AA87: return 8351; 
-							case 0x00AAA7: return 8543; 
-							case 0x00AA8C: return 8381; 
-							case 0x00AA9B: return 8471; 
-							case 0x00AA97: return 8447; 
-							case 0x00AAA3: return 8519; 
-							case 0x00AA82: return 8321; 
-							case 0x00AA93: return 8423; 
-							case 0x00AAAE: return 8585; 
-							case 0x00AA86: return 8345; 
-							case 0x00AAA8: return 8549; 
-							case 0x00AA8B: return 8375; 
-							case 0x00AAAA: return 8561; 
-							case 0x00AA9C: return 8477; 
-							case 0x00AAA4: return 8525; 
-							case 0x00AA8F: return 8399; 
-							case 0x00AA81: return 8315; 
-							case 0x00AA94: return 8429; 
-							case 0x00AAAF: return 8591; 
-							case 0x00AAA0: return 8501; 
-							case 0x00AA85: return 8339; 
-							case 0x00AAA9: return 8555; 
-							case 0x00AA8A: return 8369; 
-							case 0x00AA90: return 8405; 
-							case 0x00AAAB: return 8567; 
-							case 0x00AA9D: return 8483; 
-							case 0x00AA89: return 8363; 
-							case 0x00AAA5: return 8531; 
-							case 0x00AA8E: return 8393; 
-							case 0x00AA80: return 8309; 
+							case 0x000308: return 0x00091E; 
+							case 0x000306: return 0x000926; 
 							}
 
 							*w = 1;
-							return 8598;
+							return 0x000918;
 						}
-						else if (weight < state_00AABC) {
-							if (weight == state_001025) {
+						else if (weight < state_000418) {
+							if (weight == state_000415) {
 								switch (u) {
-								case 0x00102E: return 9064; 
+								case 0x000306: return 0x0008EE; 
 								}
 
 								*w = 1;
-								return 9062;
+								return 0x0008EA;
 							}
 						}
 					}
 				}
 			}
 		}
-		else { /* weight > state_000627 */
-			if (weight == state_000E44) {
+		else { /* weight > state_001B05 */
+			if (weight == state_000E43) {
 				switch (u) {
-				case 0x000E1E: return 8001; 
-				case 0x000E10: return 7917; 
-				case 0x000E08: return 7869; 
-				case 0x000E01: return 7827; 
-				case 0x000E28: return 8061; 
-				case 0x000E0E: return 7905; 
-				case 0x000E14: return 7941; 
-				case 0x000E2B: return 8079; 
-				case 0x000E27: return 8055; 
-				case 0x000E29: return 8067; 
-				case 0x000E0A: return 7881; 
-				case 0x000E18: return 7965; 
-				case 0x000E22: return 8025; 
-				case 0x000E1D: return 7995; 
-				case 0x000E13: return 7935; 
-				case 0x000E09: return 7875; 
-				case 0x000E06: return 7857; 
-				case 0x000E17: return 7959; 
-				case 0x000E1C: return 7989; 
-				case 0x000E2C: return 8085; 
-				case 0x000E02: return 7833; 
-				case 0x000E0F: return 7911; 
-				case 0x000E12: return 7929; 
-				case 0x000E24: return 8037; 
-				case 0x000E0B: return 7887; 
-				case 0x000E07: return 7863; 
-				case 0x000E16: return 7953; 
-				case 0x000E20: return 8013; 
-				case 0x000E23: return 8031; 
-				case 0x000E1B: return 7983; 
-				case 0x000E2D: return 8091; 
-				case 0x000E03: return 7839; 
-				case 0x000E1F: return 8007; 
-				case 0x000E25: return 8043; 
-				case 0x000E0C: return 7893; 
-				case 0x000E04: return 7845; 
-				case 0x000E11: return 7923; 
-				case 0x000E21: return 8019; 
-				case 0x000E2E: return 8097; 
-				case 0x000E0D: return 7899; 
-				case 0x000E15: return 7947; 
-				case 0x000E1A: return 7977; 
-				case 0x000E2A: return 8073; 
-				case 0x000E26: return 8049; 
-				case 0x000E05: return 7851; 
-				case 0x000E19: return 7971; 
+				case 0x000E02: return 0x00173D; 
+				case 0x000E22: return 0x0017FD; 
+				case 0x000E13: return 0x0017A3; 
+				case 0x000E25: return 0x00180F; 
+				case 0x000E2A: return 0x00182D; 
+				case 0x000E06: return 0x001755; 
+				case 0x000E0B: return 0x001773; 
+				case 0x000E28: return 0x001821; 
+				case 0x000E1C: return 0x0017D9; 
+				case 0x000E2E: return 0x001845; 
+				case 0x000E20: return 0x0017F1; 
+				case 0x000E0F: return 0x00178B; 
+				case 0x000E01: return 0x001737; 
+				case 0x000E14: return 0x0017A9; 
+				case 0x000E24: return 0x001809; 
+				case 0x000E05: return 0x00174F; 
+				case 0x000E0A: return 0x00176D; 
+				case 0x000E10: return 0x001791; 
+				case 0x000E1D: return 0x0017DF; 
+				case 0x000E2D: return 0x00183F; 
+				case 0x000E09: return 0x001767; 
+				case 0x000E0E: return 0x001785; 
+				case 0x000E15: return 0x0017AF; 
+				case 0x000E27: return 0x00181B; 
+				case 0x000E2C: return 0x001839; 
+				case 0x000E04: return 0x001749; 
+				case 0x000E18: return 0x0017C1; 
+				case 0x000E11: return 0x001797; 
+				case 0x000E1E: return 0x0017E5; 
+				case 0x000E08: return 0x001761; 
+				case 0x000E23: return 0x001803; 
+				case 0x000E0D: return 0x00177F; 
+				case 0x000E1A: return 0x0017CD; 
+				case 0x000E16: return 0x0017B5; 
+				case 0x000E26: return 0x001815; 
+				case 0x000E2B: return 0x001833; 
+				case 0x000E03: return 0x001743; 
+				case 0x000E19: return 0x0017C7; 
+				case 0x000E29: return 0x001827; 
+				case 0x000E12: return 0x00179D; 
+				case 0x000E1F: return 0x0017EB; 
+				case 0x000E07: return 0x00175B; 
+				case 0x000E0C: return 0x001779; 
+				case 0x000E1B: return 0x0017D3; 
+				case 0x000E17: return 0x0017BB; 
+				case 0x000E21: return 0x0017F7; 
 				}
 
 				*w = 1;
-				return 8106;
+				return 0x00184E;
 			}
-			else if (weight < state_000E44) {
-				if (weight == state_001B07) {
+			else if (weight < state_000E43) {
+				if (weight == state_00044D) {
 					switch (u) {
-					case 0x001B35: return 9361; 
+					case 0x000308: return 0x0009F8; 
 					}
 
 					*w = 1;
-					return 9359;
+					return 0x0009F6;
 				}
-				else if (weight < state_001B07) {
-					if (weight == state_00004C) {
+				else if (weight < state_00044D) {
+					if (weight == state_000443) {
 						switch (u) {
-						case 0x000387: return 2131; 
-						case 0x0000B7: return 2130; 
+						case 0x00030B: return 0x00099A; 
+						case 0x000308: return 0x000998; 
+						case 0x000306: return 0x000996; 
 						}
 
 						*w = 1;
-						return 2094;
+						return 0x000992;
 					}
-					else if (weight < state_00004C) {
-						if (weight == state_000443) {
+					else if (weight < state_000443) {
+						if (weight == state_000627) {
 							switch (u) {
-							case 0x00030B: return 4204; 
-							case 0x000308: return 4200; 
-							case 0x000306: return 4196; 
+							case 0x000653: return 0x000BF7; 
+							case 0x000655: return 0x000C04; 
+							case 0x000654: return 0x000BFA; 
 							}
 
 							*w = 1;
-							return 4191;
+							return 0x000C34;
 						}
-						else if (weight < state_000443) {
+						else if (weight < state_000627) {
+							if (weight == state_00AABC) {
+								switch (u) {
+								case 0x00AA95: return 0x001998; 
+								case 0x00AAA1: return 0x0019E0; 
+								case 0x00AA84: return 0x001932; 
+								case 0x00AA98: return 0x0019AA; 
+								case 0x00AA91: return 0x001980; 
+								case 0x00AAAC: return 0x001A22; 
+								case 0x00AA9E: return 0x0019CE; 
+								case 0x00AA88: return 0x00194A; 
+								case 0x00AAA6: return 0x0019FE; 
+								case 0x00AA8D: return 0x001968; 
+								case 0x00AA9A: return 0x0019B6; 
+								case 0x00AA96: return 0x00199E; 
+								case 0x00AAA2: return 0x0019E6; 
+								case 0x00AA83: return 0x00192C; 
+								case 0x00AA99: return 0x0019B0; 
+								case 0x00AA92: return 0x001986; 
+								case 0x00AAAD: return 0x001A28; 
+								case 0x00AA9F: return 0x0019D4; 
+								case 0x00AA87: return 0x001944; 
+								case 0x00AAA7: return 0x001A04; 
+								case 0x00AA8C: return 0x001962; 
+								case 0x00AA9B: return 0x0019BC; 
+								case 0x00AA97: return 0x0019A4; 
+								case 0x00AAA3: return 0x0019EC; 
+								case 0x00AA82: return 0x001926; 
+								case 0x00AA93: return 0x00198C; 
+								case 0x00AAAE: return 0x001A2E; 
+								case 0x00AA86: return 0x00193E; 
+								case 0x00AAA8: return 0x001A0A; 
+								case 0x00AA8B: return 0x00195C; 
+								case 0x00AAAA: return 0x001A16; 
+								case 0x00AA9C: return 0x0019C2; 
+								case 0x00AAA4: return 0x0019F2; 
+								case 0x00AA8F: return 0x001974; 
+								case 0x00AA81: return 0x001920; 
+								case 0x00AA94: return 0x001992; 
+								case 0x00AAAF: return 0x001A34; 
+								case 0x00AAA0: return 0x0019DA; 
+								case 0x00AA85: return 0x001938; 
+								case 0x00AAA9: return 0x001A10; 
+								case 0x00AA8A: return 0x001956; 
+								case 0x00AA90: return 0x00197A; 
+								case 0x00AAAB: return 0x001A1C; 
+								case 0x00AA9D: return 0x0019C8; 
+								case 0x00AA89: return 0x001950; 
+								case 0x00AAA5: return 0x0019F8; 
+								case 0x00AA8E: return 0x00196E; 
+								case 0x00AA80: return 0x00191A; 
+								}
+
+								*w = 1;
+								return 0x001A3B;
+							}
+						}
+						else { /* weight > state_000627 */
 							if (weight == state_000B92) {
 								switch (u) {
-								case 0x000BD7: return 6845; 
+								case 0x000BD7: return 0x001363; 
 								}
 
 								*w = 1;
-								return 6842;
-							}
-						}
-						else { /* weight > state_000443 */
-							if (weight == state_000447) {
-								switch (u) {
-								case 0x000308: return 4258; 
-								}
-
-								*w = 1;
-								return 4251;
+								return 0x001361;
 							}
 						}
 					}
-					else { /* weight > state_00004C */
-						if (weight == state_00044D) {
+					else { /* weight > state_000443 */
+						if (weight == state_00004C) {
 							switch (u) {
-							case 0x000308: return 4304; 
+							case 0x000387: return 0x0003FE; 
+							case 0x0000B7: return 0x0003FE; 
 							}
 
 							*w = 1;
-							return 4301;
+							return 0x0003F5;
 						}
-						else if (weight < state_00044D) {
-							if (weight == state_00044B) {
+						else if (weight < state_00004C) {
+							if (weight == state_000447) {
 								switch (u) {
-								case 0x000308: return 4290; 
+								case 0x000308: return 0x0009CE; 
 								}
 
 								*w = 1;
-								return 4287;
+								return 0x0009C8;
 							}
 						}
-						else { /* weight > state_00044D */
-							if (weight == state_001B05) {
+						else { /* weight > state_00004C */
+							if (weight == state_00044B) {
 								switch (u) {
-								case 0x001B35: return 9358; 
+								case 0x000308: return 0x0009EC; 
 								}
 
 								*w = 1;
-								return 9356;
+								return 0x0009EA;
 							}
 						}
 					}
 				}
-				else { /* weight > state_001B07 */
-					if (weight == state_000E41) {
+				else { /* weight > state_00044D */
+					if (weight == state_000E40) {
 						switch (u) {
-						case 0x000E2C: return 8082; 
-						case 0x000E26: return 8046; 
-						case 0x000E14: return 7938; 
-						case 0x000E01: return 7824; 
-						case 0x000E0E: return 7902; 
-						case 0x000E08: return 7866; 
-						case 0x000E1D: return 7992; 
-						case 0x000E11: return 7920; 
-						case 0x000E0A: return 7878; 
-						case 0x000E04: return 7842; 
-						case 0x000E29: return 8064; 
-						case 0x000E2B: return 8076; 
-						case 0x000E25: return 8040; 
-						case 0x000E15: return 7944; 
-						case 0x000E1A: return 7974; 
-						case 0x000E0D: return 7896; 
-						case 0x000E21: return 8016; 
-						case 0x000E2E: return 8094; 
-						case 0x000E1E: return 7998; 
-						case 0x000E23: return 8028; 
-						case 0x000E07: return 7860; 
-						case 0x000E2A: return 8070; 
-						case 0x000E24: return 8034; 
-						case 0x000E12: return 7926; 
-						case 0x000E03: return 7836; 
-						case 0x000E20: return 8010; 
-						case 0x000E16: return 7950; 
-						case 0x000E28: return 8058; 
-						case 0x000E2D: return 8088; 
-						case 0x000E1B: return 7980; 
-						case 0x000E0C: return 7890; 
-						case 0x000E06: return 7854; 
-						case 0x000E1F: return 8004; 
-						case 0x000E13: return 7932; 
-						case 0x000E18: return 7962; 
-						case 0x000E02: return 7830; 
-						case 0x000E0F: return 7908; 
-						case 0x000E27: return 8052; 
-						case 0x000E17: return 7956; 
-						case 0x000E1C: return 7986; 
-						case 0x000E0B: return 7884; 
-						case 0x000E09: return 7872; 
-						case 0x000E22: return 8022; 
-						case 0x000E10: return 7914; 
-						case 0x000E19: return 7968; 
-						case 0x000E05: return 7848; 
+						case 0x000E04: return 0x001746; 
+						case 0x000E27: return 0x001818; 
+						case 0x000E11: return 0x001794; 
+						case 0x000E2C: return 0x001836; 
+						case 0x000E1E: return 0x0017E2; 
+						case 0x000E18: return 0x0017BE; 
+						case 0x000E0D: return 0x00177C; 
+						case 0x000E01: return 0x001734; 
+						case 0x000E1A: return 0x0017CA; 
+						case 0x000E14: return 0x0017A6; 
+						case 0x000E05: return 0x00174C; 
+						case 0x000E0A: return 0x00176A; 
+						case 0x000E20: return 0x0017EE; 
+						case 0x000E10: return 0x00178E; 
+						case 0x000E29: return 0x001824; 
+						case 0x000E1D: return 0x0017DC; 
+						case 0x000E0E: return 0x001782; 
+						case 0x000E24: return 0x001806; 
+						case 0x000E17: return 0x0017B8; 
+						case 0x000E02: return 0x00173A; 
+						case 0x000E2D: return 0x00183C; 
+						case 0x000E21: return 0x0017F4; 
+						case 0x000E13: return 0x0017A0; 
+						case 0x000E22: return 0x0017FA; 
+						case 0x000E06: return 0x001752; 
+						case 0x000E0B: return 0x001770; 
+						case 0x000E25: return 0x00180C; 
+						case 0x000E2A: return 0x00182A; 
+						case 0x000E1C: return 0x0017D6; 
+						case 0x000E16: return 0x0017B2; 
+						case 0x000E0F: return 0x001788; 
+						case 0x000E03: return 0x001740; 
+						case 0x000E2E: return 0x001842; 
+						case 0x000E08: return 0x00175E; 
+						case 0x000E12: return 0x00179A; 
+						case 0x000E1F: return 0x0017E8; 
+						case 0x000E07: return 0x001758; 
+						case 0x000E0C: return 0x001776; 
+						case 0x000E26: return 0x001812; 
+						case 0x000E2B: return 0x001830; 
+						case 0x000E1B: return 0x0017D0; 
+						case 0x000E19: return 0x0017C4; 
+						case 0x000E23: return 0x001800; 
+						case 0x000E28: return 0x00181E; 
+						case 0x000E09: return 0x001764; 
+						case 0x000E15: return 0x0017AC; 
 						}
 
 						*w = 1;
-						return 8103;
+						return 0x00184B;
 					}
-					else if (weight < state_000E41) {
-						if (weight == state_000406) {
+					else if (weight < state_000E40) {
+						if (weight == state_001025) {
 							switch (u) {
-							case 0x000308: return 4062; 
+							case 0x00102E: return 0x001C09; 
 							}
 
 							*w = 1;
-							return 4056;
+							return 0x001C08;
 						}
-						else if (weight < state_000406) {
-							if (weight == state_001B09) {
+						else if (weight < state_001025) {
+							if (weight == state_001B0D) {
 								switch (u) {
-								case 0x001B35: return 9364; 
+								case 0x001B35: return 0x001D36; 
 								}
 
 								*w = 1;
-								return 9362;
+								return 0x001D35;
 							}
 						}
-						else { /* weight > state_000406 */
-							if (weight == state_000E40) {
+						else { /* weight > state_001025 */
+							if (weight == state_000406) {
 								switch (u) {
-								case 0x000E04: return 7841; 
-								case 0x000E27: return 8051; 
-								case 0x000E11: return 7919; 
-								case 0x000E2C: return 8081; 
-								case 0x000E1E: return 7997; 
-								case 0x000E18: return 7961; 
-								case 0x000E0D: return 7895; 
-								case 0x000E01: return 7823; 
-								case 0x000E1A: return 7973; 
-								case 0x000E14: return 7937; 
-								case 0x000E05: return 7847; 
-								case 0x000E0A: return 7877; 
-								case 0x000E20: return 8009; 
-								case 0x000E10: return 7913; 
-								case 0x000E29: return 8063; 
-								case 0x000E1D: return 7991; 
-								case 0x000E0E: return 7901; 
-								case 0x000E24: return 8033; 
-								case 0x000E17: return 7955; 
-								case 0x000E02: return 7829; 
-								case 0x000E2D: return 8087; 
-								case 0x000E21: return 8015; 
-								case 0x000E13: return 7931; 
-								case 0x000E22: return 8021; 
-								case 0x000E06: return 7853; 
-								case 0x000E0B: return 7883; 
-								case 0x000E25: return 8039; 
-								case 0x000E2A: return 8069; 
-								case 0x000E1C: return 7985; 
-								case 0x000E16: return 7949; 
-								case 0x000E0F: return 7907; 
-								case 0x000E03: return 7835; 
-								case 0x000E2E: return 8093; 
-								case 0x000E08: return 7865; 
-								case 0x000E12: return 7925; 
-								case 0x000E1F: return 8003; 
-								case 0x000E07: return 7859; 
-								case 0x000E0C: return 7889; 
-								case 0x000E26: return 8045; 
-								case 0x000E2B: return 8075; 
-								case 0x000E1B: return 7979; 
-								case 0x000E19: return 7967; 
-								case 0x000E23: return 8027; 
-								case 0x000E28: return 8057; 
-								case 0x000E09: return 7871; 
-								case 0x000E15: return 7943; 
+								case 0x000308: return 0x000924; 
 								}
 
 								*w = 1;
-								return 8102;
+								return 0x000920;
 							}
 						}
 					}
-					else { /* weight > state_000E41 */
-						if (weight == state_000E43) {
+					else { /* weight > state_000E40 */
+						if (weight == state_000E42) {
 							switch (u) {
-							case 0x000E02: return 7832; 
-							case 0x000E22: return 8024; 
-							case 0x000E13: return 7934; 
-							case 0x000E25: return 8042; 
-							case 0x000E2A: return 8072; 
-							case 0x000E06: return 7856; 
-							case 0x000E0B: return 7886; 
-							case 0x000E28: return 8060; 
-							case 0x000E1C: return 7988; 
-							case 0x000E2E: return 8096; 
-							case 0x000E20: return 8012; 
-							case 0x000E0F: return 7910; 
-							case 0x000E01: return 7826; 
-							case 0x000E14: return 7940; 
-							case 0x000E24: return 8036; 
-							case 0x000E05: return 7850; 
-							case 0x000E0A: return 7880; 
-							case 0x000E10: return 7916; 
-							case 0x000E1D: return 7994; 
-							case 0x000E2D: return 8090; 
-							case 0x000E09: return 7874; 
-							case 0x000E0E: return 7904; 
-							case 0x000E15: return 7946; 
-							case 0x000E27: return 8054; 
-							case 0x000E2C: return 8084; 
-							case 0x000E04: return 7844; 
-							case 0x000E18: return 7964; 
-							case 0x000E11: return 7922; 
-							case 0x000E1E: return 8000; 
-							case 0x000E08: return 7868; 
-							case 0x000E23: return 8030; 
-							case 0x000E0D: return 7898; 
-							case 0x000E1A: return 7976; 
-							case 0x000E16: return 7952; 
-							case 0x000E26: return 8048; 
-							case 0x000E2B: return 8078; 
-							case 0x000E03: return 7838; 
-							case 0x000E19: return 7970; 
-							case 0x000E29: return 8066; 
-							case 0x000E12: return 7928; 
-							case 0x000E1F: return 8006; 
-							case 0x000E07: return 7862; 
-							case 0x000E0C: return 7892; 
-							case 0x000E1B: return 7982; 
-							case 0x000E17: return 7958; 
-							case 0x000E21: return 8018; 
+							case 0x000E1C: return 0x0017D8; 
+							case 0x000E16: return 0x0017B4; 
+							case 0x000E24: return 0x001808; 
+							case 0x000E07: return 0x00175A; 
+							case 0x000E0C: return 0x001778; 
+							case 0x000E12: return 0x00179C; 
+							case 0x000E1F: return 0x0017EA; 
+							case 0x000E2D: return 0x00183E; 
+							case 0x000E21: return 0x0017F6; 
+							case 0x000E1B: return 0x0017D2; 
+							case 0x000E15: return 0x0017AE; 
+							case 0x000E25: return 0x00180E; 
+							case 0x000E2A: return 0x00182C; 
+							case 0x000E23: return 0x001802; 
+							case 0x000E11: return 0x001796; 
+							case 0x000E1E: return 0x0017E4; 
+							case 0x000E2E: return 0x001844; 
+							case 0x000E04: return 0x001748; 
+							case 0x000E1A: return 0x0017CC; 
+							case 0x000E14: return 0x0017A8; 
+							case 0x000E08: return 0x001760; 
+							case 0x000E0D: return 0x00177E; 
+							case 0x000E01: return 0x001736; 
+							case 0x000E19: return 0x0017C6; 
+							case 0x000E28: return 0x001820; 
+							case 0x000E10: return 0x001790; 
+							case 0x000E26: return 0x001814; 
+							case 0x000E1D: return 0x0017DE; 
+							case 0x000E2B: return 0x001832; 
+							case 0x000E05: return 0x00174E; 
+							case 0x000E0A: return 0x00176C; 
+							case 0x000E09: return 0x001766; 
+							case 0x000E0E: return 0x001784; 
+							case 0x000E02: return 0x00173C; 
+							case 0x000E18: return 0x0017C0; 
+							case 0x000E17: return 0x0017BA; 
+							case 0x000E27: return 0x00181A; 
+							case 0x000E2C: return 0x001838; 
+							case 0x000E06: return 0x001754; 
+							case 0x000E0B: return 0x001772; 
+							case 0x000E13: return 0x0017A2; 
+							case 0x000E29: return 0x001826; 
+							case 0x000E20: return 0x0017F0; 
+							case 0x000E22: return 0x0017FC; 
+							case 0x000E0F: return 0x00178A; 
+							case 0x000E03: return 0x001742; 
 							}
 
 							*w = 1;
-							return 8105;
+							return 0x00184D;
 						}
-						else if (weight < state_000E43) {
-							if (weight == state_000E42) {
+						else if (weight < state_000E42) {
+							if (weight == state_000E41) {
 								switch (u) {
-								case 0x000E1C: return 7987; 
-								case 0x000E16: return 7951; 
-								case 0x000E24: return 8035; 
-								case 0x000E07: return 7861; 
-								case 0x000E0C: return 7891; 
-								case 0x000E12: return 7927; 
-								case 0x000E1F: return 8005; 
-								case 0x000E2D: return 8089; 
-								case 0x000E21: return 8017; 
-								case 0x000E1B: return 7981; 
-								case 0x000E15: return 7945; 
-								case 0x000E25: return 8041; 
-								case 0x000E2A: return 8071; 
-								case 0x000E23: return 8029; 
-								case 0x000E11: return 7921; 
-								case 0x000E1E: return 7999; 
-								case 0x000E2E: return 8095; 
-								case 0x000E04: return 7843; 
-								case 0x000E1A: return 7975; 
-								case 0x000E14: return 7939; 
-								case 0x000E08: return 7867; 
-								case 0x000E0D: return 7897; 
-								case 0x000E01: return 7825; 
-								case 0x000E19: return 7969; 
-								case 0x000E28: return 8059; 
-								case 0x000E10: return 7915; 
-								case 0x000E26: return 8047; 
-								case 0x000E1D: return 7993; 
-								case 0x000E2B: return 8077; 
-								case 0x000E05: return 7849; 
-								case 0x000E0A: return 7879; 
-								case 0x000E09: return 7873; 
-								case 0x000E0E: return 7903; 
-								case 0x000E02: return 7831; 
-								case 0x000E18: return 7963; 
-								case 0x000E17: return 7957; 
-								case 0x000E27: return 8053; 
-								case 0x000E2C: return 8083; 
-								case 0x000E06: return 7855; 
-								case 0x000E0B: return 7885; 
-								case 0x000E13: return 7933; 
-								case 0x000E29: return 8065; 
-								case 0x000E20: return 8011; 
-								case 0x000E22: return 8023; 
-								case 0x000E0F: return 7909; 
-								case 0x000E03: return 7837; 
+								case 0x000E2C: return 0x001837; 
+								case 0x000E26: return 0x001813; 
+								case 0x000E14: return 0x0017A7; 
+								case 0x000E01: return 0x001735; 
+								case 0x000E0E: return 0x001783; 
+								case 0x000E08: return 0x00175F; 
+								case 0x000E1D: return 0x0017DD; 
+								case 0x000E11: return 0x001795; 
+								case 0x000E0A: return 0x00176B; 
+								case 0x000E04: return 0x001747; 
+								case 0x000E29: return 0x001825; 
+								case 0x000E2B: return 0x001831; 
+								case 0x000E25: return 0x00180D; 
+								case 0x000E15: return 0x0017AD; 
+								case 0x000E1A: return 0x0017CB; 
+								case 0x000E0D: return 0x00177D; 
+								case 0x000E21: return 0x0017F5; 
+								case 0x000E2E: return 0x001843; 
+								case 0x000E1E: return 0x0017E3; 
+								case 0x000E23: return 0x001801; 
+								case 0x000E07: return 0x001759; 
+								case 0x000E2A: return 0x00182B; 
+								case 0x000E24: return 0x001807; 
+								case 0x000E12: return 0x00179B; 
+								case 0x000E03: return 0x001741; 
+								case 0x000E20: return 0x0017EF; 
+								case 0x000E16: return 0x0017B3; 
+								case 0x000E28: return 0x00181F; 
+								case 0x000E2D: return 0x00183D; 
+								case 0x000E1B: return 0x0017D1; 
+								case 0x000E0C: return 0x001777; 
+								case 0x000E06: return 0x001753; 
+								case 0x000E1F: return 0x0017E9; 
+								case 0x000E13: return 0x0017A1; 
+								case 0x000E18: return 0x0017BF; 
+								case 0x000E02: return 0x00173B; 
+								case 0x000E0F: return 0x001789; 
+								case 0x000E27: return 0x001819; 
+								case 0x000E17: return 0x0017B9; 
+								case 0x000E1C: return 0x0017D7; 
+								case 0x000E0B: return 0x001771; 
+								case 0x000E09: return 0x001765; 
+								case 0x000E22: return 0x0017FB; 
+								case 0x000E10: return 0x00178F; 
+								case 0x000E19: return 0x0017C5; 
+								case 0x000E05: return 0x00174D; 
 								}
 
 								*w = 1;
-								return 8104;
+								return 0x00184C;
 							}
 						}
 					}
 				}
 			}
-			else { /* weight > state_000E44 */
+			else { /* weight > state_000E43 */
 				if (weight == state_000EC4) {
 					switch (u) {
-					case 0x000EDD: return 8276; 
-					case 0x000E9F: return 8233; 
-					case 0x000EAA: return 8149; 
-					case 0x000EA7: return 8263; 
-					case 0x000E82: return 8125; 
-					case 0x000E97: return 8191; 
-					case 0x000EDC: return 8270; 
-					case 0x000EAE: return 8293; 
-					case 0x000E9C: return 8215; 
-					case 0x000E94: return 8173; 
-					case 0x000EAB: return 8281; 
-					case 0x000E81: return 8119; 
-					case 0x000EA1: return 8239; 
-					case 0x000EDF: return 8161; 
-					case 0x000E9D: return 8221; 
-					case 0x000EA5: return 8257; 
-					case 0x000E8A: return 8155; 
-					case 0x000E84: return 8131; 
-					case 0x000E95: return 8179; 
-					case 0x000E9A: return 8203; 
-					case 0x000E8D: return 8167; 
-					case 0x000E99: return 8197; 
-					case 0x000E9E: return 8227; 
-					case 0x000EA2: return 8245; 
-					case 0x000E87: return 8137; 
-					case 0x000EDE: return 8113; 
-					case 0x000E88: return 8143; 
-					case 0x000E96: return 8185; 
-					case 0x000EAD: return 8287; 
-					case 0x000E9B: return 8209; 
-					case 0x000EA3: return 8251; 
+					case 0x000EDD: return 0x0018FE; 
+					case 0x000E9F: return 0x0018CE; 
+					case 0x000EAA: return 0x00187A; 
+					case 0x000EA7: return 0x0018EC; 
+					case 0x000E82: return 0x001862; 
+					case 0x000E97: return 0x0018A4; 
+					case 0x000EDC: return 0x0018F8; 
+					case 0x000EAE: return 0x00190A; 
+					case 0x000E9C: return 0x0018BC; 
+					case 0x000E94: return 0x001892; 
+					case 0x000EAB: return 0x0018F2; 
+					case 0x000E81: return 0x00185C; 
+					case 0x000EA1: return 0x0018D4; 
+					case 0x000EDF: return 0x001886; 
+					case 0x000E9D: return 0x0018C2; 
+					case 0x000EA5: return 0x0018E6; 
+					case 0x000E8A: return 0x001880; 
+					case 0x000E84: return 0x001868; 
+					case 0x000E95: return 0x001898; 
+					case 0x000E9A: return 0x0018B0; 
+					case 0x000E8D: return 0x00188C; 
+					case 0x000E99: return 0x0018AA; 
+					case 0x000E9E: return 0x0018C8; 
+					case 0x000EA2: return 0x0018DA; 
+					case 0x000E87: return 0x00186E; 
+					case 0x000EDE: return 0x001856; 
+					case 0x000E88: return 0x001874; 
+					case 0x000E96: return 0x00189E; 
+					case 0x000EAD: return 0x001904; 
+					case 0x000E9B: return 0x0018B6; 
+					case 0x000EA3: return 0x0018E0; 
 					}
 
 					*w = 1;
-					return 8303;
+					return 0x001914;
 				}
 				else if (weight < state_000EC4) {
 					if (weight == state_000EC1) {
 						switch (u) {
-						case 0x000EAD: return 8284; 
-						case 0x000E97: return 8188; 
-						case 0x000EA1: return 8236; 
-						case 0x000E9C: return 8212; 
-						case 0x000E82: return 8122; 
-						case 0x000EDE: return 8110; 
-						case 0x000EA5: return 8254; 
-						case 0x000E87: return 8134; 
-						case 0x000E96: return 8182; 
-						case 0x000E9B: return 8206; 
-						case 0x000E99: return 8194; 
-						case 0x000E88: return 8140; 
-						case 0x000EAB: return 8278; 
-						case 0x000E9F: return 8230; 
-						case 0x000E84: return 8128; 
-						case 0x000EDF: return 8158; 
-						case 0x000EA3: return 8248; 
-						case 0x000E8D: return 8164; 
-						case 0x000E95: return 8176; 
-						case 0x000EDC: return 8267; 
-						case 0x000EA7: return 8260; 
-						case 0x000E9A: return 8200; 
-						case 0x000EAA: return 8146; 
-						case 0x000E9E: return 8224; 
-						case 0x000EA2: return 8242; 
-						case 0x000E81: return 8116; 
-						case 0x000EAE: return 8290; 
-						case 0x000E94: return 8170; 
-						case 0x000E8A: return 8152; 
-						case 0x000EDD: return 8273; 
-						case 0x000E9D: return 8218; 
+						case 0x000EAD: return 0x001901; 
+						case 0x000E97: return 0x0018A1; 
+						case 0x000EA1: return 0x0018D1; 
+						case 0x000E9C: return 0x0018B9; 
+						case 0x000E82: return 0x00185F; 
+						case 0x000EDE: return 0x001853; 
+						case 0x000EA5: return 0x0018E3; 
+						case 0x000E87: return 0x00186B; 
+						case 0x000E96: return 0x00189B; 
+						case 0x000E9B: return 0x0018B3; 
+						case 0x000E99: return 0x0018A7; 
+						case 0x000E88: return 0x001871; 
+						case 0x000EAB: return 0x0018EF; 
+						case 0x000E9F: return 0x0018CB; 
+						case 0x000E84: return 0x001865; 
+						case 0x000EDF: return 0x001883; 
+						case 0x000EA3: return 0x0018DD; 
+						case 0x000E8D: return 0x001889; 
+						case 0x000E95: return 0x001895; 
+						case 0x000EDC: return 0x0018F5; 
+						case 0x000EA7: return 0x0018E9; 
+						case 0x000E9A: return 0x0018AD; 
+						case 0x000EAA: return 0x001877; 
+						case 0x000E9E: return 0x0018C5; 
+						case 0x000EA2: return 0x0018D7; 
+						case 0x000E81: return 0x001859; 
+						case 0x000EAE: return 0x001907; 
+						case 0x000E94: return 0x00188F; 
+						case 0x000E8A: return 0x00187D; 
+						case 0x000EDD: return 0x0018FB; 
+						case 0x000E9D: return 0x0018BF; 
 						}
 
 						*w = 1;
-						return 8300;
+						return 0x001911;
 					}
 					else if (weight < state_000EC1) {
-						if (weight == state_00AAB6) {
+						if (weight == state_00AAB5) {
 							switch (u) {
-							case 0x00AA9D: return 8480; 
-							case 0x00AA87: return 8348; 
-							case 0x00AA8A: return 8366; 
-							case 0x00AAA9: return 8552; 
-							case 0x00AAAD: return 8576; 
-							case 0x00AA92: return 8414; 
-							case 0x00AAA0: return 8498; 
-							case 0x00AA99: return 8456; 
-							case 0x00AA83: return 8324; 
-							case 0x00AA96: return 8438; 
-							case 0x00AA8F: return 8396; 
-							case 0x00AAA4: return 8522; 
-							case 0x00AA9C: return 8474; 
-							case 0x00AA88: return 8354; 
-							case 0x00AA8B: return 8372; 
-							case 0x00AAA8: return 8546; 
-							case 0x00AAAC: return 8570; 
-							case 0x00AA91: return 8408; 
-							case 0x00AA98: return 8450; 
-							case 0x00AA84: return 8330; 
-							case 0x00AA95: return 8432; 
-							case 0x00AAA3: return 8516; 
-							case 0x00AA80: return 8306; 
-							case 0x00AA9B: return 8468; 
-							case 0x00AA89: return 8360; 
-							case 0x00AA8C: return 8378; 
-							case 0x00AAA7: return 8540; 
-							case 0x00AAAB: return 8564; 
-							case 0x00AA90: return 8402; 
-							case 0x00AA9F: return 8492; 
-							case 0x00AA85: return 8336; 
-							case 0x00AAAF: return 8588; 
-							case 0x00AA94: return 8426; 
-							case 0x00AAA2: return 8510; 
-							case 0x00AA81: return 8312; 
-							case 0x00AA9A: return 8462; 
-							case 0x00AA8D: return 8384; 
-							case 0x00AAA6: return 8534; 
-							case 0x00AAAA: return 8558; 
-							case 0x00AA9E: return 8486; 
-							case 0x00AA86: return 8342; 
-							case 0x00AAAE: return 8582; 
-							case 0x00AA93: return 8420; 
-							case 0x00AAA1: return 8504; 
-							case 0x00AA82: return 8318; 
-							case 0x00AA97: return 8444; 
-							case 0x00AA8E: return 8390; 
-							case 0x00AAA5: return 8528; 
+							case 0x00AAA8: return 0x001A06; 
+							case 0x00AA9F: return 0x0019D0; 
+							case 0x00AA93: return 0x001988; 
+							case 0x00AAAA: return 0x001A12; 
+							case 0x00AAA7: return 0x001A00; 
+							case 0x00AA82: return 0x001922; 
+							case 0x00AA8F: return 0x001970; 
+							case 0x00AA97: return 0x0019A0; 
+							case 0x00AAAE: return 0x001A2A; 
+							case 0x00AA9C: return 0x0019BE; 
+							case 0x00AAA0: return 0x0019D6; 
+							case 0x00AA8B: return 0x001958; 
+							case 0x00AAA9: return 0x001A0C; 
+							case 0x00AA90: return 0x001976; 
+							case 0x00AAA4: return 0x0019EE; 
+							case 0x00AA85: return 0x001934; 
+							case 0x00AA94: return 0x00198E; 
+							case 0x00AAAB: return 0x001A18; 
+							case 0x00AA81: return 0x00191C; 
+							case 0x00AAA1: return 0x0019DC; 
+							case 0x00AA8E: return 0x00196A; 
+							case 0x00AA98: return 0x0019A6; 
+							case 0x00AAAF: return 0x001A30; 
+							case 0x00AA9D: return 0x0019C4; 
+							case 0x00AA91: return 0x00197C; 
+							case 0x00AAA5: return 0x0019F4; 
+							case 0x00AA8A: return 0x001952; 
+							case 0x00AA84: return 0x00192E; 
+							case 0x00AA95: return 0x001994; 
+							case 0x00AA89: return 0x00194C; 
+							case 0x00AAAC: return 0x001A1E; 
+							case 0x00AA9A: return 0x0019B2; 
+							case 0x00AA80: return 0x001916; 
+							case 0x00AA8D: return 0x001964; 
+							case 0x00AA99: return 0x0019AC; 
+							case 0x00AA9E: return 0x0019CA; 
+							case 0x00AAA2: return 0x0019E2; 
+							case 0x00AA87: return 0x001940; 
+							case 0x00AA92: return 0x001982; 
+							case 0x00AA88: return 0x001946; 
+							case 0x00AAA6: return 0x0019FA; 
+							case 0x00AA83: return 0x001928; 
+							case 0x00AA96: return 0x00199A; 
+							case 0x00AAAD: return 0x001A24; 
+							case 0x00AA9B: return 0x0019B8; 
+							case 0x00AAA3: return 0x0019E8; 
+							case 0x00AA8C: return 0x00195E; 
+							case 0x00AA86: return 0x00193A; 
 							}
 
 							*w = 1;
-							return 8594;
+							return 0x001A36;
 						}
-						else if (weight < state_00AAB6) {
-							if (weight == state_00AAB5) {
+						else if (weight < state_00AAB5) {
+							if (weight == state_000E44) {
 								switch (u) {
-								case 0x00AAA8: return 8545; 
-								case 0x00AA9F: return 8491; 
-								case 0x00AA93: return 8419; 
-								case 0x00AAAA: return 8557; 
-								case 0x00AAA7: return 8539; 
-								case 0x00AA82: return 8317; 
-								case 0x00AA8F: return 8395; 
-								case 0x00AA97: return 8443; 
-								case 0x00AAAE: return 8581; 
-								case 0x00AA9C: return 8473; 
-								case 0x00AAA0: return 8497; 
-								case 0x00AA8B: return 8371; 
-								case 0x00AAA9: return 8551; 
-								case 0x00AA90: return 8401; 
-								case 0x00AAA4: return 8521; 
-								case 0x00AA85: return 8335; 
-								case 0x00AA94: return 8425; 
-								case 0x00AAAB: return 8563; 
-								case 0x00AA81: return 8311; 
-								case 0x00AAA1: return 8503; 
-								case 0x00AA8E: return 8389; 
-								case 0x00AA98: return 8449; 
-								case 0x00AAAF: return 8587; 
-								case 0x00AA9D: return 8479; 
-								case 0x00AA91: return 8407; 
-								case 0x00AAA5: return 8527; 
-								case 0x00AA8A: return 8365; 
-								case 0x00AA84: return 8329; 
-								case 0x00AA95: return 8431; 
-								case 0x00AA89: return 8359; 
-								case 0x00AAAC: return 8569; 
-								case 0x00AA9A: return 8461; 
-								case 0x00AA80: return 8305; 
-								case 0x00AA8D: return 8383; 
-								case 0x00AA99: return 8455; 
-								case 0x00AA9E: return 8485; 
-								case 0x00AAA2: return 8509; 
-								case 0x00AA87: return 8347; 
-								case 0x00AA92: return 8413; 
-								case 0x00AA88: return 8353; 
-								case 0x00AAA6: return 8533; 
-								case 0x00AA83: return 8323; 
-								case 0x00AA96: return 8437; 
-								case 0x00AAAD: return 8575; 
-								case 0x00AA9B: return 8467; 
-								case 0x00AAA3: return 8515; 
-								case 0x00AA8C: return 8377; 
-								case 0x00AA86: return 8341; 
+								case 0x000E1E: return 0x0017E6; 
+								case 0x000E10: return 0x001792; 
+								case 0x000E08: return 0x001762; 
+								case 0x000E01: return 0x001738; 
+								case 0x000E28: return 0x001822; 
+								case 0x000E0E: return 0x001786; 
+								case 0x000E14: return 0x0017AA; 
+								case 0x000E2B: return 0x001834; 
+								case 0x000E27: return 0x00181C; 
+								case 0x000E29: return 0x001828; 
+								case 0x000E0A: return 0x00176E; 
+								case 0x000E18: return 0x0017C2; 
+								case 0x000E22: return 0x0017FE; 
+								case 0x000E1D: return 0x0017E0; 
+								case 0x000E13: return 0x0017A4; 
+								case 0x000E09: return 0x001768; 
+								case 0x000E06: return 0x001756; 
+								case 0x000E17: return 0x0017BC; 
+								case 0x000E1C: return 0x0017DA; 
+								case 0x000E2C: return 0x00183A; 
+								case 0x000E02: return 0x00173E; 
+								case 0x000E0F: return 0x00178C; 
+								case 0x000E12: return 0x00179E; 
+								case 0x000E24: return 0x00180A; 
+								case 0x000E0B: return 0x001774; 
+								case 0x000E07: return 0x00175C; 
+								case 0x000E16: return 0x0017B6; 
+								case 0x000E20: return 0x0017F2; 
+								case 0x000E23: return 0x001804; 
+								case 0x000E1B: return 0x0017D4; 
+								case 0x000E2D: return 0x001840; 
+								case 0x000E03: return 0x001744; 
+								case 0x000E1F: return 0x0017EC; 
+								case 0x000E25: return 0x001810; 
+								case 0x000E0C: return 0x00177A; 
+								case 0x000E04: return 0x00174A; 
+								case 0x000E11: return 0x001798; 
+								case 0x000E21: return 0x0017F8; 
+								case 0x000E2E: return 0x001846; 
+								case 0x000E0D: return 0x001780; 
+								case 0x000E15: return 0x0017B0; 
+								case 0x000E1A: return 0x0017CE; 
+								case 0x000E2A: return 0x00182E; 
+								case 0x000E26: return 0x001816; 
+								case 0x000E05: return 0x001750; 
+								case 0x000E19: return 0x0017C8; 
 								}
 
 								*w = 1;
-								return 8593;
+								return 0x00184F;
 							}
 						}
-						else { /* weight > state_00AAB6 */
-							if (weight == state_001B0D) {
+						else { /* weight > state_00AAB5 */
+							if (weight == state_00AAB6) {
 								switch (u) {
-								case 0x001B35: return 9370; 
+								case 0x00AA9D: return 0x0019C5; 
+								case 0x00AA87: return 0x001941; 
+								case 0x00AA8A: return 0x001953; 
+								case 0x00AAA9: return 0x001A0D; 
+								case 0x00AAAD: return 0x001A25; 
+								case 0x00AA92: return 0x001983; 
+								case 0x00AAA0: return 0x0019D7; 
+								case 0x00AA99: return 0x0019AD; 
+								case 0x00AA83: return 0x001929; 
+								case 0x00AA96: return 0x00199B; 
+								case 0x00AA8F: return 0x001971; 
+								case 0x00AAA4: return 0x0019EF; 
+								case 0x00AA9C: return 0x0019BF; 
+								case 0x00AA88: return 0x001947; 
+								case 0x00AA8B: return 0x001959; 
+								case 0x00AAA8: return 0x001A07; 
+								case 0x00AAAC: return 0x001A1F; 
+								case 0x00AA91: return 0x00197D; 
+								case 0x00AA98: return 0x0019A7; 
+								case 0x00AA84: return 0x00192F; 
+								case 0x00AA95: return 0x001995; 
+								case 0x00AAA3: return 0x0019E9; 
+								case 0x00AA80: return 0x001917; 
+								case 0x00AA9B: return 0x0019B9; 
+								case 0x00AA89: return 0x00194D; 
+								case 0x00AA8C: return 0x00195F; 
+								case 0x00AAA7: return 0x001A01; 
+								case 0x00AAAB: return 0x001A19; 
+								case 0x00AA90: return 0x001977; 
+								case 0x00AA9F: return 0x0019D1; 
+								case 0x00AA85: return 0x001935; 
+								case 0x00AAAF: return 0x001A31; 
+								case 0x00AA94: return 0x00198F; 
+								case 0x00AAA2: return 0x0019E3; 
+								case 0x00AA81: return 0x00191D; 
+								case 0x00AA9A: return 0x0019B3; 
+								case 0x00AA8D: return 0x001965; 
+								case 0x00AAA6: return 0x0019FB; 
+								case 0x00AAAA: return 0x001A13; 
+								case 0x00AA9E: return 0x0019CB; 
+								case 0x00AA86: return 0x00193B; 
+								case 0x00AAAE: return 0x001A2B; 
+								case 0x00AA93: return 0x001989; 
+								case 0x00AAA1: return 0x0019DD; 
+								case 0x00AA82: return 0x001923; 
+								case 0x00AA97: return 0x0019A1; 
+								case 0x00AA8E: return 0x00196B; 
+								case 0x00AAA5: return 0x0019F5; 
 								}
 
 								*w = 1;
-								return 9368;
+								return 0x001A37;
 							}
 						}
 					}
 					else { /* weight > state_000EC1 */
 						if (weight == state_000EC3) {
 							switch (u) {
-							case 0x000E96: return 8184; 
-							case 0x000EAE: return 8292; 
-							case 0x000E9C: return 8214; 
-							case 0x000EA1: return 8238; 
-							case 0x000EDE: return 8112; 
-							case 0x000EA5: return 8256; 
-							case 0x000E84: return 8130; 
-							case 0x000E95: return 8178; 
-							case 0x000EAD: return 8286; 
-							case 0x000E9B: return 8208; 
-							case 0x000E99: return 8196; 
-							case 0x000EDF: return 8160; 
-							case 0x000E9F: return 8232; 
-							case 0x000E94: return 8172; 
-							case 0x000E88: return 8142; 
-							case 0x000EDC: return 8269; 
-							case 0x000E81: return 8118; 
-							case 0x000E9A: return 8202; 
-							case 0x000E8D: return 8166; 
-							case 0x000E9E: return 8226; 
-							case 0x000EA3: return 8250; 
-							case 0x000EA7: return 8262; 
-							case 0x000EAB: return 8280; 
-							case 0x000E82: return 8124; 
-							case 0x000E97: return 8190; 
-							case 0x000E9D: return 8220; 
-							case 0x000EA2: return 8244; 
-							case 0x000E87: return 8136; 
-							case 0x000E8A: return 8154; 
-							case 0x000EDD: return 8275; 
-							case 0x000EAA: return 8148; 
+							case 0x000E96: return 0x00189D; 
+							case 0x000EAE: return 0x001909; 
+							case 0x000E9C: return 0x0018BB; 
+							case 0x000EA1: return 0x0018D3; 
+							case 0x000EDE: return 0x001855; 
+							case 0x000EA5: return 0x0018E5; 
+							case 0x000E84: return 0x001867; 
+							case 0x000E95: return 0x001897; 
+							case 0x000EAD: return 0x001903; 
+							case 0x000E9B: return 0x0018B5; 
+							case 0x000E99: return 0x0018A9; 
+							case 0x000EDF: return 0x001885; 
+							case 0x000E9F: return 0x0018CD; 
+							case 0x000E94: return 0x001891; 
+							case 0x000E88: return 0x001873; 
+							case 0x000EDC: return 0x0018F7; 
+							case 0x000E81: return 0x00185B; 
+							case 0x000E9A: return 0x0018AF; 
+							case 0x000E8D: return 0x00188B; 
+							case 0x000E9E: return 0x0018C7; 
+							case 0x000EA3: return 0x0018DF; 
+							case 0x000EA7: return 0x0018EB; 
+							case 0x000EAB: return 0x0018F1; 
+							case 0x000E82: return 0x001861; 
+							case 0x000E97: return 0x0018A3; 
+							case 0x000E9D: return 0x0018C1; 
+							case 0x000EA2: return 0x0018D9; 
+							case 0x000E87: return 0x00186D; 
+							case 0x000E8A: return 0x00187F; 
+							case 0x000EDD: return 0x0018FD; 
+							case 0x000EAA: return 0x001879; 
 							}
 
 							*w = 1;
-							return 8302;
+							return 0x001913;
 						}
 						else if (weight < state_000EC3) {
 							if (weight == state_000EC0) {
 								switch (u) {
-								case 0x000E84: return 8127; 
-								case 0x000E9D: return 8217; 
-								case 0x000E8A: return 8151; 
-								case 0x000EAB: return 8277; 
-								case 0x000E88: return 8139; 
-								case 0x000E99: return 8193; 
-								case 0x000E96: return 8181; 
-								case 0x000EA2: return 8241; 
-								case 0x000E87: return 8133; 
-								case 0x000E9E: return 8223; 
-								case 0x000EDE: return 8109; 
-								case 0x000E9A: return 8199; 
-								case 0x000EA7: return 8259; 
-								case 0x000E82: return 8121; 
-								case 0x000E8D: return 8163; 
-								case 0x000E97: return 8187; 
-								case 0x000EA3: return 8247; 
-								case 0x000EAD: return 8283; 
-								case 0x000EDD: return 8272; 
-								case 0x000E9F: return 8229; 
-								case 0x000E94: return 8169; 
-								case 0x000E9B: return 8205; 
-								case 0x000EAE: return 8289; 
-								case 0x000E81: return 8115; 
-								case 0x000EAA: return 8145; 
-								case 0x000EA5: return 8253; 
-								case 0x000EDC: return 8266; 
-								case 0x000E95: return 8175; 
-								case 0x000E9C: return 8211; 
-								case 0x000EA1: return 8235; 
-								case 0x000EDF: return 8157; 
+								case 0x000E84: return 0x001864; 
+								case 0x000E9D: return 0x0018BE; 
+								case 0x000E8A: return 0x00187C; 
+								case 0x000EAB: return 0x0018EE; 
+								case 0x000E88: return 0x001870; 
+								case 0x000E99: return 0x0018A6; 
+								case 0x000E96: return 0x00189A; 
+								case 0x000EA2: return 0x0018D6; 
+								case 0x000E87: return 0x00186A; 
+								case 0x000E9E: return 0x0018C4; 
+								case 0x000EDE: return 0x001852; 
+								case 0x000E9A: return 0x0018AC; 
+								case 0x000EA7: return 0x0018E8; 
+								case 0x000E82: return 0x00185E; 
+								case 0x000E8D: return 0x001888; 
+								case 0x000E97: return 0x0018A0; 
+								case 0x000EA3: return 0x0018DC; 
+								case 0x000EAD: return 0x001900; 
+								case 0x000EDD: return 0x0018FA; 
+								case 0x000E9F: return 0x0018CA; 
+								case 0x000E94: return 0x00188E; 
+								case 0x000E9B: return 0x0018B2; 
+								case 0x000EAE: return 0x001906; 
+								case 0x000E81: return 0x001858; 
+								case 0x000EAA: return 0x001876; 
+								case 0x000EA5: return 0x0018E2; 
+								case 0x000EDC: return 0x0018F4; 
+								case 0x000E95: return 0x001894; 
+								case 0x000E9C: return 0x0018B8; 
+								case 0x000EA1: return 0x0018D0; 
+								case 0x000EDF: return 0x001882; 
 								}
 
 								*w = 1;
-								return 8299;
+								return 0x001910;
 							}
 						}
 						else { /* weight > state_000EC3 */
 							if (weight == state_000EC2) {
 								switch (u) {
-								case 0x000E82: return 8123; 
-								case 0x000E9B: return 8207; 
-								case 0x000EDD: return 8274; 
-								case 0x000EAD: return 8285; 
-								case 0x000E9F: return 8231; 
-								case 0x000EAA: return 8147; 
-								case 0x000E81: return 8117; 
-								case 0x000E9C: return 8213; 
-								case 0x000E94: return 8171; 
-								case 0x000EDC: return 8268; 
-								case 0x000EAE: return 8291; 
-								case 0x000EA1: return 8237; 
-								case 0x000E84: return 8129; 
-								case 0x000EA5: return 8255; 
-								case 0x000EAB: return 8279; 
-								case 0x000E95: return 8177; 
-								case 0x000EA2: return 8243; 
-								case 0x000E99: return 8195; 
-								case 0x000E8A: return 8153; 
-								case 0x000EDF: return 8159; 
-								case 0x000E88: return 8141; 
-								case 0x000E9D: return 8219; 
-								case 0x000E87: return 8135; 
-								case 0x000E96: return 8183; 
-								case 0x000E8D: return 8165; 
-								case 0x000E9A: return 8201; 
-								case 0x000EA3: return 8249; 
-								case 0x000EDE: return 8111; 
-								case 0x000E9E: return 8225; 
-								case 0x000EA7: return 8261; 
-								case 0x000E97: return 8189; 
+								case 0x000E82: return 0x001860; 
+								case 0x000E9B: return 0x0018B4; 
+								case 0x000EDD: return 0x0018FC; 
+								case 0x000EAD: return 0x001902; 
+								case 0x000E9F: return 0x0018CC; 
+								case 0x000EAA: return 0x001878; 
+								case 0x000E81: return 0x00185A; 
+								case 0x000E9C: return 0x0018BA; 
+								case 0x000E94: return 0x001890; 
+								case 0x000EDC: return 0x0018F6; 
+								case 0x000EAE: return 0x001908; 
+								case 0x000EA1: return 0x0018D2; 
+								case 0x000E84: return 0x001866; 
+								case 0x000EA5: return 0x0018E4; 
+								case 0x000EAB: return 0x0018F0; 
+								case 0x000E95: return 0x001896; 
+								case 0x000EA2: return 0x0018D8; 
+								case 0x000E99: return 0x0018A8; 
+								case 0x000E8A: return 0x00187E; 
+								case 0x000EDF: return 0x001884; 
+								case 0x000E88: return 0x001872; 
+								case 0x000E9D: return 0x0018C0; 
+								case 0x000E87: return 0x00186C; 
+								case 0x000E96: return 0x00189C; 
+								case 0x000E8D: return 0x00188A; 
+								case 0x000E9A: return 0x0018AE; 
+								case 0x000EA3: return 0x0018DE; 
+								case 0x000EDE: return 0x001854; 
+								case 0x000E9E: return 0x0018C6; 
+								case 0x000EA7: return 0x0018EA; 
+								case 0x000E97: return 0x0018A2; 
 								}
 
 								*w = 1;
-								return 8301;
+								return 0x001912;
 							}
 						}
 					}
@@ -1424,59 +1424,59 @@ int32_t _nu_ducet_weight_switch(uint32_t u, int32_t *w, void *context) {
 				else { /* weight > state_000EC4 */
 					if (weight == state_0004E8) {
 						switch (u) {
-						case 0x000308: return 4152; 
+						case 0x000308: return 0x00096F; 
 						}
 
 						*w = 1;
-						return 4148;
+						return 0x00096D;
 					}
 					else if (weight < state_0004E8) {
 						if (weight == state_000475) {
 							switch (u) {
-							case 0x00030F: return 4342; 
+							case 0x00030F: return 0x000A1C; 
 							}
 
 							*w = 1;
-							return 4339;
+							return 0x000A1A;
 						}
 						else if (weight < state_000475) {
 							if (weight == state_000474) {
 								switch (u) {
-								case 0x00030F: return 4344; 
+								case 0x00030F: return 0x000A1D; 
 								}
 
 								*w = 1;
-								return 4340;
+								return 0x000A1B;
 							}
 						}
 						else { /* weight > state_000475 */
 							if (weight == state_001B0B) {
 								switch (u) {
-								case 0x001B35: return 9367; 
+								case 0x001B35: return 0x001D34; 
 								}
 
 								*w = 1;
-								return 9365;
+								return 0x001D33;
 							}
 						}
 					}
 					else { /* weight > state_0004E8 */
 						if (weight == state_001B11) {
 							switch (u) {
-							case 0x001B35: return 9375; 
+							case 0x001B35: return 0x001D3A; 
 							}
 
 							*w = 1;
-							return 9373;
+							return 0x001D39;
 						}
 						else if (weight < state_001B11) {
 							if (weight == state_0004E9) {
 								switch (u) {
-								case 0x000308: return 4150; 
+								case 0x000308: return 0x00096E; 
 								}
 
 								*w = 1;
-								return 4147;
+								return 0x00096C;
 							}
 						}
 					}

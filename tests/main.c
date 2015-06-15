@@ -87,6 +87,7 @@ void test_strnstr();
 void test_strcasestr();
 void test_strcasenstr();
 void test_crossencoding_strcoll();
+void test_strcoll_contractions();
 void test_compoundcmp_strcoll();
 void test_compoundcmp_strcoll_outskirts();
 void test_compoundcmp_strncoll();
@@ -205,6 +206,7 @@ testcase cases[] = {
 	test_crossencoding_strcoll,
 
 #ifndef NU_DISABLE_CONTRACTIONS
+	test_strcoll_contractions,
 	test_compoundcmp_strcoll,
 	test_compoundcmp_strcoll_outskirts,
 	test_compoundcmp_strncoll,
@@ -216,10 +218,12 @@ testcase cases[] = {
 
 	test_version_check,
 
+#ifndef NU_DISABLE_CONTRACTIONS
 	/* automatically generated tests */
 	test__nu_ducet_weight_switch,
 	test__nu_ducet_weight_switch_rollbacks,
 	test__nu_ducet_weight_switch_unknowns,
+#endif
 };
 
 int main() {
