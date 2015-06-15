@@ -1,4 +1,5 @@
 #!/usr/bin/python
+#-*- coding: UTF-8
 
 # VALUES_I is holding final values (weights), VALUES_C is holding original
 # Unicode codepoints for collision detection

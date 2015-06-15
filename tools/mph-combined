@@ -1,4 +1,5 @@
 #!/usr/bin/python
+#-*- coding: UTF-8
 
 # Version of encoding where all values (casemapping text) are combined into
 # a single array and VALUES_I is pointing to a offset in that array, VALUES_C
