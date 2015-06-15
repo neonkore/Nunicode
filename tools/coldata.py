@@ -13,22 +13,48 @@ def coldata_split(s):
 	return filter(bool, map(str.strip, s.split(' ')))
 
 
+def weight2tuple(w):
+	return tuple([ int(x, base=16) for x in w.split('.')  ])
+
+
 def collect_contractions(codepoints_file, contractions_file):
 	'''collect codepoints and contractions from file (title is misleading
 	in form of ([ "0001", "0002"], weight)'''
-	codepoints = []
-	contractions = []
-	for line in open(codepoints_file, 'rt'):
-		tokens = coldata_split(line)
-		points, weight = points2points(tokens[:-1]), int(tokens[-1], base=16)
-		codepoints.append((points, weight))
 
-	for line in open(contractions_file, 'rt'):
-		tokens = coldata_split(line)
-		points, weight = points2points(tokens[:-1]), int(tokens[-1], base=16)
-		contractions.append((points, weight))
+	def reweight_collection(collection):
+		collection = sorted(collection, key=itemgetter(1))
+		count = 0  # actually starts from weight 1, weight 0 is a special case for U+0000
+		prev_weight = None
+		for i, (codepoint, weight) in enumerate(collection):
+			if weight != prev_weight or prev_weight is None:
+				count += 1
+			prev_weight = weight
+			collection[i] = (codepoint, count)
 
-	return sorted(codepoints, key=itemgetter(0)), sorted(contractions, key=itemgetter(0))
+		return collection  # already sorted
+
+	def split_collection(collection):
+		codepoints = []
+		contractions = []
+		for cps, weight in collection:
+			if len(cps) > 1:
+				contractions.append((cps, weight))
+			else:
+				codepoints.append((cps, weight))
+
+		return codepoints, contractions
+
+	combined = []
+	for filename in (codepoints_file, contractions_file, ):
+		for line in open(filename, 'rt'):
+			tokens = coldata_split(line)
+			points, weight = points2points(tokens[:-1]), weight2tuple(tokens[-1])
+			combined.append((points, weight))
+
+	combined = reweight_collection(combined)  # assign sequential weights
+	codepoints, contractions = split_collection(combined)  # already sorted
+
+	return codepoints, contractions
 
 
 def points2points(points):
