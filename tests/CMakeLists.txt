@@ -4,6 +4,7 @@ set(TESTS_SRC
 	conformance_test.c
 	ducet_test.c
 	extra_test.c
+	gen/_ducet_test.c
 	gen/_ducet_switch_test.c
 	main.c
 	mph_test.c

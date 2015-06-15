@@ -100,6 +100,7 @@ void test_version_check();
 void test__nu_ducet_weight_switch();
 void test__nu_ducet_weight_switch_rollbacks();
 void test__nu_ducet_weight_switch_unknowns();
+void test_nu_ducet_weights();
 
 testcase cases[] = {
 	test_utf8_decoding,
@@ -218,12 +219,13 @@ testcase cases[] = {
 
 	test_version_check,
 
-#ifndef NU_DISABLE_CONTRACTIONS
 	/* automatically generated tests */
+#ifndef NU_DISABLE_CONTRACTIONS
 	test__nu_ducet_weight_switch,
 	test__nu_ducet_weight_switch_rollbacks,
 	test__nu_ducet_weight_switch_unknowns,
 #endif
+	test_nu_ducet_weights,
 };
 
 int main() {

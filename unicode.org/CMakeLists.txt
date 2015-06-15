@@ -14,8 +14,9 @@ set(FOLDING ${DATA}/CaseFolding.txt)
 add_custom_target(_ducet
 	COMMAND cat ${UNIDATA} | ${TOOLS}/unidata-tosortable >${SORTABLE}
 	COMMAND cat ${DUCET} | ${TOOLS}/filter-sortable ${SORTABLE} >${FILTERED} 2>${FILTERED_CONTRACTIONS}
-	COMMAND ${TOOLS}/contractions-totests "${FILTERED}" "${FILTERED_CONTRACTIONS}" "_nu_ducet" >${TGEN}/_ducet_switch_test.c
-	COMMAND ${TOOLS}/contractions-toc "${FILTERED}" "${FILTERED_CONTRACTIONS}" "_nu_ducet" >${GEN}/_ducet_switch.c
+	COMMAND ${TOOLS}/codepoints-totests ${FILTERED} ${FILTERED_CONTRACTIONS} "nu_ducet" >${TGEN}/_ducet_test.c
+	COMMAND ${TOOLS}/contractions-totests ${FILTERED} ${FILTERED_CONTRACTIONS} "_nu_ducet" >${TGEN}/_ducet_switch_test.c
+	COMMAND ${TOOLS}/contractions-toc ${FILTERED} ${FILTERED_CONTRACTIONS} "_nu_ducet" >${GEN}/_ducet_switch.c
 	COMMAND ${TOOLS}/filtered-tomph ${FILTERED} ${FILTERED_CONTRACTIONS} 
 		| ${TOOLS}/mph-indexed "NU_DUCET" >${GEN}/_ducet.c
 	COMMAND rm -f "${SORTABLE}"
