@@ -154,7 +154,7 @@ def expand_children(state, states, contractions, codepoints, level=1):
 		assert(distance >= 1)
 
 		print tab('*w = %d;' % (distance), level)
-		print tab('return %d;' % (weight), level)
+		print tab('return 0x%06X;' % (weight), level)
 
 	children = set([tuple(child[:len(state) + 1]) for child, _ in find_children(state, contractions)])
 	children = list(list(child) for child in children)
@@ -166,9 +166,9 @@ def expand_children(state, states, contractions, codepoints, level=1):
 		assert(len(next_state) > len(state))
 
 		check_codepoint = next_state[-1]
-		weight = final_state(next_state, contractions) and str(find_weight(next_state, contractions)) or state2str(next_state)
+		weight = final_state(next_state, contractions) and find_weight(next_state, contractions) or state2str(next_state)
 
-		print tab('case 0x%06X: return %s; ' % (int(check_codepoint, base=16), weight), level)
+		print tab('case 0x%06X: return 0x%06X; ' % (int(check_codepoint, base=16), weight), level)
 
 	print tab('}', level)
 	print
