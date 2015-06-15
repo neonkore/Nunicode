@@ -17,7 +17,7 @@ int32_t _compound_weight(int32_t w,
 
 	const char *p = *encoded;
 	int32_t new_w = w;
-	int32_t consumed = 1; /* one codepoint was consumed at the top */
+	int32_t consumed = 1; /* one codepoint was consumed at the top of the stack (_nu_strcoll) */
 
 	while (p < limit) {
 		uint32_t u = 0;
