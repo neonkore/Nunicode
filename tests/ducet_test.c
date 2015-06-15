@@ -6,6 +6,7 @@
 
 extern const size_t NU_DUCET_G_SIZE;
 extern const size_t _NU_DUCET_CONTRACTIONS;
+extern const size_t _NU_DUCET_CODEPOINTS;
 
 void test_ducet() {
 	/* Latin R */
@@ -65,3 +66,9 @@ void test_ducet_contractions() {
 	const uint32_t unknown = 0x0411; /* no such ontraction, Unicode 7.0 */
 	assert(nu_ducet_weight(unknown, 0, 0) > 0);
 }
+
+#ifndef NU_DISABLE_CONTRACTIONS
+void test_ducet_consistency() {
+	assert(NU_DUCET_G_SIZE == _NU_DUCET_CODEPOINTS); /* just extra check */
+}
+#endif

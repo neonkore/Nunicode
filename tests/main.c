@@ -65,6 +65,7 @@ void test_ducet();
 void test_ducet_known_unknown();
 void test_ducet_collisions();
 void test_ducet_contractions();
+void test_ducet_consistency();
 void test_toupper();
 void test_tolower();
 void test_tofold();
@@ -179,6 +180,9 @@ testcase cases[] = {
 	test_ducet_known_unknown,
 	test_ducet_collisions,
 	test_ducet_contractions,
+#ifndef NU_DISABLE_CONTRACTIONS
+	test_ducet_consistency,
+#endif
 	test_toupper,
 	test_tolower,
 	test_tofold,

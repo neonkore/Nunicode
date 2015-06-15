@@ -24,8 +24,6 @@ int32_t nu_ducet_weight(uint32_t codepoint, int32_t *weight, void *context) {
 	assert(_nu_ducet_weights_count() < 0x7FFFFFFF - 0x10FFFF);
 
 #ifndef NU_DISABLE_CONTRACTIONS
-	assert(NU_DUCET_G_SIZE == _NU_DUCET_CODEPOINTS); /* just extra check */
-
 	int32_t switch_value = _nu_ducet_weight_switch(codepoint, weight, context);
 	/* weight switch should return weight (if any) and fill value of *weight
 	 * with fallback (if needed). returned value of 0 is impossible result - this
