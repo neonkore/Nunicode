@@ -37,6 +37,7 @@ def gen_globals(tag):
 
 
 def gen_run_suite():
+	'''produce code for running test suite'''
 	print tab('size_t i = 0; for (; i < contractions_num; ++i) {')
 	print tab('int32_t w = _nu_test_contraction_weight(weight, contractions[i].seq, contractions[i].len, 0);', 2)
 	print tab('assert(w == contractions[i].weight);', 2)
@@ -45,8 +46,12 @@ def gen_run_suite():
 
 
 def gen_weights_test(tag, codepoints):
+	'''produce test that encoded codepoints return expected weights'''
 	def expand_codepoint(codepoint, weight):
+		'''produce single record for test'''
 		assert(len(codepoint) == 1)
+		# each codepoint is followed by U+0000 and tested as contraction
+		# otherwise state machine would stay in undecided state
 		print tab('{ 0x%06X, 0, 2, (uint32_t[2]){ 0x%06X, 0 },  },' % (weight,
 																	int(codepoint[0], base=16)), 2)
 
