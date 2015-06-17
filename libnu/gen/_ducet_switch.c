@@ -1,10 +1,12 @@
-/* Automatically generated file (contractions-toc), 1434381925
+/* Automatically generated file (contractions-toc), 1434551853
  *
  * Tag          : _nu_ducet
  * Contractions : 686
  */
 
 #include <stdint.h>
+
+#include "udb.h"
 
 const size_t _NU_DUCET_CONTRACTIONS = 686; /* contractions included in switch */
 const size_t _NU_DUCET_CODEPOINTS = 18046; /* complementary codepoints number */
@@ -70,188 +72,48 @@ const size_t _NU_DUCET_CODEPOINTS = 18046; /* complementary codepoints number */
 #define state_0004E9 -47
 #define state_001B11 -23
 
-/* binary search on balanced tree */
+const int16_t _NU_DUCET_ROOTS_G[] = {
+	0, 0, 0, 0, -56, -53, 0, 0, 32, 0, 0, 0, 
+	-52, 0, 0, -51, -42, 0, -41, -35, -31, -25, 1, 0, 
+	0, -23, -20, 6, 0, 1, -17, 0, 1, 0, -15, 0, 
+	4, -13, 8, 8, 1, 0, -12, -11, 8, 31, 4, 12, 
+	-10, -9, 12, 2, 0, 5, 0, -3, 0, 3, 0, 0, 
+};
+
+const size_t _NU_DUCET_ROOTS_G_SIZE = sizeof(_NU_DUCET_ROOTS_G) / sizeof(*_NU_DUCET_ROOTS_G);
+
+/* codepoints */
+const uint32_t _NU_DUCET_ROOTS_VALUES_C[] = {
+	0x000E40, 0x00064A, 0x000418, 0x000EC3, 0x000EC0, 0x000EC1, 0x000438, 0x00043E, 
+	0x000416, 0x000417, 0x000EC4, 0x001B05, 0x000EC2, 0x001B0D, 0x00AAB9, 0x001B0B, 
+	0x00AAB5, 0x000E42, 0x001B07, 0x000475, 0x00AABC, 0x000B92, 0x00043A, 0x00AAB6, 
+	0x000436, 0x001B09, 0x00AABB, 0x000456, 0x001B11, 0x000415, 0x000437, 0x000413, 
+	0x000410, 0x00041E, 0x000430, 0x00041A, 0x00006C, 0x0004D9, 0x000423, 0x000427, 
+	0x00044D, 0x000433, 0x0004D8, 0x000627, 0x000648, 0x00042D, 0x00042B, 0x000447, 
+	0x0004E8, 0x0004E9, 0x00004C, 0x00044B, 0x000406, 0x000E41, 0x000E44, 0x000443, 
+	0x000435, 0x001025, 0x000474, 0x000E43, };
+
+/* indexes */
+const uint16_t _NU_DUCET_ROOTS_VALUES_I[] = {
+	0x00A7, 0x025E, 0x01B1, 0x005B, 0x005C, 0x005D, 0x028F, 0x02BA, 0x01B4, 0x01B3, 
+	0x0059, 0x0183, 0x005A, 0x00DD, 0x02DB, 0x0035, 0x008D, 0x00A5, 0x0290, 0x0056, 
+	0x0158, 0x014B, 0x02BD, 0x0084, 0x02C6, 0x027C, 0x024C, 0x0237, 0x0017, 0x01B2, 
+	0x02C5, 0x01B6, 0x01B5, 0x01B7, 0x02C9, 0x01B9, 0x026C, 0x0260, 0x0223, 0x0222, 
+	0x011F, 0x02C8, 0x025F, 0x0155, 0x0253, 0x024F, 0x0250, 0x0149, 0x0030, 0x002F, 
+	0x0126, 0x0120, 0x00BB, 0x00A6, 0x00A3, 0x014A, 0x02C7, 0x00BC, 0x0057, 0x00A4, 
+};
+
+/* MPH lookup for root codepoints + binary search on balanced tree
+ * for intermediate states */
 int32_t _nu_ducet_weight_switch(uint32_t u, int32_t *w, void *context) {
 	(void)(context);
 
-	if (w == 0) { /* first entry, root states */
-		if (u == 0x0004D8) { return state_0004D8; }
-		else if (u < 0x0004D8) { 
-			if (u == 0x000430) { return state_000430; }
-			else if (u < 0x000430) { 
-				if (u == 0x000417) { return state_000417; }
-				else if (u < 0x000417) { 
-					if (u == 0x000410) { return state_000410; }
-					else if (u < 0x000410) { 
-						if (u == 0x00006C) { return state_00006C; }
-						else if (u < 0x00006C) { 
-							if (u == 0x00004C) { return state_00004C; }
-						}
-						else { /* u > 0x00006C */ 
-							if (u == 0x000406) { return state_000406; }
-						}
-					}
-					else { /* u > 0x000410 */ 
-						if (u == 0x000415) { return state_000415; }
-						else if (u < 0x000415) { 
-							if (u == 0x000413) { return state_000413; }
-						}
-						else { /* u > 0x000415 */ 
-							if (u == 0x000416) { return state_000416; }
-						}
-					}
-				}
-				else { /* u > 0x000417 */ 
-					if (u == 0x000423) { return state_000423; }
-					else if (u < 0x000423) { 
-						if (u == 0x00041A) { return state_00041A; }
-						else if (u < 0x00041A) { 
-							if (u == 0x000418) { return state_000418; }
-						}
-						else { /* u > 0x00041A */ 
-							if (u == 0x00041E) { return state_00041E; }
-						}
-					}
-					else { /* u > 0x000423 */ 
-						if (u == 0x00042B) { return state_00042B; }
-						else if (u < 0x00042B) { 
-							if (u == 0x000427) { return state_000427; }
-						}
-						else { /* u > 0x00042B */ 
-							if (u == 0x00042D) { return state_00042D; }
-						}
-					}
-				}
-			}
-			else { /* u > 0x000430 */ 
-				if (u == 0x000443) { return state_000443; }
-				else if (u < 0x000443) { 
-					if (u == 0x000437) { return state_000437; }
-					else if (u < 0x000437) { 
-						if (u == 0x000435) { return state_000435; }
-						else if (u < 0x000435) { 
-							if (u == 0x000433) { return state_000433; }
-						}
-						else { /* u > 0x000435 */ 
-							if (u == 0x000436) { return state_000436; }
-						}
-					}
-					else { /* u > 0x000437 */ 
-						if (u == 0x00043A) { return state_00043A; }
-						else if (u < 0x00043A) { 
-							if (u == 0x000438) { return state_000438; }
-						}
-						else { /* u > 0x00043A */ 
-							if (u == 0x00043E) { return state_00043E; }
-						}
-					}
-				}
-				else { /* u > 0x000443 */ 
-					if (u == 0x000456) { return state_000456; }
-					else if (u < 0x000456) { 
-						if (u == 0x00044B) { return state_00044B; }
-						else if (u < 0x00044B) { 
-							if (u == 0x000447) { return state_000447; }
-						}
-						else { /* u > 0x00044B */ 
-							if (u == 0x00044D) { return state_00044D; }
-						}
-					}
-					else { /* u > 0x000456 */ 
-						if (u == 0x000475) { return state_000475; }
-						else if (u < 0x000475) { 
-							if (u == 0x000474) { return state_000474; }
-						}
-					}
-				}
-			}
-		}
-		else { /* u > 0x0004D8 */ 
-			if (u == 0x000EC2) { return state_000EC2; }
-			else if (u < 0x000EC2) { 
-				if (u == 0x000E40) { return state_000E40; }
-				else if (u < 0x000E40) { 
-					if (u == 0x000627) { return state_000627; }
-					else if (u < 0x000627) { 
-						if (u == 0x0004E8) { return state_0004E8; }
-						else if (u < 0x0004E8) { 
-							if (u == 0x0004D9) { return state_0004D9; }
-						}
-						else { /* u > 0x0004E8 */ 
-							if (u == 0x0004E9) { return state_0004E9; }
-						}
-					}
-					else { /* u > 0x000627 */ 
-						if (u == 0x00064A) { return state_00064A; }
-						else if (u < 0x00064A) { 
-							if (u == 0x000648) { return state_000648; }
-						}
-						else { /* u > 0x00064A */ 
-							if (u == 0x000B92) { return state_000B92; }
-						}
-					}
-				}
-				else { /* u > 0x000E40 */ 
-					if (u == 0x000E44) { return state_000E44; }
-					else if (u < 0x000E44) { 
-						if (u == 0x000E42) { return state_000E42; }
-						else if (u < 0x000E42) { 
-							if (u == 0x000E41) { return state_000E41; }
-						}
-						else { /* u > 0x000E42 */ 
-							if (u == 0x000E43) { return state_000E43; }
-						}
-					}
-					else { /* u > 0x000E44 */ 
-						if (u == 0x000EC1) { return state_000EC1; }
-						else if (u < 0x000EC1) { 
-							if (u == 0x000EC0) { return state_000EC0; }
-						}
-					}
-				}
-			}
-			else { /* u > 0x000EC2 */ 
-				if (u == 0x001B0D) { return state_001B0D; }
-				else if (u < 0x001B0D) { 
-					if (u == 0x001B05) { return state_001B05; }
-					else if (u < 0x001B05) { 
-						if (u == 0x000EC4) { return state_000EC4; }
-						else if (u < 0x000EC4) { 
-							if (u == 0x000EC3) { return state_000EC3; }
-						}
-						else { /* u > 0x000EC4 */ 
-							if (u == 0x001025) { return state_001025; }
-						}
-					}
-					else { /* u > 0x001B05 */ 
-						if (u == 0x001B09) { return state_001B09; }
-						else if (u < 0x001B09) { 
-							if (u == 0x001B07) { return state_001B07; }
-						}
-						else { /* u > 0x001B09 */ 
-							if (u == 0x001B0B) { return state_001B0B; }
-						}
-					}
-				}
-				else { /* u > 0x001B0D */ 
-					if (u == 0x00AAB9) { return state_00AAB9; }
-					else if (u < 0x00AAB9) { 
-						if (u == 0x00AAB5) { return state_00AAB5; }
-						else if (u < 0x00AAB5) { 
-							if (u == 0x001B11) { return state_001B11; }
-						}
-						else { /* u > 0x00AAB5 */ 
-							if (u == 0x00AAB6) { return state_00AAB6; }
-						}
-					}
-					else { /* u > 0x00AAB9 */ 
-						if (u == 0x00AABC) { return state_00AABC; }
-						else if (u < 0x00AABC) { 
-							if (u == 0x00AABB) { return state_00AABB; }
-						}
-					}
-				}
-			}
+	if (w == 0) { /*  first entry, root states */
+		uint32_t state = nu_udb_lookup_value(u, _NU_DUCET_ROOTS_G, _NU_DUCET_ROOTS_G_SIZE,
+			_NU_DUCET_ROOTS_VALUES_C, _NU_DUCET_ROOTS_VALUES_I);
+
+		if (state != 0) {
+			return -state; /* VALUES_I store negated (positive) states */
 		}
 	}
 

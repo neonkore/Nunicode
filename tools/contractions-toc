@@ -5,6 +5,7 @@ import sys
 import time
 
 from coldata import *
+import mph
 
 
 def tab(s, tabs=1):
@@ -66,65 +67,6 @@ def collect_states(contractions, codepoints):
 	return sorted(s, key=itemgetter(1)), max_level
 
 
-def split_roots(roots):
-	'''kind of binary split of list into left side, right side
-	and state at the middle. list is need to be ordered'''
-	middle = roots[len(roots) / 2]
-	left = roots[:len(roots) / 2]
-	right = roots[len(roots) / 2 + 1:]
-	return middle, left, right
-
-
-def expand_root_states(states):
-	'''produce c code for root states'''
-
-	def state2bin(state):
-		'''convert string values of codepoints into binary (int) representation'''
-		return [ int(x, base=16) for x in state ]
-
-	def bin2state(bin):
-		'''convert binary (int) values of codepoints into string representation'''
-		return [ '%06X' % x for x in bin ]
-
-	def root_states(states):
-		'''filter root states from complete states list'''
-		roots = [ state2bin(str2state(state)) for state, _ in states if root_state(str2state(state)) ]
-		# sort roots in order of first codepoint
-		return [ bin2state(state) for state in sorted(roots) ]
-
-	def expand_root_state(state, left, right, level=2):
-		'''produce c code for single state recursively going down
-		through the left and right tails'''
-		check_codepoint = int(state[0], base=16)
-		print tab('if (u == 0x%06X) { return %s; }' % (check_codepoint, state2str(state)), level)
-
-		if left:
-			print tab('else if (u < 0x%06X) { ' % (check_codepoint), level)
-			lmiddle, lleft, lright = split_roots(left)
-			expand_root_state(lmiddle, lleft, lright, level=level+1)
-			print tab('}', level)
-
-		if right:
-			print tab('else { /* u > 0x%06X */ ' % (check_codepoint), level)
-			rmiddle, rleft, rright = split_roots(right)
-			expand_root_state(rmiddle, rleft, rright, level=level+1)
-			print tab('}', level)
-
-
-	# list is need to be ordered for binary search to work
-	assert(states == sorted(states, key=itemgetter(1)))
-
-	roots = root_states(states)
-	middle, left, right = split_roots(roots)
-
-	print tab('if (w == 0) { /* first entry, root states */')
-
-	expand_root_state(middle, left, right)
-
-	print tab('}')
-	print
-
-
 def find_closest_parent(state, states, contractions, codepoints):
 	'''return closest parent *with assigned weight*'''
 	closest_parent = []
@@ -137,6 +79,20 @@ def find_closest_parent(state, states, contractions, codepoints):
 			closest_parent = len(s) > len(closest_parent) and s or closest_parent
 
 	return closest_parent or None  # return None instead of empty list
+
+
+def gen_roots_lookup(tag):
+	tag = (tag + '_roots').upper()  # internal tag
+
+	print tab('if (w == 0) { /*  first entry, root states */')
+	print tab('uint32_t state = nu_udb_lookup_value(u, %s_G, %s_G_SIZE,' % (tag, tag), 2)
+	print tab('%s_VALUES_C, %s_VALUES_I);' % (tag, tag), 3)
+	print
+	print tab('if (state != 0) {', 2)
+	print tab('return -state; /* VALUES_I store negated (positive) states */', 3)
+	print tab('}', 2)
+	print tab('}')
+	print
 
 
 def expand_children(state, states, contractions, codepoints, level=1):
@@ -166,9 +122,9 @@ def expand_children(state, states, contractions, codepoints, level=1):
 		assert(len(next_state) > len(state))
 
 		check_codepoint = next_state[-1]
-		weight = final_state(next_state, contractions) and find_weight(next_state, contractions) or state2str(next_state)
+		weight = final_state(next_state, contractions) and ('0x%06X'  % find_weight(next_state, contractions)) or state2str(next_state)
 
-		print tab('case 0x%06X: return 0x%06X; ' % (int(check_codepoint, base=16), weight), level)
+		print tab('case 0x%06X: return %s; ' % (int(check_codepoint, base=16), weight), level)
 
 	print tab('}', level)
 	print
@@ -178,6 +134,14 @@ def expand_children(state, states, contractions, codepoints, level=1):
 
 def expand_intermediate_states(states, contractions, codepoints):
 	'''produce c code for intermediate states'''
+
+	def split_roots(roots):
+		'''kind of binary split of list into left side, right side
+		and state at the middle. list is need to be ordered'''
+		middle = roots[len(roots) / 2]
+		left = roots[:len(roots) / 2]
+		right = roots[len(roots) / 2 + 1:]
+		return middle, left, right
 
 	def intermediate_states(states, contractions):
 		'''filter intermediate states from complete list of states'''
@@ -234,6 +198,8 @@ def gen_includes():
 	'''produce all required includes to compile generated code'''
 	print '#include <stdint.h>'
 	print
+	print '#include "udb.h"'
+	print
 
 
 def gen_consts(tag, contractions, codepoints):
@@ -242,14 +208,36 @@ def gen_consts(tag, contractions, codepoints):
 	print
 
 
+def gen_roots_mph(tag, states):
+	'''produce MPH sructures for root codepoints'''
+	def root_states(states):
+		'''filter root states from complete states list'''
+		roots = [ (state, weight) for state, weight in states if root_state(str2state(state)) ]
+		return roots
+
+	roots = root_states(states)
+	d = {}
+	for state, weight in roots:
+		codepoints = str2state(state)
+		assert(len(codepoints) == 1)
+		d[codepoints[0]] = (codepoints[0], -weight)
+
+	tag = (tag + '_roots').upper()  # internal tag
+
+	(G, V) = mph.create_minimal_perfect_hash(d)
+	mph.gen_G(tag, G)
+	mph.gen_values(tag, G, V)
+
+
 def gen_switch(prefix, states, contractions, codepoints):
 	'''produce switch entry point'''
-	print "/* binary search on balanced tree */"
+	print '/* MPH lookup for root codepoints + binary search on balanced tree'
+	print ' * for intermediate states */'
 	print 'int32_t %s_weight_switch(uint32_t u, int32_t *w, void *context) {' % (prefix)
 	print tab('(void)(context);')
 	print
 
-	expand_root_states(states)
+	gen_roots_lookup(tag)
 	expand_intermediate_states(states, contractions, codepoints)
 
 	# impossible weight because this special case is need
@@ -295,4 +283,5 @@ if __name__ == '__main__':
 	gen_includes()
 	gen_consts(tag, contractions, codepoints)
 	gen_states(states, contractions)
+	gen_roots_mph(tag, states)
 	gen_switch(tag, states, contractions, codepoints)
