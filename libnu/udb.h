@@ -29,7 +29,7 @@ extern "C" {
  *
  * @ingroup udb
  * @see nu_udb_lookup
- * @return raw value from VALUES_I
+ * @return raw value from VALUES_I or 0 if value wasn't found
  */
 static inline
 uint32_t nu_udb_lookup_value(uint32_t codepoint,
