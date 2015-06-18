@@ -275,7 +275,7 @@ char* _nunicode_casemapping(const char *encoded, nu_casemapping_t casemap,
 	uint32_t *unicode_buffer = fast_buffer;
 
 	ssize_t unicode_len = nu_strtransformlen(encoded, read,
-		casemap, NU_CASEMAP_DECODING_FUNCTION);
+		casemap, nu_casemap_read);
 
 	if (unicode_len >= FAST_BUFFER_SIZE - 1) {
 		unicode_buffer = nu_sqlite3_ext_alloc(sizeof(*unicode_buffer) * (unicode_len + 1));
@@ -291,7 +291,7 @@ char* _nunicode_casemapping(const char *encoded, nu_casemapping_t casemap,
 		if (map != 0) {
 			uint32_t mu;
 			while (1) {
-				map = NU_CASEMAP_DECODING_FUNCTION(map, &mu);
+				map = nu_casemap_read(map, &mu);
 
 				if (mu == 0) {
 					break;
