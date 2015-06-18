@@ -20,6 +20,7 @@ set(LIBNU_SRC
 	version.c
 )
 
+include_directories(${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR})
 add_library(nu STATIC ${LIBNU_SRC})
 
 file(GLOB INCLUDES *.h)

@@ -1,18 +1,27 @@
 set(DATA ${CMAKE_SOURCE_DIR}/unicode.org)
 set(TOOLS ${CMAKE_SOURCE_DIR}/tools)
 set(GEN ${CMAKE_SOURCE_DIR}/libnu/gen)
+set(TGEN ${CMAKE_SOURCE_DIR}/tests/gen)
 
 set(DUCET ${DATA}/allkeys.txt)
 set(SORTABLE ${DATA}/sortable.tmp)
+set(FILTERED ${DATA}/filtered.tmp)
+set(FILTERED_CONTRACTIONS ${DATA}/filtered_contractions.tmp)
 set(UNIDATA ${DATA}/UnicodeData.txt)
 set(SPECIAL ${DATA}/SpecialCasing.txt)
 set(FOLDING ${DATA}/CaseFolding.txt)
 
 add_custom_target(_ducet
 	COMMAND cat ${UNIDATA} | ${TOOLS}/unidata-tosortable >${SORTABLE}
-	COMMAND cat ${DUCET} | ${TOOLS}/allkeys-tokeys 2>${GEN}/ducet_excluded.txt | ${TOOLS}/filter-sortable ${SORTABLE}
+	COMMAND cat ${DUCET} | ${TOOLS}/filter-sortable ${SORTABLE} >${FILTERED} 2>${FILTERED_CONTRACTIONS}
+	COMMAND ${TOOLS}/codepoints-totests ${FILTERED} ${FILTERED_CONTRACTIONS} "nu_ducet" >${TGEN}/_ducet_test.c
+	COMMAND ${TOOLS}/contractions-totests ${FILTERED} ${FILTERED_CONTRACTIONS} "_nu_ducet" >${TGEN}/_ducet_switch_test.c
+	COMMAND ${TOOLS}/contractions-toc ${FILTERED} ${FILTERED_CONTRACTIONS} "_nu_ducet" >${GEN}/_ducet_switch.c
+	COMMAND ${TOOLS}/filtered-tomph ${FILTERED} ${FILTERED_CONTRACTIONS} 
 		| ${TOOLS}/mph-indexed "NU_DUCET" >${GEN}/_ducet.c
-	COMMAND rm ${SORTABLE}
+	COMMAND rm -f "${SORTABLE}"
+	COMMAND rm -f "${FILTERED}"
+	COMMAND rm -f "${FILTERED_CONTRACTIONS}"
 )
 
 add_custom_target(_toupper

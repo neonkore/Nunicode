@@ -4,11 +4,14 @@ set(TESTS_SRC
 	conformance_test.c
 	ducet_test.c
 	extra_test.c
+	gen/_ducet_test.c
+	gen/_ducet_switch_test.c
 	main.c
 	mph_test.c
 	strcoll_test.c
 	strcoll_internal_test.c
 	strings_test.c
+	switch_test_base.c
 	udb_test.c
 	utf16_test.c
 	utf16be_test.c
@@ -23,7 +26,7 @@ set(TESTS_SRC
 	version_test.c
 )
 
-include_directories(${CMAKE_SOURCE_DIR})
+include_directories(${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR})
 
 link_libraries(nu)
 add_executable(units ${TESTS_SRC})

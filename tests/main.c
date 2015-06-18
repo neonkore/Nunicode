@@ -63,6 +63,9 @@ void test_mph_lookup();
 void test_udb_lookup();
 void test_ducet();
 void test_ducet_known_unknown();
+void test_ducet_collisions();
+void test_ducet_contractions();
+void test_ducet_consistency();
 void test_toupper();
 void test_tolower();
 void test_tofold();
@@ -85,6 +88,7 @@ void test_strnstr();
 void test_strcasestr();
 void test_strcasenstr();
 void test_crossencoding_strcoll();
+void test_strcoll_contractions();
 void test_compoundcmp_strcoll();
 void test_compoundcmp_strcoll_outskirts();
 void test_compoundcmp_strncoll();
@@ -92,6 +96,12 @@ void test_special_casing();
 void test_folding_priority();
 void test_ducet_max_weight_ordering();
 void test_version_check();
+
+/* automatically generated tests */
+void test__nu_ducet_weight_switch();
+void test__nu_ducet_weight_switch_rollbacks();
+void test__nu_ducet_weight_switch_unknowns();
+void test_nu_ducet_weights();
 
 testcase cases[] = {
 	test_utf8_decoding,
@@ -168,6 +178,11 @@ testcase cases[] = {
 	test_udb_lookup,
 	test_ducet,
 	test_ducet_known_unknown,
+	test_ducet_collisions,
+	test_ducet_contractions,
+#ifndef NU_DISABLE_CONTRACTIONS
+	test_ducet_consistency,
+#endif
 	test_toupper,
 	test_tolower,
 	test_tofold,
@@ -196,6 +211,7 @@ testcase cases[] = {
 	test_crossencoding_strcoll,
 
 #ifndef NU_DISABLE_CONTRACTIONS
+	test_strcoll_contractions,
 	test_compoundcmp_strcoll,
 	test_compoundcmp_strcoll_outskirts,
 	test_compoundcmp_strncoll,
@@ -206,6 +222,14 @@ testcase cases[] = {
 	test_ducet_max_weight_ordering,
 
 	test_version_check,
+
+	/* automatically generated tests */
+#ifndef NU_DISABLE_CONTRACTIONS
+	test__nu_ducet_weight_switch,
+	test__nu_ducet_weight_switch_rollbacks,
+	test__nu_ducet_weight_switch_unknowns,
+#endif
+	test_nu_ducet_weights,
 };
 
 int main() {

@@ -236,3 +236,13 @@ void test_crossencoding_strcoll() {
 	assert(nu_strcoll(input_utf8, input_utf16be, nu_utf8_read, nu_utf16be_read) == 0);
 	assert(nu_strcoll(input_utf16be, input_utf8, nu_utf16be_read, nu_utf8_read) == 0);
 }
+
+void test_strcoll_contractions() {
+	assert(nu_strcoll("А" /* U+0410 */, "ӑ" /* U+04D1 */, nu_utf8_read, nu_utf8_read) < 0);
+	assert(nu_strcoll("ӑ" /* U+04D1 */, "ӑ" /* U+0430, U+0306 */, nu_utf8_read, nu_utf8_read) == 0);
+	assert(nu_strcoll("ӑ" /* U+04D1 */, "Ӑ" /* U+04D0 */, nu_utf8_read, nu_utf8_read) < 0);
+
+	/* changed relation due to size limitation in nu_strncoll */
+	assert(nu_strncoll("ӑ" /* U+04D1 */, 2, "ӑ" /* U+0430, U+0306 */, 4, nu_utf8_read, nu_utf8_read) == 0);
+	assert(nu_strncoll("ӑ" /* U+04D1 */, 2, "ӑ" /* U+0430, U+0306 */, 2, nu_utf8_read, nu_utf8_read) > 0);
+}
