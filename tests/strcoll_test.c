@@ -238,11 +238,12 @@ void test_crossencoding_strcoll() {
 }
 
 void test_strcoll_contractions() {
-	assert(nu_strcoll("А" /* U+0410 */, "ӑ" /* U+04D1 */, nu_utf8_read, nu_utf8_read) < 0);
-	assert(nu_strcoll("ӑ" /* U+04D1 */, "ӑ" /* U+0430, U+0306 */, nu_utf8_read, nu_utf8_read) == 0);
-	assert(nu_strcoll("ӑ" /* U+04D1 */, "Ӑ" /* U+04D0 */, nu_utf8_read, nu_utf8_read) < 0);
+	assert(nu_strcoll("ŀ" /* U+0140 */, "Ŀ" /* U+013F */, nu_utf8_read, nu_utf8_read) < 0);
+	assert(nu_strcoll("Ŀ" /* U+013F */, "L·" /* U+004C, U+00B7 */, nu_utf8_read, nu_utf8_read) == 0);
+	assert(nu_strcoll("Ŀ" /* U+013F */, "L·" /* U+004C, U+0387 */, nu_utf8_read, nu_utf8_read) == 0);
+	assert(nu_strcoll("Ŀ" /* U+013F */, "ǈ" /* U+01C8 */, nu_utf8_read, nu_utf8_read) < 0);
 
 	/* changed relation due to size limitation in nu_strncoll */
-	assert(nu_strncoll("ӑ" /* U+04D1 */, 2, "ӑ" /* U+0430, U+0306 */, 4, nu_utf8_read, nu_utf8_read) == 0);
-	assert(nu_strncoll("ӑ" /* U+04D1 */, 2, "ӑ" /* U+0430, U+0306 */, 2, nu_utf8_read, nu_utf8_read) > 0);
+	assert(nu_strncoll("Ŀ" /* U+013F */, 2, "L·" /* U+004C, U+00B7 */, 2, nu_utf8_read, nu_utf8_read) == 0);
+	assert(nu_strncoll("Ŀ" /* U+04D1 */, 2, "L·" /* U+0430, U+0306 */, 1, nu_utf8_read, nu_utf8_read) > 0);
 }
