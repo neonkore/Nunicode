@@ -96,7 +96,7 @@ const char* nu_nocase_compound_read(const char *encoded, const char *encoded_lim
 
 	/* re-entry with tail != 0 */
 	if (*tail != 0) {
-		*tail = NU_CASEMAP_DECODING_FUNCTION(*tail, unicode);
+		*tail = nu_casemap_read(*tail, unicode);
 
 		if (*unicode != 0) {
 			return encoded;
@@ -118,7 +118,7 @@ const char* nu_nocase_compound_read(const char *encoded, const char *encoded_lim
 
 	const char *map = NU_FOLDING_FUNCTION(*unicode);
 	if (map != 0) {
-		*tail = NU_CASEMAP_DECODING_FUNCTION(map, unicode);
+		*tail = nu_casemap_read(map, unicode);
 	}
 
 	return p;

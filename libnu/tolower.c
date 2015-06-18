@@ -7,7 +7,7 @@
 #include "casemap_internal.h"
 #include "gen/_tolower.c"
 
-/* in NU_CASEMAP_DECODING_FUNCTION (UTF-8), zero-terminated */
+/* in nu_casemap_read (UTF-8), zero-terminated */
 static const char *__nu_final_sigma = "ς";
 
 const char* nu_tolower(uint32_t codepoint) {
@@ -33,7 +33,7 @@ const char* _nu_tolower(const char *encoded, const char *limit, nu_read_iterator
 	 * this is the only language-independent exception described in
 	 * SpecialCasing.txt (Unicode 7.0) */
 
-	assert(NU_CASEMAP_DECODING_FUNCTION == nu_utf8_read);
+	assert(nu_casemap_read == nu_utf8_read);
 
 	if (_u == 0x03A3) {
 		if (np >= limit) {

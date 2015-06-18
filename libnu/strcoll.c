@@ -319,7 +319,7 @@ const char* nu_strcasechr(const char *encoded, uint32_t c, nu_read_iterator_t re
 	return _nu_strchr(encoded, NU_UNLIMITED,
 		c, read,
 		nu_nocase_compound_read,
-		NU_FOLDING_FUNCTION, NU_CASEMAP_DECODING_FUNCTION);
+		NU_FOLDING_FUNCTION, nu_casemap_read);
 }
 
 const char* nu_strrchr(const char *encoded, uint32_t c, nu_read_iterator_t read) {
@@ -332,7 +332,7 @@ const char* nu_strrchr(const char *encoded, uint32_t c, nu_read_iterator_t read)
 const char* nu_strrcasechr(const char *encoded, uint32_t c, nu_read_iterator_t read) {
 	return _nu_strrchr(encoded, NU_UNLIMITED, c, read,
 		nu_nocase_compound_read,
-		NU_FOLDING_FUNCTION, NU_CASEMAP_DECODING_FUNCTION);
+		NU_FOLDING_FUNCTION, nu_casemap_read);
 }
 
 int nu_strcoll(const char *s1, const char *s2,
@@ -367,7 +367,7 @@ const char* nu_strcasestr(const char *haystack, const char *needle,
 	return _nu_strstr(haystack, NU_UNLIMITED, needle, NU_UNLIMITED,
 		haystack_read, needle_read,
 		nu_nocase_compound_read, nu_nocase_compound_read,
-		NU_FOLDING_FUNCTION, NU_CASEMAP_DECODING_FUNCTION,
+		NU_FOLDING_FUNCTION, nu_casemap_read,
 		nu_ducet_weight, 0);
 }
 
@@ -386,7 +386,7 @@ const char* nu_strcasenchr(const char *encoded, size_t max_len, uint32_t c, nu_r
 	return _nu_strchr(encoded, encoded + max_len,
 		c, read,
 		nu_nocase_compound_read,
-		NU_FOLDING_FUNCTION, NU_CASEMAP_DECODING_FUNCTION);
+		NU_FOLDING_FUNCTION, nu_casemap_read);
 }
 
 const char* nu_strrnchr(const char *encoded, size_t max_len, uint32_t c, nu_read_iterator_t read) {
@@ -401,7 +401,7 @@ const char* nu_strrcasenchr(const char *encoded, size_t max_len, uint32_t c,
 	return _nu_strrchr(encoded, encoded + max_len,
 		c, read,
 		nu_nocase_compound_read,
-		NU_FOLDING_FUNCTION, NU_CASEMAP_DECODING_FUNCTION);
+		NU_FOLDING_FUNCTION, nu_casemap_read);
 }
 
 int nu_strncoll(const char *s1, size_t s1_max_len,
@@ -442,7 +442,7 @@ const char* nu_strcasenstr(const char *haystack, size_t haystack_max_len,
 		needle, needle + needle_max_len,
 		haystack_read, needle_read,
 		nu_nocase_compound_read, nu_nocase_compound_read,
-		NU_FOLDING_FUNCTION, NU_CASEMAP_DECODING_FUNCTION,
+		NU_FOLDING_FUNCTION, nu_casemap_read,
 		nu_ducet_weight, 0);
 }
 

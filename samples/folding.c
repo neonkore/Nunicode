@@ -40,7 +40,7 @@ int main() {
 		if (up != 0) {
 			uint32_t u = 0;
 			do {
-				up = NU_CASEMAP_DECODING_FUNCTION(up, &u);
+				up = nu_casemap_read(up, &u);
 				if (u == 0) break;
 				upper = nu_utf8_write(u, upper);
 			}
@@ -53,7 +53,7 @@ int main() {
 		if (lo != 0) {
 			uint32_t u = 0;
 			do {
-				lo = NU_CASEMAP_DECODING_FUNCTION(lo, &u);
+				lo = nu_casemap_read(lo, &u);
 				if (u == 0) break;
 				lower = nu_utf8_write(u, lower);
 			}
