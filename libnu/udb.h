@@ -22,6 +22,7 @@ extern "C" {
 #ifdef NU_WITH_UDB
 
 #define NU_UDB_DECODING_FUNCTION (nu_utf8_read)
+#define nu_udb_read (nu_utf8_read)
 
 /** Lookup value in UDB
  *
