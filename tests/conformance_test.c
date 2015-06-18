@@ -14,29 +14,29 @@ void test_special_casing() {
 	 * locale-specific */
 	map = nu_tolower(0x0130);
 	assert(map != 0);
-	map = NU_CASEMAP_DECODING_FUNCTION(map, &u);
+	map = nu_casemap_read(map, &u);
 	assert(u == 0x0069 && map != 0);
-	map = NU_CASEMAP_DECODING_FUNCTION(map, &u);
+	map = nu_casemap_read(map, &u);
 	assert(u == 0x0307 && map != 0);
-	map = NU_CASEMAP_DECODING_FUNCTION(map, &u);
+	map = nu_casemap_read(map, &u);
 	assert(u == 0);
 
 	/* ŉ, shoud uppercase to U+02BC U+004E */
 	map = nu_toupper(0x0149);
 	assert(map != 0);
-	map = NU_CASEMAP_DECODING_FUNCTION(map, &u);
+	map = nu_casemap_read(map, &u);
 	assert(u == 0x02BC && map != 0);
-	map = NU_CASEMAP_DECODING_FUNCTION(map, &u);
+	map = nu_casemap_read(map, &u);
 	assert(u == 0x004E && map != 0);
-	map = NU_CASEMAP_DECODING_FUNCTION(map, &u);
+	map = nu_casemap_read(map, &u);
 	assert(u == 0);
 
 	/* Σ, lowercases to U+03C3, another option is context-dependent */
 	map = nu_tolower(0x03A3);
 	assert(map != 0);
-	map = NU_CASEMAP_DECODING_FUNCTION(map, &u);
+	map = nu_casemap_read(map, &u);
 	assert(u == 0x03C3 && map != 0);
-	map = NU_CASEMAP_DECODING_FUNCTION(map, &u);
+	map = nu_casemap_read(map, &u);
 	assert(u == 0);
 }
 
@@ -60,11 +60,11 @@ void test_folding_priority() {
 	 * case folding available in source */
 	map = nu_tofold(0x0130);
 	assert(map != 0);
-	map = NU_CASEMAP_DECODING_FUNCTION(map, &u);
+	map = nu_casemap_read(map, &u);
 	assert(u == 0x0069 && map != 0);
-	map = NU_CASEMAP_DECODING_FUNCTION(map, &u);
+	map = nu_casemap_read(map, &u);
 	assert(u == 0x0307 && map != 0);
-	map = NU_CASEMAP_DECODING_FUNCTION(map, &u);
+	map = nu_casemap_read(map, &u);
 	assert(u == 0);
 
 	/* ǰ, the only option of case folding is full */
@@ -75,19 +75,19 @@ void test_folding_priority() {
 	 * other case folding option is simple (S) */
 	map = nu_tofold(0x1F8F);
 	assert(map != 0);
-	map = NU_CASEMAP_DECODING_FUNCTION(map, &u);
+	map = nu_casemap_read(map, &u);
 	assert(u == 0x1F07 && map != 0);
-	map = NU_CASEMAP_DECODING_FUNCTION(map, &u);
+	map = nu_casemap_read(map, &u);
 	assert(u == 0x03B9 && map != 0);
-	map = NU_CASEMAP_DECODING_FUNCTION(map, &u);
+	map = nu_casemap_read(map, &u);
 	assert(u == 0);
 
 	/* I, common case folding to U+0069, other option is special case folding */
 	map = nu_tofold(0x0049);
 	assert(map != 0);
-	map = NU_CASEMAP_DECODING_FUNCTION(map, &u);
+	map = nu_casemap_read(map, &u);
 	assert(u == 0x0069 && map != 0);
-	map = NU_CASEMAP_DECODING_FUNCTION(map, &u);
+	map = nu_casemap_read(map, &u);
 	assert(u == 0);
 }
 
