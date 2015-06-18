@@ -3,9 +3,15 @@
 
 /** @defgroup strings String functions
  *
- * Note on "n" functions variant: those are not for memory overrun control.
+ * Note on "n" functions variant: "n" is in bytes in all functions,
+ * note though that those are not for memory overrun control.
  * They are just for strings not having terminating 0 byte and those
- * functions won't go further than m-th *codepoint* in string, not byte.
+ * functions won't go further than m-th *codepoint* in string, but might go
+ * further than n-th byte in case of multibyte sequence.
+ *
+ * E.g.: ``nu_strnlen("абв", 3, nu_utf8_read);``.
+ * Since codepoints are 2-byte sequences, nu_strnlen() won't go further than 2nd
+ * codepoint, but will go further than 3rd byte while reading "б".
  */
 
 /** @defgroup transformations Codepoint transformations
