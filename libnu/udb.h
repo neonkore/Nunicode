@@ -37,8 +37,8 @@ uint32_t nu_udb_lookup_value(uint32_t codepoint,
 	const int16_t *G, size_t G_SIZE,
 	const uint32_t *VALUES_C, const uint16_t *VALUES_I) {
 
-	uint32_t hash = mph_hash(G, G_SIZE, codepoint);
-	uint32_t value = mph_lookup(VALUES_C, VALUES_I, codepoint, hash);
+	uint32_t hash = nu_mph_hash(G, G_SIZE, codepoint);
+	uint32_t value = nu_mph_lookup(VALUES_C, VALUES_I, codepoint, hash);
 
 	return value;
 }
