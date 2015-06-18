@@ -15,8 +15,8 @@ SQLITE_EXTENSION_INIT1
  * - X LIKE Y ESCAPE Z
  * - upper(X)
  * - lower(X)
- * - COLLATE NU700 - Unicode 7.0.0 case-sensitive collation
- * - COLLATE NU700_NOCASE - Unicode 7.0.0 case-insensitive collation
+ * - COLLATE NU800 - Unicode 8.0.0 case-sensitive collation
+ * - COLLATE NU800_NOCASE - Unicode 8.0.0 case-insensitive collation
  *
  * Suported encodings:
  *
@@ -442,19 +442,19 @@ int sqlite3_nunicode_init(sqlite3 *db, char **err_msg,  const sqlite3_api_routin
 	REGISTER_LIKE(rc, db, SQLITE_UTF16BE, nunicode_sqlite3_like_utf16be);
 	REGISTER_LIKE(rc, db, SQLITE_UTF16, nunicode_sqlite3_like_utf16he);
 
-#if NU_UNICODE_VERSION != 700
-#	error "NU700 collations are intended for Unicode 7.0.0 only"
+#if NU_UNICODE_VERSION != 800
+#	error "NU800 collations are intended for Unicode 8.0.0 only"
 #endif
 
-	REGISTER_COLLATION(rc, db, SQLITE_UTF8, "NU700", nunicode_sqlite3_collate_utf8);
-	REGISTER_COLLATION(rc, db, SQLITE_UTF16LE, "NU700", nunicode_sqlite3_collate_utf16le);
-	REGISTER_COLLATION(rc, db, SQLITE_UTF16BE, "NU700", nunicode_sqlite3_collate_utf16be);
-	REGISTER_COLLATION(rc, db, SQLITE_UTF16, "NU700", nunicode_sqlite3_collate_utf16he);
+	REGISTER_COLLATION(rc, db, SQLITE_UTF8, "NU800", nunicode_sqlite3_collate_utf8);
+	REGISTER_COLLATION(rc, db, SQLITE_UTF16LE, "NU800", nunicode_sqlite3_collate_utf16le);
+	REGISTER_COLLATION(rc, db, SQLITE_UTF16BE, "NU800", nunicode_sqlite3_collate_utf16be);
+	REGISTER_COLLATION(rc, db, SQLITE_UTF16, "NU800", nunicode_sqlite3_collate_utf16he);
 
-	REGISTER_COLLATION(rc, db, SQLITE_UTF8, "NU700_NOCASE", nunicode_sqlite3_collate_nocase_utf8);
-	REGISTER_COLLATION(rc, db, SQLITE_UTF16LE, "NU700_NOCASE", nunicode_sqlite3_collate_nocase_utf16le);
-	REGISTER_COLLATION(rc, db, SQLITE_UTF16BE, "NU700_NOCASE", nunicode_sqlite3_collate_nocase_utf16be);
-	REGISTER_COLLATION(rc, db, SQLITE_UTF16, "NU700_NOCASE", nunicode_sqlite3_collate_nocase_utf16he);
+	REGISTER_COLLATION(rc, db, SQLITE_UTF8, "NU800_NOCASE", nunicode_sqlite3_collate_nocase_utf8);
+	REGISTER_COLLATION(rc, db, SQLITE_UTF16LE, "NU800_NOCASE", nunicode_sqlite3_collate_nocase_utf16le);
+	REGISTER_COLLATION(rc, db, SQLITE_UTF16BE, "NU800_NOCASE", nunicode_sqlite3_collate_nocase_utf16be);
+	REGISTER_COLLATION(rc, db, SQLITE_UTF16, "NU800_NOCASE", nunicode_sqlite3_collate_nocase_utf16he);
 
 	REGISTER_UPPER(rc, db, SQLITE_UTF8, nunicode_sqlite3_upper_utf8);
 	REGISTER_UPPER(rc, db, SQLITE_UTF16LE, nunicode_sqlite3_upper_utf16le);
