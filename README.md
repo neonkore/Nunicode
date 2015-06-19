@@ -26,9 +26,9 @@ Conformance:
 
 Specification   | Notes
 ----------------|----------------
-Unicode 7.0     | Conformant on character set and Unicode transformation forms (UTF)
-ISO/IEC 14646   | ISO/IEC 14646:2012 plus Amd.1 and Amd.2, plus the ruble sign (as defined by Unicode 7.0)
-ISO/IEC 14651   | [notes][]
+Unicode 8.0     | Conformant on character set and Unicode transformation forms (UTF)
+ISO/IEC 10646   | ISO/IEC 10646:2014, plus Amendment 1. Additionally, it includes the accelerated publication of U+20BE LARI SIGN, nine CJK unified ideographs (U+9FCD..U+9FD5), and 41 emoji characters (as defined by Unicode 8.0)
+ISO/IEC 14651   | ISO/IEC 14651:2011, [notes][]
 
 Encodings supported:
 
@@ -83,7 +83,7 @@ Numbers below to give a general idea on nunicode performance. Each number
 is linked to corresponding test program and  measured with standard
 ``time`` utility, all numbers in seconds.
 
-Function     | nunicode          | ICU
+Function     | nunicode (1.5.1)  | ICU (52.1)
 -------------|-------------------|-------------------
 iteration    |     0.070 ([1][]) | 0.080 ([2][])
 strcoll      |     0.200 ([3][]) | 1.560 ([4][])
@@ -181,8 +181,8 @@ casemapped in a sigle way only (e.g. 'Σ' always casemaps into 'σ').
 ## Strings collation
 
 nunicode implements ISO 14651 collation where strings are sorted according
-to the weights of their codepoints. Weight used by nunicode are defined
-by DUCET (default Unicode collation table). Character set is reduced
+to the weights of their codepoints. Weight used by nunicode are derived
+from DUCET (default Unicode collation table). Character set is reduced
 to contain only letters and number to reduce library size. The rest
 of the codepoints are sorted at the end of the list in codepoint order.
 
@@ -220,13 +220,16 @@ Reference           |                 | Comment
 Collation levels    | Any             | nunicode supports any number of collation levels. Actual number of levels implemented is maximum level defined by Unicode specification
 forward,position    | No              |
 backward            | No              |
-Tailoring delta     | -               | Equal to the delta with reduced DUCET. DUCET is reduced to character categories Ll, Lu, Lt, Lo, Nl, Nd, No. Only weights of single codepoints are used in collation.
+Tailoring delta     | -               | Equal to the delta with reduced DUCET. DUCET is reduced to character categories Ll, Lu, Lt, Lo, Nl, Nd, No.
 Preparation process | None            |
 
-Complete list of contractions not covered by nunicode is available in
-[ducet_excluded.txt][]
+Note that contractions support (U+013F equals U+004C U+00B7) is
+implemented but not enabled by default in release build. Please see
+library build options for details.
 
-[ducet_excluded.txt]: https://bitbucket.org/alekseyt/nunicode/src/master/libnu/gen/ducet_excluded.txt
+Contractions included follow the same rule of DUCET reduction as
+codepoints, i.e. only contractions with first codepoint of mentioned
+above character categories are included into collation.
 
 ### localization (collation tailoring)
 
@@ -307,8 +310,8 @@ Provides functions for following SQL statements:
 * upper(X)
 * lower(X)
 * X LIKE Y ESCAPE Z
-* COLLATE NU700 - case-sensitive Unicode collation
-* COLLATE NU700\_NOCASE - case-insensitive Unicode collation
+* COLLATE NU800 - case-sensitive Unicode collation
+* COLLATE NU800\_NOCASE - case-insensitive Unicode collation
 
 Supported encodings: UTF-8, UTF-16, UTF-16LE, UTF-16BE.
 
