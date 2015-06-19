@@ -1,3 +1,22 @@
+1.6
+
+[+] Unicode 8.0.0 character set support
+[+] implemented contractions in DUCET-based weighting of
+    codepoints, affected functions: nu_strcoll(), nu_strncoll()
+
+    e.g.: nu_strcoll(U+013F, U+004C U+00B7) equals 0 (according to DUCET)
+    see: https://bitbucket.org/alekseyt/nunicode#markdown-header-strings-collation
+
+[*] SQLite3 extension renamed from "nunicode" to "nusqlite3",
+    affected files: sqlite3/nu.c -> sqlite3/nusqlite3.c,
+                    sqlite3/nu.h -> sqlite3/nusqlite3.h
+    build: "make nunicode" -> "make nusqlite3"
+    library: libnunicode.so -> libnusqlite3.so
+[*] SQLite3 collations NU700 and NU700_NOCASE replaced with
+    NU800 and NU800_NOCASE
+[*] optional build of unittests: see BUILD
+[*] optional build of sample applications: see BUILD
+
 1.5.2
 
 [+] introduced nu_casemap_read and nu_udb_read as a replacement

@@ -1,6 +1,6 @@
 [TOC]
 
-This is i18n library implementing Unicode 7.0.
+This is i18n library implementing Unicode 8.0.
 
 nunicode is trying to carefully follow the Unicode specification with
 reasonable trade-offs. It doesn't implement the entire standard, but
