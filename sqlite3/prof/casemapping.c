@@ -1,7 +1,7 @@
 #include <stdlib.h>
 
 #include <libnu/libnu.h>
-#include "../nu.h"
+#include "../nusqlite3.h"
 
 void * _malloc(int size) {
 	return malloc(size);

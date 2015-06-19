@@ -7,7 +7,7 @@ SQLITE_EXTENSION_INIT1
 #include <libnu/libnu.h>
 #include <libnu/strcoll_internal.h>
 
-#include "nu.h"
+#include "nusqlite3.h"
 #include "version.h"
 
 /** This extension provide functions for the following statements:
