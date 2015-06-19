@@ -11,7 +11,7 @@ void test_utf16le_decoding() {
 	assert(nu_utf16le_read("\x01\xD8\x00\xDC" /* 𐐀 */, 0) && u == 0);
 
 	/* read output */
-	assert(nu_utf16le_read("" /* g */, &u) && u == 0);
+	assert(nu_utf16le_read("\x00" /* g */, &u) && u == 0);
 	assert(nu_utf16le_read("\x67\x00" /* g */, &u) && u == 0x0067);
 	assert(nu_utf16le_read("\x05\x02" /* ȅ */, &u) && u == 0x0205);
 	assert(nu_utf16le_read("\xAC\x20" /* € */, &u) && u == 0x20AC);
