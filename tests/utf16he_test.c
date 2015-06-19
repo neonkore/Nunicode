@@ -18,7 +18,7 @@ void test_utf16he_decoding() {
 	assert(nu_utf16he_read(input2, 0) && u == 0);
 
 	/* read output */
-	assert(nu_utf16he_read("", &u) && u == 0);
+	assert(nu_utf16he_read("\x00", &u) && u == 0);
 	assert(nu_utf16he_read(input1, &u) && u == 0x0067);
 	assert(nu_utf16he_read(input2, &u) && u == 0x10400);
 }
