@@ -1,10 +1,26 @@
+1.5.2
+
+[+] introduced nu_casemap_read and nu_udb_read as a replacement
+    for NU_CASEMAP_DECODING_FUNCTION and NU_UDB_DECODING_FUNCTION
+    accordingly. NU_*_FUNCTION macros are still available, but
+    not recommended for use
+
+[*] mph.h: hash() renamed to _nu_hash(), mph_hash() renamed to
+    nu_mph_hash(), mph_lookup() renamed to nu_mph_lookup()
 [*] changes to make nunicode build with MSVC (by Tamas Kenez)
 [*] fixed test: test_readstr, which contained a UTF-16BE string literal
     with a single byte zero-terminator (by Tamas Kenez)
+[*] fixed tests: test_utf16le_decoding, test_utf16he_decoding, which
+    contained a UTF-16BE string literal with a single byte
+    zero-terminator
 [*] fixed assertions in tests: test_utf32_read_bom,
     test_utf32_read_invalid_bom, which tested value at memory preceding
     the actual test string (by Tamas Kenez)
 [*] fixed CMake 3.3 warnings during build (by Tamas Kenez)
+[*] SQLite3 detection during build configuration will look
+    for availability of sqlite3ext.h instead of sqlite3.h
+[*] minor documentation updates
+[*] minor updates for readability
 
 1.5.1
 
