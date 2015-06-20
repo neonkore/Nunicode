@@ -406,6 +406,12 @@ nunicode uses [CMake][] for building.
 
 It will build static library.
 
+The install target installs the ``nunicode-config.cmake`` config-module which
+creates the import library ``nunicode::nu``. Usage:
+
+    find_package(nunicode REQUIRED)
+    target_link_libraries(*<some-target>* nunicode::nu)
+
 Normally nunicode is compiled with -O3 (gcc).
 
 [CMake]: http://www.cmake.org/
