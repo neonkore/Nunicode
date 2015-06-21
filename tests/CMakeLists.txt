@@ -1,12 +1,3 @@
-cmake_minimum_required (VERSION 2.8.12)
-project(libnu-tests C)
-
-if(TARGET nu)
-	add_library(nunicode::nu ALIAS nu)
-else()
-	find_package(nunicode REQUIRED)
-endif()
-
 set(TESTS_SRC
 	casemap_test.c
 	cesu8_test.c
@@ -37,7 +28,7 @@ set(TESTS_SRC
 
 include_directories(${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR})
 
-link_libraries(nunicode::nu)
+link_libraries(nu)
 add_executable(units ${TESTS_SRC})
 
 add_custom_target(coverage DEPENDS units
@@ -45,5 +36,3 @@ add_custom_target(coverage DEPENDS units
 	COMMAND lcov -b ${CMAKE_SOURCE_DIR} -d ${CMAKE_SOURCE_DIR} -c -o coverage.info
 	COMMAND genhtml -o ${CMAKE_SOURCE_DIR}/tests/coverage coverage.info
 )
-
-install(TARGETS units DESTINATION bin)
