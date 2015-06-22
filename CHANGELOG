@@ -17,6 +17,15 @@
 [*] SQLite3 collations NU700 and NU700_NOCASE replaced with
     NU800 and NU800_NOCASE
 [*] build scripts need at least CMake 2.8.12
+[*] ``install`` target  will install CMake config-module 
+    ``nunicode-config.cmake`` which creates the import library
+    ``nunicode::nu``, usage:
+
+    find_package(nunicode REQUIRED)
+    target_link_libraries(*<some-target>* nunicode::nu)
+
+    (by Tamas Kenez)
+
 [*] optional build of unittests: see BUILD
 [*] optional build of sample applications: see BUILD
 
