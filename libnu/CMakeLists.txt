@@ -28,6 +28,8 @@ target_include_directories(nu PUBLIC
 	$<INSTALL_INTERFACE:include>)
 
 target_compile_definitions(nu PUBLIC ${NU_BUILD_OPTIONS})
+target_compile_definitions(nu PUBLIC $<$<CONFIG:Release>:NU_DISABLE_CONTRACTIONS>)
+
 
 set_target_properties(nu PROPERTIES DEBUG_POSTFIX d)
 if(NOT UNIX)

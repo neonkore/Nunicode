@@ -16,5 +16,5 @@ Please refer to "Modules" section at the left for API Index.
 ### Release build
    
     mkdir build && cd build
-    cmake .. -DCMAKE_BUILD_TYPE=RELEASE
+    cmake .. -DCMAKE_BUILD_TYPE=Release
     make
