@@ -11,8 +11,7 @@
 [*] fixed test: test_readstr, which contained a UTF-16BE string literal
     with a single byte zero-terminator (by Tamas Kenez)
 [*] fixed tests: test_utf16le_decoding, test_utf16he_decoding, which
-    contained a UTF-16BE string literal with a single byte
-    zero-terminator
+    contained string literals with a single byte zero-terminator
 [*] fixed assertions in tests: test_utf32_read_bom,
     test_utf32_read_invalid_bom, which tested value at memory preceding
     the actual test string (by Tamas Kenez)
