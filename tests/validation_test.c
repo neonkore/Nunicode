@@ -162,7 +162,6 @@ void test_validation_utf8_core_spec_3_7() {
 		assert(nu_validate(valid_5, sizeof(valid_5), nu_utf8_validread) == 0);
 		assert(nu_validate(valid_6, sizeof(valid_6), nu_utf8_validread) == 0);
 
-		//assert(nu_validate(invalid_1, sizeof(invalid_1), nu_utf8_validread) == invalid_1 + 1);
 		assert(nu_validate(invalid_2, sizeof(invalid_2), nu_utf8_validread) == invalid_2 + 1);
 		assert(nu_validate(invalid_3, sizeof(invalid_3), nu_utf8_validread) == invalid_3 + 1);
 		assert(nu_validate(invalid_4, sizeof(invalid_4), nu_utf8_validread) == invalid_4 + 1);
