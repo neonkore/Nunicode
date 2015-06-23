@@ -43,7 +43,7 @@ amd64_bz:
 doc_zip:
 	rm -fr "../doc/libnu-${VERSION}" "$(DOC_ZIP)"
 	(cd .. && doxygen)
-	(cd ../doc && mv html libnu-$(VERSION) && zip -r "../packaging/$(DOC_ZIP)" "libnu-${VERSION}")
+	(cd ../doc && mv html libnu-$(VERSION) && zip -r "../staging/$(DOC_ZIP)" "libnu-${VERSION}")
 
 clean:
 	rm -fr *.zip *.bz2

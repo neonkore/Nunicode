@@ -1,8 +1,10 @@
 1.6
 
 [+] Unicode 8.0.0 character set support
-[+] implemented contractions in DUCET-based weighting of
-    codepoints, affected functions: nu_strcoll(), nu_strncoll()
+[+] implemented contractions in DUCET-based collation of
+    strings, affected functions: nu_strcoll(), nu_strncoll(),
+    nu_strcasecoll(), nu_strcasencoll(), nu_strstr(), nu_strnstr(),
+    nu_strcasestr(), nu_strcasenstr()
 
     e.g.: nu_strcoll(U+013F, U+004C U+00B7) equals 0 (according to DUCET)
     see: https://bitbucket.org/alekseyt/nunicode#markdown-header-strings-collation
@@ -14,6 +16,16 @@
     library: libnunicode.so -> libnusqlite3.so
 [*] SQLite3 collations NU700 and NU700_NOCASE replaced with
     NU800 and NU800_NOCASE
+[*] build scripts need at least CMake 2.8.12
+[*] ``install`` target  will install CMake config-module 
+    ``nunicode-config.cmake`` which creates the import library
+    ``nunicode::nu``, usage:
+
+    find_package(nunicode REQUIRED)
+    target_link_libraries(*<some-target>* nunicode::nu)
+
+    (by Tamas Kenez)
+
 [*] optional build of unittests: see BUILD
 [*] optional build of sample applications: see BUILD
 
