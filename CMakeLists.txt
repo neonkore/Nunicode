@@ -1,48 +1,45 @@
 cmake_minimum_required (VERSION 2.8.12)
 project(libnu C)
 
+option(NU_BUILD_TESTS "Build tests, only with Debug config" OFF)
+option(NU_BUILD_SAMPLES "Build samples" OFF)
+
 set(NU_BUILD_OPTIONS "-DNU_WITH_EVERYTHING")
 add_definitions(-DNU_BUILD_STATIC)
-
-# deprecated
-if(CMAKE_BUILD_TYPE MATCHES RELEASE OR CMAKE_BUILD_TYPE MATCHES PROF)
-	add_definitions(-DNU_DISABLE_CONTRACTIONS)
-endif(CMAKE_BUILD_TYPE MATCHES RELEASE OR CMAKE_BUILD_TYPE MATCHES PROF)
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 find_package(Sqlite3)
 
+# backward-compatibility
+if(CMAKE_BUILD_TYPE STREQUAL "DEBUG")
+	set(CMAKE_BUILD_TYPE "Debug")
+elseif(CMAKE_BUILD_TYPE STREQUAL "RELEASE")
+	set(CMAKE_BUILD_TYPE "Release")
+endif()
+
+if(NU_BUILD_TESTS)
+	set(CMAKE_CONFIGURATION_TYPES "Debug") # restrict configurations to Debug
+	set(CMAKE_BUILD_TYPE "Debug")
+endif()
+
+if(CMAKE_BUILD_TYPE MATCHES "GCOV")
+	set(CMAKE_CONFIGURATION_TYPES "GCOV") # restrict configurations to GCOV
+	set(NU_BUILD_TESTS 1)
+elseif(CMAKE_BUILD_TYPE MATCHES "PROF")
+	set(CMAKE_CONFIGURATION_TYPES "PROF") # restrict configurations to PROF
+endif()
+
 if(CMAKE_C_COMPILER_ID STREQUAL "GNU" OR CMAKE_C_COMPILER_ID STREQUAL "Clang")
 	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Werror -pedantic -std=c99")
 
-	if(NOT DEFINED WIN32)
-		set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC")
-	endif(NOT DEFINED WIN32)
-
-	# deprecated
-	if(CMAKE_BUILD_TYPE MATCHES RELEASE)
-		set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -s")
-	else(CMAKE_BUILD_TYPE MATCHES RELEASE)
-		if(CMAKE_BUILD_TYPE MATCHES PROF)
-			set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O2 -g -ggdb")
-		else(CMAKE_BUILD_TYPE MATCHES PROF)
-			if(CMAKE_BUILD_TYPE MATCHES GCOV)
-				set(NU_BUILD_TESTS 1)
-				set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -ggdb -fprofile-arcs -ftest-coverage")
-			endif(CMAKE_BUILD_TYPE MATCHES GCOV)
-		endif(CMAKE_BUILD_TYPE MATCHES PROF)
-	endif(CMAKE_BUILD_TYPE MATCHES RELEASE)
-endif(CMAKE_C_COMPILER_ID STREQUAL "GNU" OR CMAKE_C_COMPILER_ID STREQUAL "Clang")
+	if(CMAKE_BUILD_TYPE MATCHES "PROF")
+		set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O2 -g -ggdb")
+	elseif(CMAKE_BUILD_TYPE MATCHES "GCOV")
+		set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -ggdb -fprofile-arcs -ftest-coverage")
+	endif()
+endif()
 
 if(CMAKE_C_COMPILER_ID STREQUAL "GNU")
-	# RELEASE (all-caps, deprecated)
-	if(CMAKE_BUILD_TYPE MATCHES RELEASE)
-		set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fdata-sections -ffunction-sections")
-		set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--gc-sections")
-		set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--gc-sections")
-	endif(CMAKE_BUILD_TYPE MATCHES RELEASE)
-
-	# Release (camel-case)
 	set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -fdata-sections -ffunction-sections")
 	set(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS_RELEASE} -s -Wl,--gc-sections")
 	set(CMAKE_SHARED_LINKER_FLAGS_RELEASE "${CMAKE_SHARED_LINKER_FLAGS_RELEASE} -s -Wl,--gc-sections")
