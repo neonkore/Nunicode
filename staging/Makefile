@@ -7,12 +7,12 @@ testcmake:
 	# - builds the samples again in a separate build tree so
 	#   the config-module will also be tested
 	cmake -H.. -Bbuild/nunicode -DCMAKE_INSTALL_PREFIX=${PWD}/usr -DCMAKE_BUILD_TYPE=Debug
-	cmake --build build/nunicode --target install --config Debug
+	cmake --build build/nunicode --target install --config Debug --clean-first
 	cmake -H.. -Bbuild/nunicode -DCMAKE_INSTALL_PREFIX=${PWD}/usr -DCMAKE_BUILD_TYPE=Release
 	cmake --build build/nunicode --target install --config Release --clean-first
-	cmake -H.. -Bbuild/nunicode -DCMAKE_INSTALL_PREFIX=${PWD}/usr -DCMAKE_BUILD_TYPE=RELEASE
-	cmake --build build/nunicode --target install --config RELEASE --clean-first
-	cmake -H../samples -Bbuild/samples -DCMAKE_INSTALL_PREFIX=${PWD}/usr -DCMAKE_PREFIX_PATH=${PWD}/usr -DCMAKE_BUILD_TYPE=Release
+	cmake -H../samples -Bbuild/samples -DCMAKE_PREFIX_PATH=${PWD}/usr -DCMAKE_BUILD_TYPE=Debug
+	cmake --build build/samples --config Debug --clean-first
+	cmake -H../samples -Bbuild/samples -DCMAKE_PREFIX_PATH=${PWD}/usr -DCMAKE_BUILD_TYPE=Release
 	cmake --build build/samples --config Release --clean-first
 
 testbuilds:
@@ -23,8 +23,8 @@ testbuilds:
 	cmake --build build/debug --config Debug
 	cmake -H.. -Bbuild/release -DCMAKE_BUILD_TYPE=Release -DNU_BUILD_SAMPLES=1
 	cmake --build build/release --config Release
-	cmake -H.. -Bbuild/RELEASE -DCMAKE_BUILD_TYPE=RELEASE -DNU_BUILD_SAMPLES=1
-	cmake --build build/RELEASE --config RELEASE
+	cmake -H.. -Bbuild/_RELEASE -DCMAKE_BUILD_TYPE=RELEASE -DNU_BUILD_SAMPLES=1
+	cmake --build build/_RELEASE --config RELEASE
 	cmake -H.. -Bbuild/gcov -DCMAKE_BUILD_TYPE=GCOV
 	cmake --build build/gcov --config GCOV
 	cmake -H.. -Bbuild/prof -DCMAKE_BUILD_TYPE=PROF
