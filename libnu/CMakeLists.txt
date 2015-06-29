@@ -27,7 +27,10 @@ target_include_directories(nu PUBLIC
 	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
 	$<INSTALL_INTERFACE:include>)
 
-target_compile_definitions(nu PUBLIC ${NU_BUILD_OPTIONS})
+target_compile_definitions(nu PUBLIC
+	${NU_BUILD_OPTIONS}
+	$<$<OR:$<CONFIG:Release>,$<CONFIG:PROF>>:NU_DISABLE_CONTRACTIONS>
+)
 
 set_target_properties(nu PROPERTIES DEBUG_POSTFIX d)
 if(NOT UNIX)

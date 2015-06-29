@@ -1,5 +1,5 @@
 1. mkdir build && cd build
-2. cmake .. -DCMAKE_BUILD_TYPE=RELEASE && make nu
+2. cmake .. -DCMAKE_BUILD_TYPE=Release && make nu
 
 This will produce libnu.a for static linking.
 
@@ -8,13 +8,15 @@ This will produce libnu.a for static linking.
 This will produce SQLite3 extenstion. If SQLite3 development
 package is not installed, this target is not available.
 
+
+
 Other build options
 -------------------
 
 a) cmake .. -DNU_BUILD_TESTS=1
 
-Will build test suite. Test won't compile in RELEASE or PROF 
-configurations.
+Will build test suite. Test won't compile in "Release" or
+"PROF" configurations.
 
 b) cmake .. -D_NU_BUILD_SAMPLES=1
 

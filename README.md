@@ -401,7 +401,7 @@ nunicode uses [CMake][] for building.
 
     mkdir build
     cd build
-    cmake .. -DCMAKE_BUILD_TYPE=RELEASE
+    cmake .. -DCMAKE_BUILD_TYPE=Release
     make nu
 
 It will build static library.
