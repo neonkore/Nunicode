@@ -9,14 +9,25 @@
     e.g.: nu_strcoll(U+013F, U+004C U+00B7) equals 0 (according to DUCET)
     see: https://bitbucket.org/alekseyt/nunicode#markdown-header-strings-collation
 
+[+] release build configuration is now "Release" (camel-case):
+    
+    cmake .. -DCMAKE_BUILD_TYPE=Release
+
+    previously supported build configuration "RELEASE" (all-caps)
+    still works, but deprecated and will be removed in future releases
+
+[*] SQLite3 collations NU700 and NU700_NOCASE replaced with
+    NU800 and NU800_NOCASE
 [*] SQLite3 extension renamed from "nunicode" to "nusqlite3",
     affected files: sqlite3/nu.c -> sqlite3/nusqlite3.c,
                     sqlite3/nu.h -> sqlite3/nusqlite3.h
     build: "make nunicode" -> "make nusqlite3"
     library: libnunicode.so -> libnusqlite3.so
-[*] SQLite3 collations NU700 and NU700_NOCASE replaced with
-    NU800 and NU800_NOCASE
 [*] build scripts need at least CMake 2.8.12
+[*] optional build of unittests: see BUILD
+[*] optional build of sample applications: see BUILD
+[*] changes in build scripts related to multi-configuration IDE
+    generators (by Tamas Kenez, /issue/5)
 [*] ``install`` target  will install CMake config-module 
     ``nunicode-config.cmake`` which creates the import library
     ``nunicode::nu``, usage:
@@ -25,9 +36,6 @@
     target_link_libraries(*<some-target>* nunicode::nu)
 
     (by Tamas Kenez)
-
-[*] optional build of unittests: see BUILD
-[*] optional build of sample applications: see BUILD
 
 1.5.2
 
