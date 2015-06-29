@@ -1,6 +1,6 @@
 #!/bin/sh
 
-NU='./libnunicode.so'
+NU='./libnusqlite3.so'
 
 echo ".load $NU sqlite3_nunicode_init"
 

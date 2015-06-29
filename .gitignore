@@ -7,3 +7,5 @@ build*
 *.so
 *.pyc
 *.zip
+staging/build/
+staging/usr/

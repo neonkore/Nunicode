@@ -91,7 +91,8 @@ int _nu_strcoll(const char *lhs, const char *lhs_limit,
 #ifdef NU_DISABLE_CONTRACTIONS
 		/* if contractions are disabled, then same codepoints
 		 * will produce same weights and there is no need
-		 * to weight each */
+		 * to weight each, i.e. weight(u1) == weight(u2) and
+		 * collation may proceed to next codepoints */
 		if (u1 != u2) {
 #endif
 			int32_t w1 = weight(u1, 0, context);

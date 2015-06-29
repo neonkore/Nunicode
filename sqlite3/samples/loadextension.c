@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <sqlite3.h>
 
-static const char *SHARED = "./libnunicode.so";
+static const char *SHARED = "./libnusqlite3.so";
 static const char *ENTRY = "sqlite3_nunicode_init";
 
 int callback(void *context, int argc, char **argv, char **columns) {

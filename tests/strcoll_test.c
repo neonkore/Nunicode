@@ -236,3 +236,14 @@ void test_crossencoding_strcoll() {
 	assert(nu_strcoll(input_utf8, input_utf16be, nu_utf8_read, nu_utf16be_read) == 0);
 	assert(nu_strcoll(input_utf16be, input_utf8, nu_utf16be_read, nu_utf8_read) == 0);
 }
+
+void test_strcoll_contractions() {
+	assert(nu_strcoll("ŀ" /* U+0140 */, "Ŀ" /* U+013F */, nu_utf8_read, nu_utf8_read) < 0);
+	assert(nu_strcoll("Ŀ" /* U+013F */, "L·" /* U+004C, U+00B7 */, nu_utf8_read, nu_utf8_read) == 0);
+	assert(nu_strcoll("Ŀ" /* U+013F */, "L·" /* U+004C, U+0387 */, nu_utf8_read, nu_utf8_read) == 0);
+	assert(nu_strcoll("Ŀ" /* U+013F */, "ǈ" /* U+01C8 */, nu_utf8_read, nu_utf8_read) < 0);
+
+	/* changed relation due to size limitation in nu_strncoll */
+	assert(nu_strncoll("Ŀ" /* U+013F */, 2, "L·" /* U+004C, U+00B7 */, 2, nu_utf8_read, nu_utf8_read) == 0);
+	assert(nu_strncoll("Ŀ" /* U+04D1 */, 2, "L·" /* U+0430, U+0306 */, 1, nu_utf8_read, nu_utf8_read) > 0);
+}

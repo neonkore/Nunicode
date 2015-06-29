@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <sqlite3.h>
 
-#include "nu.h"
+#include "nusqlite3.h"
 
 int callback(void *context, int argc, char **argv, char **columns) {
 	(void)(context);
