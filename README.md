@@ -58,6 +58,17 @@ complemented by case-insensitive variants.
 * No dependencies
 * Permissive license
 
+## Different versions of Unicode
+
+Previously implemented versions of Unicode are available in Git
+repository:
+
+Unicode | nunicode    | Git branch
+--------|-------------|------------
+6.3.0   | 0.8-1.2.1   | unicode.630
+7.0.0   | 1.3-1.5.2   | unicode.700
+8.0.0   | 1.6         | master
+
 ## Tests coverage
 
 * 100% lines
