@@ -11,9 +11,7 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 find_package(Sqlite3)
 
 # backward-compatibility
-if(CMAKE_BUILD_TYPE STREQUAL "DEBUG")
-	set(CMAKE_BUILD_TYPE "Debug")
-elseif(CMAKE_BUILD_TYPE STREQUAL "RELEASE")
+if(CMAKE_BUILD_TYPE STREQUAL "RELEASE")
 	set(CMAKE_BUILD_TYPE "Release")
 endif()
 
@@ -31,6 +29,10 @@ endif()
 
 if(CMAKE_C_COMPILER_ID STREQUAL "GNU" OR CMAKE_C_COMPILER_ID STREQUAL "Clang")
 	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Werror -pedantic -std=c99")
+
+	if(NOT WIN32)
+		set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC")
+	endif(NOT WIN32)
 
 	if(CMAKE_BUILD_TYPE MATCHES "PROF")
 		set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O2 -g -ggdb")
