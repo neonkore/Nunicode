@@ -428,9 +428,9 @@ Normally nunicode is compiled with -O3 (gcc).
 
 ### SQLite3 extension
 
-``make nunicode``
+``make nusqlite3``
 
-It will build shared library libnunicode with nu linked into it
+It will build shared library libnusqlite3 with nu linked into it
 statically. See [BUILD][] for details.
 
 [BUILD]: https://bitbucket.org/alekseyt/nunicode/src/master/BUILD
