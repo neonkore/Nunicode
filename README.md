@@ -199,7 +199,7 @@ of the codepoints are sorted at the end of the list in codepoint order.
 
 Works best on precomposed characters (NFC).
 
-Below are examples of such ordering in different laguages:
+Below are examples of such ordering in different laguages (Unicode 7.0):
 
 Language    | Alphabet
 ------------|---------
@@ -246,14 +246,13 @@ above character categories are included into collation.
 
 nunicode supports both custom collations and conractions. Custom collation
 is a function returning weights different from defaults. Contraction is a
-sequence of Unicode codepoints with assigned weight. DUCET simply defines
-that weight(ë) == weight(e) + weight(COMBINING DIAERESIS), therefore if
-such collation is implemented, it can prove equivalence of those strings.
+sequence of Unicode codepoints with assigned weight. 
 
-Better example is Hungarian letter "Dz". Simply put, collation is defined
-as "D" < "Dz" < "E". If such collation is used and nunicode encounters "D",
-it will look-ahead to test if it's "D" or "Dz". Weight will be determined
-by the result of this test. This also implies "BDE" < "BDzE" < "BEE".
+Example is Hungarian letter "Dz". Simply put, collation is defined
+as "D" < "Dz" < "E". If such collation is used and nunicode encounters
+"D", it will look-ahead to test if it's "D" or "Dz". Weight will be
+determined by the result of this test. This also implies 
+"BDE" < "BDzE" < "BEE".
 
 ### custom collations
 
@@ -326,7 +325,7 @@ Provides functions for following SQL statements:
 
 Supported encodings: UTF-8, UTF-16, UTF-16LE, UTF-16BE.
 
-Extension is only 220Kb in size approximately.
+Extension is only 230Kb in size approximately.
 
 It can be compiled into shared library and loaded with
 ``sqlite3_load_extension()`` ([doc][]) (see [samples/loadextension.c][]) or it can be linked statically into
@@ -354,11 +353,11 @@ were used:
 Numbers are measured by SQLite3 shell's ``.timer on``, all numbers in
 seconds.
 
-Function | w/o extension | ICU      | nunicode
----------|---------------|----------|---------
-upper()  |         0.290 | 0.700    | 0.540
-COLLATE  |         0.570 | 0.980    | 0.580
-LIKE     |         0.150 | 0.260    | 0.290
+Function | w/o extension | ICU (52.1) | nunicode (1.5.1)
+---------|---------------|------------|-----------------
+upper()  |         0.290 | 0.700      | 0.540
+COLLATE  |         0.570 | 0.980      | 0.580
+LIKE     |         0.150 | 0.260      | 0.290
 
 As you can see, upper() and COLLATE are somewhat faster, but LIKE is
 slower. The explanation to the latter i have to offer is that nunicode
@@ -432,13 +431,15 @@ Normally nunicode is compiled with -O3 (gcc).
 ``make nunicode``
 
 It will build shared library libnunicode with nu linked into it
-statically. See BUILD for details.
+statically. See [BUILD][] for details.
+
+[BUILD]: https://bitbucket.org/alekseyt/nunicode/src/master/BUILD
 
 ### library build options
 
 Please refer to documentation in [config.h][].
 
-[config.h]: https://bitbucket.org/alekseyt/nunicode/src/master/libnu/config.h?at=master
+[config.h]: https://bitbucket.org/alekseyt/nunicode/src/master/libnu/config.h
 
 ## Questions?
 
