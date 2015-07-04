@@ -15,9 +15,13 @@
  */
 
 /** @defgroup transformations Codepoint transformations
+ *
+ * @example folding.c
  */
 
 /** @defgroup transformations_internal Codepoint transformations (internal)
+ *
+ * @example special_casing.c
  */
 
 #include <stdint.h>

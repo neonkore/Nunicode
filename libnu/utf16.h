@@ -9,6 +9,8 @@
 #include "validate.h"
 
 /** @defgroup utf16 UTF-16 support
+ *
+ * @example utf16.c
  */
 
 #if defined (__cplusplus) || defined (c_plusplus)
@@ -16,7 +18,7 @@ extern "C" {
 #endif
 
 #if (defined NU_WITH_UTF16_READER) || (defined NU_WITH_UTF16_WRITER)
-/** For sizeof() only 
+/** For sizeof() only
  *
  * @ingroup utf16
  */
