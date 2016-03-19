@@ -469,6 +469,14 @@ int sqlite3_nunicode_init(sqlite3 *db, char **err_msg,  const sqlite3_api_routin
 	return SQLITE_OK;
 }
 
+/** Automatic entry point to allow loading extension
+ * w/o explicitely setting entry point to sqlite3_nunicode_init
+ */
+NU_SQLITE3_EXPORT
+int sqlite3_nusqlite_init(sqlite3 *db, char **err_msg,  const sqlite3_api_routines *api) {
+	return sqlite3_nunicode_init(db, err_msg, api);
+}
+
 #ifndef NU_DYNAMIC_EXTENSION
 
 void nunicode_sqlite3_static_init(int verbose) {
