@@ -18,6 +18,6 @@ a) cmake .. -DNU_BUILD_TESTS=1
 Will build test suite. Test won't compile in "Release" or
 "PROF" configurations.
 
-b) cmake .. -D_NU_BUILD_SAMPLES=1
+b) cmake .. -DNU_BUILD_SAMPLES=1
 
 Will build sample applications.
