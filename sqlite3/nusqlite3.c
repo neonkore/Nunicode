@@ -407,6 +407,73 @@ static void nunicode_sqlite3_lower_utf16he(sqlite3_context *context, int argc, s
 	nunicode_sqlite3_casemapping_utf16he(context, argc, argv, nu_tolower);
 }
 
+static void _nunicode_sqlite3_create_collation(sqlite3_context *context, int argc, sqlite3_value **argv, nu_read_iterator_t read) {
+	if (argc < 2
+	|| sqlite3_value_type(argv[0]) != SQLITE_TEXT
+	|| sqlite3_value_type(argv[1]) != SQLITE_TEXT) {
+		sqlite3_result_null(context);
+	}
+
+	const char *from = (const char *)sqlite3_value_text(argv[0]);
+	const char *to = (const char *)sqlite3_value_text(argv[1]);
+
+	typedef int (*nusqlite3_collate_t)(void *context, int s1_len, const void *s1,
+		int s2_len, const void *s2);
+
+	typedef struct nu_source_t {
+		const char *source;
+		const nu_read_iterator_t read;
+		nusqlite3_collate_t collate;
+	} nu_source_t;
+
+	const nu_source_t sources[] = {
+		{ "NU800", nu_utf8_read, nunicode_sqlite3_collate_utf8 },
+		{ "NU800", nu_utf16le_read, nunicode_sqlite3_collate_utf16le},
+		{ "NU800", nu_utf16be_read, nunicode_sqlite3_collate_utf16be},
+		{ "NU800", nu_utf16he_read, nunicode_sqlite3_collate_utf16he},
+		{ "NU800_NOCASE", nu_utf8_read, nunicode_sqlite3_collate_nocase_utf8 },
+		{ "NU800_NOCASE", nu_utf16le_read, nunicode_sqlite3_collate_nocase_utf16le },
+		{ "NU800_NOCASE", nu_utf16be_read, nunicode_sqlite3_collate_nocase_utf16be },
+		{ "NU800_NOCASE", nu_utf16he_read, nunicode_sqlite3_collate_nocase_utf16he },
+	};
+
+	nusqlite3_collate_t collate = 0;
+	for (size_t i = 0; i < sizeof(sources) / sizeof(*sources); ++i) {
+		if (sources[i].read != read) {
+			continue;
+		}
+
+		if (nu_strcoll(sources[i].source, from, nu_utf8_read, read) == 0) {
+			collate = sources[i].collate;
+			break;
+		}
+	}
+
+	int rc = SQLITE_MISUSE;
+	if (collate != 0) {
+		rc = sqlite3_create_collation(sqlite3_context_db_handle(context), to, SQLITE_UTF8, 0,
+			collate);
+	}
+
+	sqlite3_result_int(context, (rc == SQLITE_OK ? 1 : 0));
+}
+
+static void nunicode_sqlite3_create_collation_utf8(sqlite3_context *context, int argc, sqlite3_value **argv) {
+	_nunicode_sqlite3_create_collation(context, argc, argv, nu_utf8_read);
+}
+
+static void nunicode_sqlite3_create_collation_utf16le(sqlite3_context *context, int argc, sqlite3_value **argv) {
+	_nunicode_sqlite3_create_collation(context, argc, argv, nu_utf16le_read);
+}
+
+static void nunicode_sqlite3_create_collation_utf16be(sqlite3_context *context, int argc, sqlite3_value **argv) {
+	_nunicode_sqlite3_create_collation(context, argc, argv, nu_utf16be_read);
+}
+
+static void nunicode_sqlite3_create_collation_utf16he(sqlite3_context *context, int argc, sqlite3_value **argv) {
+	_nunicode_sqlite3_create_collation(context, argc, argv, nu_utf16he_read);
+}
+
 #define REGISTER_LIKE(rc, db, sqlite_encoding, nu_wrapper) \
 	(rc) = sqlite3_create_function((db), "like", 2, (sqlite_encoding), 0, \
 	(nu_wrapper), 0, 0); \
@@ -424,6 +491,11 @@ static void nunicode_sqlite3_lower_utf16he(sqlite3_context *context, int argc, s
 
 #define REGISTER_LOWER(rc, db, sqlite_encoding, nu_wrapper) \
 	(rc) = sqlite3_create_function((db), "lower", 1, (sqlite_encoding), 0, \
+	(nu_wrapper), 0, 0); \
+	if ((rc) != SQLITE_OK) return rc;
+
+#define REGISTER_CREATE_COLLATION(rc, db, sqlite_encoding, nu_wrapper) \
+	(rc) = sqlite3_create_function((db), "nunicode_create_collation", 2, (sqlite_encoding), 0, \
 	(nu_wrapper), 0, 0); \
 	if ((rc) != SQLITE_OK) return rc;
 
@@ -465,6 +537,11 @@ int sqlite3_nunicode_init(sqlite3 *db, char **err_msg,  const sqlite3_api_routin
 	REGISTER_LOWER(rc, db, SQLITE_UTF16LE, nunicode_sqlite3_lower_utf16le);
 	REGISTER_LOWER(rc, db, SQLITE_UTF16BE, nunicode_sqlite3_lower_utf16be);
 	REGISTER_LOWER(rc, db, SQLITE_UTF16, nunicode_sqlite3_lower_utf16he);
+
+	REGISTER_CREATE_COLLATION(rc, db, SQLITE_UTF8, nunicode_sqlite3_create_collation_utf8);
+	REGISTER_CREATE_COLLATION(rc, db, SQLITE_UTF16LE, nunicode_sqlite3_create_collation_utf16le);
+	REGISTER_CREATE_COLLATION(rc, db, SQLITE_UTF16BE, nunicode_sqlite3_create_collation_utf16be);
+	REGISTER_CREATE_COLLATION(rc, db, SQLITE_UTF16, nunicode_sqlite3_create_collation_utf16he);
 
 	return SQLITE_OK;
 }
