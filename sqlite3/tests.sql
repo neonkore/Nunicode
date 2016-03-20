@@ -71,3 +71,8 @@ SELECT upper('ё') == 'Ё'
 SELECT lower('Ё') == 'ё'
 SELECT upper('i') == 'I'
 SELECT lower('I') == 'i'
+
+SELECT 'ё' = 'Ё' == 0
+SELECT nunicode_create_collation('NU800_NOCASE', 'TEST_NOCASE')
+SELECT 'ё' = 'Ё' == 0
+SELECT 'ё' = 'Ё' == 0 COLLATE TEST_NOCASE
