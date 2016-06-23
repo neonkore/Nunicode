@@ -25,11 +25,11 @@
 
 #endif /* NU_EXPORT */
 
-/** Integer version of Unicode specification implemented. 800 == 8.0.0
+/** Integer version of Unicode specification implemented. 900 == 9.0.0
  *
  * @ingroup defines
  */
-#define NU_UNICODE_VERSION 800
+#define NU_UNICODE_VERSION 900
 /** Special limit value to unset limit on string. Used internally by nunicode.
  *
  * @ingroup defines
