@@ -1,5 +1,5 @@
 GIT_REVISION="$$(expr substr $$(git rev-parse HEAD) 1 8)"
-BUILD="1.6"
+BUILD="1.7"
 VERSION="$(BUILD)-$(GIT_REVISION)"
 
 I386_BUILD="build_i386"
