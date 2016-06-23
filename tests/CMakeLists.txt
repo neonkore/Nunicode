@@ -33,6 +33,6 @@ add_executable(units ${TESTS_SRC})
 
 add_custom_target(coverage DEPENDS units
 	COMMAND units
-	COMMAND lcov -b ${CMAKE_SOURCE_DIR} -d ${CMAKE_SOURCE_DIR} -c -o coverage.info
-	COMMAND genhtml -o ${CMAKE_SOURCE_DIR}/tests/coverage coverage.info
+	COMMAND lcov --rc lcov_branch_coverage=1 -b ${CMAKE_SOURCE_DIR} -d ${CMAKE_SOURCE_DIR} -c -o coverage.info
+	COMMAND genhtml --rc lcov_branch_coverage=1 -o ${CMAKE_SOURCE_DIR}/tests/coverage coverage.info
 )
