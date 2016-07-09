@@ -1,3 +1,13 @@
+1.7
+
+[+] Unicode 9.0.0 character set support
+[+] added sqlite3_nusqlite_init entry point to SQLite3 extension
+    to allow automatic extension loading without explicitely setting
+    extension entry point
+[*] SQLite3 collations NU800 and NU800_NOCASE replaced with
+    NU900 and NU900_NOCASE (respectively)
+[*] minor changes in documentation
+
 1.6
 
 [+] Unicode 8.0.0 character set support

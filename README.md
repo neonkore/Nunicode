@@ -26,8 +26,8 @@ Conformance:
 
 Specification   | Notes
 ----------------|----------------
-Unicode 8.0     | Conformant on character set and Unicode transformation forms (UTF)
-ISO/IEC 10646   | ISO/IEC 10646:2014, plus Amendment 1. Additionally, it includes the accelerated publication of U+20BE LARI SIGN, nine CJK unified ideographs (U+9FCD..U+9FD5), and 41 emoji characters (as defined by Unicode 8.0)
+Unicode 9.0     | Conformant on character set and Unicode transformation forms (UTF)
+ISO/IEC 10646   | ISO/IEC 10646:2015, fourth edition, plus Amd. 1 and Amd. 2, and 273 characters from forthcoming 10646, fifth edition (as defined by Unicode 9.0)
 ISO/IEC 14651   | ISO/IEC 14651:2011, [notes][]
 
 Encodings supported:
@@ -67,7 +67,8 @@ Unicode | nunicode    | Git branch
 --------|-------------|------------
 6.3.0   | 0.8-1.2.1   | unicode.630
 7.0.0   | 1.3-1.5.2   | unicode.700
-8.0.0   | 1.6         | master
+8.0.0   | 1.6         | unicode.800
+9.0.0   | 1.7         | master
 
 ## Tests coverage
 
