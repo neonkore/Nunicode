@@ -86,6 +86,7 @@ int _nunicode_like(const char *lhs, const char *rhs, uint32_t escape,
 				}
 			}
 
+			/* find left hand side matching codepoint */
 			lu = (uint32_t)(-1);
 			while (lu != ru) {
 				if (lu == 0) {
@@ -99,7 +100,6 @@ int _nunicode_like(const char *lhs, const char *rhs, uint32_t escape,
 			}
 
 			continue;
-
 		}
 		else if (ru == '_' && prev_escape == 0) {
 			if (lu == 0) {
@@ -117,7 +117,11 @@ int _nunicode_like(const char *lhs, const char *rhs, uint32_t escape,
 		lp = nu_nocase_compound_read(lp, NU_UNLIMITED, lhs_read, &lu, &ltailp);
 
 		if (lu != ru) {
-			return 0;
+			/* if match wasn't found - restart from lp,
+			 * needle might appear later in string */
+			rp = rhs;
+			prev_escape = 0;
+			continue;
 		}
 
 		prev_escape = 0;
