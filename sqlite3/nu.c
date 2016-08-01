@@ -72,8 +72,12 @@ int _nunicode_like(const char *lhs, const char *rhs, uint32_t escape,
 
 	char prev_escape = 0;
 
+	uint32_t needle_start = (uint32_t)(-1);
 	while (ru != 0 && lu != 0) {
 		rp = nu_nocase_compound_read(rp, NU_UNLIMITED, rhs_read, &ru, &rtailp);
+		if (needle_start == (uint32_t)(-1)) {
+			needle_start = ru; /* if needle starts with %, then search might be repeated on fail */
+		}
 
 		if (ru == '%' && prev_escape == 0) {
 			while (ru == '%' || ru == '_') {
@@ -82,6 +86,7 @@ int _nunicode_like(const char *lhs, const char *rhs, uint32_t escape,
 					if (lu == 0) {
 						return 0;
 					}
+					/* skip one codepoint in lhs */
 					lp = nu_nocase_compound_read(lp, NU_UNLIMITED, lhs_read, &lu, &ltailp);
 				}
 			}
@@ -95,6 +100,8 @@ int _nunicode_like(const char *lhs, const char *rhs, uint32_t escape,
 				lp = nu_nocase_compound_read(lp, NU_UNLIMITED, lhs_read, &lu, &ltailp);
 			}
 
+			/* at this point lu must be equal to ru,
+			 * otherwise first codepoint in needle wasn't found */
 			if (ru != lu) {
 				return 0;
 			}
@@ -114,14 +121,24 @@ int _nunicode_like(const char *lhs, const char *rhs, uint32_t escape,
 			continue;
 		}
 
+		const char *tmp_lp = lp;
+		const char *tmp_ltailp = ltailp;
 		lp = nu_nocase_compound_read(lp, NU_UNLIMITED, lhs_read, &lu, &ltailp);
 
 		if (lu != ru) {
 			/* if match wasn't found - restart from lp,
 			 * needle might appear later in string */
-			rp = rhs;
-			prev_escape = 0;
-			continue;
+			if (needle_start == '%') {
+				rp = rhs;
+				prev_escape = 0;
+				/* rollback to previous codepoint of lhs (haystack) */
+				lp = tmp_lp;
+				ltailp = tmp_ltailp;
+				continue;
+			}
+			else {
+				return 0;
+			}
 		}
 
 		prev_escape = 0;
