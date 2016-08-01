@@ -1,4 +1,19 @@
-SELECT 'MASSE' LIKE 'MASSE' == 1 /* like (or favorite) */
+SELECT 'A' LIKE 'A' == 1 /* basic tests */
+SELECT 'A' LIKE 'B' == 0
+SELECT 'AB' LIKE 'A%' == 1
+SELECT 'AB' LIKE '%B' == 1
+SELECT 'AB' LIKE 'A%B' == 1
+SELECT 'AB' LIKE '%A%B' == 1
+SELECT 'AB' LIKE 'A%B%' == 1
+SELECT 'AB' LIKE '%A%B%' == 1
+SELECT 'AB' LIKE '%C' == 0
+SELECT 'AB' LIKE 'C%' == 0
+SELECT 'AB' LIKE 'A%C' == 0
+SELECT 'AB' LIKE 'A%C%' == 0
+SELECT 'AB' LIKE '%A%C' == 0
+SELECT 'AB' LIKE '%A%C%' == 0
+
+SELECT 'MASSE' LIKE 'MASSE' == 1 /* casemap expanding tests */
 SELECT 'MASSE' LIKE 'MASE' == 0
 SELECT 'MASSE' LIKE 'MADE' == 0
 SELECT 'Maße' LIKE 'Maße' == 1
@@ -29,7 +44,7 @@ SELECT 'EN MASSE' LIKE 'En%' == 1
 SELECT 'EN MASSE' LIKE '%En' == 0
 SELECT 'EN MASSE' LIKE '%En%' == 1
 
-SELECT 'MASSE' LIKE 'Ma_e' == 0
+SELECT 'MASSE' LIKE 'Ma_e' == 0 /* any char tests */
 SELECT 'MASSE' LIKE 'Ma__e' == 1
 SELECT 'MASSE' LIKE 'Ma%_e' == 1
 SELECT 'MASSE' LIKE 'Ma_%e' == 1
