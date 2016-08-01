@@ -72,7 +72,13 @@ SELECT lower('Ё') == 'ё'
 SELECT upper('i') == 'I'
 SELECT lower('I') == 'i'
 
-SELECT 'РОССИЯ РУБЛЬ' LIKE '%' || 'РУ' || '%' COLLATE NU900_NOCASE == 1
+SELECT 'РОССИЯ РУБЛЬ' LIKE '%' || 'РУ' || '%' COLLATE NU900_NOCASE == 1 /* additional LIKE checks */
 SELECT 'РОССИЯ РУБЛЬ' LIKE '%' || 'РУ' || '%' == 1
 SELECT 'РОССИЯ РУБЛЬ' LIKE '%РУ%' == 1
 SELECT 'РОССИЯ РБЛЬ' LIKE '%РУ%' == 0
+SELECT 'РРУ' LIKE '%РУ%' == 1 
+SELECT 'РРУ' LIKE '%РР%' == 1
+SELECT 'РУР' LIKE '%РУ%' == 1
+SELECT 'РРРУ' LIKE '%РУ%' == 1
+SELECT 'РРРУ' LIKE '%РР%' == 1
+SELECT 'РР' LIKE '%РУ%' == 0
