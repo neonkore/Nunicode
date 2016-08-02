@@ -321,8 +321,8 @@ Provides functions for following SQL statements:
 * upper(X)
 * lower(X)
 * X LIKE Y ESCAPE Z
-* COLLATE NU800 - case-sensitive Unicode collation
-* COLLATE NU800\_NOCASE - case-insensitive Unicode collation
+* COLLATE NU900 - case-sensitive Unicode collation
+* COLLATE NU900\_NOCASE - case-insensitive Unicode collation
 
 Supported encodings: UTF-8, UTF-16, UTF-16LE, UTF-16BE.
 
