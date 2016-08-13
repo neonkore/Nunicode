@@ -1,3 +1,10 @@
+1.7.1 1.6.1 1.5.3
+
+[*] fixed bug when LIKE (sqlite3) stopped on first mismatched codepoint
+    instead of continuing to look for needle further
+    (ported to unicode.700 and unicode.800 branches, 1.5.3 and 1.6.1 tags
+    respectively)
+
 1.7
 
 [+] Unicode 9.0.0 character set support
