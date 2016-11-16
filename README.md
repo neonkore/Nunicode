@@ -1,6 +1,6 @@
 [TOC]
 
-This is i18n library implementing Unicode 8.0.
+This is i18n library implementing Unicode 9.0.
 
 nunicode is trying to carefully follow the Unicode specification with
 reasonable trade-offs. It doesn't implement the entire standard, but
@@ -68,7 +68,7 @@ Unicode | nunicode    | Git branch
 6.3.0   | 0.8-1.2.1   | unicode.630
 7.0.0   | 1.3-1.5.2   | unicode.700
 8.0.0   | 1.6         | unicode.800
-9.0.0   | 1.7         | master
+9.0.0   | 1.7.1       | master
 
 ## Tests coverage
 
