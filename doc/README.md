@@ -1,7 +1,7 @@
 Please refer to "Modules" section at the left for API Index.
 
 * Project site: https://bitbucket.org/alekseyt/nunicode
-* Git: https://alekseyt@bitbucket.org/alekseyt/nunicode.git
+* Git: https://bitbucket.org/alekseyt/nunicode.git
 
 ### Testing and coverage
 
