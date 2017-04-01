@@ -71,4 +71,9 @@ void test__tounaccent_on_combining_accent() {
 	assert(u == 0x0300); /* COMBINING GRAVE ACCENT */
 	transform = nu_casemap_read(transform, &u);
 	assert(u == 0);
+
+	/* doesn't unaccent, but next to diacritics block */
+	assert(_nu_tounaccent("Ͷ", NU_UNLIMITED, nu_utf8_read, &u, &transform, 0) != 0);
+	assert(transform == 0);
+	assert(u == 0x0376); /* Ͷ */
 }
