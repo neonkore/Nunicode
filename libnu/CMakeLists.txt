@@ -6,6 +6,7 @@ set(LIBNU_SRC
 	strings.c
 	tofold.c
 	tolower.c
+	tounaccent.c
 	toupper.c
 	utf16.c
 	utf16be.c
