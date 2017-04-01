@@ -1,0 +1,44 @@
+#!/usr/bin/python
+#-*- coding: UTF-8
+
+import sys
+from unidata import *
+
+
+def is_accent(codepoint):
+    c = int(codepoint, 16)
+    accent = (c >= 0x0300 and c <= 0x036F)  # Combining Diacritical Marks
+    return accent
+
+def unaccent(decomps):
+    unaccented = filter(lambda x: not is_accent(x), decomps)
+    return unaccented
+
+
+tounaccent = []
+
+
+for line in sys.stdin:
+    if unidata_comment(line):
+        continue
+
+    tokens = line.split(';')
+    codepoint = unidata_strip(tokens[0])
+    tag = unidata_strip(tokens[1])
+    decomps = unidata_split(unidata_strip(tokens[2]))
+
+    if len(tag) > 0:  # only empty tags, no <sort>, <compat>, etc
+        continue
+
+    for decomp in decomps:
+        if is_accent(decomp):
+            tounaccent.append((codepoint, decomps))
+            break
+
+for codepoint, decomps in tounaccent:
+    unaccented = unaccent(decomps)
+
+    if len(unaccented) == 0: # some accents decomps into another accents (empty unaccented)
+        continue
+
+    print codepoint, ",".join(unaccented)

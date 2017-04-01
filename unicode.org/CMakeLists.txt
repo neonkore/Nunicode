@@ -10,6 +10,7 @@ set(FILTERED_CONTRACTIONS ${DATA}/filtered_contractions.tmp)
 set(UNIDATA ${DATA}/UnicodeData.txt)
 set(SPECIAL ${DATA}/SpecialCasing.txt)
 set(FOLDING ${DATA}/CaseFolding.txt)
+set(DECOMPS ${DATA}/decomps.txt)
 
 add_custom_target(_ducet
 	COMMAND cat ${UNIDATA} | ${TOOLS}/unidata-tosortable >${SORTABLE}
@@ -41,4 +42,9 @@ add_custom_target(_tofold
 	| ${TOOLS}/mph-combined "NU_TOFOLD" >${GEN}/_tofold.c
 )
 
-add_custom_target(gen DEPENDS _toupper _tolower _tofold _ducet)
+add_custom_target(_tounaccent
+	COMMAND echo -n && cat ${DECOMPS} | ${TOOLS}/decomps-tounaccent
+	| ${TOOLS}/mph-combined "NU_TOUNACCENT" >${GEN}/_tounaccent.c
+)
+
+add_custom_target(gen DEPENDS _toupper _tolower _tofold _ducet _tounaccent)
