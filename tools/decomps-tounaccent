@@ -6,9 +6,20 @@ from unidata import *
 
 
 def is_accent(codepoint):
+    diacritic_blocks = (
+        (0x0300, 0x036F),  # Combining Diacritical Marks
+        (0x1AB0, 0x1AFF),  # Combining Diacritical Marks Extended
+        (0x20D0, 0x20FF),  # Combining Diacritical Marks for Symbols
+        (0x1DC0, 0x1DFF),  # Combining Diacritical Marks Supplement
+    )
+
     c = int(codepoint, 16)
-    accent = (c >= 0x0300 and c <= 0x036F)  # Combining Diacritical Marks
-    return accent
+    for (block_start, block_end) in diacritic_blocks:
+        if c >= block_start and c <= block_end:
+            return True
+
+    return False
+
 
 def unaccent(decomps):
     unaccented = filter(lambda x: not is_accent(x), decomps)
@@ -16,7 +27,6 @@ def unaccent(decomps):
 
 
 tounaccent = []
-
 
 for line in sys.stdin:
     if unidata_comment(line):
