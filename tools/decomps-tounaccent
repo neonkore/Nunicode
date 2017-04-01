@@ -6,6 +6,7 @@ from unidata import *
 
 
 def is_accent(codepoint):
+    # When blocks changes, tounaccent.c is also need to be modified
     diacritic_blocks = (
         (0x0300, 0x036F),  # Combining Diacritical Marks
         (0x1AB0, 0x1AFF),  # Combining Diacritical Marks Extended

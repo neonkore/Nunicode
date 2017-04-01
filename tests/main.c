@@ -96,7 +96,9 @@ void test_special_casing();
 void test_folding_priority();
 void test_ducet_max_weight_ordering();
 void test_tounaccent();
+void test_tounaccent_on_combining_accent();
 void test__tounaccent();
+void test__tounaccent_on_combining_accent();
 void test_version_check();
 
 /* automatically generated tests */
@@ -224,7 +226,9 @@ testcase cases[] = {
 	test_ducet_max_weight_ordering,
 
 	test_tounaccent,
+	test_tounaccent_on_combining_accent,
 	test__tounaccent,
+	test__tounaccent_on_combining_accent,
 
 	test_version_check,
 

@@ -31,12 +31,25 @@ char* unaccent(uint32_t unicode, char *utf8) {
 
 
 int main() {
-	const char input[] = "Φραπέ";
-	char output[sizeof(input)] = { 0 }; // should be enough
+	{
+		const char input[] = "Cafe\xCC\x81"; /* "Cafe" + COMBINING ACUTE ACCENT */
+		char output[sizeof(input)] = { 0 }; /* should be enough */
 
-	nu_transformstr(input, output, nu_utf8_read, unaccent);
+		nu_transformstr(input, output, nu_utf8_read, unaccent);
 
-	printf(">>> input: %s\n", input);
-	printf("<<< output: %s\n", output);
+		printf(">>> input (combining mark): %s\n", input);
+		printf("<<< output: %s\n", output);
+	}
+
+	{
+		const char input[] = "Φραπέ";
+		char output[sizeof(input)] = { 0 }; /* should be enough */
+
+		nu_transformstr(input, output, nu_utf8_read, unaccent);
+
+		printf(">>> input (precomposed): %s\n", input);
+		printf("<<< output: %s\n", output);
+	}
+
 	return 0;
 }
