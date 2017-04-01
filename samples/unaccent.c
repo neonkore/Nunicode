@@ -32,7 +32,7 @@ char* unaccent(uint32_t unicode, char *utf8) {
 
 int main() {
 	{
-		const char input[] = "Cafe\xCC\x81"; /* "Cafe" + COMBINING ACUTE ACCENT */
+		const char input[] = "Cafe\xCC\x81"; /* "Cafe" + COMBINING ACUTE ACCENT in utf-8 */
 		char output[sizeof(input)] = { 0 }; /* should be enough */
 
 		nu_transformstr(input, output, nu_utf8_read, unaccent);
