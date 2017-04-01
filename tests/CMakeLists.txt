@@ -13,6 +13,7 @@ set(TESTS_SRC
 	strings_test.c
 	switch_test_base.c
 	udb_test.c
+	unaccent_test.c
 	utf16_test.c
 	utf16be_test.c
 	utf16he_test.c

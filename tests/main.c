@@ -95,6 +95,8 @@ void test_compoundcmp_strncoll();
 void test_special_casing();
 void test_folding_priority();
 void test_ducet_max_weight_ordering();
+void test_tounaccent();
+void test__tounaccent();
 void test_version_check();
 
 /* automatically generated tests */
@@ -220,6 +222,9 @@ testcase cases[] = {
 	test_special_casing,
 	test_folding_priority,
 	test_ducet_max_weight_ordering,
+
+	test_tounaccent,
+	test__tounaccent,
 
 	test_version_check,
 
