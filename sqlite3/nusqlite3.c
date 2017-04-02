@@ -15,10 +15,11 @@ SQLITE_EXTENSION_INIT1
  * - X LIKE Y ESCAPE Z
  * - upper(X)
  * - lower(X)
+ * - unaccent(X)
  * - COLLATE NU1000 - Unicode 10.0.0 case-sensitive collation
  * - COLLATE NU1000_NOCASE - Unicode 10.0.0 case-insensitive collation
  *
- * Suported encodings:
+ * Supported encodings:
  *
  * - UTF8
  * - UTF16LE
@@ -428,6 +429,22 @@ static void nunicode_sqlite3_lower_utf16he(sqlite3_context *context, int argc, s
 	nunicode_sqlite3_casemapping_utf16he(context, argc, argv, nu_tolower);
 }
 
+static void nunicode_sqlite3_unaccent_utf8(sqlite3_context *context, int argc, sqlite3_value **argv) {
+	nunicode_sqlite3_casemapping_utf8(context, argc, argv, nu_tounaccent);
+}
+
+static void nunicode_sqlite3_unaccent_utf16le(sqlite3_context *context, int argc, sqlite3_value **argv) {
+	nunicode_sqlite3_casemapping_utf16le(context, argc, argv, nu_tounaccent);
+}
+
+static void nunicode_sqlite3_unaccent_utf16be(sqlite3_context *context, int argc, sqlite3_value **argv) {
+	nunicode_sqlite3_casemapping_utf16be(context, argc, argv, nu_tounaccent);
+}
+
+static void nunicode_sqlite3_unaccent_utf16he(sqlite3_context *context, int argc, sqlite3_value **argv) {
+	nunicode_sqlite3_casemapping_utf16he(context, argc, argv, nu_tounaccent);
+}
+
 #define REGISTER_LIKE(rc, db, sqlite_encoding, nu_wrapper) \
 	(rc) = sqlite3_create_function((db), "like", 2, (sqlite_encoding), 0, \
 	(nu_wrapper), 0, 0); \
@@ -445,6 +462,11 @@ static void nunicode_sqlite3_lower_utf16he(sqlite3_context *context, int argc, s
 
 #define REGISTER_LOWER(rc, db, sqlite_encoding, nu_wrapper) \
 	(rc) = sqlite3_create_function((db), "lower", 1, (sqlite_encoding), 0, \
+	(nu_wrapper), 0, 0); \
+	if ((rc) != SQLITE_OK) return rc;
+
+#define REGISTER_UNACCENT(rc, db, sqlite_encoding, nu_wrapper) \
+	(rc) = sqlite3_create_function((db), "unaccent", 1, (sqlite_encoding), 0, \
 	(nu_wrapper), 0, 0); \
 	if ((rc) != SQLITE_OK) return rc;
 
@@ -486,6 +508,11 @@ int sqlite3_nunicode_init(sqlite3 *db, char **err_msg,  const sqlite3_api_routin
 	REGISTER_LOWER(rc, db, SQLITE_UTF16LE, nunicode_sqlite3_lower_utf16le);
 	REGISTER_LOWER(rc, db, SQLITE_UTF16BE, nunicode_sqlite3_lower_utf16be);
 	REGISTER_LOWER(rc, db, SQLITE_UTF16, nunicode_sqlite3_lower_utf16he);
+
+	REGISTER_UNACCENT(rc, db, SQLITE_UTF8, nunicode_sqlite3_unaccent_utf8);
+	REGISTER_UNACCENT(rc, db, SQLITE_UTF16LE, nunicode_sqlite3_unaccent_utf16le);
+	REGISTER_UNACCENT(rc, db, SQLITE_UTF16BE, nunicode_sqlite3_unaccent_utf16be);
+	REGISTER_UNACCENT(rc, db, SQLITE_UTF16, nunicode_sqlite3_unaccent_utf16he);
 
 	return SQLITE_OK;
 }
