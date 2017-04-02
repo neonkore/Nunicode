@@ -1,3 +1,5 @@
+#include <assert.h>
+
 #include "casemap.h"
 
 #ifdef NU_WITH_UNACCENT
@@ -22,6 +24,7 @@ const char* nu_tounaccent(uint32_t codepoint) {
 	/* check if codepoint itself is a diacritic,
 	 * return empty string in that case
 	 * (transform into empty string */
+	assert(nu_casemap_read == nu_utf8_read);
 	for (size_t i = 0; i < blocks_count; ++i) {
 		if (codepoint >= blocks[i].block_start && codepoint <= blocks[i].block_end) {
 			return ""; /* return zero-terminated empty string in nu_casemap_read (utf-8) */
