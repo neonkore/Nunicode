@@ -97,3 +97,6 @@ SELECT 'РУР' LIKE '%РУ%' == 1
 SELECT 'РРРУ' LIKE '%РУ%' == 1
 SELECT 'РРРУ' LIKE '%РР%' == 1
 SELECT 'РР' LIKE '%РУ%' == 0
+
+SELECT unaccent('Φραπέ') == 'Φραπε' /* unaccenting */
+SELECT unaccent('Café') == 'Cafe'
