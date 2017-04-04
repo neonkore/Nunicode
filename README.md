@@ -279,9 +279,9 @@ it does:
 
 And so on. Works for European languages. What it doesn under the hood:
 nunicode has a hash table of all codepoints that could be decomposed
-into a letter + combining mark. When ``nu\_tounaccent()`` encounters such
+into a letter + combining mark. When ``nu_tounaccent()`` encounters such
 codepoint it returns decomposition sequence with combining marks removed.
-In other regards it works a lot like ``nu\_toupper()``, including
+In other regards it works a lot like ``nu_toupper()``, including
 complexity of operation (O(1)), but instead of putting codepoints into
 uppercase, it unaccents them.
 
