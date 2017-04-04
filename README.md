@@ -1,6 +1,6 @@
 [TOC]
 
-This is i18n library implementing Unicode 9.0.
+This is i18n library implementing Unicode 10.0 (beta).
 
 nunicode is trying to carefully follow the Unicode specification with
 reasonable trade-offs. It doesn't implement the entire standard, but
@@ -11,6 +11,7 @@ What it can do:
 * UTF encoding and decoding
 * Strings collation using default Unicode collation table
 * Unicode casemapping: "Maße" -> "MASSE" (German)
+* Unaccenting (unicode's extension)
 * Collation tailoring is supported, but not implemented in nunicode,
   see [notes][]
   
@@ -24,11 +25,11 @@ What it doesn't do:
 
 Conformance:
 
-Specification   | Notes
-----------------|----------------
-Unicode 9.0     | Conformant on character set and Unicode transformation forms (UTF)
-ISO/IEC 10646   | ISO/IEC 10646:2015, fourth edition, plus Amd. 1 and Amd. 2, and 273 characters from forthcoming 10646, fifth edition (as defined by Unicode 9.0)
-ISO/IEC 14651   | ISO/IEC 14651:2011, [notes][]
+Specification         | Notes
+----------------------|----------------
+Unicode 10.0 (beta)   | Conformant on character set and Unicode transformation forms (UTF)
+ISO/IEC 10646         | ISO/IEC 10646:2015, fourth edition, plus Amd. 1 and Amd. 2, and 273 characters from forthcoming 10646, fifth edition (as defined by Unicode 9.0)
+ISO/IEC 14651         | ISO/IEC 14651:2011, [notes][]
 
 Encodings supported:
 
@@ -66,9 +67,10 @@ repository:
 Unicode | nunicode    | Git branch
 --------|-------------|------------
 6.3.0   | 0.8-1.2.1   | unicode.630
-7.0.0   | 1.3-1.5.2   | unicode.700
-8.0.0   | 1.6         | unicode.800
-9.0.0   | 1.7.1       | master
+7.0.0   | 1.3-1.5.3   | unicode.700
+8.0.0   | 1.6.1       | unicode.800
+9.0.0   | 1.7.1       | unicode.900
+10.0.0  | -           | master
 
 ## Tests coverage
 
@@ -268,6 +270,30 @@ follow ongoing changes in Unicode and CLDR.
 
 [strcoll_internal_test.c]: https://bitbucket.org/alekseyt/nunicode/src/master/tests/strcoll_internal_test.c
 
+## Unaccenting
+
+This is non-comformant nunicode's extension (since nunicode 1.8). What
+it does:
+
+    Φραπέ -> Φραπε
+
+And so on. Works for European languages. What it doesn under the hood:
+nunicode has a hash table of all codepoints that could be decomposed
+into a letter + combining mark. When ``nu\_tounaccent()`` encounters such
+codepoint it returns decomposition sequence with combining marks removed.
+In other regards it works a lot like ``nu\_toupper()``, including
+complexity of operation (O(1)), but instead of putting codepoints into
+uppercase, it unaccents them.
+
+Additionally if encountered codepoint is combined mark itself, it is
+ignored, e.g.:
+
+    Café (Cafe + U+0301 COMBINING ACUTE ACCENT) -> Cafe
+
+Example on unaccenting a string with nunicode: [unaccent.c][]
+
+[unaccent.c]: https://bitbucket.org/alekseyt/nunicode/src/master/samples/unaccent.c
+
 ## Examples
 
 See `samples/` directory for complete examples of nunicode usage.
@@ -320,9 +346,10 @@ Provides functions for following SQL statements:
 
 * upper(X)
 * lower(X)
+* unaccent(X)
 * X LIKE Y ESCAPE Z
-* COLLATE NU900 - case-sensitive Unicode collation
-* COLLATE NU900\_NOCASE - case-insensitive Unicode collation
+* COLLATE NU1000 - case-sensitive Unicode collation
+* COLLATE NU1000\_NOCASE - case-insensitive Unicode collation
 
 Supported encodings: UTF-8, UTF-16, UTF-16LE, UTF-16BE.
 
@@ -444,9 +471,6 @@ Please refer to documentation in [config.h][].
 
 ## Questions?
 
-* [nunicode-users@googlegroups.com][] ([nunicode-users][])
 * [aleksey.tulinov@gmail.com][]
 
 [aleksey.tulinov@gmail.com]: mailto:aleksey.tulinov@gmail.com
-[nunicode-users@googlegroups.com]: mailto:nunicode-users@googlegroups.com
-[nunicode-users]: https://groups.google.com/forum/#!forum/nunicode-users
