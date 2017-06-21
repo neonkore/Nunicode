@@ -1,6 +1,6 @@
 [TOC]
 
-This is i18n library implementing Unicode 10.0 (beta).
+This is i18n library implementing Unicode 10.0.
 
 nunicode is trying to carefully follow the Unicode specification with
 reasonable trade-offs. It doesn't implement the entire standard, but
@@ -27,8 +27,8 @@ Conformance:
 
 Specification         | Notes
 ----------------------|----------------
-Unicode 10.0 (beta)   | Conformant on character set and Unicode transformation forms (UTF)
-ISO/IEC 10646         | ISO/IEC 10646:2015, fourth edition, plus Amd. 1 and Amd. 2, and 273 characters from forthcoming 10646, fifth edition (as defined by Unicode 9.0)
+Unicode 10.0          | Conformant on character set and Unicode transformation forms (UTF)
+ISO/IEC 10646         | ISO/IEC 10646:2017, fifth edition, plus 344 characters from Amd. 1 (as defined by Unicode 10.0)
 ISO/IEC 14651         | ISO/IEC 14651:2011, [notes][]
 
 Encodings supported:
@@ -70,7 +70,7 @@ Unicode | nunicode    | Git branch
 7.0.0   | 1.3-1.5.3   | unicode.700
 8.0.0   | 1.6.1       | unicode.800
 9.0.0   | 1.7.1       | unicode.900
-10.0.0  | -           | master
+10.0.0  | 1.8         | master
 
 ## Tests coverage
 

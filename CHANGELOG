@@ -1,3 +1,13 @@
+1.8
+
+[+] Unicode 10.0.0 character set support
+[+] added nu_tounaccent() function to transform accented
+    codepoints into unaccented variants
+[+] added unaccent() function to SQLite extension
+
+[*] SQLite3 collations NU900 and NU900_NOCASE replaced with
+    NU1000 and NU1000_NOCASE (respectively)
+
 1.7.1
 
 [*] fixed bug when LIKE (sqlite3) stopped on first mismatched codepoint
