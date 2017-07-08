@@ -277,7 +277,7 @@ it does:
 
     Φραπέ -> Φραπε
 
-And so on. Works for European languages. What it doesn under the hood:
+And so on. Works for European languages. What it does under the hood:
 nunicode has a hash table of all codepoints that could be decomposed
 into a letter + combining mark. When ``nu_tounaccent()`` encounters such
 codepoint it returns decomposition sequence with combining marks removed.
