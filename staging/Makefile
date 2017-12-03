@@ -23,8 +23,6 @@ testbuilds:
 	cmake --build build/debug --config Debug
 	cmake -H.. -Bbuild/release -DCMAKE_BUILD_TYPE=Release -DNU_BUILD_SAMPLES=1
 	cmake --build build/release --config Release
-	cmake -H.. -Bbuild/_RELEASE -DCMAKE_BUILD_TYPE=RELEASE -DNU_BUILD_SAMPLES=1
-	cmake --build build/_RELEASE --config RELEASE
 	cmake -H.. -Bbuild/gcov -DCMAKE_BUILD_TYPE=GCOV
 	cmake --build build/gcov --config GCOV
 	cmake -H.. -Bbuild/prof -DCMAKE_BUILD_TYPE=PROF

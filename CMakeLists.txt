@@ -10,11 +10,6 @@ add_definitions(-DNU_BUILD_STATIC)
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 find_package(Sqlite3)
 
-# backward-compatibility
-if(CMAKE_BUILD_TYPE STREQUAL "RELEASE")
-	set(CMAKE_BUILD_TYPE "Release")
-endif()
-
 if(NU_BUILD_TESTS)
 	set(CMAKE_CONFIGURATION_TYPES "Debug") # restrict configurations to Debug
 	set(CMAKE_BUILD_TYPE "Debug")
