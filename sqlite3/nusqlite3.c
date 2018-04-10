@@ -7,6 +7,12 @@
 #include "nusqlite3.h"
 #include "version.h"
 
+#ifdef _WIN32
+# define NU_SQLITE3_EXPORT __declspec(dllexport)
+#else
+# define NU_SQLITE3_EXPORT
+#endif
+
 #ifndef NU_DYNAMIC_EXTENSION
 
 /* has to be defined before #include <sqlite3ext.h> 
@@ -15,6 +21,8 @@
 
 struct sqlite3;
 int sqlite3_auto_extension(void (*)(void));
+
+NU_SQLITE3_EXPORT
 int sqlite3_nunicode_init(struct sqlite3 *db, char **err_msg, const void *api);
 
 void nunicode_sqlite3_static_init(int verbose) {
@@ -48,12 +56,6 @@ SQLITE_EXTENSION_INIT1
  * - UTF16BE
  * - UTF16 (nunicode encoding: UTF-16HE)
  */
-
-#ifdef _WIN32
-# define NU_SQLITE3_EXPORT __declspec(dllexport)
-#else
-# define NU_SQLITE3_EXPORT
-#endif
 
 /** Buffer of this size will be allocated on *stack* to support
  * upper()/lower() transformations internally. Internal buffer
