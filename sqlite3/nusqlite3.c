@@ -1,14 +1,36 @@
 #include <assert.h>
 #include <stdio.h>
-#include <sqlite3ext.h>
-
-SQLITE_EXTENSION_INIT1
 
 #include <libnu/libnu.h>
 #include <libnu/strcoll_internal.h>
 
 #include "nusqlite3.h"
 #include "version.h"
+
+#ifndef NU_DYNAMIC_EXTENSION
+
+/* has to be defined before #include <sqlite3ext.h> 
+ * reference: https://trac.osgeo.org/gdal/ticket/5725#comment:14
+ */
+
+struct sqlite3;
+int sqlite3_auto_extension(void (*)(void));
+int sqlite3_nunicode_init(struct sqlite3 *db, char **err_msg, const void *api);
+
+void nunicode_sqlite3_static_init(int verbose) {
+	sqlite3_auto_extension((void (*)(void))(sqlite3_nunicode_init));
+
+	if (verbose != 0) {
+		fprintf(stderr, "nunicode version: %s\n", NU_VERSION);
+		fprintf(stderr, "nunicode unicode: %04d\n", NU_UNICODE_VERSION);
+		fprintf(stderr, "nunicode sqlite3 extension: %s\n", NU_SQLITE3_EXT_VERSION);
+	}
+}
+
+#endif /* NU_DYNAMIC_EXTENSION */
+
+#include <sqlite3ext.h>
+SQLITE_EXTENSION_INIT1
 
 /** This extension provide functions for the following statements:
  *
@@ -471,10 +493,11 @@ static void nunicode_sqlite3_unaccent_utf16he(sqlite3_context *context, int argc
 	if ((rc) != SQLITE_OK) return rc;
 
 NU_SQLITE3_EXPORT
-int sqlite3_nunicode_init(sqlite3 *db, char **err_msg,  const sqlite3_api_routines *api) {
+int sqlite3_nunicode_init(sqlite3 *db, char **err_msg, const void *api) {
 	(void)(err_msg);
 
-	SQLITE_EXTENSION_INIT2(api);
+	const sqlite3_api_routines *papi = (const sqlite3_api_routines *)(api);
+	SQLITE_EXTENSION_INIT2(papi);
 
 	int rc = SQLITE_OK;
 
@@ -521,20 +544,6 @@ int sqlite3_nunicode_init(sqlite3 *db, char **err_msg,  const sqlite3_api_routin
  * w/o explicitely setting entry point to sqlite3_nunicode_init
  */
 NU_SQLITE3_EXPORT
-int sqlite3_nusqlite_init(sqlite3 *db, char **err_msg,  const sqlite3_api_routines *api) {
-	return sqlite3_nunicode_init(db, err_msg, api);
+int sqlite3_nusqlite_init(sqlite3 *db, char **err_msg, const sqlite3_api_routines *api) {
+	return sqlite3_nunicode_init(db, err_msg, (void *)(api));
 }
-
-#ifndef NU_DYNAMIC_EXTENSION
-
-void nunicode_sqlite3_static_init(int verbose) {
-	sqlite3_auto_extension((void (*)(void))(sqlite3_nunicode_init));
-
-	if (verbose != 0) {
-		fprintf(stderr, "nunicode version: %s\n", NU_VERSION);
-		fprintf(stderr, "nunicode unicode: %04d\n", NU_UNICODE_VERSION);
-		fprintf(stderr, "nunicode sqlite3 extension: %s\n", NU_SQLITE3_EXT_VERSION);
-	}
-}
-
-#endif /* NU_DYNAMIC_EXTENSION */
