@@ -4,6 +4,12 @@ if(NU_BUILD_SAMPLES)
 	add_subdirectory(samples)
 endif(NU_BUILD_SAMPLES)
 
+option(NU_SQLITE_OMIT_UTF16 "Omit UTF16 in SQLite extension build" OFF)
+
+if(NU_SQLITE_OMIT_UTF16)
+	add_definitions(-DNU_SQLITE_OMIT_UTF16)
+endif()
+
 link_libraries(nu)
 add_library(nusqlite3-static STATIC nusqlite3.c)
 add_library(nusqlite3 SHARED nusqlite3.c)
