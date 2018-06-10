@@ -1,6 +1,6 @@
 [TOC]
 
-This is i18n library implementing Unicode 10.0.
+This is i18n library implementing Unicode 11.0.
 
 nunicode is trying to carefully follow the Unicode specification with
 reasonable trade-offs. It doesn't implement the entire standard, but
@@ -14,7 +14,7 @@ What it can do:
 * Unaccenting (unicode's extension)
 * Collation tailoring is supported, but not implemented in nunicode,
   see [notes][]
-  
+
 What it doesn't do:
 
 * Unicode Collation Algorithm (see [notes][])
@@ -27,9 +27,11 @@ Conformance:
 
 Specification         | Notes
 ----------------------|----------------
-Unicode 10.0          | Conformant on character set and Unicode transformation forms (UTF)
-ISO/IEC 10646         | ISO/IEC 10646:2017, fifth edition, plus 344 characters from Amd. 1 (as defined by Unicode 10.0)
+Unicode 11.0          | Conformant on character set and Unicode transformation forms (UTF)
+ISO/IEC 10646         | ISO/IEC 10646:2017, fifth edition, plus Amendment 1 to the fifth edition, plus yadayadayada (as [defined by Unicode 11.0][])
 ISO/IEC 14651         | ISO/IEC 14651:2011, [notes][]
+
+[defined by Unicode 11.0]: http://www.unicode.org/versions/Unicode11.0.0/
 
 Encodings supported:
 
@@ -41,9 +43,9 @@ Encodings supported:
 
 [host-endianess]: #markdown-header-host-endianess-of-utf-encodings
 
-All string functions provided by nunicode work on encoded strings: there is 
+All string functions provided by nunicode work on encoded strings: there is
 no need to decode anything explicitely and there is no intermediate
-representation under the hood of nunicode. Collation functions are 
+representation under the hood of nunicode. Collation functions are
 complemented by case-insensitive variants.
 
 ## Properties of the library
@@ -70,12 +72,13 @@ Unicode | nunicode    | Git branch
 7.0.0   | 1.3-1.5.3   | unicode.700
 8.0.0   | 1.6.1       | unicode.800
 9.0.0   | 1.7.1       | unicode.900
-10.0.0  | 1.8         | master
+10.0.0  | 1.8.1       | unicode.1000
+11.0.0  | 1.9         | master
 
 ## Tests coverage
 
 * 100% lines
-* ~95% branches, it is not covering some things like branching inside 
+* ~95% branches, it is not covering some things like branching inside
   conditional expressions.
 
 If you wish to inspect the coverage, proceed as following:
@@ -93,8 +96,8 @@ perfect hash][] table for lookup. Hash is a quite fast couple of XOR+MOD.
 
 [minimal perfect hash]: http://iswsa.acm.org/mphf/index.html
 
-Numbers below to give a general idea on nunicode performance. Each number
-is linked to corresponding test program and  measured with standard
+Numbers below are to give a general idea on nunicode performance. Each
+number is linked to corresponding test program and  measured with standard
 ``time`` utility, all numbers in seconds.
 
 Function     | nunicode (1.5.1)  | ICU (52.1)
@@ -140,7 +143,7 @@ Unicode defines 3 types of UTF-16 each affected by endianess.
 3. UTF-16BE (big endian)
 
 There's no dedicated encoding/decoding functions for each UTF-16 variant
-in nunicode, instead API provides only ``nu_utf16le_*`` and ``nu_utf16be_*`` 
+in nunicode, instead API provides only ``nu_utf16le_*`` and ``nu_utf16be_*``
 functions for the encoding and decoding, BOM and endianess detection are
 handled by ``nu_utf16_*`` functions.
 
@@ -151,8 +154,8 @@ provide read/write functions instead. See [samples/utf16.c][].
 
 ### host-endianess of UTF encodings
 
-Sometimes you can see UTF-16 defined as "host-endian" or "native-endian". 
-For the purpose to be compatible with such implementations, nunicode 
+Sometimes you can see UTF-16 defined as "host-endian" or "native-endian".
+For the purpose to be compatible with such implementations, nunicode
 implements two extensions: UTF-16HE and UTF-32HE encodings - these
 works on host-endian encoded strings.
 
@@ -177,11 +180,11 @@ Pointer passed to revread() is supposed to always come from call to
 ## Encoding validation
 
 All decoding functions has no error checking for performance reasons.
-nunicode expects valid UTF strings at input. It does provide 
+nunicode expects valid UTF strings at input. It does provide
 ``nu_validate()`` to check string encoding before processing.
 
 If this check fails on some string then none of the nunicode functions
-is applicable to it. Calling any function on such string might lead to
+are applicable to it. Calling any function on such string might lead to
 undefined behavior.
 
 ## Case mapping and case folding
@@ -249,22 +252,22 @@ above character categories are included into collation.
 
 nunicode supports both custom collations and conractions. Custom collation
 is a function returning weights different from defaults. Contraction is a
-sequence of Unicode codepoints with assigned weight. 
+sequence of Unicode codepoints with assigned weight.
 
 Example is Hungarian letter "Dz". Simply put, collation is defined
 as "D" < "Dz" < "E". If such collation is used and nunicode encounters
 "D", it will look-ahead to test if it's "D" or "Dz". Weight will be
-determined by the result of this test. This also implies 
+determined by the result of this test. This also implies
 "BDE" < "BDzE" < "BEE".
 
 ### custom collations
 
 If you need to implement your own collation, then you need to provide
 your own weighting function to ``_nu_strcoll()``. It is described in
-``nu_codepoint_weight_t`` documentation. [strcoll_internal_test.c][] 
-and ``_test_weight()`` implementation is also a reference.
+``nu_codepoint_weight_t`` documentation. [strcoll_internal_test.c][]
+and ``_test_weight()`` implementation are also the references.
 
-Note though that everything in nunicode starting from underscore 
+Note though that everything in nunicode starting from underscore
 (as in ``_nu_strcoll``) is internal API and might change when it need to
 follow ongoing changes in Unicode and CLDR.
 
@@ -348,12 +351,12 @@ Provides functions for following SQL statements:
 * lower(X)
 * unaccent(X)
 * X LIKE Y ESCAPE Z
-* COLLATE NU1000 - case-sensitive Unicode collation
-* COLLATE NU1000\_NOCASE - case-insensitive Unicode collation
+* COLLATE NU1100 - case-sensitive Unicode collation
+* COLLATE NU1100\_NOCASE - case-insensitive Unicode collation
 
 Supported encodings: UTF-8, UTF-16, UTF-16LE, UTF-16BE.
 
-Extension is only 230Kb in size approximately.
+Extension is only 250Kb in size approximately (nunicode 1.9).
 
 It can be compiled into shared library and loaded with
 ``sqlite3_load_extension()`` ([doc][]) (see [samples/loadextension.c][]) or it can be linked statically into

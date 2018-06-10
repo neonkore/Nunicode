@@ -1,3 +1,10 @@
+1.9
+
+[+] Unicode 11.0.0 character set support
+
+[*] SQLite3 collations NU1000 and NU1000_NOCASE replaced with
+    NU1100 and NU1100_NOCASE (respectively)
+
 1.8.1
 
 [+] added optional NU_SQLITE_OMIT_UTF16 to disable UTF-16 support
