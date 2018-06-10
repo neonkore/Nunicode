@@ -1,5 +1,5 @@
 default: all
-all: clean testbuilds testcmake
+all: clean testbuilds testcmake testcompilers
 
 testcmake:
 	# This script tests the CMake build by:
@@ -27,6 +27,12 @@ testbuilds:
 	cmake --build build/gcov --config GCOV
 	cmake -H.. -Bbuild/prof -DCMAKE_BUILD_TYPE=PROF
 	cmake --build build/prof --config PROF
+
+testcompilers:
+	cmake -H.. -Bbuild/clang -DNU_BUILD_TESTS=1 -DNU_BUILD_SAMPLES=1 -DNU_BUILD_TESTS=1 -DCMAKE_TOOLCHAIN_FILE=cmake/Toolchain-Clang.cmake
+	cmake --build build/clang
+	cmake -H.. -Bbuild/clang-release -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=cmake/Toolchain-Clang.cmake
+	cmake --build build/clang-release
 
 clean:
 	rm -fr "build"
