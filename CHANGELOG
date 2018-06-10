@@ -1,3 +1,14 @@
+1.8.1
+
+[+] added optional NU_SQLITE_OMIT_UTF16 to disable UTF-16 support
+    in SQLite extension to match SQLite's SQLITE_OMIT_UTF16 option
+[+] added option to set NU_SQLITE_OMIT_UTF16 in CMake
+[+] added static target to SQLite extension (`nusqlite3-static`)
+
+[*] fixed (static) autoloaded SQLite extension segfault
+[*] removed deprecated `RELEASE` build configuration (`Release` instead)
+[*] minor change in CMake script for clang-cl
+
 1.8
 
 [+] Unicode 10.0.0 character set support
@@ -37,7 +48,7 @@
     see: https://bitbucket.org/alekseyt/nunicode#markdown-header-strings-collation
 
 [+] release build configuration is now "Release" (camel-case):
-    
+
     cmake .. -DCMAKE_BUILD_TYPE=Release
 
     previously supported build configuration "RELEASE" (all-caps)
@@ -55,7 +66,7 @@
 [*] optional build of sample applications: see BUILD
 [*] changes in build scripts related to multi-configuration IDE
     generators (by Tamas Kenez, /issue/5)
-[*] ``install`` target  will install CMake config-module 
+[*] ``install`` target  will install CMake config-module
     ``nunicode-config.cmake`` which creates the import library
     ``nunicode::nu``, usage:
 
@@ -185,7 +196,7 @@ For performance reasons several API changes were made:
     complexity of collation
 
 [*] fixed several build options handling
-[*] codepoint compare functions replaced with codepoint weighting 
+[*] codepoint compare functions replaced with codepoint weighting
     functions
 [*] faster MPH lookup
 [*] collation migrated to reduced DUCET
