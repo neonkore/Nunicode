@@ -6,3 +6,8 @@ Or
 3. gcc -I.. -DNU_WITH_EVERYTHING -c -O3 nu.c -o nu.o
 
 And link statically.
+
+
+To run tests:
+
+cat tests.sql | ./testsuite | sqlite3 :memory: | less
