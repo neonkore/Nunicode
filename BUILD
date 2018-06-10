@@ -13,11 +13,11 @@ development package is not installed, this target is not available.
 Other build options
 -------------------
 
-a) cmake .. -DNU_BUILD_TESTS=1
+a) cmake .. -DNU_BUILD_TESTS=ON
 
 Will build test suite. Test won't compile in "Release" or
 "PROF" configurations.
 
-b) cmake .. -DNU_BUILD_SAMPLES=1
+b) cmake .. -DNU_BUILD_SAMPLES=ON
 
 Will build sample applications.
