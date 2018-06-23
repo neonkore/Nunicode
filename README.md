@@ -11,7 +11,7 @@ What it can do:
 * UTF encoding and decoding
 * Strings collation using default Unicode collation table
 * Unicode casemapping: "Maße" -> "MASSE" (German)
-* Unaccenting (unicode's extension)
+* Unaccenting (nunicode's extension)
 * Collation tailoring is supported, but not implemented in nunicode,
   see [notes][]
 
@@ -51,8 +51,8 @@ complemented by case-insensitive variants.
 ## Properties of the library
 
 * Small size: UTF-8 encoding/decoding - 3Kb, UTF-8 encoding/decoding +
-  0-terminated string functions - 5Kb; case mapping - 30Kb, default Unicode
-  collation - 145Kb (less in compact flavor)
+  0-terminated string functions - 5Kb; case mapping - 50Kb, default Unicode
+  collation - 170Kb (might be less in BMP-only flavor)
 * Small memory footprint, zero allocations
 * Small CPU footprint, O(1) complexity under the hood
 * Endianess- and platform-agnostic
@@ -359,8 +359,9 @@ Supported encodings: UTF-8, UTF-16, UTF-16LE, UTF-16BE.
 Extension is only 250Kb in size approximately (nunicode 1.9).
 
 It can be compiled into shared library and loaded with
-``sqlite3_load_extension()`` ([doc][]) (see [samples/loadextension.c][]) or it can be linked statically into
-your application or library and enabled for every new SQLite3 connection.
+``sqlite3_load_extension()`` ([doc][]) (see [samples/loadextension.c][])
+or it can be linked statically into your application or library and enabled
+for every new SQLite3 connection.
 
 Latter is recommended way of using it, all you need to enable this
 extension is the following call:
@@ -378,10 +379,7 @@ enabled. See [samples/autoextension.c][] for the reference.
 ### extension performance
 
 This section is only to give a general idea on nunicode SQLite extension
-performance. In the table below the following SQL queries and tables
-were used:
-
-Numbers are measured by SQLite3 shell's ``.timer on``, all numbers in
+performance. Numbers are measured by SQLite3 shell's ``.timer on``, all numbers in
 seconds.
 
 Function | w/o extension | ICU (52.1) | nunicode (1.5.1)
