@@ -388,6 +388,7 @@ static void nunicode_sqlite3_casemapping_utf8(sqlite3_context *context, int argc
 	nu_casemapping_t casemap) {
 	if (argc < 1 || sqlite3_value_type(argv[0]) != SQLITE_TEXT) {
 		sqlite3_result_null(context);
+		return;
 	}
 
 	const char *lower = (const char *)sqlite3_value_text(argv[0]);
@@ -402,6 +403,7 @@ static void nunicode_sqlite3_casemapping_utf16le(sqlite3_context *context, int a
 	nu_casemapping_t casemap) {
 	if (argc < 1 || sqlite3_value_type(argv[0]) != SQLITE_TEXT) {
 		sqlite3_result_null(context);
+		return;
 	}
 
 	const char *lower = (const char *)sqlite3_value_text(argv[0]);
@@ -415,6 +417,7 @@ static void nunicode_sqlite3_casemapping_utf16be(sqlite3_context *context, int a
 	nu_casemapping_t casemap) {
 	if (argc < 1 || sqlite3_value_type(argv[0]) != SQLITE_TEXT) {
 		sqlite3_result_null(context);
+		return;
 	}
 
 	const char *lower = (const char *)sqlite3_value_text(argv[0]);
@@ -428,6 +431,7 @@ static void nunicode_sqlite3_casemapping_utf16he(sqlite3_context *context, int a
 	nu_casemapping_t casemap) {
 	if (argc < 1 || sqlite3_value_type(argv[0]) != SQLITE_TEXT) {
 		sqlite3_result_null(context);
+		return;
 	}
 
 	const char *lower = (const char *)sqlite3_value_text(argv[0]);

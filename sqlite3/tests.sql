@@ -1,3 +1,6 @@
+SELECT upper(NULL) IS NULL
+SELECT lower(NULL) IS NULL
+
 SELECT 'A' LIKE 'A' == 1 /* basic tests */
 SELECT 'A' LIKE 'B' == 0
 SELECT 'AB' LIKE 'A%' == 1
@@ -91,7 +94,7 @@ SELECT 'РОССИЯ РУБЛЬ' LIKE '%' || 'ру' || '%' COLLATE NU1100_NOCASE
 SELECT 'РОССИЯ РУБЛЬ' LIKE '%' || 'ру' || '%' == 1
 SELECT 'РОССИЯ РУБЛЬ' LIKE '%ру%' == 1
 SELECT 'РОССИЯ РБЛЬ' LIKE '%ру%' == 0
-SELECT 'РРУ' LIKE '%РУ%' == 1 
+SELECT 'РРУ' LIKE '%РУ%' == 1
 SELECT 'РРУ' LIKE '%РР%' == 1
 SELECT 'РУР' LIKE '%РУ%' == 1
 SELECT 'РРРУ' LIKE '%РУ%' == 1
@@ -100,3 +103,4 @@ SELECT 'РР' LIKE '%РУ%' == 0
 
 SELECT unaccent('Φραπέ') == 'Φραπε' /* unaccenting */
 SELECT unaccent('Café') == 'Cafe'
+SELECT unaccent(NULL) IS NULL
