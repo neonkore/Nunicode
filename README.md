@@ -354,7 +354,11 @@ Provides functions for following SQL statements:
 * COLLATE NU1100 - case-sensitive Unicode collation
 * COLLATE NU1100\_NOCASE - case-insensitive Unicode collation
 
-Supported encodings: UTF-8, UTF-16, UTF-16LE, UTF-16BE.
+Supported encodings: UTF-8, UTF-16, UTF-16LE, UTF-16BE. Please note that
+collations are specific to Unicode revision: `NU1100` - 11.0.0. Indices
+built with older collation (e.g. `NU1000`) will not be compatible with
+newer collation. Therefore the recommended way of using collations is to
+include collation in select, e.g. `SELECT ... COLLATE NU_1100`.
 
 Extension is only 250Kb in size approximately (nunicode 1.9).
 
