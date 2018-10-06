@@ -1,3 +1,8 @@
+
+
+[*] fixed segfault in `SELECT upper(NULL)`, affected SQLite extension
+    functions: `upper()`, `lower()`, `unaccent()`
+
 1.9
 
 [+] Unicode 11.0.0 character set support
