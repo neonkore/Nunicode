@@ -1,7 +1,7 @@
-
+1.9.1
 
 [*] fixed segfault in `SELECT upper(NULL)`, affected SQLite extension
-    functions: `upper()`, `lower()`, `unaccent()`
+    functions: `upper()`, `lower()`, `unaccent()` (/issues/16)
 
 1.9
 
@@ -14,10 +14,11 @@
 
 [+] added optional NU_SQLITE_OMIT_UTF16 to disable UTF-16 support
     in SQLite extension to match SQLite's SQLITE_OMIT_UTF16 option
-[+] added option to set NU_SQLITE_OMIT_UTF16 in CMake
+[+] added option to set NU_SQLITE_OMIT_UTF16 in CMake (/issues/14)
 [+] added static target to SQLite extension (`nusqlite3-static`)
+    (/issues/13)
 
-[*] fixed (static) autoloaded SQLite extension segfault
+[*] fixed (static) autoloaded SQLite extension segfault (/issues/14)
 [*] removed deprecated `RELEASE` build configuration (`Release` instead)
 [*] minor change in CMake script for clang-cl
 
@@ -36,7 +37,7 @@
 [*] fixed bug when LIKE (sqlite3) stopped on first mismatched codepoint
     instead of continuing to look for needle further
     (ported to unicode.700 and unicode.800 branches, 1.5.3 and 1.6.1 tags
-    respectively)
+    respectively) (/issues/9)
 
 1.7
 
@@ -77,7 +78,7 @@
 [*] optional build of unittests: see BUILD
 [*] optional build of sample applications: see BUILD
 [*] changes in build scripts related to multi-configuration IDE
-    generators (by Tamas Kenez, /issue/5)
+    generators (by Tamas Kenez, /issues/5)
 [*] ``install`` target  will install CMake config-module
     ``nunicode-config.cmake`` which creates the import library
     ``nunicode::nu``, usage:
