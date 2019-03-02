@@ -35,14 +35,14 @@ if __name__ == '__main__':
 
 	mph.gen_includes()
 
-	print "#ifndef NU_BMP_ONLY"
+	print "#ifndef NU_WITH_BMP_ONLY"
 	print
 
 	mph.gen_header(TAG, G, [])
 	mph.gen_G(TAG, G)
 	mph.gen_values(TAG, G, V, False)
 
-	print "#endif /* NU_BMP_ONLY */"
+	print "#endif /* NU_WITH_BMP_ONLY */"
 
 	drop = []
 	for key in dict:
@@ -56,7 +56,7 @@ if __name__ == '__main__':
 	assert(len(G) == len(V))
 
 	print
-	print '#ifdef NU_BMP_ONLY'
+	print '#ifdef NU_WITH_BMP_ONLY'
 	print
 	print '''/* %d codepoints were removed from original set because they're outside of BMP */''' % (len(drop),)
 	print
@@ -65,4 +65,4 @@ if __name__ == '__main__':
 	mph.gen_G(TAG, G)
 	mph.gen_values(TAG, G, V, True)
 
-	print '#endif /* NU_BMP_ONLY */'
+	print '#endif /* NU_WITH_BMP_ONLY */'

@@ -208,7 +208,7 @@ def gen_consts(tag, contractions, codepoints):
 	print
 
 
-def gen_roots_mph(tag, states):
+def gen_roots_mph(tag, states, compact=False):
 	'''produce MPH sructures for root codepoints'''
 	def root_states(states):
 		'''filter root states from complete states list'''
@@ -226,7 +226,7 @@ def gen_roots_mph(tag, states):
 
 	(G, V) = mph.create_minimal_perfect_hash(d)
 	mph.gen_G(tag, G)
-	mph.gen_values(tag, G, V)
+	mph.gen_values(tag, G, V, compact)
 
 
 def gen_switch(prefix, states, contractions, codepoints):
@@ -279,9 +279,39 @@ if __name__ == '__main__':
 	codepoints, contractions = collect_contractions(codepoints_file, contractions_file)
 	states, _ = collect_states(contractions, codepoints)
 
-	gen_header(tag, contractions)
 	gen_includes()
+
+	print '#ifndef NU_WITH_BMP_ONLY'
+	print
+
+	gen_header(tag, contractions)
 	gen_consts(tag, contractions, codepoints)
 	gen_states(states, contractions)
-	gen_roots_mph(tag, states)
+	gen_roots_mph(tag, states, False)
 	gen_switch(tag, states, contractions, codepoints)
+
+	print
+	print '#endif /* NU_WITH_BMP_ONLY */'
+
+	for i, (cps, weight) in enumerate(codepoints):
+		if int(cps[0], base=16) > 0xFFFF:  # remove all codepoints outside of BMP
+			del codepoints[i]
+
+	for i, (cps, weight) in enumerate(contractions):
+			if int(cps[0], base=16) > 0xFFFF:  # remove all contractions starting from codepoint outside of BMP
+				del contractions[i]
+
+	states, _ = collect_states(contractions, codepoints)
+
+	print
+	print '#ifdef NU_WITH_BMP_ONLY'
+	print
+
+	gen_header(tag, contractions)
+	gen_consts(tag, contractions, codepoints)
+	gen_states(states, contractions)
+	gen_roots_mph(tag, states, True)
+	gen_switch(tag, states, contractions, codepoints)
+
+	print
+	print '#endif /* NU_WITH_BMP_ONLY */'

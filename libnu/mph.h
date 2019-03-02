@@ -17,10 +17,13 @@ extern "C" {
 
 #ifdef NU_WITH_UDB
 
-#ifdef NU_BMP_ONLY
-	typedef uint16_t nu_mph_codepoints_t;
+typedef uint16_t nu_mph_codepoints_bmp_t;
+typedef uint32_t nu_mph_codepoints_full_t;
+
+#ifdef NU_WITH_BMP_ONLY
+	typedef nu_mph_codepoints_bmp_t nu_mph_codepoints_t;
 #else
-	typedef uint32_t nu_mph_codepoints_t;
+	typedef nu_mph_codepoints_full_t nu_mph_codepoints_t;
 #endif /* NU_BMP_ONLY */
 
 /* those need to be the same values as used in MPH generation */
