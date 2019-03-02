@@ -35,11 +35,40 @@ if __name__ == '__main__':
 		dict[codepoint] = (codepoint, offset)
 
 	(G, V) = mph.create_minimal_perfect_hash(dict)
-
 	assert(len(G) == len(V))
 
-	mph.gen_header(TAG, G, combined)
 	mph.gen_includes()
+
+	print '#ifndef NU_BMP_ONLY'
+	print
+
+	mph.gen_header(TAG, G, combined)
 	mph.gen_G(TAG, G)
-	mph.gen_values(TAG, G, V)
+	mph.gen_values(TAG, G, V, False)
 	mph.gen_combined(TAG, combined)
+
+	print '#endif /* NU_BMP_ONLY */'
+
+	drop = []
+	for key in dict:
+		if int(key, base=16) > 0xFFFF:
+			drop.append(key)
+
+	for key in drop:
+			del dict[key]
+
+	(G, V) = mph.create_minimal_perfect_hash(dict)
+	assert(len(G) == len(V))
+
+	print
+	print '#ifdef NU_BMP_ONLY'
+	print
+	print '''/* %d codepoints were removed from original set because they're outside of BMP */''' % (len(drop),)
+	print
+
+	mph.gen_header(TAG, G, combined)
+	mph.gen_G(TAG, G)
+	mph.gen_values(TAG, G, V, True)
+	mph.gen_combined(TAG, combined)
+
+	print '#endif /* NU_BMP_ONLY */'

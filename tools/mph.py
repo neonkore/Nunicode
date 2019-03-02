@@ -154,13 +154,13 @@ def format_replacement(r):
 	return formatted
 
 
-def gen_values(tag, G, V):
+def gen_values(tag, G, V, compact=False):
 	'''print values table'''
 
 	BOUNDARY = 8
 
 	print '/* codepoints */'
-	print 'const uint32_t %s_VALUES_C[] = {' % (tag,)
+	print 'const ' + (compact and 'uint16_t' or 'uint32_t') + ' %s_VALUES_C[] = {' % (tag,)
 	for i, (codepoint, replacement) in enumerate(V):
 		assert(replacement is not None)
 
