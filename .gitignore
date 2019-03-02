@@ -1,4 +1,5 @@
 .settings/
+.vscode/
 doc/html/
 tests/coverage/
 build*
