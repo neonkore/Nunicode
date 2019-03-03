@@ -293,18 +293,15 @@ if __name__ == '__main__':
 	print
 	print '#endif /* NU_WITH_BMP_ONLY */'
 
-	for i, (cps, weight) in enumerate(codepoints):
-		if int(cps[0], base=16) > 0xFFFF:  # remove all codepoints outside of BMP
-			del codepoints[i]
-
-	for i, (cps, weight) in enumerate(contractions):
-			if int(cps[0], base=16) > 0xFFFF:  # remove all contractions starting from codepoint outside of BMP
-				del contractions[i]
+	orig_codepoints_size = len(codepoints)
+	codepoints = filter(lambda (cps, weight): int(cps[0], base=16) <= 0xFFFF, codepoints)[:]
 
 	states, _ = collect_states(contractions, codepoints)
 
 	print
 	print '#ifdef NU_WITH_BMP_ONLY'
+	print
+	print '''/* %d codepoints were removed because they're outside of BMP */''' % (orig_codepoints_size - len(codepoints))
 	print
 
 	gen_header(tag, contractions)

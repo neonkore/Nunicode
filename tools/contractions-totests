@@ -236,9 +236,39 @@ if __name__ == '__main__':
 	codepoints_file, contractions_file = sys.argv[1], sys.argv[2]
 
 	codepoints, contractions = collect_contractions(codepoints_file, contractions_file)
-	gen_header(tag, contractions)
+
 	gen_includes()
+
+	print '#ifndef NU_WITH_BMP_ONLY'
+	print
+
+	gen_header(tag, contractions)
 	gen_globals(tag)
 	gen_weights_test(tag, contractions)
 	gen_rollback_test(tag, contractions, codepoints)
 	gen_unknowns_test(tag, contractions, codepoints)
+
+	print
+	print '#endif /* NU_WITH_BMP_ONLY */'
+
+	orig_codepoints_size = len(codepoints)
+	codepoints = filter(lambda (cps, weight): int(cps[0], base=16) <= 0xFFFF, codepoints)[:]
+
+	for i, (cps, weight) in enumerate(codepoints):
+		if int(cps[0], base=16) > 0xFFFF:  # remove all codepoints outside of BMP
+			del codepoints[i]
+
+	print
+	print '#ifdef NU_WITH_BMP_ONLY'
+	print
+	print '''/* %d codepoints were removed because they're outside of BMP */''' % (orig_codepoints_size - len(codepoints))
+	print
+
+	gen_header(tag, contractions)
+	gen_globals(tag)
+	gen_weights_test(tag, contractions)
+	gen_rollback_test(tag, contractions, codepoints)
+	gen_unknowns_test(tag, contractions, codepoints)
+
+	print
+	print '#endif /* NU_WITH_BMP_ONLY */'

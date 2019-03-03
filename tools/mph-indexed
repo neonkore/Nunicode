@@ -58,7 +58,7 @@ if __name__ == '__main__':
 	print
 	print '#ifdef NU_WITH_BMP_ONLY'
 	print
-	print '''/* %d codepoints were removed from original set because they're outside of BMP */''' % (len(drop),)
+	print '''/* %d codepoints were removed from original set because they're outside of BMP */''' % (len(drop))
 	print
 
 	mph.gen_header(TAG, G, [])

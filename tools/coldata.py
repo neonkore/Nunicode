@@ -18,7 +18,7 @@ def weight2tuple(w):
 
 
 def collect_contractions(codepoints_file, contractions_file):
-	'''collect codepoints and contractions from file (title is misleading
+	'''collect codepoints and contractions from file (title is misleading)
 	in form of ([ "0001", "0002"], weight)'''
 
 	def reweight_collection(collection):
