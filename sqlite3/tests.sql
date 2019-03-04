@@ -68,16 +68,16 @@ SELECT 'MA_SE' LIKE 'maя_se' ESCAPE 'я' == 1 /* escaping with unicode characte
 
 SELECT 'ё' < 'я' == 0 /* collation */
 SELECT 'Ё' < 'Я' == 1
-SELECT 'ё' < 'я' COLLATE NU1100 == 1
-SELECT 'Ё' < 'Я' COLLATE NU1100 == 1
+SELECT 'ё' < 'я' COLLATE NU1200 == 1
+SELECT 'Ё' < 'Я' COLLATE NU1200 == 1
 SELECT 'ß' == 'ss' == 0
 SELECT 'æ' == 'Æ' == 0
-SELECT 'æ' == 'Æ' COLLATE NU1100 == 0
-SELECT 'æ' == 'Æ' COLLATE NU1100_NOCASE == 1
-SELECT 'ß' == 'SS' COLLATE NU1100 == 0
-SELECT 'ß' == 'SS' COLLATE NU1100_NOCASE == 1
-SELECT 'ß' == 'ss' COLLATE NU1100_NOCASE == 1
-SELECT 'ß' == 'ss' COLLATE NU1100 == 0
+SELECT 'æ' == 'Æ' COLLATE NU1200 == 0
+SELECT 'æ' == 'Æ' COLLATE NU1200_NOCASE == 1
+SELECT 'ß' == 'SS' COLLATE NU1200 == 0
+SELECT 'ß' == 'SS' COLLATE NU1200_NOCASE == 1
+SELECT 'ß' == 'ss' COLLATE NU1200_NOCASE == 1
+SELECT 'ß' == 'ss' COLLATE NU1200 == 0
 
 SELECT upper('Maße') == 'MASSE' /* casemapping */
 SELECT lower('Maße') == 'maße'
@@ -90,7 +90,7 @@ SELECT lower('Ё') == 'ё'
 SELECT upper('i') == 'I'
 SELECT lower('I') == 'i'
 
-SELECT 'РОССИЯ РУБЛЬ' LIKE '%' || 'ру' || '%' COLLATE NU1100_NOCASE == 1 /* additional LIKE checks */
+SELECT 'РОССИЯ РУБЛЬ' LIKE '%' || 'ру' || '%' COLLATE NU1200_NOCASE == 1 /* additional LIKE checks */
 SELECT 'РОССИЯ РУБЛЬ' LIKE '%' || 'ру' || '%' == 1
 SELECT 'РОССИЯ РУБЛЬ' LIKE '%ру%' == 1
 SELECT 'РОССИЯ РБЛЬ' LIKE '%ру%' == 0
