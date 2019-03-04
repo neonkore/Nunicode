@@ -4,7 +4,7 @@
 
 extern const int16_t NU_TOUPPER_G[];
 extern const size_t NU_TOUPPER_G_SIZE;
-extern const uint32_t NU_TOUPPER_VALUES_C[];
+extern const nu_mph_codepoints_t NU_TOUPPER_VALUES_C[];
 extern const uint16_t NU_TOUPPER_VALUES_I[];
 
 void test_mph_lookup() {
@@ -25,5 +25,3 @@ void test_mph_lookup() {
 	hash = nu_mph_hash(NU_TOUPPER_G, NU_TOUPPER_G_SIZE, 0x0065);
 	assert(nu_mph_lookup(NU_TOUPPER_VALUES_C, NU_TOUPPER_VALUES_I, 0x0065, hash) != 0);
 }
-
-

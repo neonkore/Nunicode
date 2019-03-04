@@ -5,7 +5,11 @@
 #ifdef NU_WITH_TOLOWER
 
 #include "casemap_internal.h"
-#include "gen/_tolower.c"
+#ifndef NU_WITH_BMP_ONLY
+# include "gen/_tolower.c"
+#else
+# include "gen/_tolower_compact.c"
+#endif /* NU_WITH_BMP_ONLY */
 
 /* in nu_casemap_read (UTF-8), zero-terminated */
 static const char *__nu_final_sigma = "ς";

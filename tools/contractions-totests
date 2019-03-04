@@ -222,9 +222,9 @@ def gen_unknowns_test(tag, contractions, codepoints):
 def usage():
 	print 'usage: ' + sys.argv[0] + ' [CODEPOINTS] [CONTRACTIONS] [TAG]'
 	print
-	print '[CODEPOINTS]   - filename with list of codepoints'
-	print '[CONTRACTIONS] - filename with list of contractions from the same collation'
-	print '[TAG]          - prefix to weighting switch'
+	print '  [CODEPOINTS]   - filename with list of codepoints'
+	print '  [CONTRACTIONS] - filename with list of contractions from the same collation'
+	print '  [TAG]          - prefix to weighting switch'
 
 
 if __name__ == '__main__':
@@ -232,10 +232,11 @@ if __name__ == '__main__':
 		usage()
 		sys.exit(1)
 
-	tag = sys.argv[3]
 	codepoints_file, contractions_file = sys.argv[1], sys.argv[2]
+	tag = sys.argv[3]
 
 	codepoints, contractions = collect_contractions(codepoints_file, contractions_file)
+
 	gen_header(tag, contractions)
 	gen_includes()
 	gen_globals(tag)

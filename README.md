@@ -297,6 +297,20 @@ Example on unaccenting a string with nunicode: [unaccent.c][]
 
 [unaccent.c]: https://bitbucket.org/alekseyt/nunicode/src/master/samples/unaccent.c
 
+## Compact library variant
+
+If `NU_WITH_BMP_ONLY` is set in build flags or in CMake options
+(disabled by default), then all nunicode transformations, including
+SQLite extention, collations, case transformations and unaccenting,
+will be built with codepoints from Unicode's Basic Multilingual Plane
+only.
+
+This roughly halves library size, but all transformations will account
+only for codepoints from range U+0000..U+FFFF. Please see
+[Roadmap to the BMP][] for further details on what codepoints are included.
+
+[Roadmap to the BMP]: http://unicode.org/roadmaps/bmp/
+
 ## Examples
 
 See `samples/` directory for complete examples of nunicode usage.
