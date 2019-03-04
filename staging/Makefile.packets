@@ -1,5 +1,5 @@
 GIT_REVISION="$$(expr substr $$(git rev-parse HEAD) 1 8)"
-BUILD="1.9.1"
+BUILD="1.10.0"
 VERSION="$(BUILD)-$(GIT_REVISION)"
 
 I386_BUILD="build_i386"
@@ -13,10 +13,13 @@ WIN32_BUILD="build_mingw32"
 WIN32_TOOLCHAIN="../cmake/Toolchain-Mingw32.cmake"
 WIN32_ZIP="libnusqlite3-$(VERSION)-win32.zip"
 
+WIN32_COMPACT_BUILD="build_compact_mingw32"
+WIN32_COMPACT_ZIP="libnusqlite3-compact-$(VERSION)-win32.zip"
+
 DOC_ZIP="libnu-$(VERSION)-doxygen-doc.zip"
 
 default: all
-all: clean version doc_zip win32_zip i386_bz amd64_bz
+all: clean version doc_zip win32_zip win32_compact_zip i386_bz amd64_bz
 
 version:
 	cat ../libnu/version.h | sed -r -e "s|\"custom\"|\"$(VERSION)\"|" >../libnu/version.h
@@ -27,6 +30,12 @@ win32_zip:
 	(cd $(WIN32_BUILD) && cmake ../.. -DCMAKE_TOOLCHAIN_FILE=../$(WIN32_TOOLCHAIN) -DCMAKE_BUILD_TYPE=Release)
 	(cd $(WIN32_BUILD) && make nusqlite3)
 	zip -j $(WIN32_ZIP) $(WIN32_BUILD)/sqlite3/libnusqlite3.dll $(WIN32_BUILD)/sqlite3/libnusqlite3.dll.a
+
+win32_compact_zip:
+	mkdir -p $(WIN32_COMPACT_BUILD)
+	(cd $(WIN32_COMPACT_BUILD) && cmake ../.. -DCMAKE_TOOLCHAIN_FILE=../$(WIN32_TOOLCHAIN) -DCMAKE_BUILD_TYPE=Release -DNU_WITH_BMP_ONLY=1)
+	(cd $(WIN32_COMPACT_BUILD) && make nusqlite3)
+	zip -j $(WIN32_COMPACT_ZIP) $(WIN32_COMPACT_BUILD)/sqlite3/libnusqlite3.dll $(WIN32_COMPACT_BUILD)/sqlite3/libnusqlite3.dll.a
 
 i386_bz:
 	mkdir -p $(I386_BUILD)
@@ -47,5 +56,5 @@ doc_zip:
 
 clean:
 	rm -fr *.zip *.bz2
-	rm -fr $(WIN32_BUILD) $(I386_BUILD) $(AMD64_BUILD)
+	rm -fr $(WIN32_BUILD) $(WIN32_COMPACT_BUILD) $(I386_BUILD) $(AMD64_BUILD)
 	rm -fr ../doc/html/ "../doc/libnu-${VERSION}" "$(DOC_ZIP)"
