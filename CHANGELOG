@@ -1,3 +1,18 @@
+1.10
+
+[+] Unicode 12.0.0 character set support
+[+] Compact (BMP-only) build option: NU_WITH_BMP_ONLY
+[+] DUCET subset was extended with character categories
+    'Pc', 'Pd', 'Ps', 'Pe', 'Pi', 'Pf', 'Po', 'Sc', 'Sm'
+    (/issues/17/)
+
+[*] SQLite3 collations NU1100 and NU1100_NOCASE replaced with
+    NU1200 and NU1200_NOCASE (respectively)
+[*] fixed compilation warning that was appearing in newer version of GCC
+[*] under-the-hood changes to build options
+[*] under-the-hood changes to lookup tables generation
+    (to match BMP-only build option)
+
 1.9.1
 
 [*] fixed segfault in `SELECT upper(NULL)`, affected SQLite extension

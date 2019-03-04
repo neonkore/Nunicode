@@ -27,7 +27,7 @@ Conformance:
 
 Specification         | Notes
 ----------------------|----------------
-Unicode 11.0          | Conformant on character set and Unicode transformation forms (UTF)
+Unicode 12.0          | Conformant on character set and Unicode transformation forms (UTF)
 ISO/IEC 10646         | ISO/IEC 10646:2017, fifth edition, plus Amendment 1 to the fifth edition, plus yadayadayada (as [defined by Unicode 11.0][])
 ISO/IEC 14651         | ISO/IEC 14651:2011, [notes][]
 
@@ -52,7 +52,7 @@ complemented by case-insensitive variants.
 
 * Small size: UTF-8 encoding/decoding - 3Kb, UTF-8 encoding/decoding +
   0-terminated string functions - 5Kb; case mapping - 50Kb, default Unicode
-  collation - 170Kb (might be less in BMP-only flavor)
+  collation - 170Kb (less in BMP-only variant)
 * Small memory footprint, zero allocations
 * Small CPU footprint, O(1) complexity under the hood
 * Endianess- and platform-agnostic
@@ -297,7 +297,7 @@ Example on unaccenting a string with nunicode: [unaccent.c][]
 
 [unaccent.c]: https://bitbucket.org/alekseyt/nunicode/src/master/samples/unaccent.c
 
-## Compact library variant
+## Compact library variant (BMP-only)
 
 If `NU_WITH_BMP_ONLY` is set in build flags or in CMake options
 (disabled by default), then all nunicode transformations, including
@@ -365,11 +365,11 @@ Provides functions for following SQL statements:
 * lower(X)
 * unaccent(X)
 * X LIKE Y ESCAPE Z
-* COLLATE NU1100 - case-sensitive Unicode collation
-* COLLATE NU1100\_NOCASE - case-insensitive Unicode collation
+* COLLATE NU1200 - case-sensitive Unicode collation
+* COLLATE NU1200\_NOCASE - case-insensitive Unicode collation
 
 Supported encodings: UTF-8, UTF-16, UTF-16LE, UTF-16BE. Please note that
-collations are specific to Unicode revision: `NU1100` - 11.0.0. Indices
+collations are specific to Unicode revision, e.g. `NU1100` - 11.0.0. Indices
 built with older collation (e.g. `NU1000`) will not be compatible with
 newer collation. Therefore the recommended way of using collations is to
 include collation in select, e.g. `SELECT ... COLLATE NU_1100`.
