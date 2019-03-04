@@ -72,3 +72,19 @@ void test_ducet_consistency() {
 	assert(NU_DUCET_G_SIZE == _NU_DUCET_CODEPOINTS); /* just extra check */
 }
 #endif
+
+void test_ducet_ordering() {
+	/* /issues/17/
+	 * punctuation signs should be ordered before letters */
+
+	assert(nu_ducet_weight('b', 0, 0) > nu_ducet_weight('a', 0, 0));
+	assert(nu_ducet_weight('1', 0, 0) < nu_ducet_weight('a', 0, 0));
+	assert(nu_ducet_weight('.', 0, 0) < nu_ducet_weight('a', 0, 0));
+	assert(nu_ducet_weight(',', 0, 0) < nu_ducet_weight('a', 0, 0));
+	assert(nu_ducet_weight('?', 0, 0) < nu_ducet_weight('a', 0, 0));
+	assert(nu_ducet_weight('1', 0, 0) < nu_ducet_weight('a', 0, 0));
+	assert(nu_ducet_weight('$', 0, 0) < nu_ducet_weight('a', 0, 0));
+	assert(nu_ducet_weight('+', 0, 0) < nu_ducet_weight('a', 0, 0));
+	assert(nu_ducet_weight('~', 0, 0) < nu_ducet_weight('a', 0, 0));
+	assert(nu_ducet_weight('%', 0, 0) < nu_ducet_weight('a', 0, 0));
+}

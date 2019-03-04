@@ -237,7 +237,7 @@ Reference           |                 | Comment
 Collation levels    | Any             | nunicode supports any number of collation levels. Actual number of levels implemented is maximum level defined by Unicode specification
 forward,position    | No              |
 backward            | No              |
-Tailoring delta     | -               | Equal to the delta with reduced DUCET. DUCET is reduced to character categories Ll, Lu, Lt, Lo, Nl, Nd, No.
+Tailoring delta     | -               | Equal to the delta with reduced DUCET. DUCET is reduced to character categories Ll, Lu, Lt, Lo, Nl, Nd, No, Pc, Pd, Ps, Pe, Pi, Pf, Po, Sc, Sm.
 Preparation process | None            |
 
 Note that contractions support (U+013F equals U+004C U+00B7) is
