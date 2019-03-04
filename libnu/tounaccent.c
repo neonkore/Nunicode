@@ -5,7 +5,11 @@
 #ifdef NU_WITH_UNACCENT
 
 #include "casemap_internal.h"
-#include "gen/_tounaccent.c"
+#ifndef NU_WITH_BMP_ONLY
+# include "gen/_tounaccent.c"
+#else
+# include "gen/_tounaccent_compact.c"
+#endif /* NU_WITH_BMP_ONLY */
 
 /* in nu_casemap_read (UTF-8), zero-terminated */
 static const char *__nu_empty_string = "";

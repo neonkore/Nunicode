@@ -4,8 +4,6 @@ set(TESTS_SRC
 	conformance_test.c
 	ducet_test.c
 	extra_test.c
-	gen/_ducet_test.c
-	gen/_ducet_switch_test.c
 	main.c
 	mph_test.c
 	strcoll_test.c
@@ -26,6 +24,20 @@ set(TESTS_SRC
 	validation_test.c
 	version_test.c
 )
+
+if(NU_WITH_BMP_ONLY)
+	list(APPEND
+		TESTS_SRC
+		gen/_ducet_compact_test.c
+		gen/_ducet_switch_compact_test.c
+	)
+else()
+	list(APPEND
+		TESTS_SRC
+		gen/_ducet_test.c
+		gen/_ducet_switch_test.c
+	)
+endif()
 
 include_directories(${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR})
 

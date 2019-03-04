@@ -23,7 +23,7 @@
  * NU_DISABLE_CONTRACTIONS: disables forward-reading during collation,
  * only weights of a single codepoints will be compared (enabled in release build)
  *
- * NU_WITH_BMP_ONLY: builds collation variant with BMP codepoints only
+ * NU_WITH_BMP_ONLY: build collations variant with BMP codepoints only
  * http://unicode.org/roadmaps/bmp/
  */
 

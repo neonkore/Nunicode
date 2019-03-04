@@ -9,14 +9,18 @@ import mph
 
 
 def usage():
-	print 'usage: %s <TAG>' % sys.argv[0]
+	print 'usage: %s [TAG] [BMP_ONLY]' % sys.argv[0]
+	print
+	print '  [TAG]      - tag to use to prefix hashtables'
+	print '  [BMP_ONLY] - flag to indicate if set is BMP-only, 0 or 1 (false or true)'
 
 if __name__ == '__main__':
-	if len(sys.argv) < 2:
+	if len(sys.argv) < 3:
 		usage()
 		sys.exit(1)
 
 	TAG = sys.argv[1]
+	bmp_only = bool(int(sys.argv[2]))
 
 	dict = {}
 
@@ -33,36 +37,7 @@ if __name__ == '__main__':
 
 	assert(len(G) == len(V))
 
+	mph.gen_header(TAG, G, [])
 	mph.gen_includes()
-
-	print "#ifndef NU_WITH_BMP_ONLY"
-	print
-
-	mph.gen_header(TAG, G, [])
 	mph.gen_G(TAG, G)
-	mph.gen_values(TAG, G, V, False)
-
-	print "#endif /* NU_WITH_BMP_ONLY */"
-
-	drop = []
-	for key in dict:
-		if int(key, base=16) > 0xFFFF:
-			drop.append(key)
-
-	for key in drop:
-			del dict[key]
-
-	(G, V) = mph.create_minimal_perfect_hash(dict)
-	assert(len(G) == len(V))
-
-	print
-	print '#ifdef NU_WITH_BMP_ONLY'
-	print
-	print '''/* %d codepoints were removed from original set because they're outside of BMP */''' % (len(drop))
-	print
-
-	mph.gen_header(TAG, G, [])
-	mph.gen_G(TAG, G)
-	mph.gen_values(TAG, G, V, True)
-
-	print '#endif /* NU_WITH_BMP_ONLY */'
+	mph.gen_values(TAG, G, V, bmp_only)
