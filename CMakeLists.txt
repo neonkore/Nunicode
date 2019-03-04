@@ -3,6 +3,7 @@ project(libnu C)
 
 option(NU_BUILD_TESTS "Build tests, only with Debug config" OFF)
 option(NU_BUILD_SAMPLES "Build samples" OFF)
+option(NU_WITH_BMP_ONLY "Build collations with BMP-support only" OFF)
 
 set(NU_BUILD_OPTIONS "-DNU_WITH_EVERYTHING")
 add_definitions(-DNU_BUILD_STATIC)
@@ -13,6 +14,10 @@ find_package(Sqlite3)
 if(NU_BUILD_TESTS)
 	set(CMAKE_CONFIGURATION_TYPES "Debug") # restrict configurations to Debug
 	set(CMAKE_BUILD_TYPE "Debug")
+endif()
+
+if(NU_WITH_BMP_ONLY)
+	add_definitions(-DNU_WITH_BMP_ONLY)
 endif()
 
 if(CMAKE_BUILD_TYPE MATCHES "GCOV")

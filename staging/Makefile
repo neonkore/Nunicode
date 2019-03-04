@@ -27,6 +27,8 @@ testbuilds:
 	cmake --build build/gcov --config GCOV
 	cmake -H.. -Bbuild/prof -DCMAKE_BUILD_TYPE=PROF
 	cmake --build build/prof --config PROF
+	cmake -H.. -Bbuild/compact -DCMAKE_BUILD_TYPE=Release -DNU_WITH_BMP_ONLY=1 -DNU_BUILD_SAMPLES=1
+	cmake --build build/compact --config Release
 
 testcompilers:
 	cmake -H.. -Bbuild/clang -DNU_BUILD_TESTS=1 -DNU_BUILD_SAMPLES=1 -DNU_BUILD_TESTS=1 -DCMAKE_TOOLCHAIN_FILE=cmake/Toolchain-Clang.cmake
