@@ -33,8 +33,6 @@ const char* _nu_tolower(const char *encoded, const char *limit, nu_read_iterator
 	 * this is the only language-independent exception described in
 	 * SpecialCasing.txt (Unicode 7.0) */
 
-	assert(nu_casemap_read == nu_utf8_read);
-
 	if (_u == 0x03A3) {
 		if (np >= limit) {
 			*transform = __nu_final_sigma;

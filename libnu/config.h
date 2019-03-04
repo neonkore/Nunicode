@@ -149,14 +149,12 @@
 /* Requirements for collation functions on 0-terminated strings */
 #ifdef NU_WITH_Z_COLLATION
 # define NU_WITH_Z_STRINGS
-# define NU_WITH_TOUPPER /* nu_toupper() */
 #endif
 
 /* Requirements for collation functions
  * on unterminated strings */
 #ifdef NU_WITH_N_COLLATION
 # define NU_WITH_N_STRINGS
-# define NU_WITH_TOUPPER
 #endif
 
 /* Requirements for casemap functions */

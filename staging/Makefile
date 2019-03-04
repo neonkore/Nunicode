@@ -17,7 +17,7 @@ testcmake:
 
 testbuilds:
 	# this script tests all nunicode build configurations
-	cmake -H.. -Bbuild/default -DNU_BUILD_TESTS=1 -DNU_BUILD_SAMPLES=1 -DNU_BUILD_TESTS=1
+	cmake -H.. -Bbuild/default -DNU_BUILD_TESTS=1 -DNU_BUILD_SAMPLES=1
 	cmake --build build/default
 	cmake -H.. -Bbuild/debug -DCMAKE_BUILD_TYPE=Debug -DNU_BUILD_SAMPLES=1 -DNU_BUILD_TESTS=1
 	cmake --build build/debug --config Debug
@@ -31,7 +31,7 @@ testbuilds:
 	cmake --build build/compact --config Release
 
 testcompilers:
-	cmake -H.. -Bbuild/clang -DNU_BUILD_TESTS=1 -DNU_BUILD_SAMPLES=1 -DNU_BUILD_TESTS=1 -DCMAKE_TOOLCHAIN_FILE=cmake/Toolchain-Clang.cmake
+	cmake -H.. -Bbuild/clang -DNU_BUILD_TESTS=1 -DNU_BUILD_SAMPLES=1 -DCMAKE_TOOLCHAIN_FILE=cmake/Toolchain-Clang.cmake
 	cmake --build build/clang
 	cmake -H.. -Bbuild/clang-release -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=cmake/Toolchain-Clang.cmake
 	cmake --build build/clang-release
