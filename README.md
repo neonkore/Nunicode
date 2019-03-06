@@ -1,6 +1,6 @@
 [TOC]
 
-This is i18n library implementing Unicode 11.0.
+This is i18n library implementing Unicode 12.0.
 
 nunicode is trying to carefully follow the Unicode specification with
 reasonable trade-offs. It doesn't implement the entire standard, but
@@ -375,7 +375,8 @@ built with older collation (e.g. `NU1000`) will not be compatible with
 newer collation. Therefore the recommended way of using collations is to
 include collation in select, e.g. `SELECT ... COLLATE NU_1100`.
 
-Extension is only 250Kb in size approximately (nunicode 1.9).
+Extension is about 300Kb in size (nunicode 1.10), or about 180Kb in
+compact (BMP-only) variant.
 
 It can be compiled into shared library and loaded with
 ``sqlite3_load_extension()`` ([doc][]) (see [samples/loadextension.c][])
