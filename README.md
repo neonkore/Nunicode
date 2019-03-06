@@ -28,10 +28,10 @@ Conformance:
 Specification         | Notes
 ----------------------|----------------
 Unicode 12.0          | Conformant on character set and Unicode transformation forms (UTF)
-ISO/IEC 10646         | ISO/IEC 10646:2017, fifth edition, plus Amendment 1 to the fifth edition, plus yadayadayada (as [defined by Unicode 11.0][])
+ISO/IEC 10646         | ISO/IEC 10646:2017, fifth edition, plus Amendments 1 and 2 to the fifth edition, plus yadayadayada (as [defined by Unicode 12.0][])
 ISO/IEC 14651         | ISO/IEC 14651:2011, [notes][]
 
-[defined by Unicode 11.0]: http://www.unicode.org/versions/Unicode11.0.0/
+[defined by Unicode 12.0]: http://www.unicode.org/versions/Unicode12.0.0/
 
 Encodings supported:
 
@@ -51,8 +51,8 @@ complemented by case-insensitive variants.
 ## Properties of the library
 
 * Small size: UTF-8 encoding/decoding - 3Kb, UTF-8 encoding/decoding +
-  0-terminated string functions - 5Kb; case mapping - 50Kb, default Unicode
-  collation - 170Kb (less in BMP-only variant)
+  0-terminated string functions - 5Kb; case mapping - 60Kb, default Unicode
+  collation - 180Kb (less in BMP-only variant)
 * Small memory footprint, zero allocations
 * Small CPU footprint, O(1) complexity under the hood
 * Endianess- and platform-agnostic
@@ -73,7 +73,8 @@ Unicode | nunicode    | Git branch
 8.0.0   | 1.6.1       | unicode.800
 9.0.0   | 1.7.1       | unicode.900
 10.0.0  | 1.8.1       | unicode.1000
-11.0.0  | 1.9         | master
+11.0.0  | 1.9.1       | unicode.1100
+12.0.0  | 1.10        | master
 
 ## Tests coverage
 

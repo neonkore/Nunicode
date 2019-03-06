@@ -1,9 +1,11 @@
 1.10
 
 [+] Unicode 12.0.0 character set support
-[+] Compact (BMP-only) build option: NU_WITH_BMP_ONLY
-[+] DUCET subset was extended with character categories
-    'Pc', 'Pd', 'Ps', 'Pe', 'Pi', 'Pf', 'Po', 'Sc', 'Sm'
+[+] compact (BMP-only) build option: NU_WITH_BMP_ONLY
+[+] DUCET subset was extended with character categories 'Pc', 'Pd',
+    'Ps', 'Pe', 'Pi', 'Pf', 'Po', 'Sc', 'Sm'; now punctuation marks
+    are going to be sorted before alphanumeric characters similarly
+    to ordering established in other widespread collations
     (/issues/17/)
 
 [*] SQLite3 collations NU1100 and NU1100_NOCASE replaced with
