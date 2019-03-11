@@ -11,6 +11,7 @@
 [*] SQLite3 collations NU1100 and NU1100_NOCASE replaced with
     NU1200 and NU1200_NOCASE (respectively)
 [*] fixed compilation warning that was appearing in newer version of GCC
+[*] fixed configure warning that was appearing in newer version of CMake
 [*] under-the-hood changes to build options
 [*] under-the-hood changes to lookup tables generation
     (to match BMP-only build option)

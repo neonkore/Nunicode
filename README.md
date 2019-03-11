@@ -306,6 +306,13 @@ SQLite extention, collations, case transformations and unaccenting,
 will be built with codepoints from Unicode's Basic Multilingual Plane
 only.
 
+Unicode standard describes (2.8 Unicode Allocation) BMP as:
+
+> The Basic Multilingual Plane (BMP, or Plane 0) contains the common-use
+> characters for all the modern scripts of the world as well as many
+> historical and rare characters. By far the majority of all Unicode
+> characters for almost all textual data can be found in the BMP.
+
 This roughly halves library size, but all transformations will account
 only for codepoints from range U+0000..U+FFFF. Please see
 [Roadmap to the BMP][] for further details on what codepoints are included.
