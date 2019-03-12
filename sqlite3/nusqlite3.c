@@ -8,6 +8,11 @@
 #include "nusqlite3.h"
 #include "version.h"
 
+/* Use defines to specify the names of the collations nunicode registers with SQLite.
+ */
+#define COLLATION_NAME "NU1200"
+#define NOCASE_COLLATION_NAME COLLATION_NAME "_NOCASE"
+
 /* This option is supposed to match SQLITE_OMIT_UTF16 used in SQLite3 build.
  * It's also set if either NU_WITH_UTF16 or NU_WITH_UTF16HE weren't set in libnu build.
  * Could also be set manually.
@@ -55,8 +60,8 @@ SQLITE_EXTENSION_INIT1
  * - upper(X)
  * - lower(X)
  * - unaccent(X)
- * - COLLATE NU1200 - Unicode 12.0.0 case-sensitive collation
- * - COLLATE NU1200_NOCASE - Unicode 12.0.0 case-insensitive collation
+ * - COLLATE NU1200 (or as defined in COLLATION_NAME) - Unicode 12.0.0 case-sensitive collation
+ * - COLLATE NU1200_NOCASE (or as defined in NOCASE_COLLATION_NAME) - Unicode 12.0.0 case-insensitive collation
  *
  * Supported encodings:
  *
@@ -540,21 +545,21 @@ int sqlite3_nunicode_init(sqlite3 *db, char **err_msg, const void *api) {
 #endif /* NU_SQLITE_OMIT_UTF16 */
 
 #if NU_UNICODE_VERSION != 1200
-#	error "NU1200 collations are intended for Unicode 12.0.0 only"
+#	error "Nunicode collations are intended for Unicode 12.0.0 only"
 #endif
 
-	REGISTER_COLLATION(rc, db, SQLITE_UTF8, "NU1200", nunicode_sqlite3_collate_utf8);
+	REGISTER_COLLATION(rc, db, SQLITE_UTF8, COLLATION_NAME, nunicode_sqlite3_collate_utf8);
 #ifndef NU_SQLITE_OMIT_UTF16
-	REGISTER_COLLATION(rc, db, SQLITE_UTF16LE, "NU1200", nunicode_sqlite3_collate_utf16le);
-	REGISTER_COLLATION(rc, db, SQLITE_UTF16BE, "NU1200", nunicode_sqlite3_collate_utf16be);
-	REGISTER_COLLATION(rc, db, SQLITE_UTF16, "NU1200", nunicode_sqlite3_collate_utf16he);
+	REGISTER_COLLATION(rc, db, SQLITE_UTF16LE, COLLATION_NAME, nunicode_sqlite3_collate_utf16le);
+	REGISTER_COLLATION(rc, db, SQLITE_UTF16BE, COLLATION_NAME, nunicode_sqlite3_collate_utf16be);
+	REGISTER_COLLATION(rc, db, SQLITE_UTF16, COLLATION_NAME, nunicode_sqlite3_collate_utf16he);
 #endif /* NU_SQLITE_OMIT_UTF16 */
 
-	REGISTER_COLLATION(rc, db, SQLITE_UTF8, "NU1200_NOCASE", nunicode_sqlite3_collate_nocase_utf8);
+	REGISTER_COLLATION(rc, db, SQLITE_UTF8, NOCASE_COLLATION_NAME, nunicode_sqlite3_collate_nocase_utf8);
 #ifndef NU_SQLITE_OMIT_UTF16
-	REGISTER_COLLATION(rc, db, SQLITE_UTF16LE, "NU1200_NOCASE", nunicode_sqlite3_collate_nocase_utf16le);
-	REGISTER_COLLATION(rc, db, SQLITE_UTF16BE, "NU1200_NOCASE", nunicode_sqlite3_collate_nocase_utf16be);
-	REGISTER_COLLATION(rc, db, SQLITE_UTF16, "NU1200_NOCASE", nunicode_sqlite3_collate_nocase_utf16he);
+	REGISTER_COLLATION(rc, db, SQLITE_UTF16LE, NOCASE_COLLATION_NAME, nunicode_sqlite3_collate_nocase_utf16le);
+	REGISTER_COLLATION(rc, db, SQLITE_UTF16BE, NOCASE_COLLATION_NAME, nunicode_sqlite3_collate_nocase_utf16be);
+	REGISTER_COLLATION(rc, db, SQLITE_UTF16, NOCASE_COLLATION_NAME, nunicode_sqlite3_collate_nocase_utf16he);
 #endif /* NU_SQLITE_OMIT_UTF16 */
 
 	REGISTER_UPPER(rc, db, SQLITE_UTF8, nunicode_sqlite3_upper_utf8);
