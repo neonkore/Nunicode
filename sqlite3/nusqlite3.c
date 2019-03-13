@@ -19,7 +19,13 @@
 # endif /* NU_SQLITE_COLLATION_NAME */
 #endif /* COLLATION_NAME */
 
-#define NOCASE_COLLATION_NAME COLLATION_NAME "_NOCASE"
+#ifndef NOCASE_COLLATION_NAME
+# ifdef NU_SQLITE_NOCASE_COLLATION_NAME
+#  define NOCASE_COLLATION_NAME NU_SQLITE_NOCASE_COLLATION_NAME
+# else
+#  define NOCASE_COLLATION_NAME COLLATION_NAME "_NOCASE"
+# endif /* NU_SQLITE_NOCASE_COLLATION_NAME */
+#endif /* NOCASE_COLLATION_NAME */
 
 /* This option is supposed to match SQLITE_OMIT_UTF16 used in SQLite3 build.
  * It's also set if either NU_WITH_UTF16 or NU_WITH_UTF16HE weren't set in libnu build.
