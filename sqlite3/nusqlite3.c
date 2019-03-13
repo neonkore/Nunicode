@@ -10,7 +10,15 @@
 
 /* Use defines to specify the names of the collations nunicode registers with SQLite.
  */
-#define COLLATION_NAME "NU1200"
+#ifndef COLLATION_NAME
+# ifdef NU_SQLITE_COLLATION_NAME
+#  define COLLATION_NAME NU_SQLITE_COLLATION_NAME
+# else
+#  warning "Use of NUCURRENT collation with indices might result in undefined behavior after version switch"
+#  define COLLATION_NAME "NUCURRENT"
+# endif /* NU_SQLITE_COLLATION_NAME */
+#endif /* COLLATION_NAME */
+
 #define NOCASE_COLLATION_NAME COLLATION_NAME "_NOCASE"
 
 /* This option is supposed to match SQLITE_OMIT_UTF16 used in SQLite3 build.
