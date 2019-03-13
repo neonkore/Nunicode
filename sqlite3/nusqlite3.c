@@ -8,6 +8,23 @@
 #include "nusqlite3.h"
 #include "version.h"
 
+/** This extension provide functions for the following statements:
+ *
+ * - X LIKE Y ESCAPE Z
+ * - upper(X)
+ * - lower(X)
+ * - unaccent(X)
+ * - COLLATE NU1200 (or as defined in COLLATION_NAME) - Unicode 12.0.0 case-sensitive collation
+ * - COLLATE NU1200_NOCASE (or as defined in NOCASE_COLLATION_NAME) - Unicode 12.0.0 case-insensitive collation
+ *
+ * Supported encodings:
+ *
+ * - UTF8
+ * - UTF16LE
+ * - UTF16BE
+ * - UTF16 (nunicode encoding: UTF-16HE)
+ */
+
 /* Use defines to specify the names of the collations nunicode registers with SQLite.
  */
 #ifndef COLLATION_NAME
@@ -67,23 +84,6 @@ void nunicode_sqlite3_static_init(int verbose) {
 
 #include <sqlite3ext.h>
 SQLITE_EXTENSION_INIT1
-
-/** This extension provide functions for the following statements:
- *
- * - X LIKE Y ESCAPE Z
- * - upper(X)
- * - lower(X)
- * - unaccent(X)
- * - COLLATE NU1200 (or as defined in COLLATION_NAME) - Unicode 12.0.0 case-sensitive collation
- * - COLLATE NU1200_NOCASE (or as defined in NOCASE_COLLATION_NAME) - Unicode 12.0.0 case-insensitive collation
- *
- * Supported encodings:
- *
- * - UTF8
- * - UTF16LE
- * - UTF16BE
- * - UTF16 (nunicode encoding: UTF-16HE)
- */
 
 /** Buffer of this size will be allocated on *stack* to support
  * upper()/lower() transformations internally. Internal buffer
