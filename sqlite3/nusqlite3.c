@@ -544,8 +544,9 @@ int sqlite3_nunicode_init(sqlite3 *db, char **err_msg, const void *api) {
 	REGISTER_LIKE(rc, db, SQLITE_UTF16, nunicode_sqlite3_like_utf16he);
 #endif /* NU_SQLITE_OMIT_UTF16 */
 
+/* this is to detect version change and suggest corresponding update in SQLite's collation name */
 #if NU_UNICODE_VERSION != 1200
-#	error "Nunicode collations are intended for Unicode 12.0.0 only"
+# error "nunicode collations are intended for Unicode 12.0.0 only"
 #endif
 
 	REGISTER_COLLATION(rc, db, SQLITE_UTF8, COLLATION_NAME, nunicode_sqlite3_collate_utf8);
