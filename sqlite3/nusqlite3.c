@@ -26,6 +26,7 @@
  */
 
 /* Use defines to specify the names of the collations nunicode registers with SQLite.
+ * NUCURRENT is intentionally undocumented
  */
 #ifndef COLLATION_NAME
 # ifdef NU_SQLITE_COLLATION_NAME
