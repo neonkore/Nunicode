@@ -1,6 +1,6 @@
 1.10
 
-[+] Unicode 12.0.0 character set support
+[+] Unicode 12.0.0-12.1.0 character set support
 [+] DUCET subset was extended with character categories 'Pc', 'Pd',
     'Ps', 'Pe', 'Pi', 'Pf', 'Po', 'Sc', 'Sm'; now punctuation marks
     are going to be sorted before alphanumeric characters similarly
