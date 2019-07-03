@@ -28,11 +28,13 @@ elseif(CMAKE_BUILD_TYPE MATCHES "PROF")
 endif()
 
 if(CMAKE_C_COMPILER_ID STREQUAL "GNU" OR (NOT MSVC AND CMAKE_C_COMPILER_ID STREQUAL "Clang"))
-	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Werror -pedantic -std=c99")
-
 	if(NOT WIN32)
 		set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC")
 	endif(NOT WIN32)
+endif()
+
+if(CMAKE_C_COMPILER_ID STREQUAL "GNU")
+	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Werror -pedantic -std=c99") # -Wall shouldn't be enabled for clang
 
 	if(CMAKE_BUILD_TYPE MATCHES "PROF")
 		set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O2 -g -ggdb")
