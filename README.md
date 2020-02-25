@@ -74,7 +74,8 @@ Unicode | nunicode    | Git branch
 9.0.0   | 1.7.1       | unicode.900
 10.0.0  | 1.8.1       | unicode.1000
 11.0.0  | 1.9.1       | unicode.1100
-12.1.0  | 1.10        | master
+12.1.0  | 1.10        | unicode.1210
+13.0.0  | TBA         | master
 
 ## Tests coverage
 
