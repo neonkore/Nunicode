@@ -77,7 +77,7 @@ func main() {
 			continue
 		}
 
-		decomps := strings.Split(DecompsRemoveComment(parts[DecompsTransform]), " ")
+		decomps := strings.Split(parts[DecompsTransform], " ")
 		for i, decomp := range decomps {
 			decomps[i] = strings.TrimSpace(decomp) // TODO: makes sense to ParseInt to avoid double parsing in IsAccent() and Unaccent()
 		}
