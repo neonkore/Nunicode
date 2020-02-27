@@ -20,6 +20,31 @@ add_custom_command(
 	DEPENDS ${UNIDATA_TOUPPER_SRC}
 )
 
+set(SPECIAL_TOUPPER_SRC
+	special-toupper.go
+	specialcasing.go
+	unidata.go
+)
+add_custom_command(
+	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+	OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/special-toupper
+	COMMAND go build ${SPECIAL_TOUPPER_SRC}
+	DEPENDS ${SPECIAL_TOUPPER_SRC}
+)
+
+set(SPECIAL_TOLOWER_SRC
+	special-tolower.go
+	specialcasing.go
+	unidata.go
+)
+add_custom_command(
+	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+	OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/special-tolower
+	COMMAND go build ${SPECIAL_TOLOWER_SRC}
+	DEPENDS ${SPECIAL_TOLOWER_SRC}
+)
+
 add_custom_target(tools
 	DEPENDS unidata-tolower unidata-toupper
+	DEPENDS special-toupper special-tolower
 )

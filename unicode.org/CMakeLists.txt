@@ -43,19 +43,19 @@ add_custom_target(_ducet
 
 add_custom_target(_toupper
 	COMMAND echo -n && (cat ${UNIDATA} | ${TOOLS}/unidata-toupper | sort
-		&& cat ${SPECIAL} | ${TOOLS}/special-toupper)
+		&& cat ${SPECIAL} | ${TOOLS}/special-toupper | sort)
 	| ${TOOLS}/mph-combined "NU_TOUPPER" 0 >${GEN}/_toupper.c
 	COMMAND echo -n && (cat ${UNIDATA} | ${TOOLS}/unidata-toupper | sort
-		&& cat ${SPECIAL} | ${TOOLS}/special-toupper)
+		&& cat ${SPECIAL} | ${TOOLS}/special-toupper | sort)
 	| ${TOOLS}/bmponly | ${TOOLS}/mph-combined "NU_TOUPPER" 1 >${GEN}/_toupper_compact.c
 )
 
 add_custom_target(_tolower
 	COMMAND echo -n && (cat ${UNIDATA} | ${TOOLS}/unidata-tolower | sort
-		&& cat ${SPECIAL} | ${TOOLS}/special-tolower)
+		&& cat ${SPECIAL} | ${TOOLS}/special-tolower | sort)
 	| ${TOOLS}/mph-combined "NU_TOLOWER" 0 >${GEN}/_tolower.c
 	COMMAND echo -n && (cat ${UNIDATA} | ${TOOLS}/unidata-tolower | sort
-		&& cat ${SPECIAL} | ${TOOLS}/special-tolower)
+		&& cat ${SPECIAL} | ${TOOLS}/special-tolower | sort)
 	| ${TOOLS}/bmponly | ${TOOLS}/mph-combined "NU_TOLOWER" 1 >${GEN}/_tolower_compact.c
 )
 

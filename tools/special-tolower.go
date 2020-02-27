@@ -8,7 +8,7 @@ import (
 
 func main() {
 	channel := make(chan string)
-	go MapUnidataCasing(bufio.NewReader(os.Stdin), UnidataToUpper, channel)
+	go MapSpecialCasing(bufio.NewReader(os.Stdin), SpecialCasingToLower, channel)
 
 	for str := range channel {
 		fmt.Println(str)

@@ -35,6 +35,9 @@ func SplitUnidata(reader io.Reader, channel chan<- []string) {
 		}
 
 		parts := strings.Split(line, ";")
+		for i, part := range parts {
+			parts[i] = strings.TrimSpace(part)
+		}
 
 		channel <- parts
 	}
@@ -42,15 +45,14 @@ func SplitUnidata(reader io.Reader, channel chan<- []string) {
 	close(channel)
 }
 
-// MapCodepoint : builds mapping from codepoint to uppercase or lowercase.
-// Will close channel when finished.
-func MapCodepoint(reader io.Reader, partsIndex UnidataMapping, channel chan<- string) {
+// MapUnidataCasing : builds mapping from codepoint to uppercase or lowercase.
+// Does trimming where appropriate. Will close channel when finished.
+func MapUnidataCasing(reader io.Reader, partsIndex UnidataMapping, channel chan<- string) {
 	splitChannel := make(chan []string)
 
 	go SplitUnidata(bufio.NewReader(os.Stdin), splitChannel)
 
 	for parts := range splitChannel {
-
 		tolower := strings.TrimSpace(parts[partsIndex])
 		if len(tolower) < 1 {
 			continue
@@ -58,7 +60,8 @@ func MapCodepoint(reader io.Reader, partsIndex UnidataMapping, channel chan<- st
 
 		codepoint, err := strconv.ParseInt(parts[UnidataCodepoint], 16, 64)
 		if err != nil {
-			panic(err)
+			fmt.Fprintln(os.Stderr, err)
+			continue
 		}
 
 		replacement := strings.Split(tolower, " ")
