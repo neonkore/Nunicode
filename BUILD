@@ -21,3 +21,19 @@ Will build test suite. Test won't compile in "Release" or
 b) cmake .. -DNU_BUILD_SAMPLES=ON
 
 Will build sample applications.
+
+
+
+Tools
+-----
+
+To build tools used to generate various MPH tables (requires Go installed):
+
+1. cd build
+2. make tools
+
+After that
+
+3. make gen
+
+Should regen all generated files.

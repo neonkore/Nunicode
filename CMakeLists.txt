@@ -4,7 +4,6 @@ project(libnu C)
 option(NU_BUILD_TESTS "Build tests, only with Debug config" OFF)
 option(NU_BUILD_SAMPLES "Build samples" OFF)
 option(NU_WITH_BMP_ONLY "Build collations with BMP-support only" OFF)
-option(NU_BUILD_TOOLS "Build tools (requires Go)" OFF)
 
 set(NU_BUILD_OPTIONS "-DNU_WITH_EVERYTHING")
 add_definitions(-DNU_BUILD_STATIC)
@@ -51,6 +50,8 @@ if(CMAKE_C_COMPILER_ID STREQUAL "GNU")
 endif(CMAKE_C_COMPILER_ID STREQUAL "GNU")
 
 add_subdirectory(libnu)
+add_subdirectory(tools) # won't be built unless requested
+add_subdirectory(unicode.org)
 
 if(NU_BUILD_SAMPLES)
 	add_subdirectory(samples)
@@ -59,11 +60,6 @@ endif(NU_BUILD_SAMPLES)
 if(NU_BUILD_TESTS)
 	add_subdirectory(tests)
 endif(NU_BUILD_TESTS)
-
-if(NU_BUILD_TOOLS)
-	add_subdirectory(tools)
-	add_subdirectory(unicode.org)
-endif(NU_BUILD_TOOLS)
 
 if(CMAKE_BUILD_TYPE MATCHES PROF)
 	add_subdirectory(tests/prof)
