@@ -62,10 +62,7 @@ func Unaccent(decomps []string) []string {
 func main() {
 	unaccent := make([]UnaccentEntry, 0)
 
-	channel := make(chan []string)
-	go SplitUnidata(bufio.NewReader(os.Stdin), channel)
-
-	for parts := range channel {
+	for parts := range SplitUnidata(bufio.NewReader(os.Stdin)) {
 		codepoint, err := strconv.ParseInt(parts[DecompsCodepoint], 16, 64)
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err)

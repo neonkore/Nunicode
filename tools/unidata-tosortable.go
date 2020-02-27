@@ -34,15 +34,7 @@ func PassCodepoint(codepoint int, category string, decompsStr string) bool {
 }
 
 func main() {
-	scanner := bufio.NewScanner(bufio.NewReader(os.Stdin))
-	for scanner.Scan() {
-		line := strings.TrimSpace(scanner.Text())
-		if len(line) < 1 {
-			continue
-		}
-
-		parts := strings.Split(line, ";")
-
+	for parts := range SplitUnidata(bufio.NewReader(os.Stdin)) {
 		codepoint, err := strconv.ParseInt(parts[UnidataCodepoint], 16, 64)
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err)

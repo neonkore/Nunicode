@@ -39,51 +39,60 @@ func RemoveInlineComment(str string) string {
 }
 
 // SplitUnidata : splits lines in UnicodeData.txt into parts
-// and does trimming where appropriate. Will close channel when finished.
-func SplitUnidata(reader io.Reader, channel chan<- []string) {
-	scanner := bufio.NewScanner(reader)
-	for scanner.Scan() {
-		line := strings.TrimSpace(scanner.Text())
-		if len(line) < 1 || IsComment(line) {
-			continue
+// and does trimming where appropriate.
+func SplitUnidata(reader io.Reader) <-chan []string {
+	channel := make(chan []string)
+
+	go func() {
+		scanner := bufio.NewScanner(reader)
+		for scanner.Scan() {
+			line := strings.TrimSpace(scanner.Text())
+			if len(line) < 1 || IsComment(line) {
+				continue
+			}
+
+			parts := strings.Split(line, ";")
+			for i, part := range parts {
+				parts[i] = strings.TrimSpace(RemoveInlineComment(part))
+			}
+
+			channel <- parts
 		}
 
-		parts := strings.Split(line, ";")
-		for i, part := range parts {
-			parts[i] = strings.TrimSpace(RemoveInlineComment(part))
-		}
+		close(channel)
+	}()
 
-		channel <- parts
-	}
-
-	close(channel)
+	return channel
 }
 
 // MapUnidataCasing : builds mapping from codepoint to uppercase or lowercase.
-// Does trimming where appropriate. Will close channel when finished.
-func MapUnidataCasing(reader io.Reader, partsIndex UnidataMapping, channel chan<- string) {
-	splitChannel := make(chan []string)
-	go SplitUnidata(bufio.NewReader(os.Stdin), splitChannel)
+// Does trimming where appropriate.
+func MapUnidataCasing(reader io.Reader, partsIndex UnidataMapping) <-chan string {
+	channel := make(chan string)
 
-	for parts := range splitChannel {
-		transform := parts[partsIndex]
-		if len(transform) < 1 {
-			continue
+	go func() {
+		for parts := range SplitUnidata(bufio.NewReader(os.Stdin)) {
+			transform := parts[partsIndex]
+			if len(transform) < 1 {
+				continue
+			}
+
+			codepoint, err := strconv.ParseInt(parts[UnidataCodepoint], 16, 64)
+			if err != nil {
+				fmt.Fprintln(os.Stderr, err)
+				continue
+			}
+
+			replacement := strings.Split(transform, " ")
+			for i, part := range replacement {
+				replacement[i] = strings.TrimSpace(part)
+			}
+
+			channel <- fmt.Sprintf("%06X %s", codepoint, strings.Join(replacement, " "))
 		}
 
-		codepoint, err := strconv.ParseInt(parts[UnidataCodepoint], 16, 64)
-		if err != nil {
-			fmt.Fprintln(os.Stderr, err)
-			continue
-		}
+		close(channel)
+	}()
 
-		replacement := strings.Split(transform, " ")
-		for i, part := range replacement {
-			replacement[i] = strings.TrimSpace(part)
-		}
-
-		channel <- fmt.Sprintf("%06X %s", codepoint, strings.Join(replacement, " "))
-	}
-
-	close(channel)
+	return channel
 }

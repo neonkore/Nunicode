@@ -21,35 +21,38 @@ const (
 )
 
 // MapSpecialCasing : builds mapping from codepoint to special cases of upper/lowercase.
-// Does trimming where appropriate. Will close channel when finished.
-func MapSpecialCasing(reader io.Reader, partsIndex SpecialCasingMapping, channel chan<- string) {
-	splitChannel := make(chan []string)
-	go SplitUnidata(bufio.NewReader(os.Stdin), splitChannel)
+// Does trimming where appropriate.
+func MapSpecialCasing(reader io.Reader, partsIndex SpecialCasingMapping) <-chan string {
+	channel := make(chan string)
 
-	for parts := range splitChannel {
-		codepoint, err := strconv.ParseInt(parts[SpecialCasingCodepoint], 16, 64)
-		if err != nil {
-			fmt.Fprintln(os.Stderr, err)
-			continue
+	go func() {
+		for parts := range SplitUnidata(bufio.NewReader(os.Stdin)) {
+			codepoint, err := strconv.ParseInt(parts[SpecialCasingCodepoint], 16, 64)
+			if err != nil {
+				fmt.Fprintln(os.Stderr, err)
+				continue
+			}
+
+			condition := parts[SpecialCasingCondition]
+			if len(condition) > 0 && !IsComment(condition) { // Unconditional only
+				continue
+			}
+
+			replacement := strings.Split(parts[partsIndex], " ")
+			if len(replacement) < 1 || len(replacement[0]) < 1 {
+				continue
+			}
+
+			// Don't map to self
+			if len(replacement) == 1 && replacement[0] == parts[SpecialCasingCodepoint] {
+				continue
+			}
+
+			channel <- fmt.Sprintf("%06X %s", codepoint, strings.Join(replacement, ","))
 		}
 
-		condition := parts[SpecialCasingCondition]
-		if len(condition) > 0 && !IsComment(condition) { // Unconditional only
-			continue
-		}
+		close(channel)
+	}()
 
-		replacement := strings.Split(parts[partsIndex], " ")
-		if len(replacement) < 1 || len(replacement[0]) < 1 {
-			continue
-		}
-
-		// Don't map to self
-		if len(replacement) == 1 && replacement[0] == parts[SpecialCasingCodepoint] {
-			continue
-		}
-
-		channel <- fmt.Sprintf("%06X %s", codepoint, strings.Join(replacement, ","))
-	}
-
-	close(channel)
+	return channel
 }

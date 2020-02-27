@@ -32,10 +32,7 @@ type FoldingEntry struct {
 func main() {
 	mapping := make(map[int]FoldingEntry)
 
-	channel := make(chan []string)
-	go SplitUnidata(bufio.NewReader(os.Stdin), channel)
-
-	for parts := range channel {
+	for parts := range SplitUnidata(bufio.NewReader(os.Stdin)) {
 		foldingClass := parts[CaseFoldingClass]
 		foldingPriority := -1
 		for i, val := range FoldingClassPriority {
