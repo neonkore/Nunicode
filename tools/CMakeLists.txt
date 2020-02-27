@@ -44,7 +44,20 @@ add_custom_command(
 	DEPENDS ${SPECIAL_TOLOWER_SRC}
 )
 
+set(CASEFOLDING_TOFOLDING_SRC
+	casefolding-tofolding.go
+	casefolding.go
+	unidata.go
+)
+add_custom_command(
+	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+	OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/casefolding-tofolding
+	COMMAND go build ${CASEFOLDING_TOFOLDING_SRC}
+	DEPENDS ${CASEFOLDING_TOFOLDING_SRC}
+)
+
 add_custom_target(tools
 	DEPENDS unidata-tolower unidata-toupper
 	DEPENDS special-toupper special-tolower
+	DEPENDS casefolding-tofolding
 )

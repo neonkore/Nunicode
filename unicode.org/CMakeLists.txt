@@ -60,9 +60,9 @@ add_custom_target(_tolower
 )
 
 add_custom_target(_tofold
-	COMMAND echo -n && cat ${FOLDING} | ${TOOLS}/casefolding-tofolding
+	COMMAND echo -n && cat ${FOLDING} | ${TOOLS}/casefolding-tofolding | sort
 	| ${TOOLS}/mph-combined "NU_TOFOLD" 0 >${GEN}/_tofold.c
-	COMMAND echo -n && cat ${FOLDING} | ${TOOLS}/casefolding-tofolding
+	COMMAND echo -n && cat ${FOLDING} | ${TOOLS}/casefolding-tofolding | sort
 	| ${TOOLS}/bmponly | ${TOOLS}/mph-combined "NU_TOFOLD" 1 >${GEN}/_tofold_compact.c
 )
 

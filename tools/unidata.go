@@ -49,12 +49,11 @@ func SplitUnidata(reader io.Reader, channel chan<- []string) {
 // Does trimming where appropriate. Will close channel when finished.
 func MapUnidataCasing(reader io.Reader, partsIndex UnidataMapping, channel chan<- string) {
 	splitChannel := make(chan []string)
-
 	go SplitUnidata(bufio.NewReader(os.Stdin), splitChannel)
 
 	for parts := range splitChannel {
-		tolower := strings.TrimSpace(parts[partsIndex])
-		if len(tolower) < 1 {
+		transform := parts[partsIndex]
+		if len(transform) < 1 {
 			continue
 		}
 
@@ -64,7 +63,7 @@ func MapUnidataCasing(reader io.Reader, partsIndex UnidataMapping, channel chan<
 			continue
 		}
 
-		replacement := strings.Split(tolower, " ")
+		replacement := strings.Split(transform, " ")
 		for i, part := range replacement {
 			replacement[i] = strings.TrimSpace(part)
 		}
