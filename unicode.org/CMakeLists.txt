@@ -42,19 +42,19 @@ add_custom_target(_ducet
 )
 
 add_custom_target(_toupper
-	COMMAND echo -n && (cat ${UNIDATA} | ${TOOLS}/unidata-toupper
+	COMMAND echo -n && (cat ${UNIDATA} | ${TOOLS}/unidata-toupper | sort
 		&& cat ${SPECIAL} | ${TOOLS}/special-toupper)
 	| ${TOOLS}/mph-combined "NU_TOUPPER" 0 >${GEN}/_toupper.c
-	COMMAND echo -n && (cat ${UNIDATA} | ${TOOLS}/unidata-toupper
+	COMMAND echo -n && (cat ${UNIDATA} | ${TOOLS}/unidata-toupper | sort
 		&& cat ${SPECIAL} | ${TOOLS}/special-toupper)
 	| ${TOOLS}/bmponly | ${TOOLS}/mph-combined "NU_TOUPPER" 1 >${GEN}/_toupper_compact.c
 )
 
 add_custom_target(_tolower
-	COMMAND echo -n && (cat ${UNIDATA} | ${TOOLS}/unidata-tolower
+	COMMAND echo -n && (cat ${UNIDATA} | ${TOOLS}/unidata-tolower | sort
 		&& cat ${SPECIAL} | ${TOOLS}/special-tolower)
 	| ${TOOLS}/mph-combined "NU_TOLOWER" 0 >${GEN}/_tolower.c
-	COMMAND echo -n && (cat ${UNIDATA} | ${TOOLS}/unidata-tolower
+	COMMAND echo -n && (cat ${UNIDATA} | ${TOOLS}/unidata-tolower | sort
 		&& cat ${SPECIAL} | ${TOOLS}/special-tolower)
 	| ${TOOLS}/bmponly | ${TOOLS}/mph-combined "NU_TOLOWER" 1 >${GEN}/_tolower_compact.c
 )
@@ -73,4 +73,7 @@ add_custom_target(_tounaccent
 	| ${TOOLS}/bmponly | ${TOOLS}/mph-combined "NU_TOUNACCENT" 1 >${GEN}/_tounaccent_compact.c
 )
 
-add_custom_target(gen DEPENDS _toupper _tolower _tofold _ducet _tounaccent)
+add_custom_target(gen
+	DEPENDS tools
+	DEPENDS _toupper _tolower _tofold _ducet _tounaccent
+)
