@@ -3,6 +3,7 @@ set(UNIDATA_TOLOWER_SRC
 	unidata.go
 )
 add_custom_command(
+	# TODO: move binaries to build dir
 	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 	OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/unidata-tolower
 	COMMAND go build ${UNIDATA_TOLOWER_SRC}
@@ -66,9 +67,21 @@ add_custom_command(
 	DEPENDS ${BMPONLY_SRC}
 )
 
+set(UNIDATA_TOSORTABLE_SRC
+	unidata-tosortable.go
+	unidata.go
+)
+add_custom_command(
+	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+	OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/unidata-tosortable
+	COMMAND go build ${UNIDATA_TOSORTABLE_SRC}
+	DEPENDS ${UNIDATA_TOSORTABLE_SRC}
+)
+
 add_custom_target(tools
 	DEPENDS bmponly
 	DEPENDS unidata-tolower unidata-toupper
 	DEPENDS special-toupper special-tolower
 	DEPENDS casefolding-tofolding
+	DEPENDS unidata-tosortable
 )

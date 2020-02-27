@@ -15,6 +15,8 @@ type UnidataMapping int
 // Actual mapping to columns
 const (
 	UnidataCodepoint UnidataMapping = 0
+	UnidataCategory  UnidataMapping = 2
+	UnidataDecomps   UnidataMapping = 4
 	UnidataToUpper   UnidataMapping = 12
 	UnidataToLower   UnidataMapping = 13
 )

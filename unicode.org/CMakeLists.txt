@@ -16,7 +16,7 @@ set(DECOMPS ${DATA}/decomps.txt)
 
 add_custom_target(_ducet
 	# source data
-	COMMAND cat ${UNIDATA} | ${TOOLS}/unidata-tosortable >${SORTABLE}
+	COMMAND cat ${UNIDATA} | ${TOOLS}/unidata-tosortable | sort >${SORTABLE}
 	COMMAND cat ${DUCET} | ${TOOLS}/filter-sortable ${SORTABLE} >${FILTERED} 2>${FILTERED_CONTRACTIONS}
 	COMMAND cat ${FILTERED} | ${TOOLS}/bmponly >${FILTERED_COMPACT}
 	COMMAND cat ${FILTERED_CONTRACTIONS} | ${TOOLS}/bmponly >${FILTERED_CONTRACTIONS_COMPACT}
