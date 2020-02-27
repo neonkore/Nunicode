@@ -67,9 +67,9 @@ add_custom_target(_tofold
 )
 
 add_custom_target(_tounaccent
-	COMMAND echo -n && cat ${DECOMPS} | ${TOOLS}/decomps-tounaccent
+	COMMAND echo -n && cat ${DECOMPS} | ${TOOLS}/decomps-tounaccent | sort
 	| ${TOOLS}/mph-combined "NU_TOUNACCENT" 0 >${GEN}/_tounaccent.c
-	COMMAND echo -n && cat ${DECOMPS} | ${TOOLS}/decomps-tounaccent
+	COMMAND echo -n && cat ${DECOMPS} | ${TOOLS}/decomps-tounaccent | sort
 	| ${TOOLS}/bmponly | ${TOOLS}/mph-combined "NU_TOUNACCENT" 1 >${GEN}/_tounaccent_compact.c
 )
 

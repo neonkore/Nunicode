@@ -78,10 +78,23 @@ add_custom_command(
 	DEPENDS ${UNIDATA_TOSORTABLE_SRC}
 )
 
+set(DECOMPS_TOUNACCENT_SRC
+	decomps-tounaccent.go
+	decomps.go
+	unidata.go
+)
+add_custom_command(
+	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+	OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/decomps-tounaccent
+	COMMAND go build ${DECOMPS_TOUNACCENT_SRC}
+	DEPENDS ${DECOMPS_TOUNACCENT_SRC}
+)
+
 add_custom_target(tools
 	DEPENDS bmponly
 	DEPENDS unidata-tolower unidata-toupper
 	DEPENDS special-toupper special-tolower
 	DEPENDS casefolding-tofolding
 	DEPENDS unidata-tosortable
+	DEPENDS decomps-tounaccent
 )
