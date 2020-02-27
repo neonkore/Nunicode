@@ -5,7 +5,7 @@ if(NU_BUILD_SAMPLES)
 endif(NU_BUILD_SAMPLES)
 
 option(NU_SQLITE_OMIT_UTF16 "Omit UTF16 in SQLite extension build" OFF)
-set(NU_SQLITE_COLLATION_NAME "NU1200" CACHE STRING "Name used to register collations with SQLite")
+set(NU_SQLITE_COLLATION_NAME "NU1300" CACHE STRING "Name used to register collations with SQLite")
 set(NU_SQLITE_NOCASE_COLLATION_NAME "${NU_SQLITE_COLLATION_NAME}_NOCASE" CACHE STRING "Name used to register collations with SQLite")
 
 if(NU_SQLITE_OMIT_UTF16)

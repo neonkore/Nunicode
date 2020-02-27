@@ -14,8 +14,8 @@
  * - upper(X)
  * - lower(X)
  * - unaccent(X)
- * - COLLATE NU1200 (or as defined in COLLATION_NAME) - Unicode 12.0.0 case-sensitive collation
- * - COLLATE NU1200_NOCASE (or as defined in NOCASE_COLLATION_NAME) - Unicode 12.0.0 case-insensitive collation
+ * - COLLATE NU1300 (or as defined in COLLATION_NAME) - Unicode 13.0.0 case-sensitive collation
+ * - COLLATE NU1300_NOCASE (or as defined in NOCASE_COLLATION_NAME) - Unicode 13.0.0 case-insensitive collation
  *
  * Supported encodings:
  *
