@@ -56,7 +56,18 @@ add_custom_command(
 	DEPENDS ${CASEFOLDING_TOFOLDING_SRC}
 )
 
+set(BMPONLY_SRC
+	bmponly.go
+)
+add_custom_command(
+	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+	OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/bmponly
+	COMMAND go build ${BMPONLY_SRC}
+	DEPENDS ${BMPONLY_SRC}
+)
+
 add_custom_target(tools
+	DEPENDS bmponly
 	DEPENDS unidata-tolower unidata-toupper
 	DEPENDS special-toupper special-tolower
 	DEPENDS casefolding-tofolding
