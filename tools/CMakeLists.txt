@@ -62,11 +62,18 @@ set(DECOMPS_TOUNACCENT_SRC
 GOTOOL(decomps-tounaccent "${DECOMPS_TOUNACCENT_SRC}")
 
 set(FILTER_SORTABLE_SRC
-	filter-sortable.go
 	allkeys.go
+	filter-sortable.go
 	unidata.go
 )
 GOTOOL(filter-sortable "${FILTER_SORTABLE_SRC}")
+
+set(MPH_COMBINED_SRC
+	mph.go
+	mph-combined.go
+	templates.go
+)
+GOTOOL(mph-combined "${MPH_COMBINED_SRC}")
 
 add_custom_target(tools
 	DEPENDS bmponly
@@ -75,4 +82,5 @@ add_custom_target(tools
 	DEPENDS casefolding-tofolding
 	DEPENDS unidata-tosortable filter-sortable
 	DEPENDS decomps-tounaccent
+	DEPENDS mph-combined
 )

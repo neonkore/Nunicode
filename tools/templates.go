@@ -3,10 +3,8 @@ package main
 import (
 	"bytes"
 	"io"
-	"os"
 	"path"
 	"text/template"
-	"time"
 )
 
 // Template files
@@ -47,7 +45,7 @@ type MPHIncludesTags struct {
 // MPHGTags : tags used in MPH G block
 type MPHGTags struct {
 	Tag       string
-	G         []int16
+	G         MPHGType
 	Linebreak RangeLinebreakFunc
 }
 
@@ -55,21 +53,21 @@ type MPHGTags struct {
 type MPHCTags struct {
 	Compact   bool
 	Tag       string
-	C         []uint32
+	C         MPHCType
 	Linebreak RangeLinebreakFunc
 }
 
-// MPHITags : tags used in MPH C block
+// MPHITags : tags used in MPH I block
 type MPHITags struct {
 	Tag       string
-	I         []uint16
+	I         MPHIType
 	Linebreak RangeLinebreakFunc
 }
 
 // MPHCombinedTags : tags used in MPH C block
 type MPHCombinedTags struct {
 	Tag       string
-	COMBINED  []uint8
+	COMBINED  MPHCombinedType
 	Linebreak RangeLinebreakFunc
 }
 
@@ -123,42 +121,8 @@ func genMPHCombined(writer io.Writer, tags MPHCombinedTags) error {
 	return genTemplate(writer, MPHCombinedTemplate, tags)
 }
 
-func makeLinebreakFunc(chunk uint) RangeLinebreakFunc {
+func makeLinebreakFunc(chunkLength uint) RangeLinebreakFunc {
 	return func(pos uint) bool {
-		return (pos%chunk == 0)
+		return (pos%chunkLength == 0)
 	}
-}
-
-func main() {
-	sink := os.Stdout
-	tool, tag := os.Args[0], "NU_GOTOOLS"
-	compact := false
-
-	genMPHHeader(sink, MPHHeaderTags{
-		Tool:     tool,
-		Unixtime: time.Now().Unix(),
-		Tag:      tag,
-	})
-	genMPHIncludes(sink, MPHIncludesTags{})
-	genMPHG(sink, MPHGTags{
-		Tag:       tag,
-		G:         []int16{1, 2, 3, -4, -5, 6, 7},
-		Linebreak: makeLinebreakFunc(5),
-	})
-	genMPHC(sink, MPHCTags{
-		Compact:   compact,
-		Tag:       tag,
-		C:         []uint32{1, 2, 3, 4, 5, 6, 7},
-		Linebreak: makeLinebreakFunc(4),
-	})
-	genMPHI(sink, MPHITags{
-		Tag:       tag,
-		I:         []uint16{1, 2, 3, 4, 5, 6, 7},
-		Linebreak: makeLinebreakFunc(3),
-	})
-	genMPHCombined(sink, MPHCombinedTags{
-		Tag:       tag,
-		COMBINED:  []uint8{1, 2, 3, 4, 5, 6, 7},
-		Linebreak: makeLinebreakFunc(2),
-	})
 }
