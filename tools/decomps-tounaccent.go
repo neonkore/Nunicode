@@ -17,10 +17,10 @@ type disactiticBlock struct {
 // DiacriticBlocks : actual diacritic blocks
 // When blocks changes, tounaccent.c is also need to be modified
 var diacriticBlocks = []disactiticBlock{
-	disactiticBlock{0x0300, 0x036F}, // Combining Diacritical Marks
-	disactiticBlock{0x1AB0, 0x1AFF}, // Combining Diacritical Marks Extended
-	disactiticBlock{0x20D0, 0x20FF}, // Combining Diacritical Marks for Symbols
-	disactiticBlock{0x1DC0, 0x1DFF}, // Combining Diacritical Marks Supplement
+	disactiticBlock{begin: 0x0300, end: 0x036F}, // Combining Diacritical Marks
+	disactiticBlock{begin: 0x1AB0, end: 0x1AFF}, // Combining Diacritical Marks Extended
+	disactiticBlock{begin: 0x20D0, end: 0x20FF}, // Combining Diacritical Marks for Symbols
+	disactiticBlock{begin: 0x1DC0, end: 0x1DFF}, // Combining Diacritical Marks Supplement
 }
 
 // Tests if decomp (codepoint) is an accent (diacritic)
@@ -81,7 +81,7 @@ func main() {
 
 		for _, decomp := range decomps {
 			if isAccent(decomp) {
-				tounaccent = append(tounaccent, unaccentEntry{int(codepoint), decomps})
+				tounaccent = append(tounaccent, unaccentEntry{codepoint: int(codepoint), decomps: decomps})
 				break
 			}
 		}

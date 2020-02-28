@@ -21,7 +21,9 @@ import (
 //   - For Turkic languages (tr, az), this mapping can be used instead of the normal mapping for these characters.
 //     Note that the Turkic mappings do not maintain canonical equivalence without additional processing.
 //     See the discussions of case mapping in the Unicode Standard for more information."
-var FoldingClassPriority = []string{"F", "C", "S"}
+var FoldingClassPriority = []string{
+	"F", "C", "S",
+}
 
 // Entry in codepoint <-> folding mapping
 type foldingEntry struct {
@@ -69,7 +71,7 @@ func main() {
 			replacement[i] = strings.TrimSpace(part)
 		}
 
-		mapping[int(codepoint)] = foldingEntry{foldingPriority, replacement}
+		mapping[int(codepoint)] = foldingEntry{foldingPriority: foldingPriority, transform: replacement}
 	}
 
 	for codepoint, entry := range mapping {

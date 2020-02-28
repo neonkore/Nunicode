@@ -13,7 +13,8 @@ var AllowedCategories = []string{
 	"Ll", "Lu", "Lt", "Lo", // Letters
 	"Nl", "Nd", "No", //  Numbers
 	"Pc", "Pd", "Ps", "Pe", "Pi", "Pf", "Po", // Punctuation
-	"Sc", "Sm"} // Symbols
+	"Sc", "Sm", // Symbols
+}
 
 // Filter codepoints by their category.
 // Not all codepoints are considered in sorting, only letters, numbers

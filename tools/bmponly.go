@@ -27,7 +27,7 @@ func main() {
 
 		// This acts like a filter of codepoints that belong to BMP.
 		// All BMP codepoints by definition are in range U+0000..U+FFFF.
-		bmp := (codepoint >= 0 && codepoint <= 0xFFFF)
+		bmp := (codepoint >= 0x0000 && codepoint <= 0xFFFF)
 		if !bmp {
 			continue
 		}

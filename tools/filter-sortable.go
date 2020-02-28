@@ -67,8 +67,6 @@ func main() {
 	acceptable := loadAcceptable(sortable)
 
 	for parts := range splitUnidata(bufio.NewReader(os.Stdin)) {
-		// fmt.Println(parts)
-
 		codepoints := strings.Split(parts[AllkeysCodepoint], " ")
 		weight := parts[AllkeysWeight]
 		codepoint := codepoints[0]
@@ -78,9 +76,9 @@ func main() {
 		}
 
 		contraction := (len(codepoints) > 1)
-		sink := os.Stdout // Single codepoints goes to stdout
+		sink := os.Stdout // Standalone codepoints go to stdout
 		if contraction {
-			sink = os.Stderr // Contractions goes to stderr
+			sink = os.Stderr // Contractions go to stderr
 		}
 
 		fmt.Fprintf(sink, "%s %s\n", strings.Join(codepoints, " "), reformatWeight(weight))
