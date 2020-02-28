@@ -1,0 +1,13 @@
+/* when applicable, data referenced by I
+ */
+const uint8_t {{.Tag}}_COMBINED[] = {
+	{{- range $i, $v := .COMBINED}}
+		{{- /* newline when needed */ -}}
+		{{- if call $.Linebreak $i }}
+			{{- /* include tab in every newline */ -}}
+			{{- printf "\n\t"}}
+		{{- end}}
+		{{- printf "0x%02X, " $v}}
+	{{- end}}
+};
+{{/* newline */}}

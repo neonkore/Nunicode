@@ -1,0 +1,15 @@
+/* MPH lookup table */
+const int16_t {{.Tag}}_G[] = {
+	{{- range $i, $v := .G}}
+		{{- /* newline when needed */ -}}
+		{{- if call $.Linebreak $i }}
+			{{- /* include tab in every newline */ -}}
+			{{- printf "\n\t"}}
+		{{- end}}
+		{{- /* print G values as signed integers */ -}}
+		{{- printf "%d, " $v}}
+	{{- end}}
+};
+
+const size_t {{.Tag}}_G_SIZE = sizeof({{.Tag}}_G) / sizeof(*{{.Tag}}_G);
+{{/* newline */}}
