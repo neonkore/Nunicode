@@ -1,5 +1,6 @@
 set(DATA ${CMAKE_SOURCE_DIR}/unicode.org)
 set(TOOLS ${CMAKE_SOURCE_DIR}/tools)
+set(GOTOOLS ${CMAKE_BINARY_DIR}/tools)
 set(GEN ${CMAKE_SOURCE_DIR}/libnu/gen)
 set(TGEN ${CMAKE_SOURCE_DIR}/tests/gen)
 
@@ -16,10 +17,10 @@ set(DECOMPS ${DATA}/decomps.txt)
 
 add_custom_target(_ducet
 	# source data
-	COMMAND cat ${UNIDATA} | ${TOOLS}/unidata-tosortable | sort >${SORTABLE}
-	COMMAND cat ${DUCET} | ${TOOLS}/filter-sortable ${SORTABLE} >${FILTERED} 2>${FILTERED_CONTRACTIONS}
-	COMMAND cat ${FILTERED} | ${TOOLS}/bmponly >${FILTERED_COMPACT}
-	COMMAND cat ${FILTERED_CONTRACTIONS} | ${TOOLS}/bmponly >${FILTERED_CONTRACTIONS_COMPACT}
+	COMMAND cat ${UNIDATA} | ${GOTOOLS}/unidata-tosortable | sort >${SORTABLE}
+	COMMAND cat ${DUCET} | ${GOTOOLS}/filter-sortable ${SORTABLE} >${FILTERED} 2>${FILTERED_CONTRACTIONS}
+	COMMAND cat ${FILTERED} | ${GOTOOLS}/bmponly >${FILTERED_COMPACT}
+	COMMAND cat ${FILTERED_CONTRACTIONS} | ${GOTOOLS}/bmponly >${FILTERED_CONTRACTIONS_COMPACT}
 	# regular hastable
 	COMMAND ${TOOLS}/filtered-tomph ${FILTERED} ${FILTERED_CONTRACTIONS}
 		| ${TOOLS}/mph-indexed "NU_DUCET" 0 >${GEN}/_ducet.c
@@ -42,35 +43,35 @@ add_custom_target(_ducet
 )
 
 add_custom_target(_toupper
-	COMMAND echo -n && (cat ${UNIDATA} | ${TOOLS}/unidata-toupper | sort
-		&& cat ${SPECIAL} | ${TOOLS}/special-toupper | sort)
+	COMMAND echo -n && (cat ${UNIDATA} | ${GOTOOLS}/unidata-toupper | sort
+		&& cat ${SPECIAL} | ${GOTOOLS}/special-toupper | sort)
 	| ${TOOLS}/mph-combined "NU_TOUPPER" 0 >${GEN}/_toupper.c
-	COMMAND echo -n && (cat ${UNIDATA} | ${TOOLS}/unidata-toupper | sort
-		&& cat ${SPECIAL} | ${TOOLS}/special-toupper | sort)
-	| ${TOOLS}/bmponly | ${TOOLS}/mph-combined "NU_TOUPPER" 1 >${GEN}/_toupper_compact.c
+	COMMAND echo -n && (cat ${UNIDATA} | ${GOTOOLS}/unidata-toupper | sort
+		&& cat ${SPECIAL} | ${GOTOOLS}/special-toupper | sort)
+	| ${GOTOOLS}/bmponly | ${TOOLS}/mph-combined "NU_TOUPPER" 1 >${GEN}/_toupper_compact.c
 )
 
 add_custom_target(_tolower
-	COMMAND echo -n && (cat ${UNIDATA} | ${TOOLS}/unidata-tolower | sort
-		&& cat ${SPECIAL} | ${TOOLS}/special-tolower | sort)
+	COMMAND echo -n && (cat ${UNIDATA} | ${GOTOOLS}/unidata-tolower | sort
+		&& cat ${SPECIAL} | ${GOTOOLS}/special-tolower | sort)
 	| ${TOOLS}/mph-combined "NU_TOLOWER" 0 >${GEN}/_tolower.c
-	COMMAND echo -n && (cat ${UNIDATA} | ${TOOLS}/unidata-tolower | sort
-		&& cat ${SPECIAL} | ${TOOLS}/special-tolower | sort)
-	| ${TOOLS}/bmponly | ${TOOLS}/mph-combined "NU_TOLOWER" 1 >${GEN}/_tolower_compact.c
+	COMMAND echo -n && (cat ${UNIDATA} | ${GOTOOLS}/unidata-tolower | sort
+		&& cat ${SPECIAL} | ${GOTOOLS}/special-tolower | sort)
+	| ${GOTOOLS}/bmponly | ${TOOLS}/mph-combined "NU_TOLOWER" 1 >${GEN}/_tolower_compact.c
 )
 
 add_custom_target(_tofold
-	COMMAND echo -n && cat ${FOLDING} | ${TOOLS}/casefolding-tofolding | sort
+	COMMAND echo -n && cat ${FOLDING} | ${GOTOOLS}/casefolding-tofolding | sort
 	| ${TOOLS}/mph-combined "NU_TOFOLD" 0 >${GEN}/_tofold.c
-	COMMAND echo -n && cat ${FOLDING} | ${TOOLS}/casefolding-tofolding | sort
-	| ${TOOLS}/bmponly | ${TOOLS}/mph-combined "NU_TOFOLD" 1 >${GEN}/_tofold_compact.c
+	COMMAND echo -n && cat ${FOLDING} | ${GOTOOLS}/casefolding-tofolding | sort
+	| ${GOTOOLS}/bmponly | ${TOOLS}/mph-combined "NU_TOFOLD" 1 >${GEN}/_tofold_compact.c
 )
 
 add_custom_target(_tounaccent
-	COMMAND echo -n && cat ${DECOMPS} | ${TOOLS}/decomps-tounaccent | sort
+	COMMAND echo -n && cat ${DECOMPS} | ${GOTOOLS}/decomps-tounaccent | sort
 	| ${TOOLS}/mph-combined "NU_TOUNACCENT" 0 >${GEN}/_tounaccent.c
-	COMMAND echo -n && cat ${DECOMPS} | ${TOOLS}/decomps-tounaccent | sort
-	| ${TOOLS}/bmponly | ${TOOLS}/mph-combined "NU_TOUNACCENT" 1 >${GEN}/_tounaccent_compact.c
+	COMMAND echo -n && cat ${DECOMPS} | ${GOTOOLS}/decomps-tounaccent | sort
+	| ${GOTOOLS}/bmponly | ${TOOLS}/mph-combined "NU_TOUNACCENT" 1 >${GEN}/_tounaccent_compact.c
 )
 
 add_custom_target(gen

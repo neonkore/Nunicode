@@ -1,10 +1,11 @@
 macro(GOTOOL TOOLNAME TOOLSRC)
 	set(GOBIN go)
+	set(DST ${CMAKE_CURRENT_BINARY_DIR}/${TOOLNAME})
 	add_custom_command(
-		# TODO: move binaries to build dir
 		WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-		OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/${TOOLNAME}
-		COMMAND ${GOBIN} build -o ${TOOLNAME} ${TOOLSRC}
+		OUTPUT ${DST}
+		COMMAND ${GOBIN} build
+		ARGS -o ${DST} ${TOOLSRC}
 		DEPENDS ${TOOLSRC}
 	)
 endmacro()
