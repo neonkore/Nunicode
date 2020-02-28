@@ -1,111 +1,76 @@
+macro(GOTOOL TOOLNAME TOOLSRC)
+	set(GOBIN go)
+	add_custom_command(
+		# TODO: move binaries to build dir
+		WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+		OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/${TOOLNAME}
+		COMMAND ${GOBIN} build ${TOOLSRC}
+		DEPENDS ${TOOLSRC}
+	)
+endmacro()
+
+set(BMPONLY_SRC
+	bmponly.go
+)
+GOTOOL(bmponly "${BMPONLY_SRC}")
+
 set(UNIDATA_TOLOWER_SRC
 	unidata-tolower.go
 	unidata.go
 )
-add_custom_command(
-	# TODO: move binaries to build dir
-	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-	OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/unidata-tolower
-	COMMAND go build ${UNIDATA_TOLOWER_SRC}
-	DEPENDS ${UNIDATA_TOLOWER_SRC}
-)
+GOTOOL(unidata-tolower "${UNIDATA_TOLOWER_SRC}")
 
 set(UNIDATA_TOUPPER_SRC
 	unidata-toupper.go
 	unidata.go
 )
-add_custom_command(
-	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-	OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/unidata-toupper
-	COMMAND go build ${UNIDATA_TOUPPER_SRC}
-	DEPENDS ${UNIDATA_TOUPPER_SRC}
-)
-
-set(SPECIAL_TOUPPER_SRC
-	special-toupper.go
-	specialcasing.go
-	unidata.go
-)
-add_custom_command(
-	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-	OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/special-toupper
-	COMMAND go build ${SPECIAL_TOUPPER_SRC}
-	DEPENDS ${SPECIAL_TOUPPER_SRC}
-)
+GOTOOL(unidata-toupper "${UNIDATA_TOUPPER_SRC}")
 
 set(SPECIAL_TOLOWER_SRC
 	special-tolower.go
 	specialcasing.go
 	unidata.go
 )
-add_custom_command(
-	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-	OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/special-tolower
-	COMMAND go build ${SPECIAL_TOLOWER_SRC}
-	DEPENDS ${SPECIAL_TOLOWER_SRC}
+GOTOOL(special-tolower "${SPECIAL_TOLOWER_SRC}")
+
+set(SPECIAL_TOUPPER_SRC
+	special-toupper.go
+	specialcasing.go
+	unidata.go
 )
+GOTOOL(special-toupper "${SPECIAL_TOUPPER_SRC}")
 
 set(CASEFOLDING_TOFOLDING_SRC
 	casefolding-tofolding.go
 	casefolding.go
 	unidata.go
 )
-add_custom_command(
-	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-	OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/casefolding-tofolding
-	COMMAND go build ${CASEFOLDING_TOFOLDING_SRC}
-	DEPENDS ${CASEFOLDING_TOFOLDING_SRC}
-)
-
-set(BMPONLY_SRC
-	bmponly.go
-)
-add_custom_command(
-	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-	OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/bmponly
-	COMMAND go build ${BMPONLY_SRC}
-	DEPENDS ${BMPONLY_SRC}
-)
+GOTOOL(casefolding-tofolding "${CASEFOLDING_TOFOLDING_SRC}")
 
 set(UNIDATA_TOSORTABLE_SRC
 	unidata-tosortable.go
 	unidata.go
 )
-add_custom_command(
-	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-	OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/unidata-tosortable
-	COMMAND go build ${UNIDATA_TOSORTABLE_SRC}
-	DEPENDS ${UNIDATA_TOSORTABLE_SRC}
-)
+GOTOOL(unidata-tosortable "${UNIDATA_TOSORTABLE_SRC}")
 
 set(DECOMPS_TOUNACCENT_SRC
 	decomps-tounaccent.go
 	decomps.go
 	unidata.go
 )
-add_custom_command(
-	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-	OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/decomps-tounaccent
-	COMMAND go build ${DECOMPS_TOUNACCENT_SRC}
-	DEPENDS ${DECOMPS_TOUNACCENT_SRC}
-)
+GOTOOL(decomps-tounaccent "${DECOMPS_TOUNACCENT_SRC}")
 
 set(FILTER_SORTABLE_SRC
 	filter-sortable.go
 	allkeys.go
 	unidata.go
 )
-add_custom_command(
-	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-	OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/filter-sortable
-	COMMAND go build ${FILTER_SORTABLE_SRC}
-	DEPENDS ${FILTER_SORTABLE_SRC}
-)
+GOTOOL(filter-sortable "${FILTER_SORTABLE_SRC}")
 
 add_custom_target(tools
 	DEPENDS bmponly
 	DEPENDS unidata-tolower unidata-toupper
-	DEPENDS special-toupper special-tolower
+	DEPENDS special-tolower special-toupper
 	DEPENDS casefolding-tofolding
 	DEPENDS unidata-tosortable filter-sortable
 	DEPENDS decomps-tounaccent
