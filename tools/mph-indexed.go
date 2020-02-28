@@ -2,39 +2,13 @@ package main
 
 import (
 	"bufio"
-	"bytes"
 	"fmt"
 	"os"
 	"path"
 	"strconv"
 	"strings"
 	"time"
-	"unicode/utf8"
 )
-
-func formatReplacement(replacement []string) string {
-	parts := make([]int32, len(replacement))
-	for i, token := range replacement {
-		codepoint, err := strconv.ParseInt(token, 16, 64)
-		if err != nil {
-			fmt.Fprintln(os.Stderr, err)
-			return ""
-		}
-
-		parts[i] = int32(codepoint)
-	}
-
-	// Transform individual codepoints to UTF-8 encoded string
-	var writer bytes.Buffer
-	for _, codepoint := range parts {
-		// TODO: filter out non-characters?
-		p := make([]byte, 16)
-		bytes := utf8.EncodeRune(p, int32(codepoint))
-		writer.Write(p[:bytes])
-	}
-
-	return writer.String()
-}
 
 func usage() {
 	fmt.Printf("usage: %s [TAG] [COMPACT]\n\n", os.Args[0])
@@ -60,11 +34,10 @@ func main() {
 		compact = compactOpt
 	}
 
-	combined := make([]uint8, 0)
 	mapping := make(MPHMapping)
 
-	// Offset 0 is normally impossible, it is used for signaling collision
-	combined = append(combined, uint8(0))
+	// I is holding final values (weights), C is holding original
+	// Unicode codepoints for collision detection, no COMBINED
 
 	scanner := bufio.NewScanner(os.Stdin)
 	for scanner.Scan() {
@@ -81,18 +54,13 @@ func main() {
 			os.Exit(1)
 		}
 
-		replacement := formatReplacement(strings.Split(parts[1], ","))
-		if len(replacement) < 1 {
-			continue
+		replacement, err := strconv.ParseInt(parts[1], 16, 64)
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			os.Exit(1)
 		}
 
-		offset := len(combined)
-		combined = append(combined, []uint8(replacement)...)
-		combined = append(combined, uint8(0))
-
-		// fmt.Printf("%06X %d\n", codepoint, offset)
-
-		mapping[uint32(codepoint)] = MPHV{codepoint: uint32(codepoint), replacement: uint16(offset)}
+		mapping[uint32(codepoint)] = MPHV{codepoint: uint32(codepoint), replacement: uint16(replacement)}
 	}
 
 	G, V := createMPH(mapping)
@@ -112,7 +80,7 @@ func main() {
 		Prime:          MPHPrime,
 		Encoding:       MPHInternalEncoding,
 		GSize:          uint(len(G)),
-		CombinedLength: uint(len(combined)),
+		CombinedLength: 0,
 	}))
 	check(genMPHIncludes(sink, MPHIncludesTags{}))
 	check(genMPHG(sink, MPHGTags{
@@ -130,10 +98,5 @@ func main() {
 		Tag:       tag,
 		I:         I,
 		Linebreak: makeLinebreakFunc(10),
-	}))
-	check(genMPHCombined(sink, MPHCombinedTags{
-		Tag:       tag,
-		Combined:  combined,
-		Linebreak: makeLinebreakFunc(12),
 	}))
 }

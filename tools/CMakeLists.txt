@@ -75,6 +75,13 @@ set(MPH_COMBINED_SRC
 )
 GOTOOL(mph-combined "${MPH_COMBINED_SRC}")
 
+set(MPH_INDEXED_SRC
+	mph.go
+	mph-indexed.go
+	templates.go
+)
+GOTOOL(mph-indexed "${MPH_INDEXED_SRC}")
+
 add_custom_target(tools
 	DEPENDS bmponly
 	DEPENDS unidata-tolower unidata-toupper
@@ -82,5 +89,5 @@ add_custom_target(tools
 	DEPENDS casefolding-tofolding
 	DEPENDS unidata-tosortable filter-sortable
 	DEPENDS decomps-tounaccent
-	DEPENDS mph-combined
+	DEPENDS mph-combined mph-indexed
 )
