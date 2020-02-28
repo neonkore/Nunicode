@@ -23,7 +23,9 @@ const (
 
 // Checks if line in UnicodeData.txt is a comment
 func isComment(line string) bool {
-	return (len(line) > 0 && line[0] == '#')
+	// Strictly speaking comments are starting with #
+	// but some annotations are starting with @ e.g. in allkeys.txt
+	return (len(line) > 0 && (line[0] == '#' || line[0] == '@'))
 }
 
 // Removes inline comment from a like like this:

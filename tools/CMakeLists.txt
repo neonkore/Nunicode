@@ -90,11 +90,23 @@ add_custom_command(
 	DEPENDS ${DECOMPS_TOUNACCENT_SRC}
 )
 
+set(FILTER_SORTABLE_SRC
+	filter-sortable.go
+	allkeys.go
+	unidata.go
+)
+add_custom_command(
+	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+	OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/filter-sortable
+	COMMAND go build ${FILTER_SORTABLE_SRC}
+	DEPENDS ${FILTER_SORTABLE_SRC}
+)
+
 add_custom_target(tools
 	DEPENDS bmponly
 	DEPENDS unidata-tolower unidata-toupper
 	DEPENDS special-toupper special-tolower
 	DEPENDS casefolding-tofolding
-	DEPENDS unidata-tosortable
+	DEPENDS unidata-tosortable filter-sortable
 	DEPENDS decomps-tounaccent
 )
