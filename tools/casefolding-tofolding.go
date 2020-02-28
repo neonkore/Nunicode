@@ -23,16 +23,16 @@ import (
 //     See the discussions of case mapping in the Unicode Standard for more information."
 var FoldingClassPriority = []string{"F", "C", "S"}
 
-// FoldingEntry : entry in codepoint <-> folding mapping
-type FoldingEntry struct {
+// Entry in codepoint <-> folding mapping
+type foldingEntry struct {
 	foldingPriority int
 	transform       []string
 }
 
 func main() {
-	mapping := make(map[int]FoldingEntry)
+	mapping := make(map[int]foldingEntry)
 
-	for parts := range SplitUnidata(bufio.NewReader(os.Stdin)) {
+	for parts := range splitUnidata(bufio.NewReader(os.Stdin)) {
 		foldingClass := parts[CaseFoldingClass]
 		foldingPriority := -1
 		for i, val := range FoldingClassPriority {
@@ -69,7 +69,7 @@ func main() {
 			replacement[i] = strings.TrimSpace(part)
 		}
 
-		mapping[int(codepoint)] = FoldingEntry{foldingPriority, replacement}
+		mapping[int(codepoint)] = foldingEntry{foldingPriority, replacement}
 	}
 
 	for codepoint, entry := range mapping {

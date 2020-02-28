@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	for str := range MapSpecialCasing(bufio.NewReader(os.Stdin), SpecialCasingToUpper) {
+	for str := range mapSpecialCasing(bufio.NewReader(os.Stdin), SpecialCasingToUpper) {
 		fmt.Println(str)
 	}
 }

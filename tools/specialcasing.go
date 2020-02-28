@@ -20,13 +20,13 @@ const (
 	SpecialCasingCondition SpecialCasingMapping = 4
 )
 
-// MapSpecialCasing : builds mapping from codepoint to special cases of upper/lowercase.
+// Builds mapping from codepoint to special cases of upper/lowercase.
 // Does trimming where appropriate.
-func MapSpecialCasing(reader io.Reader, partsIndex SpecialCasingMapping) <-chan string {
+func mapSpecialCasing(reader io.Reader, partsIndex SpecialCasingMapping) <-chan string {
 	channel := make(chan string)
 
 	go func() {
-		for parts := range SplitUnidata(bufio.NewReader(os.Stdin)) {
+		for parts := range splitUnidata(bufio.NewReader(os.Stdin)) {
 			codepoint, err := strconv.ParseInt(parts[SpecialCasingCodepoint], 16, 64)
 			if err != nil {
 				fmt.Fprintln(os.Stderr, err)
@@ -34,7 +34,7 @@ func MapSpecialCasing(reader io.Reader, partsIndex SpecialCasingMapping) <-chan 
 			}
 
 			condition := parts[SpecialCasingCondition]
-			if len(condition) > 0 && !IsComment(condition) { // Unconditional only
+			if len(condition) > 0 && !isComment(condition) { // Unconditional only
 				continue
 			}
 

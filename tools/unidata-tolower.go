@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	for str := range MapUnidataCasing(bufio.NewReader(os.Stdin), UnidataToLower) {
+	for str := range mapUnidataCasing(bufio.NewReader(os.Stdin), UnidataToLower) {
 		fmt.Println(str)
 	}
 }

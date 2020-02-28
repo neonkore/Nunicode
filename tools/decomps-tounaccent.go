@@ -8,36 +8,30 @@ import (
 	"strings"
 )
 
-// DisactiticBlock : diacritic block description
-type DisactiticBlock struct {
+// Diacritic block description
+type disactiticBlock struct {
 	begin int
 	end   int
 }
 
 // DiacriticBlocks : actual diacritic blocks
 // When blocks changes, tounaccent.c is also need to be modified
-var DiacriticBlocks = []DisactiticBlock{
-	DisactiticBlock{0x0300, 0x036F}, // Combining Diacritical Marks
-	DisactiticBlock{0x1AB0, 0x1AFF}, // Combining Diacritical Marks Extended
-	DisactiticBlock{0x20D0, 0x20FF}, // Combining Diacritical Marks for Symbols
-	DisactiticBlock{0x1DC0, 0x1DFF}, // Combining Diacritical Marks Supplement
+var diacriticBlocks = []disactiticBlock{
+	disactiticBlock{0x0300, 0x036F}, // Combining Diacritical Marks
+	disactiticBlock{0x1AB0, 0x1AFF}, // Combining Diacritical Marks Extended
+	disactiticBlock{0x20D0, 0x20FF}, // Combining Diacritical Marks for Symbols
+	disactiticBlock{0x1DC0, 0x1DFF}, // Combining Diacritical Marks Supplement
 }
 
-// UnaccentEntry : entry in list of codepoints that need to be unaccented
-type UnaccentEntry struct {
-	codepoint int
-	decomps   []string
-}
-
-// IsAccent : Test if decomp (codepoints) is an accent (diacritic)
-func IsAccent(decomp string) bool {
+// Tests if decomp (codepoint) is an accent (diacritic)
+func isAccent(decomp string) bool {
 	codepoint, err := strconv.ParseInt(decomp, 16, 64)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		return false
 	}
 
-	for _, block := range DiacriticBlocks {
+	for _, block := range diacriticBlocks {
 		if int(codepoint) >= block.begin && int(codepoint) <= block.end {
 			return true
 		}
@@ -46,12 +40,12 @@ func IsAccent(decomp string) bool {
 	return false
 }
 
-// Unaccent : remove accents from decomps
-func Unaccent(decomps []string) []string {
+// Remove accents from decomps
+func unaccent(decomps []string) []string {
 	unaccented := make([]string, 0)
 
 	for _, decomp := range decomps {
-		if !IsAccent(decomp) {
+		if !isAccent(decomp) {
 			unaccented = append(unaccented, decomp)
 		}
 	}
@@ -59,10 +53,16 @@ func Unaccent(decomps []string) []string {
 	return unaccented
 }
 
-func main() {
-	unaccent := make([]UnaccentEntry, 0)
+// Entry in list of codepoints that need to be unaccented
+type unaccentEntry struct {
+	codepoint int
+	decomps   []string
+}
 
-	for parts := range SplitUnidata(bufio.NewReader(os.Stdin)) {
+func main() {
+	tounaccent := make([]unaccentEntry, 0)
+
+	for parts := range splitUnidata(bufio.NewReader(os.Stdin)) {
 		codepoint, err := strconv.ParseInt(parts[DecompsCodepoint], 16, 64)
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err)
@@ -80,15 +80,15 @@ func main() {
 		}
 
 		for _, decomp := range decomps {
-			if IsAccent(decomp) {
-				unaccent = append(unaccent, UnaccentEntry{int(codepoint), decomps})
+			if isAccent(decomp) {
+				tounaccent = append(tounaccent, unaccentEntry{int(codepoint), decomps})
 				break
 			}
 		}
 	}
 
-	for _, entry := range unaccent {
-		unaccented := Unaccent(entry.decomps)
+	for _, entry := range tounaccent {
+		unaccented := unaccent(entry.decomps)
 
 		// Some accents decomps into another accents (empty unaccented)
 		if len(unaccented) < 1 {
