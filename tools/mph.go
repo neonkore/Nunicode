@@ -157,3 +157,15 @@ func createMPH(mapping MPHMapping) (MPHGType, MPHVType) {
 
 	return G, V
 }
+
+func buildCodepointsAndIndices(v MPHVType) (MPHCType, MPHIType) {
+	size := len(v)
+	C := make(MPHCType, size)
+	I := make(MPHIType, size)
+
+	for i, entry := range v {
+		C[i], I[i] = entry.codepoint, entry.replacement
+	}
+
+	return C, I
+}

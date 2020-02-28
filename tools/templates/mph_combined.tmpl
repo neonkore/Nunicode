@@ -5,7 +5,7 @@
  * from this memory location.
  */
 const uint8_t {{.Tag}}_COMBINED[] = {
-	{{- range $i, $v := .COMBINED}}
+	{{- range $i, $v := .Combined}}
 		{{- /* newline when needed */ -}}
 		{{- if call $.Linebreak $i }}
 			{{- /* include tab in every newline */ -}}

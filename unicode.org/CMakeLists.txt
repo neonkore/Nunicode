@@ -1,6 +1,7 @@
 set(DATA ${CMAKE_SOURCE_DIR}/unicode.org)
 set(TOOLS ${CMAKE_SOURCE_DIR}/tools)
 set(GOTOOLS ${CMAKE_BINARY_DIR}/tools)
+set(GOTEMPLATES ${CMAKE_SOURCE_DIR}/tools/templates)
 set(GEN ${CMAKE_SOURCE_DIR}/libnu/gen)
 set(TGEN ${CMAKE_SOURCE_DIR}/tests/gen)
 
@@ -45,33 +46,33 @@ add_custom_target(_ducet
 add_custom_target(_toupper
 	COMMAND echo -n && (cat ${UNIDATA} | ${GOTOOLS}/unidata-toupper | sort
 		&& cat ${SPECIAL} | ${GOTOOLS}/special-toupper | sort)
-	| ${TOOLS}/mph-combined "NU_TOUPPER" 0 >${GEN}/_toupper.c
+	| TEMPLATES=${GOTEMPLATES} ${GOTOOLS}/mph-combined "NU_TOUPPER" 0 >${GEN}/_toupper.c
 	COMMAND echo -n && (cat ${UNIDATA} | ${GOTOOLS}/unidata-toupper | sort
 		&& cat ${SPECIAL} | ${GOTOOLS}/special-toupper | sort)
-	| ${GOTOOLS}/bmponly | ${TOOLS}/mph-combined "NU_TOUPPER" 1 >${GEN}/_toupper_compact.c
+	| ${GOTOOLS}/bmponly | TEMPLATES=${GOTEMPLATES} ${GOTOOLS}/mph-combined "NU_TOUPPER" 1 >${GEN}/_toupper_compact.c
 )
 
 add_custom_target(_tolower
 	COMMAND echo -n && (cat ${UNIDATA} | ${GOTOOLS}/unidata-tolower | sort
 		&& cat ${SPECIAL} | ${GOTOOLS}/special-tolower | sort)
-	| ${TOOLS}/mph-combined "NU_TOLOWER" 0 >${GEN}/_tolower.c
+	| TEMPLATES=${GOTEMPLATES} ${GOTOOLS}/mph-combined "NU_TOLOWER" 0 >${GEN}/_tolower.c
 	COMMAND echo -n && (cat ${UNIDATA} | ${GOTOOLS}/unidata-tolower | sort
 		&& cat ${SPECIAL} | ${GOTOOLS}/special-tolower | sort)
-	| ${GOTOOLS}/bmponly | ${TOOLS}/mph-combined "NU_TOLOWER" 1 >${GEN}/_tolower_compact.c
+	| ${GOTOOLS}/bmponly | TEMPLATES=${GOTEMPLATES} ${GOTOOLS}/mph-combined "NU_TOLOWER" 1 >${GEN}/_tolower_compact.c
 )
 
 add_custom_target(_tofold
 	COMMAND echo -n && cat ${FOLDING} | ${GOTOOLS}/casefolding-tofolding | sort
-	| ${TOOLS}/mph-combined "NU_TOFOLD" 0 >${GEN}/_tofold.c
+	| TEMPLATES=${GOTEMPLATES} ${GOTOOLS}/mph-combined "NU_TOFOLD" 0 >${GEN}/_tofold.c
 	COMMAND echo -n && cat ${FOLDING} | ${GOTOOLS}/casefolding-tofolding | sort
-	| ${GOTOOLS}/bmponly | ${TOOLS}/mph-combined "NU_TOFOLD" 1 >${GEN}/_tofold_compact.c
+	| ${GOTOOLS}/bmponly | TEMPLATES=${GOTEMPLATES} ${GOTOOLS}/mph-combined "NU_TOFOLD" 1 >${GEN}/_tofold_compact.c
 )
 
 add_custom_target(_tounaccent
 	COMMAND echo -n && cat ${DECOMPS} | ${GOTOOLS}/decomps-tounaccent | sort
-	| ${TOOLS}/mph-combined "NU_TOUNACCENT" 0 >${GEN}/_tounaccent.c
+	| TEMPLATES=${GOTEMPLATES} ${GOTOOLS}/mph-combined "NU_TOUNACCENT" 0 >${GEN}/_tounaccent.c
 	COMMAND echo -n && cat ${DECOMPS} | ${GOTOOLS}/decomps-tounaccent | sort
-	| ${GOTOOLS}/bmponly | ${TOOLS}/mph-combined "NU_TOUNACCENT" 1 >${GEN}/_tounaccent_compact.c
+	| ${GOTOOLS}/bmponly | TEMPLATES=${GOTEMPLATES} ${GOTOOLS}/mph-combined "NU_TOUNACCENT" 1 >${GEN}/_tounaccent_compact.c
 )
 
 add_custom_target(gen

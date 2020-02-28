@@ -37,9 +37,9 @@ func formatReplacement(replacement []string) string {
 }
 
 func usage() {
-	fmt.Printf("usage: %s [TAG] [BMP_ONLY]\n\n", os.Args[0])
+	fmt.Printf("usage: %s [TAG] [COMPACT]\n\n", os.Args[0])
 	fmt.Printf("  [TAG]      - tag to use to prefix hashtables\n")
-	fmt.Printf("  [BMP_ONLY] - flag to indicate if set is BMP-only, true or false\n")
+	fmt.Printf("  [COMPACT]  - flag to indicate if set is BMP-only, true or false\n")
 }
 
 func main() {
@@ -48,21 +48,16 @@ func main() {
 		os.Exit(1)
 	}
 
-	tag, bmponly := os.Args[1], false
+	tag, compact := os.Args[1], false
 
 	if len(os.Args) > 2 {
-		bmponlyOpt, err := strconv.ParseBool(os.Args[2])
+		compactOpt, err := strconv.ParseBool(os.Args[2])
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err)
 			os.Exit(1)
 		}
 
-		bmponly = bmponlyOpt
-	}
-
-	// FIXME: this is a placeholder
-	if bmponly {
-		fmt.Println()
+		compact = compactOpt
 	}
 
 	combined := make([]uint8, 0)
@@ -96,7 +91,8 @@ func main() {
 		mapping[uint32(codepoint)] = MPHV{codepoint: uint32(codepoint), replacement: uint16(offset)}
 	}
 
-	G, _ := createMPH(mapping)
+	G, V := createMPH(mapping)
+	C, I := buildCodepointsAndIndices(V)
 
 	sink, check := os.Stdout, func(err error) {
 		if err != nil {
@@ -120,9 +116,20 @@ func main() {
 		G:         G,
 		Linebreak: makeLinebreakFunc(12),
 	}))
+	check(genMPHC(sink, MPHCTags{
+		Compact:   compact,
+		Tag:       tag,
+		C:         C,
+		Linebreak: makeLinebreakFunc(8),
+	}))
+	check(genMPHI(sink, MPHITags{
+		Tag:       tag,
+		I:         I,
+		Linebreak: makeLinebreakFunc(10),
+	}))
 	check(genMPHCombined(sink, MPHCombinedTags{
 		Tag:       tag,
-		COMBINED:  combined,
+		Combined:  combined,
 		Linebreak: makeLinebreakFunc(12),
 	}))
 }

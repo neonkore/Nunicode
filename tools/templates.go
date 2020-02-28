@@ -3,18 +3,21 @@ package main
 import (
 	"bytes"
 	"io"
+	"os"
 	"path"
 	"text/template"
 )
 
 // Template files
 const (
-	MPHHeaderTemplate   string = "templates/mph_header.tmpl"
-	MPHIncludesTemplate string = "templates/mph_includes.tmpl"
-	MPHGTemplate        string = "templates/mph_g.tmpl"
-	MPHCTemplate        string = "templates/mph_c.tmpl"
-	MPHITemplate        string = "templates/mph_i.tmpl"
-	MPHCombinedTemplate string = "templates/mph_combined.tmpl"
+	DefaultTemplatesDir     string = "templates"
+	TemplatesDirEnvVariable string = "TEMPLATES"
+	MPHHeaderTemplate       string = "mph_header.tmpl"
+	MPHIncludesTemplate     string = "mph_includes.tmpl"
+	MPHGTemplate            string = "mph_g.tmpl"
+	MPHCTemplate            string = "mph_c.tmpl"
+	MPHITemplate            string = "mph_i.tmpl"
+	MPHCombinedTemplate     string = "mph_combined.tmpl"
 )
 
 // RangeLinebreakFunc : takes position in range and returns true if linebreak
@@ -67,7 +70,7 @@ type MPHITags struct {
 // MPHCombinedTags : tags used in MPH C block
 type MPHCombinedTags struct {
 	Tag       string
-	COMBINED  MPHCombinedType
+	Combined  MPHCombinedType
 	Linebreak RangeLinebreakFunc
 }
 
@@ -87,7 +90,14 @@ func formatTemplate(filename string, tags interface{}) (string, error) {
 }
 
 func genTemplate(writer io.Writer, template string, tags interface{}) error {
-	formatted, err := formatTemplate(template, tags)
+	templateDir := os.Getenv(TemplatesDirEnvVariable)
+	if len(templateDir) < 1 {
+		templateDir = DefaultTemplatesDir
+	}
+
+	templatePath := path.Join(templateDir, template)
+
+	formatted, err := formatTemplate(templatePath, tags)
 	if err != nil {
 		return err
 	}
