@@ -1,10 +1,13 @@
-/* indices
+/* Indices
  *
- * this is data associated with codepoints (encoded in C)
+ * This is data associated with codepoints (encoded in C)
  *
- * it may contain a straightforward mapping to another codepoint
+ * It may contain a straightforward mapping to another codepoint
  * or index in COMBINED if it's more compilcated than that. actual use is
  * context-dependent.
+ *
+ * This array can hold values from 0x0000 to 0xFFFF, therefore it can only
+ * index up to 65535 values in COMBINED.
  */
 const uint16_t {{.Tag}}_VALUES_I[] = {
 	{{- range $i, $v := .I}}

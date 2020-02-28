@@ -1,12 +1,12 @@
-/* codepoints
+/* Codepoints
  *
- * this table is used for collisions detection.
- * if hashed codepoint matches stored codepoint when codepoint was
+ * This table is used for collisions detection.
+ * If hashed codepoint matches stored codepoint when codepoint was
  * encoded, i.e. it was part of original codepoints set used to build
  * this and related tables. otherwise it's some other codepoint that
  * isn't part of original set.
  *
- * written down as 6-bytes-wide hex (unicode codepoint limit) regardless
+ * Written down as 6-bytes-wide hex (unicode codepoint limit) regardless
  * if actual value is smaller than that, compiler should warn if such value
  * overflows. this shouldn't happen or should only happen if table was
  * generated incorrectly.

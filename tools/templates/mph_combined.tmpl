@@ -1,4 +1,8 @@
-/* when applicable, data referenced by I
+/* When applicable, data referenced by I
+ *
+ * Normally this is UTF-8 encoded, zero-terminated, concatenated strings,
+ * so, having correct offset (stored in I), nu_udb_read() can read them
+ * from this memory location.
  */
 const uint8_t {{.Tag}}_COMBINED[] = {
 	{{- range $i, $v := .COMBINED}}
