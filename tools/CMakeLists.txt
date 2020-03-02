@@ -54,19 +54,25 @@ set(UNIDATA_TOSORTABLE_SRC
 )
 GOTOOL(unidata-tosortable "${UNIDATA_TOSORTABLE_SRC}")
 
-set(DECOMPS_TOUNACCENT_SRC
-	decomps-tounaccent.go
-	decomps.go
-	unicodedata.go
-)
-GOTOOL(decomps-tounaccent "${DECOMPS_TOUNACCENT_SRC}")
-
 set(FILTER_SORTABLE_SRC
 	allkeys.go
 	filter-sortable.go
 	unicodedata.go
 )
 GOTOOL(filter-sortable "${FILTER_SORTABLE_SRC}")
+
+set(FILTERED_TOMPH_SRC
+	allkeys.go
+	filtered-tomph.go
+)
+GOTOOL(filtered-tomph "${FILTERED_TOMPH_SRC}")
+
+set(DECOMPS_TOUNACCENT_SRC
+	decomps-tounaccent.go
+	decomps.go
+	unicodedata.go
+)
+GOTOOL(decomps-tounaccent "${DECOMPS_TOUNACCENT_SRC}")
 
 set(MPH_COMBINED_SRC
 	mph.go
@@ -87,7 +93,7 @@ add_custom_target(tools
 	DEPENDS unidata-tolower unidata-toupper
 	DEPENDS special-tolower special-toupper
 	DEPENDS casefolding-tofolding
-	DEPENDS unidata-tosortable filter-sortable
+	DEPENDS unidata-tosortable filter-sortable filtered-tomph
 	DEPENDS decomps-tounaccent
 	DEPENDS mph-combined mph-indexed
 )

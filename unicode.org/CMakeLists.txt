@@ -23,11 +23,11 @@ add_custom_target(_ducet
 	COMMAND cat ${FILTERED} | ${GOTOOLS}/bmponly >${FILTERED_COMPACT}
 	COMMAND cat ${FILTERED_CONTRACTIONS} | ${GOTOOLS}/bmponly >${FILTERED_CONTRACTIONS_COMPACT}
 	# regular hastable
-	COMMAND ${TOOLS}/filtered-tomph ${FILTERED} ${FILTERED_CONTRACTIONS}
+	COMMAND ${GOTOOLS}/filtered-tomph ${FILTERED} ${FILTERED_CONTRACTIONS}
 		| TEMPLATES=${GOTEMPLATES} ${GOTOOLS}/mph-indexed "NU_DUCET" 0 >${GEN}/_ducet.c
 	COMMAND ${TOOLS}/contractions-toc ${FILTERED} ${FILTERED_CONTRACTIONS} "_nu_ducet" 0 >${GEN}/_ducet_switch.c
 	# bmp-only hastable
-	COMMAND ${TOOLS}/filtered-tomph ${FILTERED_COMPACT} ${FILTERED_CONTRACTIONS_COMPACT}
+	COMMAND ${GOTOOLS}/filtered-tomph ${FILTERED_COMPACT} ${FILTERED_CONTRACTIONS_COMPACT}
 		| TEMPLATES=${GOTEMPLATES} ${GOTOOLS}/mph-indexed "NU_DUCET" 1 >${GEN}/_ducet_compact.c
 	COMMAND ${TOOLS}/contractions-toc ${FILTERED_COMPACT} ${FILTERED_CONTRACTIONS_COMPACT} "_nu_ducet" 1 >${GEN}/_ducet_switch_compact.c
 	# tests
