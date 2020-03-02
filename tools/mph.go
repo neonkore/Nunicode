@@ -6,7 +6,7 @@ import (
 
 // Constants common for entire MPH generation
 const (
-	MPHPrime            = 0x01000193 // No particular reason, because FVN is not currently used
+	MPHPrime            = 0x01000193 // No particular reason, because FVN is not currently used. Should match prime used in _nu_hash().
 	MPHInternalEncoding = "UTF-8"    // Internal encoding for COMBINED
 )
 
@@ -15,8 +15,8 @@ type MPHGType []int16
 
 // MPHV : internal type used to build MPH
 type MPHV struct {
-	codepoint   uint32 // TODO: rune
-	replacement uint16 // TODO: int16?
+	codepoint   uint32 // Perhaps should have been `rune`, but for now keep this as close to generated C code as possible
+	replacement uint16
 }
 
 // MPHVType : internal type used during MPH creation,
@@ -38,7 +38,9 @@ type MPHCombinedType []uint8
 type MPHMapping map[uint32]MPHV
 
 // Calculates a distinct hash function for a given string.
-// Each value of the integer d results in a different hash value
+// Each value of the integer d results in a different hash value.
+//
+// Should loosely match _nu_hash()
 func hash(d uint32, codepoint uint32) uint32 {
 	if d == 0 {
 		d = MPHPrime
@@ -77,7 +79,6 @@ func hash(d uint32, codepoint uint32) uint32 {
 // intermediate values needed to compute the index of the value in V.
 // V contains the values of the incoming dictionary.
 func createMPH(mapping MPHMapping) (MPHGType, MPHVType) {
-	// FIXME: too many typecasts
 	size := uint32(len(mapping))
 
 	// Step 1: Place all keys into buckets
@@ -95,10 +96,13 @@ func createMPH(mapping MPHMapping) (MPHGType, MPHVType) {
 		return (len(buckets[i]) > len(buckets[j]))
 	})
 
-	lastBucket := uint32(0)
+	lastBucket := 0
 	for i, bucket := range buckets {
+		// Stop this stage when reaching bucket with length of 1 or 0.
+		// Since buckets are sorted, tail of buckets has either buckets with
+		// length 1 or 0 (as step 3 expecpects).
 		if len(bucket) <= 1 {
-			lastBucket = uint32(i)
+			lastBucket = i
 			break
 		}
 
@@ -117,10 +121,11 @@ func createMPH(mapping MPHMapping) (MPHGType, MPHVType) {
 				}
 			}
 
+			// If slot is already taken, or codepoint is assigned in V,
+			// reset item and clear slots, then try another d
 			if V[slot].codepoint != 0 || slotBusy {
+				item, slots = 0, slots[:0]
 				d++
-				item = 0
-				slots = make([]uint32, 0)
 			} else {
 				slots = append(slots, slot)
 				item++
@@ -133,7 +138,7 @@ func createMPH(mapping MPHMapping) (MPHGType, MPHVType) {
 		}
 	}
 
-	// Only buckets with 1 item remain. process them more quickly by directly
+	// Step 3: Only buckets with 1 item remain. process them more quickly by directly
 	// placing them into a free slot. Use a negative value of d to indicate this.
 	freelist := make([]uint32, 0)
 	for i := uint32(0); i < size; i++ {
@@ -142,7 +147,7 @@ func createMPH(mapping MPHMapping) (MPHGType, MPHVType) {
 		}
 	}
 
-	for i := lastBucket; i < size; i++ {
+	for i := lastBucket; i < len(buckets); i++ {
 		bucket := buckets[i]
 		if len(bucket) < 1 {
 			break
