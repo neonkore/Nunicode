@@ -24,7 +24,7 @@ type MPHV struct {
 // replacement goes into I
 type MPHVType []MPHV
 
-// MPHCType : values (C) array type
+// MPHCType : codepoints (C) array type
 type MPHCType []uint32
 
 // MPHIType : indices (I) array type

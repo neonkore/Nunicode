@@ -17,54 +17,54 @@ GOTOOL(bmponly "${BMPONLY_SRC}")
 
 set(UNIDATA_TOLOWER_SRC
 	unidata-tolower.go
-	unidata.go
+	unicodedata.go
 )
 GOTOOL(unidata-tolower "${UNIDATA_TOLOWER_SRC}")
 
 set(UNIDATA_TOUPPER_SRC
 	unidata-toupper.go
-	unidata.go
+	unicodedata.go
 )
 GOTOOL(unidata-toupper "${UNIDATA_TOUPPER_SRC}")
 
 set(SPECIAL_TOLOWER_SRC
 	special-tolower.go
 	specialcasing.go
-	unidata.go
+	unicodedata.go
 )
 GOTOOL(special-tolower "${SPECIAL_TOLOWER_SRC}")
 
 set(SPECIAL_TOUPPER_SRC
 	special-toupper.go
 	specialcasing.go
-	unidata.go
+	unicodedata.go
 )
 GOTOOL(special-toupper "${SPECIAL_TOUPPER_SRC}")
 
 set(CASEFOLDING_TOFOLDING_SRC
 	casefolding-tofolding.go
 	casefolding.go
-	unidata.go
+	unicodedata.go
 )
 GOTOOL(casefolding-tofolding "${CASEFOLDING_TOFOLDING_SRC}")
 
 set(UNIDATA_TOSORTABLE_SRC
 	unidata-tosortable.go
-	unidata.go
+	unicodedata.go
 )
 GOTOOL(unidata-tosortable "${UNIDATA_TOSORTABLE_SRC}")
 
 set(DECOMPS_TOUNACCENT_SRC
 	decomps-tounaccent.go
 	decomps.go
-	unidata.go
+	unicodedata.go
 )
 GOTOOL(decomps-tounaccent "${DECOMPS_TOUNACCENT_SRC}")
 
 set(FILTER_SORTABLE_SRC
 	allkeys.go
 	filter-sortable.go
-	unidata.go
+	unicodedata.go
 )
 GOTOOL(filter-sortable "${FILTER_SORTABLE_SRC}")
 

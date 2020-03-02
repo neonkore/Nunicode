@@ -9,16 +9,16 @@ import (
 	"strings"
 )
 
-// UnidataMapping : indices of various columns in UnicodeData.txt (delimited by ";")
-type UnidataMapping int
+// UnicodeDataMapping : indices of various columns in UnicodeData.txt (delimited by ";")
+type UnicodeDataMapping int
 
 // Actual mapping to columns
 const (
-	UnidataCodepoint UnidataMapping = 0
-	UnidataCategory  UnidataMapping = 2
-	UnidataDecomps   UnidataMapping = 4
-	UnidataToUpper   UnidataMapping = 12
-	UnidataToLower   UnidataMapping = 13
+	UnidataCodepoint UnicodeDataMapping = 0
+	UnidataCategory  UnicodeDataMapping = 2
+	UnidataDecomps   UnicodeDataMapping = 4
+	UnidataToUpper   UnicodeDataMapping = 12
+	UnidataToLower   UnicodeDataMapping = 13
 )
 
 // Checks if line in UnicodeData.txt is a comment
@@ -69,7 +69,7 @@ func splitUnidata(reader io.Reader) <-chan []string {
 
 // Builds mapping from codepoint to uppercase or lowercase.
 // Does trimming where appropriate.
-func mapUnidataCasing(reader io.Reader, partsIndex UnidataMapping) <-chan string {
+func mapUnidataCasing(reader io.Reader, partsIndex UnicodeDataMapping) <-chan string {
 	channel := make(chan string)
 
 	go func() {
