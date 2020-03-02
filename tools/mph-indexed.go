@@ -64,7 +64,7 @@ func main() {
 	}
 
 	G, V := createMPH(mapping)
-	C, I := buildCodepointsAndIndices(V)
+	C, I := splitCodepointsAndIndices(V)
 
 	sink, check := os.Stdout, func(err error) {
 		if err != nil {

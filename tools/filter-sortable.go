@@ -54,7 +54,7 @@ func reformatWeight(weightStr string) string {
 
 func usage() {
 	fmt.Printf("%s [SORTABLE]\n\n", os.Args[0])
-	fmt.Printf("[SORTABLE] - file with a list of acceptable codepoints")
+	fmt.Printf("  [SORTABLE] - file with a list of acceptable codepoints")
 }
 
 func main() {

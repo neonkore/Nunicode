@@ -25,7 +25,7 @@ func formatReplacement(replacement []string) string {
 	}
 
 	// Transform individual codepoints to UTF-8 encoded string
-	var writer bytes.Buffer
+	writer := bytes.Buffer{}
 	for _, codepoint := range parts {
 		// TODO: filter out non-characters?
 		p := make([]byte, 16)
@@ -96,7 +96,7 @@ func main() {
 	}
 
 	G, V := createMPH(mapping)
-	C, I := buildCodepointsAndIndices(V)
+	C, I := splitCodepointsAndIndices(V)
 
 	sink, check := os.Stdout, func(err error) {
 		if err != nil {

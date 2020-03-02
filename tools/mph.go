@@ -164,7 +164,7 @@ func createMPH(mapping MPHMapping) (MPHGType, MPHVType) {
 }
 
 // Splits generated V into C and I arrays
-func buildCodepointsAndIndices(v MPHVType) (MPHCType, MPHIType) {
+func splitCodepointsAndIndices(v MPHVType) (MPHCType, MPHIType) {
 	size := len(v)
 	C := make(MPHCType, size)
 	I := make(MPHIType, size)

@@ -81,7 +81,7 @@ func formatTemplate(filename string, tags interface{}) (string, error) {
 		return "", err
 	}
 
-	var formatted bytes.Buffer
+	formatted := bytes.Buffer{}
 	if err = t.Execute(&formatted, tags); err != nil {
 		return "", err
 	}

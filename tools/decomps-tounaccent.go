@@ -8,23 +8,19 @@ import (
 	"strings"
 )
 
-// Diacritic block description
-type disactiticBlock struct {
-	begin int
-	end   int
-}
-
-// DiacriticBlocks : actual diacritic blocks
-// When blocks changes, tounaccent.c is also need to be modified
-var diacriticBlocks = []disactiticBlock{
-	disactiticBlock{begin: 0x0300, end: 0x036F}, // Combining Diacritical Marks
-	disactiticBlock{begin: 0x1AB0, end: 0x1AFF}, // Combining Diacritical Marks Extended
-	disactiticBlock{begin: 0x20D0, end: 0x20FF}, // Combining Diacritical Marks for Symbols
-	disactiticBlock{begin: 0x1DC0, end: 0x1DFF}, // Combining Diacritical Marks Supplement
-}
-
 // Tests if decomp (codepoint) is an accent (diacritic)
 func isAccent(decomp string) bool {
+	// When blocks changes, tounaccent.c is also need to be modified
+	var diacriticBlocks = []struct {
+		begin int
+		end   int
+	}{
+		{0x0300, 0x036F}, // Combining Diacritical Marks
+		{0x1AB0, 0x1AFF}, // Combining Diacritical Marks Extended
+		{0x20D0, 0x20FF}, // Combining Diacritical Marks for Symbols
+		{0x1DC0, 0x1DFF}, // Combining Diacritical Marks Supplement
+	}
+
 	codepoint, err := strconv.ParseInt(decomp, 16, 64)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
