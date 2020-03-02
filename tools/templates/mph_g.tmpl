@@ -1,4 +1,20 @@
 /* MPH lookup table
+ *
+ * Lookup for a value using this table should be something like (pseudo code):
+ *
+ * ```
+ * d = G[hash(0, key) % len(G)]
+ * if d < 0: return -d - 1
+ * return hash(d, key) % len(G)
+ * ```
+ *
+ * Note that `hash()` should take into account that id d == 0 then prime
+ * (listed above) is used to initialize d (pseudo code):
+ *
+ * ```
+ * if d == 0: d = PRIME
+ * return d ^ c
+ * ```
  */
 const int16_t {{.Tag}}_G[] = {
 	{{- range $i, $v := .G}}
@@ -8,7 +24,8 @@ const int16_t {{.Tag}}_G[] = {
 			{{- printf "\n\t"}}
 		{{- end}}
 		{{- /* print G values as signed integers */ -}}
-		{{- printf "%d, " $v}}
+		{{- /* uint16_t can hold from -32768 up to 32767, thus max possible width is 6 including minus sign */ -}}
+		{{- printf "%6d, " $v}}
 	{{- end}}
 };
 

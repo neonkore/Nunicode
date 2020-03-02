@@ -118,7 +118,7 @@ func main() {
 	check(genMPHG(sink, MPHGTags{
 		Tag:       tag,
 		G:         G,
-		Linebreak: makeLinebreakFunc(12),
+		Linebreak: makeLinebreakFunc(10),
 	}))
 	check(genMPHC(sink, MPHCTags{
 		Compact:   compact,
