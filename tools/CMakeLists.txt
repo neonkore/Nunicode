@@ -63,6 +63,7 @@ GOTOOL(filter-sortable "${FILTER_SORTABLE_SRC}")
 
 set(FILTERED_TOMPH_SRC
 	allkeys.go
+	contractions.go
 	filtered-tomph.go
 )
 GOTOOL(filtered-tomph "${FILTERED_TOMPH_SRC}")
