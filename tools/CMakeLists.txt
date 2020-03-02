@@ -4,8 +4,10 @@ macro(GOTOOL TOOLNAME TOOLSRC)
 	add_custom_command(
 		WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 		OUTPUT ${DST}
-		COMMAND ${GOBIN} build
-		ARGS -o ${DST} ${TOOLSRC}
+		COMMAND ${GOBIN}
+		ARGS build
+		ARGS -o ${DST}
+		ARGS ${TOOLSRC}
 		DEPENDS ${TOOLSRC}
 	)
 endmacro()

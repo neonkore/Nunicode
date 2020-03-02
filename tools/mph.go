@@ -106,7 +106,7 @@ func createMPH(mapping MPHMapping) (MPHGType, MPHVType) {
 			break
 		}
 
-		d := uint32(1)
+		var d uint32 = 1
 		slots := []uint32{}
 
 		// Repeatedly try different values of d until we find a hash function
