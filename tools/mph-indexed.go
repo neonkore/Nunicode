@@ -34,7 +34,7 @@ func main() {
 		compact = compactOpt
 	}
 
-	mapping := make(MPHMapping)
+	mapping := MPHMapping{}
 
 	// I is holding final values (weights), C is holding original
 	// Unicode codepoints for collision detection, no COMBINED

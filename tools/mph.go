@@ -107,7 +107,7 @@ func createMPH(mapping MPHMapping) (MPHGType, MPHVType) {
 		}
 
 		d := uint32(1)
-		slots := make([]uint32, 0)
+		slots := []uint32{}
 
 		// Repeatedly try different values of d until we find a hash function
 		// that places all items in the bucket into free slots
@@ -140,7 +140,7 @@ func createMPH(mapping MPHMapping) (MPHGType, MPHVType) {
 
 	// Step 3: Only buckets with 1 item remain. process them more quickly by directly
 	// placing them into a free slot. Use a negative value of d to indicate this.
-	freelist := make([]uint32, 0)
+	freelist := []uint32{}
 	for i := uint32(0); i < size; i++ {
 		if V[i].codepoint == 0 {
 			freelist = append(freelist, i)

@@ -42,7 +42,7 @@ func isAccent(decomp string) bool {
 
 // Remove accents from decomps
 func unaccent(decomps []string) []string {
-	unaccented := make([]string, 0)
+	unaccented := []string{}
 
 	for _, decomp := range decomps {
 		if !isAccent(decomp) {
@@ -60,7 +60,7 @@ type unaccentEntry struct {
 }
 
 func main() {
-	tounaccent := make([]unaccentEntry, 0)
+	tounaccent := []unaccentEntry{}
 
 	for parts := range splitUnidata(bufio.NewReader(os.Stdin)) {
 		codepoint, err := strconv.ParseInt(parts[DecompsCodepoint], 16, 64)

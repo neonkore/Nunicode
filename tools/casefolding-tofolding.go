@@ -32,7 +32,7 @@ type foldingEntry struct {
 }
 
 func main() {
-	mapping := make(map[int]foldingEntry)
+	mapping := map[int]foldingEntry{}
 
 	for parts := range splitUnidata(bufio.NewReader(os.Stdin)) {
 		foldingClass := parts[CaseFoldingClass]

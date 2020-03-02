@@ -60,8 +60,8 @@ func main() {
 		compact = compactOpt
 	}
 
-	combined := make([]uint8, 0)
-	mapping := make(MPHMapping)
+	combined := []uint8{}
+	mapping := MPHMapping{}
 
 	// Offset 0 is normally impossible, it is used for signaling collision
 	combined = append(combined, uint8(0))

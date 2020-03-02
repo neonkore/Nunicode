@@ -11,13 +11,13 @@ import (
 // will break comparison in passCodepoint(). Ideally codepoints would
 // be parsed to ints and compared as ints, i guess.
 func loadAcceptable(filename string) []string {
+	ret := []string{}
+
 	file, err := os.Open(filename)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
-		return make([]string, 0)
+		return ret
 	}
-
-	ret := make([]string, 0)
 
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
