@@ -374,9 +374,9 @@ Provides functions for following SQL statements:
 * lower(X)
 * unaccent(X)
 * X LIKE Y ESCAPE Z
-* COLLATE NU1200 - case-sensitive Unicode collation
+* COLLATE NU1300 - case-sensitive Unicode collation
   (or as defined by NU_SQLITE_COLLATION_NAME build option)
-* COLLATE NU1200\_NOCASE - case-insensitive Unicode collation
+* COLLATE NU1300\_NOCASE - case-insensitive Unicode collation
   (or as defined by NU_SQLITE_NOCASE_COLLATION_NAME)
 
 Supported encodings: UTF-8, UTF-16, UTF-16LE, UTF-16BE. Please note that
