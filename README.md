@@ -1,6 +1,6 @@
 [TOC]
 
-This is i18n library implementing Unicode 12.1.
+This is i18n library implementing Unicode 13.0.
 
 nunicode is trying to carefully follow the Unicode specification with
 reasonable trade-offs. It doesn't implement the entire standard, but
@@ -27,11 +27,11 @@ Conformance:
 
 Specification         | Notes
 ----------------------|----------------
-Unicode 12.1          | Conformant on character set and Unicode transformation forms (UTF)
-ISO/IEC 10646         | ISO/IEC 10646:2017, fifth edition, plus Amendments 1 and 2 to the fifth edition, plus yadayadayada (as [defined by Unicode 12.0][])
+Unicode 13.0          | Conformant on character set and Unicode transformation forms (UTF)
+ISO/IEC 10646         | ISO/IEC 10646:2020, sixth edition (as [defined by Unicode 13.0][])
 ISO/IEC 14651         | ISO/IEC 14651:2011, [notes][]
 
-[defined by Unicode 12.0]: http://www.unicode.org/versions/Unicode12.0.0/
+[defined by Unicode 13.0]: http://www.unicode.org/versions/Unicode13.0.0/
 
 Encodings supported:
 
@@ -75,7 +75,7 @@ Unicode | nunicode    | Git branch
 10.0.0  | 1.8.1       | unicode.1000
 11.0.0  | 1.9.1       | unicode.1100
 12.1.0  | 1.10        | unicode.1210
-13.0.0  | TBA         | master
+13.0.0  | 1.11        | master
 
 ## Tests coverage
 
