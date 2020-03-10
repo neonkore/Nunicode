@@ -4,10 +4,13 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strings"
 )
 
 func main() {
-	for str := range mapSpecialCasing(bufio.NewReader(os.Stdin), SpecialCasingToLower) {
-		fmt.Println(str)
-	}
+	mapSpecialCasing(bufio.NewReader(os.Stdin), SpecialCasingToLower,
+		func(codepoint int64, replacement []string) error {
+			fmt.Printf("%06X %s\n", codepoint, strings.Join(replacement, ","))
+			return nil
+		})
 }

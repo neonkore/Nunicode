@@ -99,14 +99,14 @@ func collectContractions(files []string) (codepointsType, contractionsType, erro
 			return nil, nil, err
 		}
 
-		for parts := range splitColdata(file) {
+		splitColdata(file, func(parts []string) error {
 			strCodepoints, strWeights := parts[:len(parts)-1], parts[len(parts)-1]
 
 			codepoints := make([]uint32, len(strCodepoints))
 			for i, strCodepoint := range strCodepoints {
 				codepoint, err := strconv.ParseInt(strCodepoint, 16, 64)
 				if err != nil {
-					return nil, nil, err
+					return err
 				}
 
 				codepoints[i] = uint32(codepoint)
@@ -116,7 +116,7 @@ func collectContractions(files []string) (codepointsType, contractionsType, erro
 			for i, strWeight := range strings.Split(strWeights, ".") {
 				weight, err := strconv.ParseInt(strWeight, 16, 64)
 				if err != nil {
-					return nil, nil, err
+					return err
 				}
 
 				weights[i] = uint32(weight)
@@ -127,7 +127,9 @@ func collectContractions(files []string) (codepointsType, contractionsType, erro
 				weights:    weights,
 				flatWeight: 0,
 			})
-		}
+
+			return nil
+		})
 	}
 
 	combined = reweightCollection(combined)               // Reweight and sort

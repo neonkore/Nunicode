@@ -10,9 +10,7 @@ import (
 // TODO: it depends on loading sortable codepoints as-is, reformatting
 // will break comparison in passCodepoint(). Ideally codepoints would
 // be parsed to ints and compared as ints, i guess.
-func loadAcceptable(filename string) []string {
-	ret := []string{}
-
+func loadAcceptable(filename string) (ret []string) {
 	file, err := os.Open(filename)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
@@ -66,13 +64,13 @@ func main() {
 	sortable := os.Args[1]
 	acceptable := loadAcceptable(sortable)
 
-	for parts := range splitUnidata(bufio.NewReader(os.Stdin)) {
+	splitUnidata(bufio.NewReader(os.Stdin), func(parts []string) error {
 		codepoints := strings.Split(parts[AllkeysCodepoint], " ")
 		weight := parts[AllkeysWeight]
 		codepoint := codepoints[0]
 
 		if !passCodepoint(codepoint, acceptable) {
-			continue
+			return nil
 		}
 
 		contraction := (len(codepoints) > 1)
@@ -82,5 +80,7 @@ func main() {
 		}
 
 		fmt.Fprintf(sink, "%s %s\n", strings.Join(codepoints, " "), reformatWeight(weight))
-	}
+
+		return nil
+	})
 }

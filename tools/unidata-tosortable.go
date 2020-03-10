@@ -35,11 +35,11 @@ func passCodepoint(codepoint int, category string, decompsStr string) bool {
 }
 
 func main() {
-	for parts := range splitUnidata(bufio.NewReader(os.Stdin)) {
+	splitUnidata(bufio.NewReader(os.Stdin), func(parts []string) error {
 		codepoint, err := strconv.ParseInt(parts[UnidataCodepoint], 16, 64)
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err)
-			continue
+			return err
 		}
 
 		category := parts[UnidataCategory]
@@ -49,5 +49,7 @@ func main() {
 			// fmt.Printf("%06X\n", codepoint) // FIXME: huh? for some reason this doesn't work
 			fmt.Println(parts[UnidataCodepoint])
 		}
-	}
+
+		return nil
+	})
 }

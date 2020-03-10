@@ -34,7 +34,7 @@ type foldingEntry struct {
 func main() {
 	mapping := map[int]foldingEntry{}
 
-	for parts := range splitUnidata(bufio.NewReader(os.Stdin)) {
+	err := splitUnidata(bufio.NewReader(os.Stdin), func(parts []string) error {
 		foldingClass := parts[CaseFoldingClass]
 		foldingPriority := -1
 		for i, val := range FoldingClassPriority {
@@ -46,24 +46,24 @@ func main() {
 
 		// Ignore foldings without expected folding class
 		if foldingPriority < 0 || foldingPriority >= len(FoldingClassPriority) {
-			continue
+			return nil
 		}
 
 		codepoint, err := strconv.ParseInt(parts[UnidataCodepoint], 16, 64)
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err)
-			continue
+			return err
 		}
 
 		// Prefer entries with higher priority
 		entry, exists := mapping[int(codepoint)]
 		if exists && entry.foldingPriority < foldingPriority {
-			continue
+			return nil
 		}
 
 		transform := parts[CaseFoldingTransform]
 		if len(transform) < 1 {
-			continue
+			return nil
 		}
 
 		replacement := strings.Split(transform, " ")
@@ -72,6 +72,12 @@ func main() {
 		}
 
 		mapping[int(codepoint)] = foldingEntry{foldingPriority: foldingPriority, transform: replacement}
+
+		return nil
+	})
+
+	if err != nil {
+		os.Exit(1)
 	}
 
 	for codepoint, entry := range mapping {

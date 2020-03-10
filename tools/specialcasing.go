@@ -20,39 +20,39 @@ const (
 	SpecialCasingCondition SpecialCasingMapping = 4
 )
 
+// MapSpecialCasingCallback : callback for mapping
+type MapSpecialCasingCallback func(codepoint int64, replacement []string) error
+
 // Builds mapping from codepoint to special cases of upper/lowercase.
 // Does trimming where appropriate.
-func mapSpecialCasing(reader io.Reader, partsIndex SpecialCasingMapping) <-chan string {
-	channel := make(chan string)
-
-	go func() {
-		for parts := range splitUnidata(bufio.NewReader(os.Stdin)) {
-			codepoint, err := strconv.ParseInt(parts[SpecialCasingCodepoint], 16, 64)
-			if err != nil {
-				fmt.Fprintln(os.Stderr, err)
-				continue
-			}
-
-			condition := parts[SpecialCasingCondition]
-			if len(condition) > 0 && !isComment(condition) { // Unconditional only
-				continue
-			}
-
-			replacement := strings.Split(parts[partsIndex], " ")
-			if len(replacement) < 1 || len(replacement[0]) < 1 {
-				continue
-			}
-
-			// Don't map to self
-			if len(replacement) == 1 && replacement[0] == parts[SpecialCasingCodepoint] {
-				continue
-			}
-
-			channel <- fmt.Sprintf("%06X %s", codepoint, strings.Join(replacement, ","))
+func mapSpecialCasing(reader io.Reader, partsIndex SpecialCasingMapping, callback MapSpecialCasingCallback) error {
+	return splitUnidata(bufio.NewReader(os.Stdin), func(parts []string) error {
+		codepoint, err := strconv.ParseInt(parts[SpecialCasingCodepoint], 16, 64)
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			return err
 		}
 
-		close(channel)
-	}()
+		condition := parts[SpecialCasingCondition]
+		if len(condition) > 0 && !isComment(condition) { // Unconditional only
+			return nil
+		}
 
-	return channel
+		replacement := strings.Split(parts[partsIndex], " ")
+		if len(replacement) < 1 || len(replacement[0]) < 1 {
+			return nil
+		}
+
+		// Don't map to self
+		if len(replacement) == 1 && replacement[0] == parts[SpecialCasingCodepoint] {
+			return nil
+		}
+
+		err = callback(codepoint, replacement)
+		if err != nil {
+			return err
+		}
+
+		return nil
+	})
 }

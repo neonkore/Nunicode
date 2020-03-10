@@ -58,16 +58,16 @@ type unaccentEntry struct {
 func main() {
 	tounaccent := []unaccentEntry{}
 
-	for parts := range splitUnidata(bufio.NewReader(os.Stdin)) {
+	err := splitUnidata(bufio.NewReader(os.Stdin), func(parts []string) error {
 		codepoint, err := strconv.ParseInt(parts[DecompsCodepoint], 16, 64)
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err)
-			continue
+			return err
 		}
 
 		tag := parts[DecompsTag]
 		if len(tag) > 0 { // Allow only empty tags, no <sort>, <compat>, etc
-			continue
+			return nil
 		}
 
 		decomps := strings.Split(parts[DecompsTransform], " ")
@@ -81,6 +81,12 @@ func main() {
 				break
 			}
 		}
+
+		return nil
+	})
+
+	if err != nil {
+		os.Exit(1)
 	}
 
 	for _, entry := range tounaccent {

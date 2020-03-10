@@ -15,26 +15,26 @@ const (
 	AllkeysWeight    AllkeysMapping = 1
 )
 
-func splitColdata(reader io.Reader) <-chan []string {
-	channel := make(chan []string)
+// SplitAllkeysCallback : callback for splitting
+type SplitAllkeysCallback func(parts []string) error
 
-	go func() {
-		scanner := bufio.NewScanner(reader)
-		for scanner.Scan() {
-			line := strings.TrimSpace(scanner.Text())
-			// This data is coming from other tools like filter-sortable,
-			// so there are no comments whatsoever, just data.
+func splitColdata(reader io.Reader, callback SplitAllkeysCallback) error {
+	scanner := bufio.NewScanner(reader)
+	for scanner.Scan() {
+		line := strings.TrimSpace(scanner.Text())
+		// This data is coming from other tools like filter-sortable,
+		// so there are no comments whatsoever, just data.
 
-			parts := strings.Split(line, " ")
-			for i, part := range parts {
-				parts[i] = strings.TrimSpace(part)
-			}
-
-			channel <- parts
+		parts := strings.Split(line, " ")
+		for i, part := range parts {
+			parts[i] = strings.TrimSpace(part)
 		}
 
-		close(channel)
-	}()
+		err := callback(parts)
+		if err != nil {
+			return err
+		}
+	}
 
-	return channel
+	return nil
 }

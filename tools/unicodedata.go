@@ -21,6 +21,12 @@ const (
 	UnidataToLower   UnicodeDataMapping = 13
 )
 
+// SplitUnicodeDataCallback : callback for splitting
+type SplitUnicodeDataCallback func(parts []string) error
+
+// MapUnicodeDataCallback : callback for mapping
+type MapUnicodeDataCallback func(codepoint int64, replacement []string) error
+
 // Checks if line in UnicodeData.txt is a comment
 func isComment(line string) bool {
 	// Strictly speaking comments are starting with #
@@ -42,59 +48,53 @@ func removeInlineComment(str string) string {
 
 // Splits lines in UnicodeData.txt into parts
 // and does trimming where appropriate.
-func splitUnidata(reader io.Reader) <-chan []string {
-	channel := make(chan []string)
-
-	go func() {
-		scanner := bufio.NewScanner(reader)
-		for scanner.Scan() {
-			line := strings.TrimSpace(scanner.Text())
-			if len(line) < 1 || isComment(line) {
-				continue
-			}
-
-			parts := strings.Split(line, ";")
-			for i, part := range parts {
-				parts[i] = strings.TrimSpace(removeInlineComment(part))
-			}
-
-			channel <- parts
+func splitUnidata(reader io.Reader, callback SplitUnicodeDataCallback) error {
+	scanner := bufio.NewScanner(reader)
+	for scanner.Scan() {
+		line := strings.TrimSpace(scanner.Text())
+		if len(line) < 1 || isComment(line) {
+			continue
 		}
 
-		close(channel)
-	}()
+		parts := strings.Split(line, ";")
+		for i, part := range parts {
+			parts[i] = strings.TrimSpace(removeInlineComment(part))
+		}
 
-	return channel
+		err := callback(parts)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
 
 // Builds mapping from codepoint to uppercase or lowercase.
 // Does trimming where appropriate.
-func mapUnidataCasing(reader io.Reader, partsIndex UnicodeDataMapping) <-chan string {
-	channel := make(chan string)
-
-	go func() {
-		for parts := range splitUnidata(bufio.NewReader(os.Stdin)) {
-			transform := parts[partsIndex]
-			if len(transform) < 1 {
-				continue
-			}
-
-			codepoint, err := strconv.ParseInt(parts[UnidataCodepoint], 16, 64)
-			if err != nil {
-				fmt.Fprintln(os.Stderr, err)
-				continue
-			}
-
-			replacement := strings.Split(transform, " ")
-			for i, part := range replacement {
-				replacement[i] = strings.TrimSpace(part)
-			}
-
-			channel <- fmt.Sprintf("%06X %s", codepoint, strings.Join(replacement, " "))
+func mapUnidataCasing(reader io.Reader, partsIndex UnicodeDataMapping, callback MapUnicodeDataCallback) error {
+	return splitUnidata(bufio.NewReader(os.Stdin), func(parts []string) error {
+		transform := parts[partsIndex]
+		if len(transform) < 1 {
+			return nil
 		}
 
-		close(channel)
-	}()
+		codepoint, err := strconv.ParseInt(parts[UnidataCodepoint], 16, 64)
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			return err
+		}
 
-	return channel
+		replacement := strings.Split(transform, " ")
+		for i, part := range replacement {
+			replacement[i] = strings.TrimSpace(part)
+		}
+
+		err = callback(codepoint, replacement)
+		if err != nil {
+			return err
+		}
+
+		return nil
+	})
 }
