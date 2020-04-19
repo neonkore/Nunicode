@@ -21,6 +21,7 @@ const (
 	ContractionsHeaderTemplate   string = "contractions_header.tmpl"
 	ContractionsIncludesTemplate string = "contractions_includes.tmpl"
 	ContractionsConstsTemplate   string = "contractions_consts.tmpl"
+	ContractionsRootsTemplate    string = "contractions_roots.tmpl"
 )
 
 // RangeLinebreakFunc : takes position in range and returns true if linebreak
@@ -90,6 +91,21 @@ type ContractionsConstsTags struct {
 	TAG          string // tag in uppercase
 	Codepoints   uint
 	Contractions uint
+}
+
+// ContractionsRootType : struct describing root state in template
+type ContractionsRootType struct {
+	Name   string
+	Weight int
+}
+
+// ContractionsRootsTags : tags used in root states
+type ContractionsRootsTags struct {
+	TAG    string // tag in uppercase
+	Roots  []ContractionsRootType
+	RootsG MPHGType
+	RootsC MPHCType
+	RootsI MPHIType
 }
 
 func formatTemplate(filename string, tags interface{}) (string, error) {
@@ -165,4 +181,8 @@ func genContractionsIncludes(writer io.Writer, tags ContractionsIncludesTags) er
 
 func genContractionsConsts(writer io.Writer, tags ContractionsConstsTags) error {
 	return genTemplate(writer, ContractionsConstsTemplate, tags)
+}
+
+func genContractionsRoots(writer io.Writer, tags ContractionsRootsTags) error {
+	return genTemplate(writer, ContractionsRootsTemplate, tags)
 }

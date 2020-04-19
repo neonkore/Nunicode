@@ -16,6 +16,18 @@ func usage() {
 	fmt.Printf("  [BMP_ONLY]     - flag to indicate if set is BMP-only, 0 or 1 (false or true)\n")
 }
 
+func getRootStates(states statesType) statesType {
+	roots := make(statesType, 0)
+
+	for _, state := range states {
+		if isRootState(state.codepoints, states) {
+			roots = append(roots, state)
+		}
+	}
+
+	return roots
+}
+
 func main() {
 	if len(os.Args) < 5 {
 		usage()
@@ -39,16 +51,21 @@ func main() {
 		os.Exit(1)
 	}
 
-	// states, err := collectStates(contractions)
-	// if err != nil {
-	// 	fmt.Fprintln(os.Stderr, err)
-	// 	os.Exit(1)
-	// }
+	states, err := collectStates(contractions)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
 
-	// for _, state := range states {
-	// 	root, final, children := isRootState(state, states), isFinalState(state, states), findChildrenStates(state, states)
-	// 	fmt.Println(stateToID(state), root, final, children)
-	// }
+	roots := getRootStates(states)
+
+	contractionsRoots := make([]ContractionsRootType, 0)
+	for _, state := range roots {
+		contractionsRoots = append(contractionsRoots, ContractionsRootType{
+			Name:   stateToString(state.codepoints),
+			Weight: -int(state.flatWeight),
+		})
+	}
 
 	sink, check := os.Stdout, func(err error) {
 		if err != nil {
@@ -68,5 +85,9 @@ func main() {
 		TAG:          strings.ToUpper(tag),
 		Codepoints:   uint(len(codepoints)),
 		Contractions: uint(len(contractions)),
+	}))
+	check(genContractionsRoots(sink, ContractionsRootsTags{
+		TAG:   strings.ToUpper(tag),
+		Roots: contractionsRoots,
 	}))
 }

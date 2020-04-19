@@ -31,7 +31,7 @@ func splitCollection(collection contractionsType) (codepointsType, contractionsT
 	return codepoints, contractions
 }
 
-func reweightCollection(collection contractionsType) contractionsType {
+func reweightContractions(collection contractionsType) contractionsType {
 	sort.SliceStable(collection, func(i, j int) bool {
 		lhs, rhs := collection[i], collection[j]
 		lhsLength, rhsLength := len(lhs.weights), len(rhs.weights)
@@ -132,7 +132,7 @@ func collectContractions(files []string) (codepointsType, contractionsType, erro
 		})
 	}
 
-	combined = reweightCollection(combined)               // Reweight and sort
+	combined = reweightContractions(combined)             // Reweight and sort
 	codepoints, contractions := splitCollection(combined) // combined should be already sorted here
 
 	return codepoints, contractions, nil

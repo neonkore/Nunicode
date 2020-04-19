@@ -1,0 +1,9 @@
+/* Weights of the root states
+ *
+ * Actual value doesn't really matter as long as it is unique
+ * and negative. Real value will be picked from G table for roots.
+ */
+{{range $i, $v := .Roots}}
+{{- /* newline when needed */ -}}
+#define {{.Name}} {{.Weight}}
+{{end}}
