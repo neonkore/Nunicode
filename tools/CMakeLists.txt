@@ -75,6 +75,8 @@ set(CONTRACTIONS_TOC_SRC
 	contractions.go
 	contractions-toc.go
 	states.go
+	templates.go
+	mph.go
 )
 GOTOOL(contractions-toc "${CONTRACTIONS_TOC_SRC}")
 

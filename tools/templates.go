@@ -10,14 +10,17 @@ import (
 
 // Template files
 const (
-	DefaultTemplatesDir     string = "templates"
-	TemplatesDirEnvVariable string = "TEMPLATES"
-	MPHHeaderTemplate       string = "mph_header.tmpl"
-	MPHIncludesTemplate     string = "mph_includes.tmpl"
-	MPHGTemplate            string = "mph_g.tmpl"
-	MPHCTemplate            string = "mph_c.tmpl"
-	MPHITemplate            string = "mph_i.tmpl"
-	MPHCombinedTemplate     string = "mph_combined.tmpl"
+	DefaultTemplatesDir          string = "templates"
+	TemplatesDirEnvVariable      string = "TEMPLATES"
+	MPHHeaderTemplate            string = "mph_header.tmpl"
+	MPHIncludesTemplate          string = "mph_includes.tmpl"
+	MPHGTemplate                 string = "mph_g.tmpl"
+	MPHCTemplate                 string = "mph_c.tmpl"
+	MPHITemplate                 string = "mph_i.tmpl"
+	MPHCombinedTemplate          string = "mph_combined.tmpl"
+	ContractionsHeaderTemplate   string = "contractions_header.tmpl"
+	ContractionsIncludesTemplate string = "contractions_includes.tmpl"
+	ContractionsConstsTemplate   string = "contractions_consts.tmpl"
 )
 
 // RangeLinebreakFunc : takes position in range and returns true if linebreak
@@ -33,11 +36,6 @@ type MPHHeaderTags struct {
 	GSize          uint
 	CombinedLength uint
 	Encoding       string
-}
-
-// MPHFooterTags : tags used in MPH footer
-type MPHFooterTags struct {
-	// Nothing here
 }
 
 // MPHIncludesTags : tags used in MPH includes template
@@ -74,6 +72,26 @@ type MPHCombinedTags struct {
 	Linebreak RangeLinebreakFunc
 }
 
+// ContractionsHeaderTags : tags used in contractions switch header template
+type ContractionsHeaderTags struct {
+	Tool         string
+	Unixtime     int64
+	Tag          string
+	Contractions uint
+}
+
+// ContractionsIncludesTags : tags used in contractions includes templates
+type ContractionsIncludesTags struct {
+	// Nothing here
+}
+
+// ContractionsConstsTags : tags used in contractions defines
+type ContractionsConstsTags struct {
+	TAG          string // tag in uppercase
+	Codepoints   uint
+	Contractions uint
+}
+
 func formatTemplate(filename string, tags interface{}) (string, error) {
 	name := path.Base(filename)
 	t, err := template.New(name).ParseFiles(filename)
@@ -107,6 +125,12 @@ func genTemplate(writer io.Writer, template string, tags interface{}) error {
 	return nil
 }
 
+func makeLinebreakFunc(chunkLength uint) RangeLinebreakFunc {
+	return func(pos uint) bool {
+		return (pos%chunkLength == 0)
+	}
+}
+
 func genMPHHeader(writer io.Writer, tags MPHHeaderTags) error {
 	return genTemplate(writer, MPHHeaderTemplate, tags)
 }
@@ -131,8 +155,14 @@ func genMPHCombined(writer io.Writer, tags MPHCombinedTags) error {
 	return genTemplate(writer, MPHCombinedTemplate, tags)
 }
 
-func makeLinebreakFunc(chunkLength uint) RangeLinebreakFunc {
-	return func(pos uint) bool {
-		return (pos%chunkLength == 0)
-	}
+func genContractionsHeader(writer io.Writer, tags ContractionsHeaderTags) error {
+	return genTemplate(writer, ContractionsHeaderTemplate, tags)
+}
+
+func genContractionsIncludes(writer io.Writer, tags ContractionsIncludesTags) error {
+	return genTemplate(writer, ContractionsIncludesTemplate, tags)
+}
+
+func genContractionsConsts(writer io.Writer, tags ContractionsConstsTags) error {
+	return genTemplate(writer, ContractionsConstsTemplate, tags)
 }

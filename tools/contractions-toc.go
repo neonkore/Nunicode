@@ -3,6 +3,9 @@ package main
 import (
 	"fmt"
 	"os"
+	"path"
+	"strings"
+	"time"
 )
 
 func usage() {
@@ -20,6 +23,7 @@ func main() {
 	}
 
 	files := os.Args[1:3] // codepoints file, contractions file
+	tag := os.Args[3]
 	// tag, bmpOnly := os.Args[3], false
 
 	// bmpOnlyOpt, err := strconv.ParseBool(os.Args[4])
@@ -29,19 +33,40 @@ func main() {
 	// }
 	// bmpOnly = bmpOnlyOpt
 
-	_, contractions, err := collectContractions(files)
+	codepoints, contractions, err := collectContractions(files)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
 
-	states, err := collectStates(contractions)
-	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
-		os.Exit(1)
+	// states, err := collectStates(contractions)
+	// if err != nil {
+	// 	fmt.Fprintln(os.Stderr, err)
+	// 	os.Exit(1)
+	// }
+
+	// for _, state := range states {
+	// 	root, final, children := isRootState(state, states), isFinalState(state, states), findChildrenStates(state, states)
+	// 	fmt.Println(stateToID(state), root, final, children)
+	// }
+
+	sink, check := os.Stdout, func(err error) {
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			os.Exit(1)
+		}
 	}
 
-	for _, state := range states {
-		fmt.Println(stateToID(state))
-	}
+	check(genContractionsHeader(sink, ContractionsHeaderTags{
+		Tool:         path.Base(os.Args[0]),
+		Unixtime:     time.Now().Unix(),
+		Tag:          tag,
+		Contractions: uint(len(contractions)),
+	}))
+	check(genContractionsIncludes(sink, ContractionsIncludesTags{}))
+	check(genContractionsConsts(sink, ContractionsConstsTags{
+		TAG:          strings.ToUpper(tag),
+		Codepoints:   uint(len(codepoints)),
+		Contractions: uint(len(contractions)),
+	}))
 }
