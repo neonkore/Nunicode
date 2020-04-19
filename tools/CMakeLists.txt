@@ -70,6 +70,14 @@ set(FILTERED_TOMPH_SRC
 )
 GOTOOL(filtered-tomph "${FILTERED_TOMPH_SRC}")
 
+set(CONTRACTIONS_TOC_SRC
+	allkeys.go
+	contractions.go
+	contractions-toc.go
+	states.go
+)
+GOTOOL(contractions-toc "${CONTRACTIONS_TOC_SRC}")
+
 set(DECOMPS_TOUNACCENT_SRC
 	decomps-tounaccent.go
 	decomps.go
@@ -97,6 +105,7 @@ add_custom_target(tools
 	DEPENDS special-tolower special-toupper
 	DEPENDS casefolding-tofolding
 	DEPENDS unidata-tosortable filter-sortable filtered-tomph
+	DEPENDS contractions-toc
 	DEPENDS decomps-tounaccent
 	DEPENDS mph-combined mph-indexed
 )

@@ -19,7 +19,7 @@ func main() {
 		parts := strings.Split(line, " ")
 
 		// Expects codepoint to be the first part
-		codepoint, err := strconv.ParseInt(parts[0], 16, 64)
+		codepoint, err := strconv.ParseInt(parts[0], 16, 64) // FIXME: parseUint()? here and other places
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err)
 			continue
